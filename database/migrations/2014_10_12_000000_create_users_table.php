@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('gender');
             $table->string('ranking');
             $table->string('image')->nullable();
+            $table->integer('level_id')->unsigned()->nullable();
+            $table->foreign('level_id')->references('id')->on('levels');
             $table->string('password');
             $table->rememberToken();
             $table->softDeletes();

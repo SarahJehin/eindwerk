@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'gsm', 'birth_date', 'gender', 'ranking', 'image', 'password',
+        'first_name', 'last_name', 'email', 'gsm', 'birth_date', 'gender', 'ranking', 'image', 'level_id', 'password',
     ];
     
     protected $dates = ['deleted_at'];
@@ -30,4 +30,36 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    
+    //return all the roles associated with this user
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+    
+    //return the level associated with this user
+    public function level()
+    {
+        return $this->belongsTo('App\Level');
+    }
+    
+    //return all the activities associated with this user
+    public function activities()
+    {
+        return $this->belongsToMany('App\Activity');
+    }
+    
+    //return all the activities where this user was a helper (code = 2)
+    public function activities_as_helper()
+    {
+        return $this->belongsToMany('App\User')->withPivot('helper_participant')->wherePivot('helper_participant', 2);
+    }
+    
+    //return all the activities where this user was a participant (code = 1)
+    public function activities_as_participant()
+    {
+        return $this->belongsToMany('App\User')->withPivot('helper_participant')->wherePivot('helper_participant', 1);
+    }
+    
 }
