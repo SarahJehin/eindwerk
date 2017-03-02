@@ -24,12 +24,12 @@ class LevelsTableSeeder extends Seeder
         $nr = 1;
         foreach ($levels as $level) {
             $level_entry = array(
-                    'number'        => $nr;
+                    'number'        => $nr,
                     'name'          => $level,
                     'created_at'    => \Carbon\Carbon::now(),
                     'updated_at'    => \Carbon\Carbon::now(),
                 );
-            DB::table('level')->insert($level_entry);
+            DB::table('levels')->insert($level_entry);
             $nr++;
         }
         

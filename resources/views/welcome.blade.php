@@ -5,12 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>TCS - Dashboard</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,600" rel="stylesheet">
 
+        <link href="{{url('/css/main.css')}}" rel="stylesheet" type="text/css">
         <!-- Styles -->
+        <!--
         <style>
             html, body {
                 background-color: #fff;
@@ -63,8 +66,35 @@
                 margin-bottom: 30px;
             }
         </style>
+        -->
     </head>
     <body>
+        <div class="container">
+
+            <div class="login_block">
+
+                <div class="heading">
+                    Login
+                </div>
+
+                <div class="content">
+                    <form id="login_form" method="post" action="{{ route('login') }}">
+                        <div class="field_wrap">
+                            <label>E-mail</label>
+                            <input type="text" name="email" id="email">
+                        </div>
+
+                        <div class="field_wrap">
+                            <label>Wachtwoord</label>
+                            <input type="password" name="password" id="password">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+        {{--
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -91,5 +121,8 @@
                 </div>
             </div>
         </div>
+        --}}
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="{{url('/js/main.js')}}"></script>
     </body>
 </html>
