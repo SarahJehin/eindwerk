@@ -3,6 +3,7 @@
 
     console.log("Welcome in the console of the TCS Dashboard!");
 
+    // LOGIN
     //login anims (code from: http://codepen.io/ehermanson/pen/KwKWEv)
     $('#login_form').find('input, textarea').on('keyup blur focus', function (e) {
 
@@ -32,6 +33,20 @@
         }
 
     });
+
+
+
+    // ADD ACTIVITY
+    //multistep form
+    $("div[class^='step']").click(function () {
+        //console.log($(this).attr("class"));
+        var step = $(this).attr("class").replace("step", "");
+        //console.log(step);
+        var left = 500*step-500;
+        console.log(left);
+        $(".total").css("left", -left);
+    });
+
 
 
 

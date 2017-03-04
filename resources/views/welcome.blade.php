@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{ config('app.locale') }}" class="login">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,73 +12,19 @@
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,600" rel="stylesheet">
 
         <link href="{{url('/css/main.css')}}" rel="stylesheet" type="text/css">
-        <!-- Styles -->
-        <!--
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-        -->
     </head>
-    <body>
+    <body class="login">
         <div class="container">
 
             <div class="login_block">
 
-                <div class="heading">
-                    Login
+                <div class="login-heading">
+                    Welkom op TCS
                 </div>
 
                 <div class="content">
                     <form id="login_form" method="post" action="{{ route('login') }}">
+                        {{ csrf_field() }}
                         <div class="field_wrap">
                             <label>E-mail</label>
                             <input type="text" name="email" id="email">
@@ -87,6 +33,10 @@
                         <div class="field_wrap">
                             <label>Wachtwoord</label>
                             <input type="password" name="password" id="password">
+                        </div>
+
+                        <div class="field_wrap">
+                            <input type="submit" name="submit" value="Inloggen">
                         </div>
                     </form>
                 </div>

@@ -1,0 +1,114 @@
+
+.block {
+  background-color: #fff;
+}
+
+.heading {
+  background-color: #1abc9c;
+}
+
+.form_part {
+  width: 500px;
+  overflow: hidden;
+}
+
+.total {
+  width: 2000px;
+  position: relative;
+  left: 0px;
+
+  div {
+    width: 500px;
+    float: left;
+
+    .categories {
+      .category {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+        border-radius: 50%;
+        position: relative;
+
+        label {
+          width: 80%;
+          height: 80%;
+          margin: calc(10% - 6px);
+          border: 6px solid pink;
+          border-radius: 50%;
+          background-color: green;
+          box-sizing: content-box;
+        }
+        
+        input {
+          //display: none;
+          position: absolute;
+          left:20px;
+          top:50px;
+
+          &:checked + label {
+            border: 6px solid orange;
+          }
+        }
+      }
+    }
+
+    .datepicker_box {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 250px;
+
+      div {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .container_startdate,
+      .container_deadline {
+
+        &.front {
+          z-index: 2;
+        }
+        &.bg {
+          background-color: #fff;
+        }
+
+      }
+
+      .container_startdate {
+        table tr td.active:active,
+        tr td.active.highlighted:active,
+        tr td.active.active,
+        tr td.active.highlighted.active {
+          background-color: teal;
+        }
+      }
+
+      .container_deadline {
+        table tr td.active:active,
+        tr td.active.highlighted:active,
+        tr td.active.active,
+        tr td.active.highlighted.active {
+          background-color: orange;
+        }
+      }
+
+    }
+
+
+  }
+}
+
+
+/* clearfix */
+.total::before, .total::after {
+  content: '';
+  line-height: 0;
+  display: table;
+}
+.total::after {
+  clear: both;
+}

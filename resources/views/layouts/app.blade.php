@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{url('/css/main.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Scripts -->
     <script>
@@ -86,9 +87,14 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
 
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    @yield('custom_js')
+
+    <!--
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="{{url('/js/app.js')}}"></script>
+    -->
 </body>
 </html>
