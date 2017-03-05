@@ -18,11 +18,19 @@
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
-                    <form>
+                    <form method="post" action="{{url('add_activity')}}">
                         <div class="total">
                             <div class="part01">
                                 categorie en poster enz
                                 <div class="categories">
+                                    @foreach($categories as $category)
+                                        <div class="category">
+                                            <input type="radio" name="category" id="cat{{$category->id}}" value="{{$category->id}}">
+                                            <label for="cat{{$category->id}}">
+                                                <img src="{{url('images/category_images/' . $category->image)}}" alt="{{$category->name}}">
+                                            </label>
+                                        </div>
+                                    @endforeach
                                     <div class="category">
                                         <input type="radio" name="category" id="cat01">
                                         <label for="cat01"></label>
@@ -50,22 +58,63 @@
                                 </div>
                             </div>
                             <div class="part03">
-                                algemene info
+                                <div>algemene info</div>
 
-                                <div class="startdate">
-                                    Startdate
-                                </div>
-                                <div class="deadline">
-                                    Deadline
-                                </div>
-                                <div class="datepicker_box">
-                                    <div class="container_startdate front">
+                                <div class="date_info">
 
+                                    <div class="datepicker_box">
+                                        <div class="container_startdate front">
+
+                                        </div>
+
+                                        <div class="container_deadline">
+
+                                        </div>
+                                    </div>
+                                    <div class="date_type startdate">
+                                        <span class="radio">
+                                            <span class="bullet selected"></span>
+                                        </span>
+                                        <span class="">Datum</span>
+                                    </div>
+                                    <div class="date_type deadline">
+                                        <span class="radio">
+                                            <span class="bullet"></span>
+                                        </span>
+                                        <span class="">Deadline</span>
                                     </div>
 
-                                    <div class="container_deadline">
+                                    <input type="date" id="startdate" name="startdate" hidden>
+                                    <input type="date" id="deadline" name="deadline" hidden>
 
+                                </div>
+
+                                <div class="timepicker">
+                                    <div class="arrow_up">
+                                        <i class="fa fa-angle-up" aria-hidden="true"></i>
                                     </div>
+                                    <div class="visible_container">
+                                        <ul>
+                                            @for($i = 8; $i < 23; $i++)
+                                                <li>
+                                                    <input type="radio" name="time" id="{{$i}}_00" value="{{$i}}:00">
+                                                    <label for="{{$i}}_00">{{$i}}:00</label>
+                                                </li>
+                                                <li>
+                                                    <input type="radio" name="time" id="{{$i}}_30" value="{{$i}}:30">
+                                                    <label for="{{$i}}_30">{{$i}}:30</label>
+                                                </li>
+                                            @endfor
+                                        </ul>
+                                    </div>
+
+                                    <div class="arrow_down">
+                                        <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+
+                                <div class="location_info">
+                                    locatie info
                                 </div>
 
                             </div>

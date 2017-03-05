@@ -11,6 +11,6 @@ class ActivityController extends Controller
     public function add_activity() {
         $categories = Category::all();
         //dd($categories);
-        return view('activities/add_activity');
+        return view('activities/add_activity', ['categories' => $categories]);
     }
 }

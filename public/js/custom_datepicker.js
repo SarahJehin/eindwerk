@@ -9,19 +9,13 @@
         //console.log("startdate called");
         type_date = "startdate";
         //console.log(type_date);
+        $(".bullet").removeClass("selected");
+        $(".startdate .bullet").addClass("selected");
 
         $(".container_deadline").removeClass("front");
         $(".container_startdate").addClass("front");
 
-        $('.container_deadline').removeClass("bg");
 
-        if(startMonth == deadlineMonth) {
-            $('.container_startdate').removeClass("bg");
-            $('.container_deadline').removeClass("bg");
-        }
-        else {
-            $('.container_startdate').addClass("bg");
-        }
 
     });
 
@@ -29,20 +23,13 @@
         //console.log("deadline called");
         type_date = "deadline";
         //.log(type_date);
+        $(".bullet").removeClass("selected");
+        $(".deadline .bullet").addClass("selected");
 
         $(".container_startdate").removeClass("front");
         $(".container_deadline").addClass("front");
 
-        //console.log("deadlinemonth: " + deadlineMonth);
-        //console.log("startmonth: " + startMonth);
-        $('.container_startdate').removeClass("bg");
-        if(startMonth == deadlineMonth) {
-            $('.container_deadline').removeClass("bg");
-            $('.container_startdate').removeClass("bg");
-        }
-        else {
-            $('.container_deadline').addClass("bg");
-        }
+        
     });
 
     var next_prev = "";
@@ -55,6 +42,8 @@
     }).on('changeDate', function (e) {
             //console.log(e.format());
             var startdate = e.format();
+            var formatted_date = startdate.split("/");
+            $("#startdate").val(formatted_date[2] + "-" + formatted_date[1] + "-" + formatted_date[0]);
         }
 
     ).on('changeMonth', function(e){
@@ -77,12 +66,6 @@
                 $( ".container_deadline .datepicker-months tr th.prev" ).trigger( "click" );
             }
         }
-        if(currMonth == deadlineMonth) {
-            $('.container_startdate').removeClass("bg");
-        }
-        else {
-            $('.container_startdate').addClass("bg");
-        }
     });
 
 
@@ -93,6 +76,8 @@
     }).on('changeDate', function (e) {
             console.log(e.format());
             var deadline = e.format();
+            var formatted_date = deadline.split("/");
+            $("#deadline").val(formatted_date[2] + "-" + formatted_date[1] + "-" + formatted_date[0]);
         }
 
     ).on('changeMonth', function(e){
@@ -114,12 +99,6 @@
             else {
                 $( ".container_startdate .datepicker-months tr th.prev" ).trigger( "click" );
             }
-        }
-        if(currMonth == startMonth) {
-            $('.container_deadline').removeClass("bg");
-        }
-        else {
-            $('.container_deadline').addClass("bg");
         }
     });
 

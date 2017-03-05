@@ -1,11 +1,17 @@
 //colors
 $theme_color01 : #1abc9c;
 $theme_color01_shade01 : #16a085;
+$theme_gradient01: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
 
 $theme_color02 : #24313c;
 $theme_color02_alpha : rgba(36, 49, 60, 0.8);
 
+$theme_color03: #ff9f23;
+$theme_gradient03: linear-gradient(-216deg, $theme_color03 0%, #dd5128 100%);
+
 $form_color: #6b7d87;
+$form_color_radio: #3d4b53;
+$form_font_color: #9CAFB9;
 
 //fonts
 $main_font : 'Titillium Web', sans-serif;
@@ -27,6 +33,15 @@ html, body {
   background-attachment: fixed;
 }
 
+.block {
+  background-color: $theme_color02_alpha;
+  color: $form_font_color;
+  .heading {
+    background-color: $theme_color01;
+    //background: $theme_gradient01;
+    color: #fff;
+  }
+}
 
 
 @import "login_screen/_login";

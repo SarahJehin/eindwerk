@@ -46,7 +46,23 @@
         console.log(left);
         $(".total").css("left", -left);
     });
-
+    //timepicker
+    $(".timepicker .arrow_up").click(function () {
+        $current_top = $(".timepicker ul").css("top");
+        $current_top = $current_top.replace("px", "");
+        $next_top = parseInt($current_top)+50;
+        if($current_top != 0) {
+            $(".timepicker ul").css("top", $next_top);
+        }
+    });
+    $(".timepicker .arrow_down").click(function () {
+        $current_top = $(".timepicker ul").css("top");
+        $current_top = $current_top.replace("px", "");
+        $next_top = $current_top-50;
+        if($current_top > (-650)) {
+            $(".timepicker ul").css("top", $next_top);
+        }
+    });
 
 
 
