@@ -2,25 +2,21 @@
 
 
 .form_part {
-  width: 500px;
+  //width: 500px;
   overflow: hidden;
 }
 
-input, textarea {
-  padding: 10px 5%;
-  background-color: rgba(#fff, 0.1);
-  border: none;
-  color: #fff;
-  margin-bottom: 10px;
-}
+
 
 .total {
-  width: 2000px;
+  //width: 2000px;
+  width: 400%;
   position: relative;
-  left: -1000px;
+  left: -300%;
 
-  div[class^="part"] {
-    width: 500px;
+  div[class^="part0"] {
+    //width: 500px;
+    width: 25%;
     float: left;
 
     .categories {
@@ -73,6 +69,7 @@ input, textarea {
         width: 250px;
         height: 250px;
         border: 1px solid $form_font_color;
+        margin-bottom: 15px;
 
         div {
           position: absolute;
@@ -112,7 +109,8 @@ input, textarea {
       }
 
       .date_type {
-        display: inline-block;
+        //display: inline-block;
+        float: left;
         .radio {
           display: block;
           width: 25px;
@@ -122,6 +120,7 @@ input, textarea {
           overflow: hidden;
           margin: 0;
           float: left;
+          margin-right: 10px;
 
           .bullet {
             display: block;
@@ -132,9 +131,15 @@ input, textarea {
             background-color: transparent;
           }
         }
+        
+        .label {
+          margin-top: 4px;
+          float: left;
+        }
       }
 
       .startdate {
+        margin-right: 50px;
         .radio {
           .bullet.selected {
             background: $theme_gradient01;
@@ -182,9 +187,11 @@ input, textarea {
           display: none;
           &:checked + label {
             background-color: $theme_color01;
+            color: #fff;
           }
         }
         label {
+          display: block;
           width: 100%;
           border-radius: 15px;
         }
@@ -195,6 +202,22 @@ input, textarea {
 
 .location_info {
   clear: both;
+}
+
+
+//part 04
+//range_slider
+.participants .slider.slider-horizontal .slider-track {
+  height: 2px;
+  margin-top: -1px;
+}
+
+.slider .tooltip.top {
+  display: none;
+}
+
+.participants .slider-handle {
+  background-image: $theme_gradient01;
 }
 
 

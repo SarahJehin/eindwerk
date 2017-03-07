@@ -13,4 +13,8 @@ class ActivityController extends Controller
         //dd($categories);
         return view('activities/add_activity', ['categories' => $categories]);
     }
+
+    public function create_activity(Request $request) {
+        dd($request);
+    }
 }

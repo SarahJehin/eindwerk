@@ -21,4 +21,5 @@ Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('add_activity', 'ActivityController@add_activity');
+    Route::post('add_activity', 'ActivityController@create_activity');
 });

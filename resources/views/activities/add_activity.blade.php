@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
+@section('custom_css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+@endsection
+
 @section('content')
 
 
-    <div class="container">
+    <div class="">
 
         <div class="block">
             <div class="heading">
@@ -18,7 +22,8 @@
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
-                    <form method="post" action="{{url('add_activity')}}">
+                    <form id="add_activity" method="post" action="{{url('add_activity')}}">
+                        {{ csrf_field() }}
                         <div class="total">
                             <div class="part01">
                                 categorie en poster enz
@@ -50,10 +55,12 @@
                             </div>
                             <div class="part02">
                                 title and description
-                                <div>
+                                <div class="field_wrap">
+                                    <label>Titel</label>
                                     <input type="text" name="title" id="title">
                                 </div>
-                                <div>
+                                <div class="field_wrap">
+                                    <label>Beschrijving</label>
                                     <textarea name="description" id="description"></textarea>
                                 </div>
                             </div>
@@ -75,13 +82,13 @@
                                         <span class="radio">
                                             <span class="bullet selected"></span>
                                         </span>
-                                        <span class="">Datum</span>
+                                        <span class="label">Datum</span>
                                     </div>
                                     <div class="date_type deadline">
                                         <span class="radio">
                                             <span class="bullet"></span>
                                         </span>
-                                        <span class="">Deadline</span>
+                                        <span class="label">Deadline</span>
                                     </div>
 
                                     <input type="date" id="startdate" name="startdate" hidden>
@@ -119,7 +126,16 @@
 
                             </div>
                             <div class="part04">
-                                extra info
+                                <div>
+                                    extra info
+                                </div><br><br>
+                                <div class="participants">
+                                    <span class="min_participants">0</span> <input id="participants_slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[0,30]" tooltip="hide"/> <span class="max_participants">30</span>
+                                </div>
+
+                                <div>
+                                    <input type="submit" name="submit" value="Aanmaken">
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -134,5 +150,6 @@
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
     <script src="{{ asset('js/custom_datepicker.js') }}"></script>
 @endsection

@@ -38,6 +38,7 @@
     $('.container_startdate').datepicker({
         language: 'nl-BE',
         multidateSeparator: ",",
+        maxViewMode: 0,
         toggleActive: true
     }).on('changeDate', function (e) {
             //console.log(e.format());
@@ -72,6 +73,7 @@
     $('.container_deadline').datepicker({
         language: 'nl-BE',
         multidateSeparator: ",",
+        maxViewMode: 0,
         toggleActive: true
     }).on('changeDate', function (e) {
             console.log(e.format());

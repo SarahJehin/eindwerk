@@ -3,20 +3,123 @@ html, body {
   padding: 0;
   font-family: "Titillium Web", sans-serif; }
 
-.container {
-  width: 100%;
+body {
   background-image: url("../images/site_images/background_img.jpg");
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 0px -150px;
   background-attachment: fixed; }
 
+/*
+.container {
+  width: 100%;
+  //height: 100vh;
+  background-image: url("../images/site_images/background_img.jpg");
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: 0px -150px;
+  //overflow: hidden;
+  background-attachment: fixed;
+}*/
+nav {
+  background-color: #24313c;
+  position: fixed;
+  height: 100%;
+  width: 100px; }
+
 .block {
+  width: 55%;
+  margin: 0px auto;
   background-color: rgba(36, 49, 60, 0.8);
-  color: #9CAFB9; }
+  color: #9CAFB9;
+  position: relative;
+  top: 50px; }
   .block .heading {
     background-color: #1abc9c;
+    color: #fff;
+    text-align: center;
+    padding: 10px; }
+
+.timeline {
+  margin: 25px; }
+  .timeline div[class^="step"] {
+    width: 30px;
+    height: 30px;
+    background-color: #1abc9c;
+    border-radius: 50%;
+    float: left;
+    margin-right: 25px;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px; }
+
+.field_wrap {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 40px; }
+  .field_wrap label {
+    position: absolute;
+    transform: translateY(6px);
+    left: 13px;
+    color: #97a6ae;
+    transition: all 0.25s ease;
+    -webkit-backface-visibility: hidden;
+    pointer-events: none;
+    font-size: 1.2em; }
+  .field_wrap label.active {
+    transform: translateY(-25px);
+    left: 2px;
+    font-size: 1em; }
+    .field_wrap label.active .req {
+      opacity: 0; }
+  .field_wrap label.highlight {
     color: #fff; }
+  .field_wrap input, .field_wrap textarea {
+    font-size: 1.2em;
+    display: block;
+    height: 100%;
+    padding: 10px 5%;
+    color: #fff;
+    border-radius: 0;
+    transition: border-color .25s ease, box-shadow .25s ease;
+    border: 1px solid #6b7d87;
+    background-color: transparent;
+    width: 100%;
+    /* to change default yellow autofill color*/ }
+    .field_wrap input:focus, .field_wrap textarea:focus {
+      outline: 0;
+      border-color: #1abc9c; }
+    .field_wrap input:-webkit-autofill, .field_wrap textarea:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px #24313c inset;
+      -webkit-text-fill-color: #1abc9c; }
+  .field_wrap textarea {
+    height: 100px;
+    max-width: 500px;
+    max-height: 250px; }
+  .field_wrap input[type="submit"] {
+    background: #1abc9c;
+    /* For browsers that do not support gradients */
+    /*
+    background: -webkit-linear-gradient(left top, rgba(#00ffa7, 0.65), rgba(#009688, 0.65)); /* For Safari 5.1 to 6.0
+    background: -o-linear-gradient(bottom right, rgba(#00ffa7, 0.65), rgba(#009688, 0.65)); /* For Opera 11.1 to 12.0
+    background: -moz-linear-gradient(bottom right, rgba(#00ffa7, 0.65), rgba(#009688, 0.65)); /* For Firefox 3.6 to 15
+    background: linear-gradient(to bottom right, #00ffa7, #009688); /* Standard syntax
+    background-size: 200% 100%;
+    background-position: 0%;*/
+    width: 100%;
+    background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
+    background-size: 200% 100%;
+    transition: background 0.3s ease; }
+    .field_wrap input[type="submit"]:hover {
+      /*
+      background: -webkit-linear-gradient(left top, #00ffa7, #009688); /* For Safari 5.1 to 6.0
+      background: -o-linear-gradient(bottom right, #00ffa7, #009688); /* For Opera 11.1 to 12.0
+      background: -moz-linear-gradient(bottom right, #00ffa7, #009688); /* For Firefox 3.6 to 15
+      background: linear-gradient(to bottom right, #00ffa7, #009688); /* Standard syntax */
+      cursor: pointer;
+      background-position: 100%; }
 
 .login {
   height: 100%; }
@@ -100,24 +203,16 @@ html, body {
           background-position: 100%; }
 
 .form_part {
-  width: 500px;
   overflow: hidden; }
 
-input, textarea {
-  padding: 10px 5%;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: #fff;
-  margin-bottom: 10px; }
-
 .total {
-  width: 2000px;
+  width: 400%;
   position: relative;
-  left: -1000px; }
-  .total div[class^="part"] {
-    width: 500px;
+  left: -300%; }
+  .total div[class^="part0"] {
+    width: 25%;
     float: left; }
-    .total div[class^="part"] .categories .category {
+    .total div[class^="part0"] .categories .category {
       width: 100px;
       height: 100px;
       background-color: #3d4b53;
@@ -125,7 +220,7 @@ input, textarea {
       position: relative;
       float: left;
       margin-right: 10px; }
-      .total div[class^="part"] .categories .category label {
+      .total div[class^="part0"] .categories .category label {
         position: absolute;
         width: 80%;
         height: 80%;
@@ -134,47 +229,48 @@ input, textarea {
         border-radius: 50%;
         background-color: #fff;
         box-sizing: content-box; }
-        .total div[class^="part"] .categories .category label img {
+        .total div[class^="part0"] .categories .category label img {
           width: 90%;
           height: 90%;
           margin: 5%; }
-      .total div[class^="part"] .categories .category input {
+      .total div[class^="part0"] .categories .category input {
         position: absolute;
         left: 20px;
         top: 50px; }
-        .total div[class^="part"] .categories .category input:checked + label {
+        .total div[class^="part0"] .categories .category input:checked + label {
           border: 6px solid #1abc9c; }
-    .total div[class^="part"] .date_info {
+    .total div[class^="part0"] .date_info {
       float: left;
       margin-right: 50px; }
-      .total div[class^="part"] .date_info .datepicker_box {
+      .total div[class^="part0"] .date_info .datepicker_box {
         position: relative;
         display: block;
         width: 250px;
         height: 250px;
-        border: 1px solid #9CAFB9; }
-        .total div[class^="part"] .date_info .datepicker_box div {
+        border: 1px solid #9CAFB9;
+        margin-bottom: 15px; }
+        .total div[class^="part0"] .date_info .datepicker_box div {
           position: absolute;
           left: 0;
           top: 0;
           width: 100%;
           height: 100%; }
-        .total div[class^="part"] .date_info .datepicker_box .container_startdate.front,
-        .total div[class^="part"] .date_info .datepicker_box .container_deadline.front {
+        .total div[class^="part0"] .date_info .datepicker_box .container_startdate.front,
+        .total div[class^="part0"] .date_info .datepicker_box .container_deadline.front {
           z-index: 2; }
-        .total div[class^="part"] .date_info .datepicker_box .container_startdate table tr td.active:active,
-        .total div[class^="part"] .date_info .datepicker_box .container_startdate tr td.active.highlighted:active,
-        .total div[class^="part"] .date_info .datepicker_box .container_startdate tr td.active.active,
-        .total div[class^="part"] .date_info .datepicker_box .container_startdate tr td.active.highlighted.active {
+        .total div[class^="part0"] .date_info .datepicker_box .container_startdate table tr td.active:active,
+        .total div[class^="part0"] .date_info .datepicker_box .container_startdate tr td.active.highlighted:active,
+        .total div[class^="part0"] .date_info .datepicker_box .container_startdate tr td.active.active,
+        .total div[class^="part0"] .date_info .datepicker_box .container_startdate tr td.active.highlighted.active {
           background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%); }
-        .total div[class^="part"] .date_info .datepicker_box .container_deadline table tr td.active:active,
-        .total div[class^="part"] .date_info .datepicker_box .container_deadline tr td.active.highlighted:active,
-        .total div[class^="part"] .date_info .datepicker_box .container_deadline tr td.active.active,
-        .total div[class^="part"] .date_info .datepicker_box .container_deadline tr td.active.highlighted.active {
+        .total div[class^="part0"] .date_info .datepicker_box .container_deadline table tr td.active:active,
+        .total div[class^="part0"] .date_info .datepicker_box .container_deadline tr td.active.highlighted:active,
+        .total div[class^="part0"] .date_info .datepicker_box .container_deadline tr td.active.active,
+        .total div[class^="part0"] .date_info .datepicker_box .container_deadline tr td.active.highlighted.active {
           background: linear-gradient(-216deg, #ff9f23 0%, #dd5128 100%); }
-      .total div[class^="part"] .date_info .date_type {
-        display: inline-block; }
-        .total div[class^="part"] .date_info .date_type .radio {
+      .total div[class^="part0"] .date_info .date_type {
+        float: left; }
+        .total div[class^="part0"] .date_info .date_type .radio {
           display: block;
           width: 25px;
           height: 25px;
@@ -182,17 +278,23 @@ input, textarea {
           background-color: #3d4b53;
           overflow: hidden;
           margin: 0;
-          float: left; }
-          .total div[class^="part"] .date_info .date_type .radio .bullet {
+          float: left;
+          margin-right: 10px; }
+          .total div[class^="part0"] .date_info .date_type .radio .bullet {
             display: block;
             width: 60%;
             height: 60%;
             border-radius: 50%;
             margin: 20%;
             background-color: transparent; }
-      .total div[class^="part"] .date_info .startdate .radio .bullet.selected {
-        background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%); }
-      .total div[class^="part"] .date_info .deadline .radio .bullet.selected {
+        .total div[class^="part0"] .date_info .date_type .label {
+          margin-top: 4px;
+          float: left; }
+      .total div[class^="part0"] .date_info .startdate {
+        margin-right: 50px; }
+        .total div[class^="part0"] .date_info .startdate .radio .bullet.selected {
+          background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%); }
+      .total div[class^="part0"] .date_info .deadline .radio .bullet.selected {
         background: linear-gradient(-216deg, #ff9f23 0%, #dd5128 100%); }
 
 .timepicker {
@@ -216,13 +318,25 @@ input, textarea {
       .timepicker .visible_container ul li input {
         display: none; }
         .timepicker .visible_container ul li input:checked + label {
-          background-color: #1abc9c; }
+          background-color: #1abc9c;
+          color: #fff; }
       .timepicker .visible_container ul li label {
+        display: block;
         width: 100%;
         border-radius: 15px; }
 
 .location_info {
   clear: both; }
+
+.participants .slider.slider-horizontal .slider-track {
+  height: 2px;
+  margin-top: -1px; }
+
+.slider .tooltip.top {
+  display: none; }
+
+.participants .slider-handle {
+  background-image: linear-gradient(-216deg, #00ffa7 0%, #009688 100%); }
 
 /* clearfix */
 .total::before, .total::after,
@@ -235,6 +349,14 @@ input, textarea {
 .total::after,
 .categories::after,
 .date_type::after {
+  clear: both; }
+
+.timeline::before, .timeline::after {
+  content: "";
+  line-height: 0;
+  display: table; }
+
+.timeline::after {
   clear: both; }
 
 /*# sourceMappingURL=main.css.map */
