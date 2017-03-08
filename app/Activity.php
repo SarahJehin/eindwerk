@@ -41,7 +41,7 @@ class Activity extends Model
     }
     
     //return all the participants (code = 1) who haven't paid yet (code = 0)
-    public function paid_participants()
+    public function not_paid_participants()
     {
         return $this->belongsToMany('App\User')->withPivot('paid', 'helper_participant')->wherePivot('helper_participant', 1)->wherePivot('paid', 0);
     }

@@ -19,6 +19,13 @@
     width: 25%;
     float: left;
 
+    .step_content {
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+
+
     .categories {
       .category {
         width: 100px;
@@ -207,8 +214,38 @@
 
 //part 04
 //range_slider
-.participants .slider.slider-horizontal .slider-track {
-  height: 2px;
+.slider_block {
+  margin-bottom: 20px;
+
+  div:first-child {
+    margin-bottom: 10px;
+  }
+
+  span {
+    display: block;
+    width: 50px;
+    float: left;
+    &.max_participants,
+    &.price_amount,
+    &.helpers_amount {
+      margin-left: 20px;
+    }
+  }
+
+  div.slider {
+    float: left;
+  }
+
+}
+
+.slider.slider-horizontal {
+  width: 80%;
+}
+
+.participants .slider.slider-horizontal .slider-track,
+.price .slider.slider-horizontal .slider-track,
+.helpers .slider.slider-horizontal .slider-track {
+  height: 4px;
   margin-top: -1px;
 }
 
@@ -216,8 +253,17 @@
   display: none;
 }
 
-.participants .slider-handle {
+.participants .slider-handle,
+.price .slider-handle,
+.helpers .slider-handle {
   background-image: $theme_gradient01;
+}
+
+.participants .slider-selection,
+.price .slider-selection,
+.helpers .slider-selection {
+  background-image: none;
+  background-color: $theme_color01;
 }
 
 
@@ -225,13 +271,15 @@
 /* clearfix */
 .total::before, .total::after,
 .categories::before, .categories::after,
-.date_type::before, .date_type::after {
+.date_type::before, .date_type::after,
+.slider_block::before, .slider_block::after {
   content: '';
   line-height: 0;
   display: table;
 }
 .total::after,
 .categories::after,
-.date_type::after {
+.date_type::after,
+.slider_block::after {
   clear: both;
 }

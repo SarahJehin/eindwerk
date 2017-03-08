@@ -78,6 +78,7 @@ nav {
     color: #fff; }
   .field_wrap input, .field_wrap textarea {
     font-size: 1.2em;
+    font-family: inherit;
     display: block;
     height: 100%;
     padding: 10px 5%;
@@ -86,7 +87,7 @@ nav {
     transition: border-color .25s ease, box-shadow .25s ease;
     border: 1px solid #6b7d87;
     background-color: transparent;
-    width: 100%;
+    width: 90%;
     /* to change default yellow autofill color*/ }
     .field_wrap input:focus, .field_wrap textarea:focus {
       outline: 0;
@@ -212,6 +213,10 @@ nav {
   .total div[class^="part0"] {
     width: 25%;
     float: left; }
+    .total div[class^="part0"] .step_content {
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 30px; }
     .total div[class^="part0"] .categories .category {
       width: 100px;
       height: 100px;
@@ -328,27 +333,55 @@ nav {
 .location_info {
   clear: both; }
 
-.participants .slider.slider-horizontal .slider-track {
-  height: 2px;
+.slider_block {
+  margin-bottom: 20px; }
+  .slider_block div:first-child {
+    margin-bottom: 10px; }
+  .slider_block span {
+    display: block;
+    width: 50px;
+    float: left; }
+    .slider_block span.max_participants, .slider_block span.price_amount, .slider_block span.helpers_amount {
+      margin-left: 20px; }
+  .slider_block div.slider {
+    float: left; }
+
+.slider.slider-horizontal {
+  width: 80%; }
+
+.participants .slider.slider-horizontal .slider-track,
+.price .slider.slider-horizontal .slider-track,
+.helpers .slider.slider-horizontal .slider-track {
+  height: 4px;
   margin-top: -1px; }
 
 .slider .tooltip.top {
   display: none; }
 
-.participants .slider-handle {
+.participants .slider-handle,
+.price .slider-handle,
+.helpers .slider-handle {
   background-image: linear-gradient(-216deg, #00ffa7 0%, #009688 100%); }
+
+.participants .slider-selection,
+.price .slider-selection,
+.helpers .slider-selection {
+  background-image: none;
+  background-color: #1abc9c; }
 
 /* clearfix */
 .total::before, .total::after,
 .categories::before, .categories::after,
-.date_type::before, .date_type::after {
+.date_type::before, .date_type::after,
+.slider_block::before, .slider_block::after {
   content: '';
   line-height: 0;
   display: table; }
 
 .total::after,
 .categories::after,
-.date_type::after {
+.date_type::after,
+.slider_block::after {
   clear: both; }
 
 .timeline::before, .timeline::after {

@@ -44,7 +44,7 @@
         //console.log(step);
         //var left = 500*step-500;
         var left = 100*step-100;
-        console.log(left);
+        //console.log(left);
         $(".total").css("left", -left + "%");
     });
     
@@ -109,6 +109,16 @@
         //console.log("min is " + min + " and max: " + max);
         $(".min_participants").html(min);
         $(".max_participants").html(max);
+    });
+
+    $("#price_slider").slider({});
+    $( "#price_slider" ).change(function() {
+        $(".price_amount").html($("#price_slider").val());
+    });
+
+    $("#helpers_slider").slider({});
+    $( "#helpers_slider" ).change(function() {
+        $(".helpers_amount").html($("#helpers_slider").val());
     });
 
 

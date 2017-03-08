@@ -35,6 +35,7 @@
 
   input, textarea {
     font-size: 1.2em; //22px;
+    font-family: inherit;
     display: block;
     height: 100%;
     padding: 10px 5%;
@@ -43,7 +44,7 @@
     transition: border-color .25s ease, box-shadow .25s ease;
     border: 1px solid $form_color;
     background-color: transparent;
-    width: 100%;
+    width: 90%;
 
     &:focus {
       outline:0;
