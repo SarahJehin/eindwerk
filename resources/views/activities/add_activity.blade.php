@@ -27,6 +27,16 @@
                         <div class="total">
                             <div class="part01">
                                 <div class="step_content">
+
+                                    @if (count($errors) > 0)
+                                        There were errors
+                                        <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                        </ul>
+                                    @endif
+
                                     categorie en poster enz
                                     <div class="categories">
                                         @foreach($categories as $category)
@@ -126,6 +136,7 @@
 
                                     <div class="location_info">
                                         locatie info
+                                        <input name="location" id="location" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -150,11 +161,17 @@
                                     </div>
 
                                     <div class="owner">
-                                        <select name="owner">
-                                            <option value="1">Bestuurslid1</option>
-                                            <option value="2">Bestuurslid2</option>
-                                            <option value="3">Bestuurslid3</option>
-                                        </select>
+
+                                        <div class="select_toggler">
+                                            <span class="select_title">Selecteer een eigenaar</span> <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                                        </div>
+                                        <ul>
+                                            @foreach($owners as $owner)
+                                                <li owner-id="{{$owner->id}}">{{$owner->first_name}}</li>
+                                            @endforeach
+                                        </ul>
+
+                                        <input name="owner" type="number" id="owner" hidden>
                                     </div>
 
                                     <div class="field_wrap">
@@ -163,7 +180,7 @@
                                     </div>
 
                                     <div>
-                                        <input type="checkbox" name="is_visble" id="is_visible">
+                                        <input type="checkbox" name="is_visible" id="is_visible">
                                         <label for="is_visible">Zichtbaar zetten</label>
                                     </div>
 

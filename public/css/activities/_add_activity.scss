@@ -12,7 +12,7 @@
   //width: 2000px;
   width: 400%;
   position: relative;
-  left: -300%;
+  left: 0%;
 
   div[class^="part0"] {
     //width: 500px;
@@ -69,12 +69,13 @@
     .date_info {
       float: left;
       margin-right: 50px;
+      text-align: center;
 
       .datepicker_box {
         position: relative;
         display: block;
         width: 250px;
-        height: 250px;
+        height: 230px;
         border: 1px solid $form_font_color;
         margin-bottom: 15px;
 
@@ -91,6 +92,15 @@
 
           &.front {
             z-index: 2;
+          }
+
+          table {
+            margin: 0 auto;
+            tr {
+              td {
+                padding: 5px;
+              }
+            }
           }
 
         }
@@ -215,6 +225,8 @@
 //part 04
 //range_slider
 .slider_block {
+  width: 80%;
+  margin: 0 auto;
   margin-bottom: 20px;
 
   div:first-child {
@@ -247,6 +259,8 @@
 .helpers .slider.slider-horizontal .slider-track {
   height: 4px;
   margin-top: -1px;
+  background-image: none;
+  background-color: $form_color;
 }
 
 .slider .tooltip.top {
@@ -265,6 +279,53 @@
   background-image: none;
   background-color: $theme_color01;
 }
+
+
+.owner {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 25px;
+
+  div {
+    font-size: 1.2em; //22px;
+    font-family: inherit;
+    display: block;
+    height: 100%;
+    padding: 10px 5%;
+    color: $form_color;
+    border-radius: 0;
+    transition: border-color .25s ease, box-shadow .25s ease;
+    border: 1px solid $form_color;
+    background-color: transparent;
+    cursor: pointer;
+    width: 90%;
+    
+    i {
+      float: right;
+    }
+  }
+  ul {
+    position: absolute;
+    width: 100%;
+    background-color: lightslategrey;
+    margin: 0;
+    padding: 0;
+    border: 1px solid $form_color;
+    list-style: none;
+    display: none;
+    z-index: 2;
+
+    li {
+      padding: 5px 5%;
+      &:hover {
+        background-color: $theme_color01;
+        color: #fff;
+      }
+    }
+  }
+}
+
 
 
 

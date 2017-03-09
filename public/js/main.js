@@ -121,5 +121,27 @@
         $(".helpers_amount").html($("#helpers_slider").val());
     });
 
+    $show_owner_select = false;
+    $(".select_toggler").click(function () {
+        if($show_owner_select) {
+            $(".owner ul").hide();
+            $show_owner_select = false;
+        }
+        else {
+            $(".owner ul").show();
+            $show_owner_select = true;
+        }
+    });
+
+    $(".owner ul li").click(function () {
+        //console.log($(this).text());
+        $clicked_owner_id = $(this).attr("owner-id");
+        $("#owner").val($clicked_owner_id);
+        $(".owner .select_title").text($(this).text());
+        $(".owner ul").hide();
+        $show_owner_select = false;
+    });
+    
+
 
 })(window, window.document, window.jQuery);
