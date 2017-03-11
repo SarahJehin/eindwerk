@@ -78,7 +78,15 @@
         }
 
     });
-    
+
+    //autocomplete title in heading
+    $( "#title" ).keyup(function() {
+        $title = $("#title").val();
+        if($title != "") {
+            $(".add_activity .heading").text($title);
+        }
+
+    });
     
     //timepicker
     $(".timepicker .arrow_up").click(function () {
@@ -98,6 +106,19 @@
             $(".timepicker ul").css("top", $next_top);
         }
     });
+    
+    
+    //location info
+    $(".loc_sportiva").click(function(){
+        $(".location_type .bullet").removeClass("selected");
+        $(".loc_sportiva .bullet").addClass("selected");
+    });
+    $(".loc_else").click(function(){
+        $(".location_type .bullet").removeClass("selected");
+        $(".loc_else .bullet").addClass("selected");
+    });
+    
+    
 
     //range slider
     $("#participants_slider").slider({});

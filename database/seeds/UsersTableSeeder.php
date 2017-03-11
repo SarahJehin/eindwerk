@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        /*
+        
         $user_row =
             array(
                 'first_name'    => 'Sarah',
@@ -42,7 +42,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
         );
         DB::table('role_user')->insert($role_user);
-*/
+
 
         //some extra users
         $user_row2 =

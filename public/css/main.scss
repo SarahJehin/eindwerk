@@ -60,12 +60,18 @@ nav {
   //display: inline-block;µ
   position: relative;
   top: 50px;
+  margin-bottom: 50px;
   .heading {
     background-color: $theme_color01;
     //background: $theme_gradient01;
     color: #fff;
     text-align: center;
     padding: 10px;
+  }
+
+  h3 {
+    font-weight: lighter;
+    color: #fff;
   }
 }
 

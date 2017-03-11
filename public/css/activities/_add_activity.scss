@@ -156,7 +156,8 @@
       }
 
       .startdate {
-        margin-right: 50px;
+        //margin-right: 50px;
+        width: 150px;
         .radio {
           .bullet.selected {
             background: $theme_gradient01;
@@ -219,13 +220,79 @@
 
 .location_info {
   clear: both;
+  margin-bottom: 40px;
+
+  .location_type {
+    clear: both;
+    div {
+      float: left;
+      width: 150px;
+
+      .radio {
+        display: block;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: $form_color_radio;
+        overflow: hidden;
+        margin: 0;
+        float: left;
+        margin-right: 10px;
+
+        .bullet {
+          display: block;
+          width: 60%;
+          height: 60%;
+          border-radius: 50%;
+          margin: 20%;
+          background-color: transparent;
+          &.selected {
+            background: $theme_gradient01;
+          }
+        }
+      }
+    }
+
+
+  }
+
+  #map {
+    width: 100%;
+    height: 350px;
+  }
+  .controls {
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  #place-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 300px;
+  }
+
+  #place-input:focus {
+    border-color: #4d90fe;
+  }
+
+
 }
 
 
 //part 04
 //range_slider
 .slider_block {
-  width: 80%;
   margin: 0 auto;
   margin-bottom: 20px;
 
@@ -235,8 +302,13 @@
 
   span {
     display: block;
-    width: 50px;
     float: left;
+
+    &.min_participants,
+    &.min {
+      width: 50px;
+    }
+
     &.max_participants,
     &.price_amount,
     &.helpers_amount {
@@ -248,11 +320,13 @@
     float: left;
   }
 
+  .slider.slider-horizontal {
+    width: 85%;
+  }
+
 }
 
-.slider.slider-horizontal {
-  width: 80%;
-}
+
 
 .participants .slider.slider-horizontal .slider-track,
 .price .slider.slider-horizontal .slider-track,
@@ -283,7 +357,6 @@
 
 .owner {
   position: relative;
-  width: 80%;
   margin: 0 auto;
   margin-bottom: 25px;
 
@@ -325,6 +398,29 @@
     }
   }
 }
+
+.visbility {
+  clear: both;
+  .checkbox {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background-color: $form_color_radio;
+    padding: 2px 3px;
+    border-radius: 5px;
+    color: transparent;
+    float: left;
+    margin-right: 15px;
+    &:hover {
+      color: $form_color;
+    }
+  }
+
+  input:checked + label .checkbox {
+    color: $theme_color01;
+  }
+}
+
 
 
 

@@ -9,7 +9,7 @@
         //console.log("startdate called");
         type_date = "startdate";
         //console.log(type_date);
-        $(".bullet").removeClass("selected");
+        $(".date_type .bullet").removeClass("selected");
         $(".startdate .bullet").addClass("selected");
 
         $(".container_deadline").removeClass("front");
@@ -23,13 +23,11 @@
         //console.log("deadline called");
         type_date = "deadline";
         //.log(type_date);
-        $(".bullet").removeClass("selected");
+        $(".date_type .bullet").removeClass("selected");
         $(".deadline .bullet").addClass("selected");
 
         $(".container_startdate").removeClass("front");
         $(".container_deadline").addClass("front");
-
-        
     });
 
     var next_prev = "";

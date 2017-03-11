@@ -22,6 +22,8 @@ class CreateActivitiesTable extends Migration
             $table->dateTime('startdate');
             $table->dateTime('deadline')->nullable();
             $table->string('location');
+            $table->double('latitude', 10, 6);
+            $table->double('longitude', 10, 6);
             $table->integer('min_participants')->nullable();
             $table->integer('max_participants')->nullable();
             $table->integer('helpers')->nullable();

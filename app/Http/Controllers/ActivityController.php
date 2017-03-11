@@ -46,7 +46,7 @@ class ActivityController extends Controller
         $made_by = Auth::user()->id;
         //$location = "Sportiva";
 
-        //dd($request, $made_by);
+        dd($request, $made_by);
 
         $this->validate($request, [
             'title'         => 'required|string',
@@ -68,6 +68,8 @@ class ActivityController extends Controller
             'startdate'     => $request->startdate,
             'deadline'      => $request->deadline,
             'location'      => $request->location,
+            'latitude'      => $request->latitude,
+            'longitude'     => $request->longitude,
             'min_participants'  => $min_participants,
             'max_participants'  => $max_participants,
             'helpers'           => $request->helpers,

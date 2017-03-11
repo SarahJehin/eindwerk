@@ -7,7 +7,7 @@
 @section('content')
 
 
-    <div class="">
+    <div class="add_activity">
 
         <div class="block">
             <div class="heading">
@@ -22,7 +22,7 @@
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
-                    <form id="add_activity" method="post" action="{{url('add_activity')}}">
+                    <form id="add_activity" method="post" action="{{url('add_activity')}}" novalidate>
                         {{ csrf_field() }}
                         <div class="total">
                             <div class="part01">
@@ -37,7 +37,7 @@
                                         </ul>
                                     @endif
 
-                                    categorie en poster enz
+                                    <h3>Kies een categorie</h3>
                                     <div class="categories">
                                         @foreach($categories as $category)
                                             <div class="category">
@@ -60,6 +60,8 @@
                                             <label for="cat03"></label>
                                         </div>
                                     </div>
+
+                                    <h3>Upload poster</h3>
                                     <div class="poster">
                                         <input type="file" name="poster">
                                     </div>
@@ -67,6 +69,7 @@
                             </div>
                             <div class="part02">
                                 <div class="step_content">
+
                                     <div class="field_wrap">
                                         <label>Titel</label>
                                         <input type="text" name="title" id="title">
@@ -79,7 +82,7 @@
                             </div>
                             <div class="part03">
                                 <div class="step_content">
-                                    <div>algemene info</div>
+                                    <h3>Datum</h3>
 
                                     <div class="date_info">
 
@@ -134,9 +137,37 @@
                                         </div>
                                     </div>
 
+
                                     <div class="location_info">
-                                        locatie info
-                                        <input name="location" id="location" type="text">
+                                        <h3>Locatie</h3>
+                                        <div class="location_type">
+                                            <div class="loc_sportiva">
+                                                <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden>
+                                                <label for="loc_sportiva">
+                                                    <span class="radio">
+                                                        <span class="bullet selected"></span>
+                                                    </span>
+                                                    <span>Sportiva</span>
+                                                </label>
+                                            </div>
+                                            <div class="loc_else">
+                                                <input type="radio" id="loc_else" name="location_type" value="else" hidden>
+                                                <label for="loc_else">
+                                                    <span class="radio">
+                                                        <span class="bullet"></span>
+                                                    </span>
+                                                    <span>Andere locatie</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {{--<div class="google_maps">
+                                            <input id="place-input" class="controls" type="text" placeholder="Locatie zoeken ..." name="location">
+                                            <div id="map"></div>
+                                        </div>
+                                        <input id="latitude" name="latitude" type="text" required hidden>
+                                        <input id="longitude" name="longitude" type="text" required hidden>--}}
+
                                     </div>
                                 </div>
                             </div>
@@ -179,13 +210,20 @@
                                         <input type="text" name="extra_url" id="extra_url">
                                     </div>
 
-                                    <div>
-                                        <input type="checkbox" name="is_visible" id="is_visible">
-                                        <label for="is_visible">Zichtbaar zetten</label>
+                                    <div class="visbility">
+                                        <input type="checkbox" name="is_visible" id="is_visible" hidden>
+                                        <label for="is_visible">
+                                            <span class="checkbox">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                            </span>
+                                            <span>Zichtbaar zetten</span>
+                                        </label>
                                     </div>
 
                                     <div>
-                                        <input type="submit" name="submit" value="Aanmaken">
+                                        <button type="submit">
+                                            Activiteit aanmaken
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -204,4 +242,7 @@
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
     <script src="{{ asset('js/custom_datepicker.js') }}"></script>
+    {{--<script src="{{ asset('js/custom_google_maps.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c"
+            async defer></script>--}}
 @endsection

@@ -5,14 +5,14 @@
 //for fancy animation
 .field_wrap {
   position: relative;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 40px;
 
   label {
     position: absolute;
-    transform: translateY(6px);
-    left: 13px;
+    transform: translateY(10px);
+    left: 36px;
     color: $form_color;
     transition: all 0.25s ease;
     -webkit-backface-visibility: hidden;
@@ -60,7 +60,7 @@
 
   textarea {
     height: 100px;
-    max-width: 500px;
+    max-width: 800px;
     max-height: 250px;
   }
 
