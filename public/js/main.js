@@ -51,7 +51,6 @@
     
     //input anims
     $('#add_activity').find('input, textarea').on('keyup blur focus', function (e) {
-
         var $this = $(this),
             label = $this.prev('label');
 
@@ -79,6 +78,16 @@
 
     });
 
+    //if old values in inputs move title up
+    $add_activity_inputs = $('#add_activity').find('input[type="text"], textarea');
+    $add_activity_inputs.each(function() {
+        var label = $(this).prev('label');
+        if($(this).val()) {
+            label.addClass('active highlight');
+        }
+    });
+
+
     //autocomplete title in heading
     $( "#title" ).keyup(function() {
         $title = $("#title").val();
@@ -86,6 +95,22 @@
             $(".add_activity .heading").text($title);
         }
 
+    });
+
+    //poster upload
+    $('#poster').on('change', function(e){
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.uploaded_poster').attr('src', e.target.result);
+                $('.uploaded_poster').show();
+                $(".poster label").addClass("with_poster");
+            }
+
+            reader.readAsDataURL(this.files[0]);
+        }
     });
     
     //timepicker
@@ -157,8 +182,10 @@
     $(".owner ul li").click(function () {
         //console.log($(this).text());
         $clicked_owner_id = $(this).attr("owner-id");
+        $clicked_owner_name = $(this).text();
         $("#owner").val($clicked_owner_id);
-        $(".owner .select_title").text($(this).text());
+        $("#owner_name").val($clicked_owner_name);
+        $(".owner .select_title").text($clicked_owner_name);
         $(".owner ul").hide();
         $show_owner_select = false;
     });

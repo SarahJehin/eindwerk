@@ -46,7 +46,7 @@ class ActivityController extends Controller
         $made_by = Auth::user()->id;
         //$location = "Sportiva";
 
-        dd($request, $made_by);
+        //dd($request, $made_by);
 
         $this->validate($request, [
             'title'         => 'required|string',
@@ -58,6 +58,7 @@ class ActivityController extends Controller
             'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
             'owner'         => 'required',
+            'extra_url'     => 'url',
         ]);
 
         $activity = new Activity([
@@ -81,7 +82,7 @@ class ActivityController extends Controller
             'category_id'       => $request->category
         ]);
 
-        //dd($activity);
+        dd($activity);
 
         $activity->save();
 

@@ -15,7 +15,6 @@
             </div>
             <div class="content">
                 <div class="timeline">
-                    tijdlijn
                     <div class="step1">1</div>
                     <div class="step2">2</div>
                     <div class="step3">3</div>
@@ -63,79 +62,90 @@
 
                                     <h3>Upload poster</h3>
                                     <div class="poster">
-                                        <input type="file" name="poster">
+                                        <input id="poster" type="file" name="poster" hidden>
+                                        <label for="poster">
+                                            <img class="uploaded_poster" src="" alt="poster">
+                                            <span>Upload hier je poster (jpeg/png)</span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="part02">
                                 <div class="step_content">
 
-                                    <div class="field_wrap">
-                                        <label>Titel</label>
-                                        <input type="text" name="title" id="title">
+                                    <div class="title description">
+                                        <div class="field_wrap">
+                                            <label>Titel</label>
+                                            <input type="text" name="title" id="title" value="{{ old('title') }}">
+                                        </div>
+                                        <div class="field_wrap">
+                                            <label>Beschrijving</label>
+                                            <textarea name="description" id="description">{{ old('description') }}</textarea>
+                                        </div>
                                     </div>
-                                    <div class="field_wrap">
-                                        <label>Beschrijving</label>
-                                        <textarea name="description" id="description"></textarea>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="part03">
                                 <div class="step_content">
-                                    <h3>Datum</h3>
 
-                                    <div class="date_info">
+                                    <div class="date_time_info clearfix">
+                                        <h3>Datum</h3>
 
-                                        <div class="datepicker_box">
-                                            <div class="container_startdate front">
+                                        <div class="date_info">
 
+                                            <div class="datepicker_box">
+                                                <div class="container_startdate front">
+
+                                                </div>
+
+                                                <div class="container_deadline">
+
+                                                </div>
                                             </div>
-
-                                            <div class="container_deadline">
-
-                                            </div>
-                                        </div>
-                                        <div class="date_type startdate">
+                                            <div class="date_type startdate">
                                             <span class="radio">
                                                 <span class="bullet selected"></span>
                                             </span>
-                                            <span class="label">Datum</span>
-                                        </div>
-                                        <div class="date_type deadline">
+                                                <span class="label">Datum</span>
+                                            </div>
+                                            <div class="date_type deadline">
                                             <span class="radio">
                                                 <span class="bullet"></span>
                                             </span>
-                                            <span class="label">Deadline</span>
+                                                <span class="label">Deadline</span>
+                                            </div>
+
+                                            <input type="date" id="startdate" name="startdate" hidden>
+                                            <input type="date" id="deadline" name="deadline" hidden>
+
                                         </div>
 
-                                        <input type="date" id="startdate" name="startdate" hidden>
-                                        <input type="date" id="deadline" name="deadline" hidden>
+                                        <div class="timepicker">
+                                            <div class="arrow_up">
+                                                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="visible_container">
+                                                <ul>
+                                                    @for($i = 8; $i < 23; $i++)
+                                                        <li>
+                                                            <input type="radio" name="time" id="{{$i}}_00" value="{{$i}}:00" <?php if($i. ":00" == old('time')) {echo("checked");} ?>>
+                                                            <label for="{{$i}}_00">{{$i}}:00</label>
+                                                        </li>
+                                                        <li>
+                                                            <input type="radio" name="time" id="{{$i}}_30" value="{{$i}}:30" <?php if($i. ":30" == old('time')) {echo("checked");} ?>>
+                                                            <label for="{{$i}}_30">{{$i}}:30</label>
+                                                        </li>
+                                                    @endfor
+                                                </ul>
+                                            </div>
 
+                                            <div class="arrow_down">
+                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="timepicker">
-                                        <div class="arrow_up">
-                                            <i class="fa fa-angle-up" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="visible_container">
-                                            <ul>
-                                                @for($i = 8; $i < 23; $i++)
-                                                    <li>
-                                                        <input type="radio" name="time" id="{{$i}}_00" value="{{$i}}:00">
-                                                        <label for="{{$i}}_00">{{$i}}:00</label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" name="time" id="{{$i}}_30" value="{{$i}}:30">
-                                                        <label for="{{$i}}_30">{{$i}}:30</label>
-                                                    </li>
-                                                @endfor
-                                            </ul>
-                                        </div>
-
-                                        <div class="arrow_down">
-                                            <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
 
 
                                     <div class="location_info">
@@ -173,45 +183,42 @@
                             </div>
                             <div class="part04">
                                 <div class="step_content">
-                                    <div>
-                                        extra info
-                                    </div><br><br>
                                     <div class="participants slider_block">
                                         <div>Aantal deelnemers</div>
-                                        <span class="min_participants">0</span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[0,30]" tooltip="hide"/><span class="max_participants">30</span>
+                                        <span class="min_participants"><?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[<?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?></span>
                                     </div>
 
                                     <div class="price slider_block">
                                         <div>Prijs</div>
-                                        <span class="min">0</span><input id="price_slider" name="price" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0"/><span class="price_amount">0</span>
+                                        <span class="min">0</span><input id="price_slider" name="price" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="<?php if(old('price') == null){echo('0'); } else {echo(old('price'));} ?>"/><span class="price_amount"><?php if(old('price') == null){echo('0'); } else {echo(old('price'));} ?></span>
                                     </div>
 
                                     <div class="helpers slider_block">
                                         <div>Aantal helpers</div>
-                                        <span class="min">0</span><input id="helpers_slider" name="helpers" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0"/><span class="helpers_amount">0</span>
+                                        <span class="min">0</span><input id="helpers_slider" name="helpers" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="<?php if(old('helpers') == null){echo('0'); } else {echo(old('helpers'));} ?>"/><span class="helpers_amount"><?php if(old('helpers') == null){echo('0'); } else {echo(old('helpers'));} ?></span>
                                     </div>
 
                                     <div class="owner">
 
                                         <div class="select_toggler">
-                                            <span class="select_title">Selecteer een eigenaar</span> <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                                            <span class="select_title"><?php if(old('owner') == null){echo('Selecteer een verantwoordelijke'); } else {echo(old('owner_name'));} ?></span> <i class="fa fa-sort-desc" aria-hidden="true"></i>
                                         </div>
                                         <ul>
                                             @foreach($owners as $owner)
-                                                <li owner-id="{{$owner->id}}">{{$owner->first_name}}</li>
+                                                <li owner-id="{{$owner->id}}">{{$owner->first_name}} {{$owner->last_name}}</li>
                                             @endforeach
                                         </ul>
-
-                                        <input name="owner" type="number" id="owner" hidden>
+                                        <input name="owner_name" type="text" id="owner_name" value="{{old('owner_name')}}" hidden>
+                                        <input name="owner" type="number" id="owner" value="{{old('owner')}}" hidden>
                                     </div>
 
-                                    <div class="field_wrap">
+                                    <div class="field_wrap extra_url">
                                         <label>URL</label>
-                                        <input type="text" name="extra_url" id="extra_url">
+                                        <input type="text" name="extra_url" id="extra_url" value="{{old('extra_url')}}">
                                     </div>
 
                                     <div class="visbility">
-                                        <input type="checkbox" name="is_visible" id="is_visible" hidden>
+                                        <input type="checkbox" name="is_visible" id="is_visible" <?php if(old('is_visible') == "on") {echo('checked');}?> hidden>
                                         <label for="is_visible">
                                             <span class="checkbox">
                                                 <i class="fa fa-check" aria-hidden="true"></i>
@@ -220,7 +227,7 @@
                                         </label>
                                     </div>
 
-                                    <div>
+                                    <div class="submit">
                                         <button type="submit">
                                             Activiteit aanmaken
                                         </button>

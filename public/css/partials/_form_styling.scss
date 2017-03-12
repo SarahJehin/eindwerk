@@ -92,3 +92,30 @@
     }
   }
 }
+
+
+//submit button or input type submit
+input[type="submit"],
+button[type="submit"] {
+
+  background: $theme_color01; /* For browsers that do not support gradients */
+
+  background: -webkit-linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%); //For Safari 5.1 to 6.0
+  background: -o-linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%); //For Opera 11.1 to 12.0
+  background: -moz-linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%); //For Firefox 3.6 to 15
+  background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
+  background-size: 200% 100%;
+  transition: background 0.3s ease;
+
+  width: 100%;
+  border: none;
+  padding: 10px;
+  color: #fff;
+  font-size: 1.2em;
+
+  &:hover {
+    cursor: pointer;
+    background-position: 100%;
+  }
+}
+
