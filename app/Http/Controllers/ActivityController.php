@@ -44,33 +44,114 @@ class ActivityController extends Controller
         }
 
         $made_by = Auth::user()->id;
-        //$location = "Sportiva";
 
-        //dd($request, $made_by);
+        if($request->location_type == 'sportiva') {
+            $location = "Sportiva (Industriepark 5, Hulshout)";
+            $latitude = 51.083253;
+            $longitude = 4.805906;
+        }
+        else {
+            $location = $request->location;
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+        }
+
+        //get day before startdate, in order to check whether the enddate is equal to or after startdate
+        $startdate = strtotime($request->startdate);
+        $day_after_start = strtotime("tomorrow", $startdate);
+        $formatted_day_after = date('Y-m-d', $day_after_start);
 
         $this->validate($request, [
+            'category'      => 'required',
             'title'         => 'required|string',
             'description'   => 'required',
             'poster'        => 'required',
             'startdate'     => 'required|date',
-            'deadline'      => 'required|date|before:startdate',
-            'location'      => 'required|string',
+            'time'          => 'required|date_format:H:i',
+            'deadline'      => 'required|date|before:' . $formatted_day_after . '|after:today',
+            //'location'      => 'required|string',
             'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
             'owner'         => 'required',
-            'extra_url'     => 'url',
+            'extra_url'     => $request->extra_url != null ? 'url': '',
         ]);
+
+
+        $allowed_extensions = ["jpeg", "png"];
+        if ($request->hasFile('poster')) {
+            if ($request->poster->isValid()) {
+                if (in_array($request->poster->guessClientExtension(), $allowed_extensions)) {
+                    //create new file name
+                    $name = strtolower($request->title);
+                    //keep only letters, numbers and spaces
+                    $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
+                    //remove space at the beginning and end
+                    $name = trim($name);
+                    //convert all multispaces to space
+                    $name = preg_replace ("/ +/", " ", $name);
+                    //replace all spaces with underscores
+                    $name = str_replace(' ', '_', $name);
+
+                    $new_file_name = time() . $name . '.' . $request->poster->getClientOriginalExtension();
+                    //echo($new_file_name);
+                    $request->poster->move(base_path() . '/public/images/activity_images/', $new_file_name);
+                }
+            }
+        }
+
+        /*
+        if (isset($request->poster)) {
+
+            //later on image will be resized with Intervention, while keeping the aspect ratio
+            $destinationPath = base_path() . '/public/images/project_pictures/' . $new_file_name;
+            $dimension = getimagesize($destinationPath);
+            $max_width = "500";
+            $max_height = "400";
+            if ($dimension[0] > $max_width) {
+                $save_percent = round(100 / $dimension[0] * $max_width) / 100;
+                $max_height = round($save_percent * $dimension[1]);
+                Image::make($destinationPath)
+                    ->resize($max_width, $max_height)->save($destinationPath);
+            }
+            if ($dimension[1] > $max_height) {
+                $save_percent = round(100 / $dimension[1] * $max_height) / 100;
+                $max_width = round($save_percent * $dimension[0]);
+                Image::make($destinationPath)
+                    ->resize($max_width, $max_height)->save($destinationPath);
+            }
+
+            //resizing with default canvas size, while maintaining aspect ratio:
+            // create new image with transparent background color
+            $background = Image::canvas(200, 200);
+            // read image file and resize it to 200x200
+            // but keep aspect-ratio and do not size up,
+            // so smaller sizes don't stretch
+            $image = Image::make('foo.jpg')->resize(200, 200, function ($c) {
+                $c->aspectRatio();
+                $c->upsize();});
+            // insert resized image centered into background
+            $background->insert($image, 'center');
+            // save or do whatever you like
+            $background->save('bar.png');
+
+        }
+        */
+
+        $startdatetime = date('Y-m-d', strtotime($request->startdate));
+        $startdatetime = $startdatetime . ' ' . $request->time  . ':00';
+        echo($startdatetime);
+
 
         $activity = new Activity([
             'title'         => $request->title,
             'description'   => $request->description,
-            'poster'        => 'poster.jpg',
+            'poster'        => $new_file_name,
             'extra_url'     => $request->extra_url,
-            'startdate'     => $request->startdate,
+            'startdate'     => $startdatetime,
             'deadline'      => $request->deadline,
-            'location'      => $request->location,
-            'latitude'      => $request->latitude,
-            'longitude'     => $request->longitude,
+            'location'      => $location,
+            'latitude'      => $latitude,
+            'longitude'     => $longitude,
             'min_participants'  => $min_participants,
             'max_participants'  => $max_participants,
             'helpers'           => $request->helpers,
@@ -82,7 +163,7 @@ class ActivityController extends Controller
             'category_id'       => $request->category
         ]);
 
-        dd($activity);
+        //dd($activity);
 
         $activity->save();
 

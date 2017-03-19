@@ -37,7 +37,8 @@
         language: 'nl-BE',
         multidateSeparator: ",",
         maxViewMode: 0,
-        toggleActive: true
+        toggleActive: true,
+        startDate: 'today'
     }).on('changeDate', function (e) {
             //console.log(e.format());
             var startdate = e.format();
@@ -68,11 +69,14 @@
     });
 
 
+
     $('.container_deadline').datepicker({
         language: 'nl-BE',
         multidateSeparator: ",",
         maxViewMode: 0,
-        toggleActive: true
+        toggleActive: true,
+        startDate: 'today'
+
     }).on('changeDate', function (e) {
             console.log(e.format());
             var deadline = e.format();
@@ -82,11 +86,12 @@
 
     ).on('changeMonth', function(e){
         var currMonth = new Date(e.date).getMonth() + 1;
+        //console.log('currmonth: ' + currMonth + ' and deadline: ' + deadlineMonth);
         if(deadlineMonth > currMonth) {
             //console.log("prev");
             next_prev = "previous";
         }
-        else {
+        else if(deadlineMonth < currMonth) {
             //console.log("next");
             next_prev = "next";
         }
@@ -101,5 +106,41 @@
             }
         }
     });
+
+    if($('input[name="startdate"]').val() != "") {
+
+        $startdate = $('input[name="startdate"]').val();
+        $startdate_arr = $startdate.split('-');
+        startMonth = $startdate_arr[1];
+        $('.container_startdate').datepicker('update', new Date($startdate_arr[0], $startdate_arr[1]-1, $startdate_arr[2]));
+    }
+    if($('input[name="deadline"]').val() != "") {
+        $deadline = $('input[name="deadline"]').val();
+        console.log($deadline);
+        $deadline_arr = $deadline.split('-');
+        $('.container_deadline').datepicker('update', new Date($deadline_arr[0], $deadline_arr[1]-1, $deadline_arr[2]));
+
+        $startdate = $('input[name="startdate"]').val();
+        $startdate_arr = $startdate.split('-');
+        //console.log("startmonth : " + startMonth + " and deadlinemonth: " + $deadline_arr[1]);
+        deadlineMonth = $startdate_arr[1];
+
+        startMonth = parseInt(startMonth);
+        var deadline_month_new = parseInt($deadline_arr[1]);
+
+        while (startMonth != deadline_month_new) {
+            //console.log("startmonth : " + startMonth + " and deadlinemonth: " + deadline_month_new);
+            if(startMonth > $deadline_arr[1]) {
+                $( ".container_deadline .datepicker-months tr th.next" ).trigger( "click" );
+                deadline_month_new++;
+            }
+            else if(startMonth < $deadline_arr[1]) {
+                $( ".container_deadline .datepicker-months tr th.prev" ).trigger( "click" );
+                deadline_month_new--;
+            }
+        }
+
+
+    }
 
 })(window, window.document, window.jQuery);

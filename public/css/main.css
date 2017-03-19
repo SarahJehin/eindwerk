@@ -26,11 +26,17 @@ nav {
   position: fixed;
   height: 100%;
   width: 100px; }
+  nav .profile_pic {
+    width: 50%;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background-color: #6b7d87; }
 
 .block {
   width: 55%;
   margin: 0px auto;
-  background-color: rgba(36, 49, 60, 0.8);
+  background-color: #fff;
   color: #9CAFB9;
   position: relative;
   top: 50px;
@@ -46,19 +52,48 @@ nav {
     font-weight: lighter;
     color: #fff; }
 
+.error_msg {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #d7b3b2;
+  color: #872619;
+  margin-bottom: 20px; }
+
 .timeline {
-  margin: 25px; }
+  margin: 25px;
+  position: relative; }
+  .timeline .line {
+    border: 2px solid;
+    position: absolute;
+    width: calc(100% - 4px);
+    top: 45%; }
+  .timeline .filled_line {
+    border: 2px solid #1abc9c;
+    position: absolute;
+    width: 0%;
+    top: 45%;
+    transition: width 0.75s; }
   .timeline div[class^="step"] {
-    width: 30px;
-    height: 30px;
-    background-color: #1abc9c;
+    width: 25px;
+    height: 25px;
+    background: #fff;
     border-radius: 50%;
+    border: 2.5px solid #9CAFB9;
     float: left;
-    margin-right: 25px;
+    margin-right: calc((100% - 120px)/3);
     color: #fff;
     cursor: pointer;
     text-align: center;
-    line-height: 30px; }
+    line-height: 25px;
+    position: relative; }
+    .timeline div[class^="step"]:last-child {
+      margin-right: 0; }
+    .timeline div[class^="step"].reached {
+      background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      border: 0; }
 
 .field_wrap {
   position: relative;
@@ -81,14 +116,14 @@ nav {
     .field_wrap label.active .req {
       opacity: 0; }
   .field_wrap label.highlight {
-    color: #fff; }
+    color: #24313c; }
   .field_wrap input, .field_wrap textarea {
     font-size: 1.2em;
     font-family: inherit;
     display: block;
     height: 100%;
     padding: 10px 5%;
-    color: #fff;
+    color: #24313c;
     border-radius: 0;
     transition: border-color .25s ease, box-shadow .25s ease;
     border: 1px solid #6b7d87;
@@ -103,7 +138,7 @@ nav {
       -webkit-text-fill-color: #1abc9c; }
   .field_wrap textarea {
     height: 100px;
-    max-width: 800px;
+    max-width: 90%;
     max-height: 250px; }
   .field_wrap input[type="submit"] {
     background: #1abc9c;
@@ -235,7 +270,8 @@ button[type="submit"] {
 .total {
   width: 400%;
   position: relative;
-  left: 0%; }
+  left: 0%;
+  transition: left 0.75s; }
   .total div[class^="part0"] {
     width: 25%;
     float: left; }
@@ -328,7 +364,11 @@ button[type="submit"] {
           margin: 0 auto; }
           .total div[class^="part0"] .date_info .datepicker_box .container_startdate table tr td,
           .total div[class^="part0"] .date_info .datepicker_box .container_deadline table tr td {
-            padding: 5px; }
+            padding: 5px;
+            cursor: default; }
+            .total div[class^="part0"] .date_info .datepicker_box .container_startdate table tr td.disabled,
+            .total div[class^="part0"] .date_info .datepicker_box .container_deadline table tr td.disabled {
+              background-color: #d5d5d5; }
         .total div[class^="part0"] .date_info .datepicker_box .container_startdate table tr td.active:active,
         .total div[class^="part0"] .date_info .datepicker_box .container_startdate tr td.active.highlighted:active,
         .total div[class^="part0"] .date_info .datepicker_box .container_startdate tr td.active.active,
@@ -389,7 +429,7 @@ button[type="submit"] {
       .timepicker .visible_container ul li input {
         display: none; }
         .timepicker .visible_container ul li input:checked + label {
-          background-color: #1abc9c;
+          background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
           color: #fff; }
       .timepicker .visible_container ul li label {
         display: block;
@@ -456,7 +496,9 @@ button[type="submit"] {
     .slider_block span.min_participants, .slider_block span.min {
       width: 50px; }
     .slider_block span.max_participants, .slider_block span.price_amount, .slider_block span.helpers_amount {
-      margin-left: 20px; }
+      margin-left: 20px;
+      width: 25px;
+      text-align: right; }
   .slider_block div.slider {
     float: left; }
   .slider_block .slider.slider-horizontal {
@@ -514,7 +556,8 @@ button[type="submit"] {
     display: none;
     z-index: 2; }
     .owner ul li {
-      padding: 5px 5%; }
+      padding: 5px 5%;
+      cursor: initial; }
       .owner ul li:hover {
         background-color: #1abc9c;
         -webkit-border-radius: 10px;

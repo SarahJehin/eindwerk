@@ -15,32 +15,38 @@
             </div>
             <div class="content">
                 <div class="timeline">
-                    <div class="step1">1</div>
+                    <div class="line"></div>
+                    <div class="filled_line"></div>
+                    <div class="step1 reached   ">1</div>
                     <div class="step2">2</div>
                     <div class="step3">3</div>
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
-                    <form id="add_activity" method="post" action="{{url('add_activity')}}" novalidate>
+                    <form id="add_activity" method="post" enctype="multipart/form-data" action="{{url('add_activity')}}" novalidate>
                         {{ csrf_field() }}
                         <div class="total">
                             <div class="part01">
                                 <div class="step_content">
 
                                     @if (count($errors) > 0)
-                                        There were errors
-                                        <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                        </ul>
+                                        <div class="error_msg">
+                                            Niet alle velden werden correct ingevuld. Controleer de errors bij elke stap.
+                                            <ul>
+                                            @foreach ($errors->get('category') as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                            @foreach ($errors->get('poster') as $error)
+                                                <li>{{ $error }}</li>@endforeach
+                                            </ul>
+                                        </div>
                                     @endif
 
                                     <h3>Kies een categorie</h3>
                                     <div class="categories">
                                         @foreach($categories as $category)
                                             <div class="category">
-                                                <input type="radio" name="category" id="cat{{$category->id}}" value="{{$category->id}}">
+                                                <input type="radio" name="category" id="cat{{$category->id}}" value="{{$category->id}}" <?php if($category->id == old('category')) {echo("checked");} ?>>
                                                 <label for="cat{{$category->id}}">
                                                     <img src="{{url('images/category_images/' . $category->image)}}" alt="{{$category->name}}">
                                                 </label>
@@ -73,6 +79,18 @@
                             <div class="part02">
                                 <div class="step_content">
 
+                                    @if ($errors->get('title') || $errors->get('description'))
+                                        <div class="error_msg">
+                                            <ul>
+                                                @foreach ($errors->get('title') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('description') as $error)
+                                                    <li>{{ $error }}</li>@endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
                                     <div class="title description">
                                         <div class="field_wrap">
                                             <label>Titel</label>
@@ -88,6 +106,22 @@
                             </div>
                             <div class="part03">
                                 <div class="step_content">
+
+                                    @if ($errors->get('startdate') || $errors->get('deadline') || $errors->get('time'))
+                                        <div class="error_msg">
+                                            <ul>
+                                                @foreach ($errors->get('startdate') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('deadline') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('time') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
 
                                     <div class="date_time_info clearfix">
                                         <h3>Datum</h3>
@@ -116,8 +150,8 @@
                                                 <span class="label">Deadline</span>
                                             </div>
 
-                                            <input type="date" id="startdate" name="startdate" hidden>
-                                            <input type="date" id="deadline" name="deadline" hidden>
+                                            <input type="date" id="startdate" name="startdate" hidden value="{{old('startdate')}}">
+                                            <input type="date" id="deadline" name="deadline" hidden value="{{old('deadline')}}">
 
                                         </div>
 
@@ -152,7 +186,7 @@
                                         <h3>Locatie</h3>
                                         <div class="location_type">
                                             <div class="loc_sportiva">
-                                                <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden>
+                                                <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden checked>
                                                 <label for="loc_sportiva">
                                                     <span class="radio">
                                                         <span class="bullet selected"></span>
@@ -183,6 +217,26 @@
                             </div>
                             <div class="part04">
                                 <div class="step_content">
+
+                                    @if ($errors->get('price') || $errors->get('helpers') || $errors->get('owner') || $errors->get('url'))
+                                        <div class="error_msg">
+                                            <ul>
+                                                @foreach ($errors->get('price') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('helpers') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('owner') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('extra_url') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
                                     <div class="participants slider_block">
                                         <div>Aantal deelnemers</div>
                                         <span class="min_participants"><?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[<?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?></span>
@@ -213,7 +267,7 @@
                                     </div>
 
                                     <div class="field_wrap extra_url">
-                                        <label>URL</label>
+                                        <label>URL (optioneel)</label>
                                         <input type="text" name="extra_url" id="extra_url" value="{{old('extra_url')}}">
                                     </div>
 

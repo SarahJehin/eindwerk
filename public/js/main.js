@@ -38,14 +38,24 @@
 
     // ADD ACTIVITY
     //multistep form
-    $("div[class^='step']").click(function () {
+    $(".timeline div[class^='step']").click(function () {
+        console.log("what");
         //console.log($(this).attr("class"));
+        $('div[class^="step"]').removeClass('reached');
+        //get current step to display correct content
         var step = $(this).attr("class").replace("step", "");
-        //console.log(step);
-        //var left = 500*step-500;
         var left = 100*step-100;
-        //console.log(left);
         $(".total").css("left", -left + "%");
+
+        //add reached class to all previous steps
+        for(var i = 1; i <= step; i++) {
+            $('.step' + i).addClass('reached');
+        }
+
+        $filled_percentage = (step-1)*33;
+
+        $('.filled_line').css('width', $filled_percentage + "%");
+
     });
     
     
@@ -145,7 +155,7 @@
     
     
 
-    //range slider
+    //range slider (moet nog gezet worden enkel voor add activity pagina)
     $("#participants_slider").slider({});
     $( "#participants_slider" ).change(function() {
         var value = $( "#participants_slider" ).val();

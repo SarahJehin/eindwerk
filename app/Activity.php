@@ -10,7 +10,7 @@ class Activity extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'title', 'description', 'poster', 'extra_url', 'startdate', 'deadline', 'location', 'min_participants', 'max_participants', 'helpers', 'price', 'youth_adult', 'is_visible', 'category_id', 'made_by_id', 'owner_id',
+        'title', 'description', 'poster', 'extra_url', 'startdate', 'deadline', 'location', 'latitude', 'longitude', 'min_participants', 'max_participants', 'helpers', 'price', 'youth_adult', 'is_visible', 'category_id', 'made_by_id', 'owner_id',
     ];
     
     protected $dates = ['deleted_at'];

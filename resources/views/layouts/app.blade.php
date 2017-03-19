@@ -28,6 +28,10 @@
         <nav>
             hierin komt nav
 
+            <div class="profile_pic">
+
+            </div>
+
             <a href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

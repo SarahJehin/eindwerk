@@ -18,7 +18,11 @@
 
                 <ul>
                 @foreach($activities as $activity)
-                    <li>{{$activity->title}}</li>
+                    <li>{{$activity->title}}
+                    <ul>
+                        <li>{{$activity->startdate}}</li>
+                        <li>{{$activity->min_participants}}</li>
+                    </ul></li>
                 @endforeach
                 </ul>
 

@@ -48,6 +48,14 @@ nav {
   position: fixed;
   height: 100%;
   width: 100px;
+
+  .profile_pic {
+    width: 50%;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background-color: $form_color;
+  }
 }
 
 
@@ -55,7 +63,8 @@ nav {
   //width: 800px;
   width: 55%;
   margin: 0px auto;
-  background-color: $theme_color02_alpha;
+  //background-color: $theme_color02_alpha;
+  background-color: #fff;
   color: $form_font_color;
   //display: inline-block;µ
   position: relative;
@@ -79,19 +88,56 @@ nav {
   }
 }
 
+.error_msg {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #d7b3b2;
+  color: #872619;
+  margin-bottom: 20px;
+}
+
 .timeline {
   margin: 25px;
+  position: relative;
+  .line {
+    border: 2px solid;
+    position: absolute;
+    width: calc(100% - 4px);
+    top: 45%;
+  }
+  .filled_line {
+    border: 2px solid $theme_color01;
+    position: absolute;
+    width: 0%;
+    top: 45%;
+    transition: width 0.75s;
+  }
+
   div[class^="step"] {
-    width: 30px;
-    height: 30px;
-    background-color: $theme_color01;
+    width: 25px;
+    height: 25px;
+    background: #fff;
     border-radius: 50%;
+    border: 2.5px solid $form_font_color;
     float: left;
-    margin-right: 25px;
+    margin-right: calc((100% - 120px)/3);
     color: #fff;
     cursor: pointer;
     text-align: center;
-    line-height: 30px;
+    line-height: 25px;
+    position: relative;
+
+    &:last-child {
+      margin-right: 0;
+    }
+    &.reached {
+      background: $theme_gradient01;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      border: 0;
+    }
+
   }
 }
 
