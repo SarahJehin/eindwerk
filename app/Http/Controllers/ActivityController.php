@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 class ActivityController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function activities_overview() {
         $activities = Activity::all();
@@ -68,7 +72,7 @@ class ActivityController extends Controller
             'poster'        => 'required',
             'startdate'     => 'required|date',
             'time'          => 'required|date_format:H:i',
-            'deadline'      => 'required|date|before:' . $formatted_day_after . '|after:today',
+            'deadline'      => $request->extra_url != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
             //'location'      => 'required|string',
             'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',

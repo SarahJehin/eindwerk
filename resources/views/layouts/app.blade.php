@@ -26,10 +26,12 @@
 <body>
     <div class="container">
         <nav>
-            hierin komt nav
 
             <div class="profile_pic">
-
+                <img src="{{url('images/profile_pictures/' . Auth::user()->image)}}">
+            </div>
+            <div>
+                {{Auth::user()->first_name}} {{Auth::user()->last_name}}
             </div>
 
             <a href="{{ route('logout') }}"
@@ -41,6 +43,11 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
             </form>
+
+            <ul>
+                <li><a href="{{url('activities_overview')}}"><i class="fa fa-calendar" aria-hidden="true"></a></i></li>
+            </ul>
+
 
         </nav>
 

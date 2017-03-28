@@ -55,6 +55,24 @@ nav {
     border-radius: 50%;
     margin: 0 auto;
     background-color: $form_color;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+
+    li {
+      a {
+        color: #fff;
+        font-size: 2em;
+      }
+    }
   }
 }
 
@@ -153,7 +171,7 @@ nav {
 
 //activities
 @import "activities/add_activity";
-
+@import "activities/activities_overview";
 
 // clearfix
 .timeline::before, .timeline::after {
