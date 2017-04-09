@@ -25,6 +25,10 @@
 </head>
 <body>
     <div class="container">
+
+        <label class="hamburger" for="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></label>
+        <input type="checkbox" name="hamburger" id="hamburger">
+
         <nav>
 
             <div class="profile_pic">
@@ -50,6 +54,7 @@
 
 
         </nav>
+
 
         <div class="page_content">
             @yield('content')

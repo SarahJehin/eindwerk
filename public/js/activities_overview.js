@@ -25,7 +25,8 @@
      events: [
         {
             title  : 'event1',
-            start  : '2017-03-01'
+            start  : '2017-03-01',
+            url    : base_url + '/activity_details/1'
         },
         {
             title  : 'event2',

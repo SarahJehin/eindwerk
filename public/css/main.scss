@@ -13,6 +13,11 @@ $form_color: #6b7d87;
 $form_color_radio: #3d4b53;
 $form_font_color: #9CAFB9;
 
+//category colors:
+$battle_bunny: #395696;
+$party_penguin: #e51853;
+
+
 //fonts
 $main_font : 'Titillium Web', sans-serif;
 
@@ -76,6 +81,25 @@ nav {
   }
 }
 
+#hamburger {
+    display: none;
+}
+
+.hamburger {
+    font-size: 1.5em;
+    text-align: center;
+    color: $theme_color01;
+    position: relative;
+    z-index: 5;
+    display: none;
+    
+    i {
+        padding: 5px 10px;
+        margin-top: 25px;
+        border: 1px $theme_color01 solid;
+        border-radius: 5px;
+    }
+}
 
 .block {
   //width: 800px;
@@ -97,6 +121,7 @@ nav {
   }
 
   .content {
+    padding: 40px;
     padding-bottom: 25px;
   }
 
@@ -172,14 +197,78 @@ nav {
 //activities
 @import "activities/add_activity";
 @import "activities/activities_overview";
+@import "activities/activity_details";
+
+
+
+//floats
+.float {
+    float: left;
+}
+
 
 // clearfix
+.clearfix::before, .clearfix::after,
 .timeline::before, .timeline::after {
   content: "";
   line-height: 0;
   display: table;
 }
 
+.clearfix::after,
 .timeline::after {
   clear: both;
 }
+
+//mediaqueries
+@media screen and (max-width: 375px) {
+    nav {
+        background-color: $theme_color02;
+        position: fixed;
+        top: -100%;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+        
+        transition: top 1s;
+
+      .profile_pic {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    
+    .hamburger {
+        display: block;
+    }
+    
+    #hamburger:checked + nav {
+        top: 0;
+    }
+    
+    body {
+        background-image: none;
+    }
+    
+    .block {
+      //width: 800px;
+      width: 100%;
+      margin: 0px auto;
+      top: 50px;
+      margin-bottom: 50px;
+      .heading {
+        background-color: $theme_color01;
+        //background: $theme_gradient01;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+
+      .content {
+        padding: 40px;
+        padding-bottom: 25px;
+      }
+    }
+    
+}
+

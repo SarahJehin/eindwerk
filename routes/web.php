@@ -13,6 +13,7 @@
 
 Route::get('/', 'HomeController@index');
 
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
@@ -22,4 +23,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('add_activity', 'ActivityController@create_activity');
 
     Route::get('activities_overview', 'ActivityController@activities_overview');
+    Route::get('activity_details/{id}', 'ActivityController@activity_details');
 });

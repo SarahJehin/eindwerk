@@ -44,6 +44,22 @@ nav {
       color: #fff;
       font-size: 2em; }
 
+#hamburger {
+  display: none; }
+
+.hamburger {
+  font-size: 1.5em;
+  text-align: center;
+  color: #1abc9c;
+  position: relative;
+  z-index: 5;
+  display: none; }
+  .hamburger i {
+    padding: 5px 10px;
+    margin-top: 25px;
+    border: 1px #1abc9c solid;
+    border-radius: 5px; }
+
 .block {
   width: 55%;
   margin: 0px auto;
@@ -58,6 +74,7 @@ nav {
     text-align: center;
     padding: 10px; }
   .block .content {
+    padding: 40px;
     padding-bottom: 25px; }
   .block h3 {
     font-weight: lighter;
@@ -513,7 +530,7 @@ button[type="submit"] {
   .slider_block div.slider {
     float: left; }
   .slider_block .slider.slider-horizontal {
-    width: 85%; }
+    width: 84%; }
 
 .participants .slider.slider-horizontal .slider-track,
 .price .slider.slider-horizontal .slider-track,
@@ -619,12 +636,84 @@ button[type="submit"] {
 #calendar {
   padding: 25px; }
 
+.activity_details .tabs div {
+  border: 2px solid #1abc9c;
+  border-radius: 5px;
+  padding: 8px 2%;
+  width: calc(46% - 8px);
+  text-align: center;
+  cursor: pointer;
+  background-color: none;
+  transition: background-color .5s; }
+  .activity_details .tabs div:first-child {
+    margin-right: 1%; }
+  .activity_details .tabs div:hover, .activity_details .tabs div.active {
+    background-color: rgba(26, 188, 156, 0.5);
+    color: #fff; }
+.activity_details .activity_info .poster, .activity_details .activity_info .info, .activity_details .activity_info .sign_up {
+  width: 45%; }
+.activity_details .activity_info .poster {
+  margin-right: 5%; }
+  .activity_details .activity_info .poster img {
+    width: 100%;
+    height: auto;
+    box-shadow: 5px 5px 5px rgba(119, 114, 114, 0.5); }
+.activity_details .activity_info h4.battle_bunny {
+  color: #395696; }
+.activity_details .activity_info h4.party_penguin {
+  color: #e51853; }
+.activity_details .activity_info i {
+  width: 25px; }
+.activity_details .activity_info .sign_up {
+  display: none; }
+
+.float {
+  float: left; }
+
+.clearfix::before, .clearfix::after,
 .timeline::before, .timeline::after {
   content: "";
   line-height: 0;
   display: table; }
 
+.clearfix::after,
 .timeline::after {
   clear: both; }
+
+@media screen and (max-width: 375px) {
+  nav {
+    background-color: #24313c;
+    position: fixed;
+    top: -100%;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    transition: top 1s; }
+    nav .profile_pic {
+      width: 50px;
+      height: 50px; }
+
+  .hamburger {
+    display: block; }
+
+  #hamburger:checked + nav {
+    top: 0; }
+
+  body {
+    background-image: none; }
+
+  .block {
+    width: 100%;
+    margin: 0px auto;
+    top: 50px;
+    margin-bottom: 50px; }
+    .block .heading {
+      background-color: #1abc9c;
+      color: #fff;
+      text-align: center;
+      padding: 10px; }
+    .block .content {
+      padding: 40px;
+      padding-bottom: 25px; } }
 
 /*# sourceMappingURL=main.css.map */

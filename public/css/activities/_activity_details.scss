@@ -1,0 +1,55 @@
+.activity_details {
+    .tabs {
+        div {
+            border: 2px solid $theme_color01;
+            border-radius: 5px;
+            padding: 8px 2%;
+            width: calc(46% - 8px);
+            text-align: center;
+            cursor: pointer;
+            background-color: none;
+            
+            transition: background-color .5s;
+            
+            &:first-child {
+                margin-right: 1%;
+            }
+            
+            &:hover, &.active {
+                background-color: rgba($theme_color01, 0.5);
+                color: #fff;
+            }
+        }
+    }
+    
+    .activity_info {
+        .poster, .info, .sign_up {
+            width: 45%;
+        }
+        .poster {
+            margin-right: 5%;
+            img {
+                width: 100%;
+                height: auto;
+                box-shadow: 5px 5px 5px rgba(#777272, 0.5);
+            }
+        }
+        
+        h4 {
+            &.battle_bunny {
+                color: $battle_bunny;
+            }
+            &.party_penguin {
+                color: $party_penguin;
+            }
+        }
+        
+        i {
+            width: 25px;
+        }
+        
+        .sign_up {
+            display: none;
+        }
+    }
+}

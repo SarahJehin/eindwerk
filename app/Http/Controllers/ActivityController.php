@@ -23,6 +23,13 @@ class ActivityController extends Controller
 
     }
 
+    public function activity_details($id) {
+        $activity = Activity::where('id', $id)->with('category')->first();
+
+        return view('activities/activity_details', ['activity' => $activity]);
+
+    }
+
     public function add_activity() {
         $categories = Category::all();
         //dd($categories);

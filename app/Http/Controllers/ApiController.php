@@ -16,6 +16,7 @@ class ApiController extends Controller
         foreach($calendar_activities as $act) {
         	$act['backgroundColor'] = $act['category']['backgroundColor'];
         	$act['borderColor'] = $act['category']['backgroundColor'];
+            $act['url'] = url('/') . '/activity_details/' . $act['id'];
         	array_push($new_calendar_activities, $act);
         }
 
