@@ -21,6 +21,7 @@ class CreateActivitiesTable extends Migration
             $table->string('extra_url')->nullable();
             $table->dateTime('startdate');
             $table->dateTime('deadline')->nullable();
+            $table->dateTime('end')->nullable();
             $table->string('location');
             $table->double('latitude', 10, 6);
             $table->double('longitude', 10, 6);

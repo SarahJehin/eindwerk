@@ -39,7 +39,6 @@
     // ADD ACTIVITY
     //multistep form
     $(".timeline div[class^='step']").click(function () {
-        console.log("what");
         //console.log($(this).attr("class"));
         $('div[class^="step"]').removeClass('reached');
         //get current step to display correct content
@@ -100,12 +99,21 @@
 
     //autocomplete title in heading
     $( "#title" ).keyup(function() {
+        update_title();
+    });
+    $( "#title" ).change(function() {
+        update_title();
+    });
+
+    function update_title() {
         $title = $("#title").val();
         if($title != "") {
             $(".add_activity .heading").text($title);
         }
-
-    });
+        else {
+            $(".add_activity .heading").text('Nieuwe activiteit');
+        }
+    }
 
     //poster upload
     $('#poster').on('change', function(e){
@@ -122,35 +130,119 @@
             reader.readAsDataURL(this.files[0]);
         }
     });
+
+    //wysiwyg editor for description
+    //initiate editor with custom toolbar
+    $('#summernote').summernote({
+        placeholder: 'Type hier je beschrijving...',
+        toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline'/*, 'clear'*/]],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['insert', ['link']],
+            ['para', ['ul', 'ol', 'paragraph']]
+      ]
+    });
+    //make this editor use bootstrap
+    $('.apply_bootstrap + div').addClass('apply_bootstrap');
+
+    //check whether old input exists, if yes, fill in
+    if($('#description').val()) {
+        $('.note-editable').html($('#description').val());
+        $('.note-editing-area .note-placeholder').hide();
+    }
+
+    //Focus when description label is clicked
+    $('h3 label').click(function() {
+        $('.note-editable').focus();
+    });
+
+    $('.note-editable').focus(function() {
+        $(this).parent().parent().addClass('focus');
+    });
+    $('.note-editable').focusout(function() {
+        $(this).parent().parent().removeClass('focus');
+    });
+
+    //on focus immediately remove placeholder
+    /*
+    $('.note-editable').focus(function() {
+        $('.note-editing-area .note-placeholder').hide();
+    });
+    $('.note-editable').focusout(function() {
+        if($('.note-editable').html($('#description').val() == '')) {
+            $('.note-editing-area .note-placeholder').show();
+        }
+    });
+    */
+
+    //Prefill placeholders
+    $($('.modal.link-dialog .form-group input')[0]).attr('placeholder', "Weer te geven tekst");
+    $($('.modal.link-dialog .form-group input')[1]).attr('placeholder', "URL (bvb http://google.com)");
+
+    document.getElementsByClassName("note-editable")[0].addEventListener("input", function() {
+        $description_html = $('.note-editable').html();
+        $description_html = $description_html.replace('<a', '<a target="_blank"');
+        $('#description').html($description_html);
+    }, false);
     
+/*
     //timepicker
     $(".timepicker .arrow_up").click(function () {
-        $current_top = $(".timepicker ul").css("top");
+
+        $timepicker = $(this).parent().find('ul');
+        $current_top = $timepicker.css("top");
         $current_top = $current_top.replace("px", "");
         $next_top = parseInt($current_top)+50;
-        if($current_top != 0) {
-            $(".timepicker ul").css("top", $next_top);
+        console.log($current_top);
+        if($next_top < 0) {
+            $timepicker.css("top", $next_top);
+        }
+        else {
+            $timepicker.css("top", 0);
         }
     });
     $(".timepicker .arrow_down").click(function () {
-        $current_top = $(".timepicker ul").css("top");
+        $timepicker = $(this).parent().find('ul');
+        $current_top = $timepicker.css("top");
         $current_top = $current_top.replace("px", "");
         $next_top = $current_top-50;
         console.log($current_top);
-        if($current_top > (-350)) {
-            $(".timepicker ul").css("top", $next_top);
+        if($current_top > (-400)) {
+            $timepicker.css("top", $next_top);
         }
     });
+    */
     
+    $('#starttime').timepicker({ 
+        'timeFormat': 'H:i',
+        'scrollDefault': 'now',
+        'step': 30
+    });
+    $('#starttime').on('changeTime', function() {
+        //console.log("starttime changed");
+    });
+    $('#endtime').timepicker({ 
+        'timeFormat': 'H:i',
+        'scrollDefault': 'now',
+        'step': 30
+    });
+    $('#endtime').on('changeTime', function() {
+        //console.log("starttime changed");
+    });
+
     
     //location info
     $(".loc_sportiva").click(function(){
         $(".location_type .bullet").removeClass("selected");
         $(".loc_sportiva .bullet").addClass("selected");
+        $('.google_maps').removeClass('show');
     });
     $(".loc_else").click(function(){
         $(".location_type .bullet").removeClass("selected");
         $(".loc_else .bullet").addClass("selected");
+        $('.google_maps').addClass('show');
     });
     
     
@@ -178,7 +270,8 @@
     });
 
     $show_owner_select = false;
-    $(".select_toggler").click(function () {
+    $(".select_toggler").click(function (event) {
+        event.stopPropagation();
         if($show_owner_select) {
             $(".owner ul").hide();
             $show_owner_select = false;
@@ -200,7 +293,10 @@
         $show_owner_select = false;
     });
     
-    
+    $(window).click(function() {
+        $(".owner ul").hide();
+        $show_owner_select = false;
+    });
 
 
 })(window, window.document, window.jQuery);

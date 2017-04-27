@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('custom_css')
+<!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">-->
+<link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" type="text/css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -47,7 +51,7 @@
                                         @foreach($categories as $category)
                                             <div class="category">
                                                 <input type="radio" name="category" id="cat{{$category->id}}" value="{{$category->id}}" <?php if($category->id == old('category')) {echo("checked");} ?>>
-                                                <label for="cat{{$category->id}}">
+                                                <label for="cat{{$category->id}}" title="{{$category->name}}">
                                                     <img src="{{url('images/category_images/' . $category->image)}}" alt="{{$category->name}}">
                                                 </label>
                                             </div>
@@ -92,20 +96,22 @@
                                     @endif
 
                                     <div class="title description">
+                                        <h3><label for="title">Titel</label></h3>
                                         <div class="field_wrap">
-                                            <label>Titel</label>
                                             <input type="text" name="title" id="title" value="{{ old('title') }}">
                                         </div>
+                                        <h3><label for="description">Beschrijving</label></h3>
                                         <div class="field_wrap">
-                                            <label>Beschrijving</label>
-                                            <textarea name="description" id="description">{{ old('description') }}</textarea>
+                                            <textarea name="description" id="description" hidden="hidden">{{ old('description') }}</textarea>
+                                            <div id="summernote" class="apply_bootstrap"></div>
                                         </div>
+
                                     </div>
 
                                 </div>
                             </div>
                             <div class="part03">
-                                <div class="step_content">
+                                <div class="step_content clearfix">
 
                                     @if ($errors->get('startdate') || $errors->get('deadline') || $errors->get('time'))
                                         <div class="error_msg">
@@ -116,18 +122,41 @@
                                                 @foreach ($errors->get('deadline') as $error)
                                                     <li>{{ $error }}</li>
                                                 @endforeach
-                                                @foreach ($errors->get('time') as $error)
+                                                @foreach ($errors->get('starttime') as $error)
                                                     <li>{{ $error }}</li>
                                                 @endforeach
+                                                @foreach ($errors->get('endtime') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach ($errors->get('location') as $error)
+                                                    <li>Locatie op kaart is verplicht indien je 'Andere locatie' gekozen hebt.</li>
+                                                @endforeach
+                                                @if($errors->get('latitude') || $errors->get('longitude'))
+                                                    <li>Zorg ervoor dat er een marker op het kaartje staat.</li>
+                                                @endif
                                             </ul>
                                         </div>
                                     @endif
 
-                                    <div class="date_time_info clearfix">
-                                        <h3>Datum</h3>
+                                    <div class="date_time_info float clearfix">
+                                        
 
                                         <div class="date_info">
-
+                                            <h3>Datum</h3>
+                                            <div class="date_type clearfix">
+                                                <div class="startdate float">
+                                                    <span class="radio">
+                                                        <span class="bullet selected"></span>
+                                                    </span>
+                                                    <span class="label">Datum</span>
+                                                </div>
+                                                <div class="deadline float">
+                                                    <span class="radio">
+                                                        <span class="bullet"></span>
+                                                    </span>
+                                                    <span class="label">Deadline</span>
+                                                </div>
+                                            </div>
                                             <div class="datepicker_box">
                                                 <div class="container_startdate front">
 
@@ -137,80 +166,59 @@
 
                                                 </div>
                                             </div>
-                                            <div class="date_type startdate">
-                                            <span class="radio">
-                                                <span class="bullet selected"></span>
-                                            </span>
-                                                <span class="label">Datum</span>
-                                            </div>
-                                            <div class="date_type deadline">
-                                            <span class="radio">
-                                                <span class="bullet"></span>
-                                            </span>
-                                                <span class="label">Deadline</span>
-                                            </div>
+                                            
 
                                             <input type="date" id="startdate" name="startdate" hidden value="{{old('startdate')}}">
                                             <input type="date" id="deadline" name="deadline" hidden value="{{old('deadline')}}">
 
                                         </div>
 
-                                        <div class="timepicker">
-                                            <div class="arrow_up">
-                                                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                                        <div class="starttime">
+                                            <h3><label for="starttime">Start</label></h3>
+                                            <div class="field_wrap">
+                                                <input type="text" name="starttime" id="starttime" value="14:00">
                                             </div>
-                                            <div class="visible_container">
-                                                <ul>
-                                                    @for($i = 8; $i < 23; $i++)
-                                                        <li>
-                                                            <input type="radio" name="time" id="{{$i}}_00" value="{{$i}}:00" <?php if($i. ":00" == old('time')) {echo("checked");} ?>>
-                                                            <label for="{{$i}}_00">{{$i}}:00</label>
-                                                        </li>
-                                                        <li>
-                                                            <input type="radio" name="time" id="{{$i}}_30" value="{{$i}}:30" <?php if($i. ":30" == old('time')) {echo("checked");} ?>>
-                                                            <label for="{{$i}}_30">{{$i}}:30</label>
-                                                        </li>
-                                                    @endfor
-                                                </ul>
-                                            </div>
+                                            
+                                        </div>
 
-                                            <div class="arrow_down">
-                                                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                        <div class="endtime">
+                                            <h3><label for="endtime">Eind</label></h3>
+                                            <div class="field_wrap">
+                                                <input type="text" name="endtime" id="endtime" value="17:00">
                                             </div>
                                         </div>
                                     </div>
 
 
-
-                                    <div class="location_info">
+                                    <div class="location_info float">
                                         <h3>Locatie</h3>
                                         <div class="location_type">
                                             <div class="loc_sportiva">
-                                                <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden checked>
+                                                <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden <?php if(old('location_type') != 'else') { echo('checked'); } ?>>
                                                 <label for="loc_sportiva">
                                                     <span class="radio">
-                                                        <span class="bullet selected"></span>
+                                                        <span class="bullet <?php if(old('location_type') != 'else') { echo('selected'); } ?>"></span>
                                                     </span>
                                                     <span>Sportiva</span>
                                                 </label>
                                             </div>
                                             <div class="loc_else">
-                                                <input type="radio" id="loc_else" name="location_type" value="else" hidden>
+                                                <input type="radio" id="loc_else" name="location_type" value="else" hidden <?php if(old('location_type') == 'else') { echo('checked'); } ?>>
                                                 <label for="loc_else">
                                                     <span class="radio">
-                                                        <span class="bullet"></span>
+                                                        <span class="bullet <?php if(old('location_type') == 'else') { echo('selected'); } ?>"></span>
                                                     </span>
                                                     <span>Andere locatie</span>
                                                 </label>
                                             </div>
                                         </div>
 
-                                        {{--<div class="google_maps">
+                                        <div class="google_maps">
                                             <input id="place-input" class="controls" type="text" placeholder="Locatie zoeken ..." name="location">
                                             <div id="map"></div>
                                         </div>
                                         <input id="latitude" name="latitude" type="text" required hidden>
-                                        <input id="longitude" name="longitude" type="text" required hidden>--}}
+                                        <input id="longitude" name="longitude" type="text" required hidden>
 
                                     </div>
                                 </div>
@@ -237,14 +245,14 @@
                                         </div>
                                     @endif
 
-                                    <div class="participants slider_block">
-                                        <div>Aantal deelnemers</div>
-                                        <span class="min_participants"><?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[<?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?></span>
-                                    </div>
-
                                     <div class="price slider_block">
                                         <div>Prijs</div>
                                         <span class="min">0</span><input id="price_slider" name="price" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="<?php if(old('price') == null){echo('0'); } else {echo(old('price'));} ?>"/><span class="price_amount"><?php if(old('price') == null){echo('0'); } else {echo(old('price'));} ?></span>
+                                    </div>
+
+                                    <div class="participants slider_block">
+                                        <div>Aantal deelnemers</div>
+                                        <span class="min_participants"><?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[<?php if(old('helpers') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('helpers') == null){echo('30'); } else {echo(explode(',',old('participants'))[1]);} ?></span>
                                     </div>
 
                                     <div class="helpers slider_block">
@@ -271,7 +279,7 @@
                                         <input type="text" name="extra_url" id="extra_url" value="{{old('extra_url')}}">
                                     </div>
 
-                                    <div class="visbility">
+                                    <div class="visibility">
                                         <input type="checkbox" name="is_visible" id="is_visible" <?php if(old('is_visible') == "on") {echo('checked');}?> hidden>
                                         <label for="is_visible">
                                             <span class="checkbox">
@@ -299,11 +307,15 @@
 @endsection
 @section('custom_js')
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
     <script src="{{ asset('js/custom_datepicker.js') }}"></script>
-    {{--<script src="{{ asset('js/custom_google_maps.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.js"></script>
+    <script src="{{ asset('js/custom_google_maps.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c"
-            async defer></script>--}}
+            async defer></script>
 @endsection

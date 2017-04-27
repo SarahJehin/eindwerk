@@ -10,6 +10,11 @@
 
     <title>{{ config('app.name', 'TC Sportiva') }}</title>
 
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i,700" rel="stylesheet"> 
+
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!--<link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
@@ -24,7 +29,7 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <div class="page_container">
 
         <label class="hamburger" for="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></label>
         <input type="checkbox" name="hamburger" id="hamburger">

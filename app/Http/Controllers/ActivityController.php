@@ -72,20 +72,29 @@ class ActivityController extends Controller
         $day_after_start = strtotime("tomorrow", $startdate);
         $formatted_day_after = date('Y-m-d', $day_after_start);
 
-        $this->validate($request, [
+        $rules = [
             'category'      => 'required',
             'title'         => 'required|string',
             'description'   => 'required',
             'poster'        => 'required',
             'startdate'     => 'required|date',
-            'time'          => 'required|date_format:H:i',
-            'deadline'      => $request->extra_url != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
+            'starttime'     => 'required|date_format:H:i',
+            'endtime'       => 'nullable|date_format:H:i|after:starttime',
+            'deadline'      => $request->startdate != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
             //'location'      => 'required|string',
             'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
             'owner'         => 'required',
             'extra_url'     => $request->extra_url != null ? 'url': '',
-        ]);
+        ];
+
+        if($request->location_type == 'else') {
+            $rules['location']  = 'required';
+            $rules['longitude'] = 'required';
+            $rules['latitude']  = 'required';
+        }
+        
+        $this->validate($request, $rules);
 
 
         $allowed_extensions = ["jpeg", "png"];
@@ -149,8 +158,8 @@ class ActivityController extends Controller
         */
 
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
-        $startdatetime = $startdatetime . ' ' . $request->time  . ':00';
-        echo($startdatetime);
+        $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
+        //echo($startdatetime);
 
 
         $activity = new Activity([

@@ -35,28 +35,29 @@
   }
 
   input, textarea {
-    font-size: 1.2em; //22px;
-    font-family: inherit;
-    display: block;
-    height: 100%;
-    padding: 10px 5%;
-    //color: #fff;
-    color: $theme_color02;
-    border-radius: 0;
-    transition: border-color .25s ease, box-shadow .25s ease;
-    border: 1px solid $form_color;
-    background-color: transparent;
-    width: 90%;
+    //font-size: 1.2em; //22px;
+      font-size: 1em;
+      font-family: inherit;
+      display: block;
+      height: 100%;
+      padding: 10px 5%;
+      //color: #fff;
+      color: $theme_color02;
+      border-radius: 0;
+      transition: border-color .25s ease, box-shadow .25s ease;
+      border: 1px solid $form_color;
+      background-color: transparent;
+      width: 90%;
 
-    &:focus {
-      outline:0;
-      border-color: $theme_color01;
-    }
-    /* to change default yellow autofill color*/
-    &:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px $theme_color02 inset;
-      -webkit-text-fill-color: $theme_color01;
-    }
+      &:focus {
+        outline:0;
+        border-color: $theme_color01;
+      }
+      /* to change default yellow autofill color*/
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $theme_color02 inset;
+        -webkit-text-fill-color: $theme_color01;
+      }
 
   }
 
