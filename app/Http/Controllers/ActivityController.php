@@ -16,20 +16,65 @@ class ActivityController extends Controller
         $this->middleware('auth');
     }
 
+    //normal users
     public function activities_overview() {
         $activities = Activity::all();
 
         return view('activities_overview', ['activities' => $activities]);
-
     }
 
     public function activity_details($id) {
         $activity = Activity::where('id', $id)->with('category')->first();
+        
+        $user_signed_up = false;
+        if($activity->participants->contains(Auth::user()->id)) {
+            //check if user has already signed up for this activity
+            //status of the currently logged in user for this activity
+            $status = $activity->participants->where('id', Auth::user()->id)->first()->pivot->status;
+            if($status == 1 || $status == 2) {
+                $user_signed_up = true;
+            }
+        }
+        //dd($activity->participants);
+        
+        /*
+        if ($activity->participants->contains(Auth::user()->id)) {
+            $user_signed_up = true;
+        }
+        */
+        //dd($activity->participants->where('id', 1)->first()->pivot->status);
 
-        return view('activities/activity_details', ['activity' => $activity]);
-
+        //dd($activity->participants[0]->pivot->status);
+        return view('activities/activity_details', ['activity' => $activity, 'user_signed_up' => $user_signed_up]);
     }
 
+    public function sign_up_for_activity(Request $request) {
+        $activity = Activity::find($request->activity_id);
+        if($request->sign_up_me == 'on') {
+            $user = User::find(Auth::user()->id);
+            //check if the record already exists, if yes, update, if not create
+            if($activity->participants->contains(Auth::user()->id)) {
+                //if it is a free activity, status should be set to '2' immediately
+                $user->activities()->updateExistingPivot($request->activity_id, ['status' => 1]);
+            }
+            else {
+                //if it is a free activity, status should be set to '2' immediately
+                $user->activities()->attach($request->activity_id, ['signed_up_by' => $user->id, 'status' => 1]);
+            }
+            
+        }
+        return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Dankjewel voor je inschrijving!');
+    }
+
+    public function sign_out_for_activity(Request $request) {
+        $user = User::find(Auth::user()->id);
+        //set status to 10 (signed out)
+        $user->activities()->updateExistingPivot($request->activity_id, ['status' => 10]);
+
+        return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Je bent uitgeschreven voor deze activiteit');
+    }
+
+    //admins
     public function add_activity() {
         $categories = Category::all();
         //dd($categories);
@@ -43,9 +88,9 @@ class ActivityController extends Controller
         $min_participants = explode(",", $request->participants)[0];
         $max_participants = explode(",", $request->participants)[1];
 
-        //onderstaande bepalen adhv persoon die activiteit gemaakt heeft
+        //onderstaande bepalen adhv persoon die activiteit gemaakt heeft, just category, not youth_adult
         //0 = adult, 1 = youth
-        $youth_adult = 1;
+        //$youth_adult = 1;
 
         if($request->is_visible == "on") {
             $is_visible = 1;
@@ -80,7 +125,7 @@ class ActivityController extends Controller
             'startdate'     => 'required|date',
             'starttime'     => 'required|date_format:H:i',
             'endtime'       => 'nullable|date_format:H:i|after:starttime',
-            'deadline'      => $request->startdate != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
+            'deadline'      => $request->deadline != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
             //'location'      => 'required|string',
             'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
@@ -160,6 +205,8 @@ class ActivityController extends Controller
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
         //echo($startdatetime);
+        $enddatetime = date('Y-m-d', strtotime($request->startdate));
+        $startdatetime = $startdatetime . ' ' . $request->endtime  . ':00';
 
 
         $activity = new Activity([
@@ -167,8 +214,9 @@ class ActivityController extends Controller
             'description'   => $request->description,
             'poster'        => $new_file_name,
             'extra_url'     => $request->extra_url,
-            'startdate'     => $startdatetime,
+            'start'         => $startdatetime,
             'deadline'      => $request->deadline,
+            'end'           => $enddatetime,
             'location'      => $location,
             'latitude'      => $latitude,
             'longitude'     => $longitude,
@@ -176,7 +224,7 @@ class ActivityController extends Controller
             'max_participants'  => $max_participants,
             'helpers'           => $request->helpers,
             'price'             => $request->price,
-            'youth_adult'       => $youth_adult,
+            //'youth_adult'       => $youth_adult,
             'is_visible'        => $is_visible,
             'made_by_id'        => $made_by,
             'owner_id'          => $request->owner,

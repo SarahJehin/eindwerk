@@ -19,7 +19,7 @@ class CreateActivitiesTable extends Migration
             $table->text('description');
             $table->string('poster');
             $table->string('extra_url')->nullable();
-            $table->dateTime('startdate');
+            $table->dateTime('start');
             $table->dateTime('deadline')->nullable();
             $table->dateTime('end')->nullable();
             $table->string('location');
@@ -29,7 +29,7 @@ class CreateActivitiesTable extends Migration
             $table->integer('max_participants')->nullable();
             $table->integer('helpers')->nullable();
             $table->decimal('price', 6, 2)->nullable();
-            $table->tinyInteger('youth_adult');
+            //$table->tinyInteger('youth_adult');
             $table->tinyInteger('is_visible');
             $table->integer('category_id')->unsigned()->index();
             $table->foreign('category_id')->references('id')->on('categories');

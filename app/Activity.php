@@ -22,28 +22,28 @@ class Activity extends Model
         return $this->belongsToMany('App\User');
     }
     
-    //return all the helpers (code = 2)
+    //return all the helpers (code = 5)
     public function helpers()
     {
-        return $this->belongsToMany('App\User')->withPivot('helper_participant')->wherePivot('helper_participant', 2);
+        return $this->belongsToMany('App\User')->withPivot('status')->wherePivot('status', 5);
+    }
+    
+    //return all the participants (code = 1 (not paid) en 2 (paid))
+    public function participants()
+    {
+        return $this->belongsToMany('App\User')->withPivot('status')->wherePivotIn('status', [1, 2])->orderBy('last_name')->orderBy('first_name');
+    }
+    
+    //return all the participants who have already paid (code = 2)
+    public function paid_participants()
+    {
+        return $this->belongsToMany('App\User')->withPivot('status')->wherePivot('status', 2);
     }
     
     //return all the participants (code = 1)
-    public function participants()
-    {
-        return $this->belongsToMany('App\User')->withPivot('helper_participant')->wherePivot('helper_participant', 1);
-    }
-    
-    //return all the participants (code = 1) who have already paid (code = 1)
-    public function paid_participants()
-    {
-        return $this->belongsToMany('App\User')->withPivot('paid', 'helper_participant')->wherePivot('helper_participant', 1)->wherePivot('paid', 1);
-    }
-    
-    //return all the participants (code = 1) who haven't paid yet (code = 0)
     public function not_paid_participants()
     {
-        return $this->belongsToMany('App\User')->withPivot('paid', 'helper_participant')->wherePivot('helper_participant', 1)->wherePivot('paid', 0);
+        return $this->belongsToMany('App\User')->withPivot('status')->wherePivot('status', 1);
     }
     
     //return the category of this activity

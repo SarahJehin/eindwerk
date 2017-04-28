@@ -24,4 +24,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('activities_overview', 'ActivityController@activities_overview');
     Route::get('activity_details/{id}', 'ActivityController@activity_details');
+    Route::post('sign_up_for_activity', 'ActivityController@sign_up_for_activity');
+    Route::post('sign_out_for_activity', 'ActivityController@sign_out_for_activity');
 });

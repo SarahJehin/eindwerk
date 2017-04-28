@@ -1,7 +1,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: "Titillium Web", sans-serif; }
+  font-family: "Titillium Web", sans-serif;
+  height: 100%; }
 
 body {
   background-image: url("../images/site_images/background_img.jpg");
@@ -21,11 +22,15 @@ body {
   //overflow: hidden;
   background-attachment: fixed;
 }*/
+.page_container, .page_content {
+  height: 100%; }
+
 nav {
   background-color: #24313c;
   position: fixed;
   height: 100%;
-  width: 100px; }
+  width: 100px;
+  z-index: 5; }
   nav .profile_pic {
     width: 50%;
     height: 50px;
@@ -80,6 +85,13 @@ nav {
   .block h3 {
     font-weight: lighter;
     color: #fff; }
+
+.success_msg {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #a2d8a6;
+  color: #1d6920;
+  margin-bottom: 20px; }
 
 .error_msg {
   padding: 5px;
@@ -206,7 +218,8 @@ button[type="submit"] {
   border: none;
   padding: 10px;
   color: #fff;
-  font-size: 1.2em; }
+  font-size: 1.2em;
+  font-family: inherit; }
   input[type="submit"]:hover,
   button[type="submit"]:hover {
     cursor: pointer;
@@ -303,7 +316,7 @@ button[type="submit"] {
   transition: left 0.75s; }
   .total h3 {
     color: #3d4b53;
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
     font-size: 1.3em; }
   .total div[class^="part0"] {
     width: 25%;
@@ -730,7 +743,8 @@ button[type="submit"] {
   padding: 25px; }
 
 .activity_details {
-  position: relative; }
+  position: relative;
+  height: 100%; }
   .activity_details .tabs .tab {
     position: relative;
     padding: 8px 0;
@@ -754,7 +768,14 @@ button[type="submit"] {
       color: #fff; }
       .activity_details .tabs .tab:hover .bg_helper, .activity_details .tabs .tab.active .bg_helper {
         opacity: 1; }
-  .activity_details .activity_info .info, .activity_details .activity_info .sign_up {
+  .activity_details .back {
+    margin: 15px 0; }
+    .activity_details .back a {
+      color: rgba(26, 188, 156, 0.6);
+      text-decoration: none; }
+      .activity_details .back a:hover {
+        color: #1abc9c; }
+  .activity_details .activity_info .info, .activity_details .activity_info .sign_up_info {
     width: 45%; }
   .activity_details .activity_info .poster {
     width: 50%;
@@ -764,6 +785,73 @@ button[type="submit"] {
       width: 100%;
       height: auto;
       box-shadow: 5px 5px 5px rgba(119, 114, 114, 0.5); }
+  .activity_details .activity_info .info .google_maps {
+    margin-top: 15px; }
+    .activity_details .activity_info .info .google_maps #map {
+      width: 100%;
+      height: 240px; }
+  .activity_details .activity_info .sign_up {
+    display: none; }
+    .activity_details .activity_info .sign_up .sign_up_list {
+      width: 50%;
+      margin-right: 5%; }
+      .activity_details .activity_info .sign_up .sign_up_list .people {
+        box-shadow: 5px 5px 5px rgba(119, 114, 114, 0.5); }
+        .activity_details .activity_info .sign_up .sign_up_list .people .amount_participants {
+          text-align: right;
+          margin: 15px; }
+          .activity_details .activity_info .sign_up .sign_up_list .people .amount_participants .current_amount {
+            color: #d7b3b2; }
+            .activity_details .activity_info .sign_up .sign_up_list .people .amount_participants .current_amount.okay {
+              color: #a2d8a6; }
+        .activity_details .activity_info .sign_up .sign_up_list .people .person {
+          width: 25%;
+          margin-bottom: 25px; }
+          .activity_details .activity_info .sign_up .sign_up_list .people .person figure {
+            margin: 0;
+            text-align: center; }
+            .activity_details .activity_info .sign_up .sign_up_list .people .person figure img {
+              width: 80%;
+              height: auto;
+              border-radius: 50%; }
+            .activity_details .activity_info .sign_up .sign_up_list .people .person figure figcaption {
+              font-size: .9em;
+              font-style: italic; }
+              .activity_details .activity_info .sign_up .sign_up_list .people .person figure figcaption i {
+                color: #a2d8a6; }
+      .activity_details .activity_info .sign_up .sign_up_list .empty {
+        width: 75%;
+        margin: 30px auto;
+        font-size: 0.9em;
+        text-align: center;
+        font-style: italic; }
+    .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .me {
+      margin-bottom: 10px; }
+      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .me a {
+        color: rgba(26, 188, 156, 0.6);
+        text-decoration: none; }
+        .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .me a:hover {
+          color: #1abc9c; }
+    .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      background-color: rgba(156, 175, 185, 0.25);
+      padding: 2px 3px;
+      padding-bottom: 4px;
+      border-radius: 5px;
+      color: transparent;
+      margin-right: 15px; }
+      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox:hover {
+        color: #6b7d87; }
+      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox + span {
+        display: inline-block; }
+    .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.battle_bunny {
+      color: #395696; }
+    .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.party_penguin {
+      color: #e51853; }
+    .activity_details .activity_info .sign_up .sign_up_info .sign_up_others {
+      display: none; }
   .activity_details .activity_info h4 {
     margin-top: 0; }
     .activity_details .activity_info h4.battle_bunny {
@@ -772,13 +860,12 @@ button[type="submit"] {
       color: #e51853; }
   .activity_details .activity_info i {
     width: 25px; }
-  .activity_details .activity_info .sign_up {
-    display: none; }
   .activity_details .lightbox_modal {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 5;
     display: none; }
@@ -802,8 +889,17 @@ button[type="submit"] {
           width: 90%;
           height: auto; }
       .activity_details .lightbox_modal .modal .modal_footer {
-        text-align: center;
-        font-style: italic; }
+        text-align: center; }
+    .activity_details .lightbox_modal.light .modal {
+      background-color: #fff;
+      box-shadow: none;
+      color: #9CAFB9;
+      border-radius: 5px; }
+      .activity_details .lightbox_modal.light .modal i:hover {
+        color: #000; }
+  .activity_details #poster_modal .modal_footer {
+    text-align: center;
+    font-style: italic; }
 
 .float {
   float: left; }

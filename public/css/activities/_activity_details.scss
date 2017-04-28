@@ -1,5 +1,7 @@
 .activity_details {
     position: relative;
+    height: 100%;
+    
     .tabs {
         .tab {
             //border: 2px solid $theme_color01;
@@ -43,8 +45,19 @@
         }
     }
     
+    .back {
+        margin: 15px 0;
+        a {
+            color: rgba($theme_color01, 0.6);
+            text-decoration: none;
+            &:hover {
+                color: $theme_color01;
+            }
+        }
+    }
+    
     .activity_info {
-        .info, .sign_up {
+        .info, .sign_up_info {
             width: 45%;
         }
         .poster {
@@ -55,6 +68,119 @@
                 width: 100%;
                 height: auto;
                 box-shadow: 5px 5px 5px rgba(#777272, 0.5);
+            }
+        }
+        
+        .info {
+            .google_maps {
+                margin-top: 15px;
+                #map {
+                    width: 100%;
+                    height: 240px;
+                }
+            }
+        }
+        
+        .sign_up {
+            display: none;
+            
+            .sign_up_list {
+                width: 50%;
+                margin-right: 5%;
+                
+                
+                .people {
+                    box-shadow: 5px 5px 5px rgba(#777272, 0.5);
+                    
+                    .amount_participants {
+                        text-align: right;
+                        margin: 15px;
+                        
+                        .current_amount {
+                            color: $error_bg_color;
+                            &.okay {
+                                color: $success_bg_color;
+                            }
+                        }
+                    }
+                    
+                    .person {
+                        width: 25%;
+                        margin-bottom: 25px;
+                        figure {
+                            margin: 0;
+                            text-align: center;
+                            img {
+                                width: 80%;
+                                height: auto;
+                                border-radius: 50%;
+                            }
+                            figcaption {
+                                font-size: .9em;
+                                font-style: italic;
+                                
+                                i {
+                                    color: $success_bg_color;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                .empty {
+                    width: 75%;
+                    margin: 30px auto;
+                    font-size: 0.9em;
+                    text-align: center;
+                    font-style: italic;
+                }
+            }
+            
+            .sign_up_info {
+                .sign_up_for {
+                    
+                    .me {
+                        margin-bottom: 10px;
+                        a {
+                            color: rgba($theme_color01, 0.6);
+                            text-decoration: none;
+                            &:hover {
+                                color: $theme_color01;
+                            }
+                        }
+                    }
+                    
+                    .checkbox {
+                        display: inline-block;
+                        width: 15px;
+                        height: 15px;
+                        background-color: rgba($form_font_color, 0.25);
+                        padding: 2px 3px;
+                        padding-bottom: 4px;
+                        border-radius: 5px;
+                        color: transparent;
+                        margin-right: 15px;
+                        &:hover {
+                          color: $form_color;
+                        }
+                        & + span {
+                          display: inline-block;
+                        }
+                      }
+
+                      input:checked + label .checkbox {
+                          &.battle_bunny {
+                              color: $battle_bunny;
+                          }
+                          &.party_penguin {
+                              color: $party_penguin;
+                          }
+                      }
+                    
+                }
+                .sign_up_others {
+                    display: none;
+                }
             }
         }
         
@@ -73,9 +199,6 @@
             //text-align: center;
         }
         
-        .sign_up {
-            display: none;
-        }
     }
     
     .lightbox_modal {
@@ -83,6 +206,7 @@
         top: 0;
         left: 0;
         width: 100%;
+        height: 100%;
         background-color: rgba(#000, 0.6);
         z-index: 5;
         display: none;
@@ -115,9 +239,30 @@
             }
             .modal_footer {
                 text-align: center;
-                font-style: italic;
+                //font-style: italic;
             }
             
+        }
+        
+        &.light {
+            .modal {
+                background-color: #fff;
+                box-shadow: none;
+                color: $form_font_color;
+                border-radius: 5px;
+                i {
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+        }
+    }
+    
+    #poster_modal {
+        .modal_footer {
+            text-align: center;
+            font-style: italic;
         }
     }
 }

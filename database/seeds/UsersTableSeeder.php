@@ -55,7 +55,7 @@ class UsersTableSeeder extends Seeder
                 'birth_date'    => '1994-08-22',
                 'gender'        => 'V',
                 'ranking'       => 'C+30/4',
-                'image'         => 'sarah_jehin.jpg',
+                'image'         => 'glass_sorenson.jpg',
                 'level_id'      => 6,
                 'password'      => Hash::make('glass'),
                 'created_at' => \Carbon\Carbon::now(),

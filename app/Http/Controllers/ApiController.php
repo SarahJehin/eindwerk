@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
     public function get_calendar_activities(Request $request) {
-        $calendar_activities = Activity::select('id', 'title', 'startdate as start', 'category_id')->with(['category' => function($query) {
+        $calendar_activities = Activity::select('id', 'title', 'start', 'category_id')->with(['category' => function($query) {
 		    $query->select('id', 'color as backgroundColor');
 		}])->get()->toArray();
 

@@ -22,86 +22,156 @@
                     </div>
                 </div>
 
-                <p>Terug naar overzicht</p>
+                <div class="back"><a href="{{url('activities_overview')}}"><i class="fa fa-angle-left" aria-hidden="true"></i> Terug naar overzicht</a></div>
 
-                <div class="activity_info clearfix">
-                    <div class="poster float">
-                        <img src="{{url('images/activity_images/' . $activity->poster)}}" alt="{{$activity->title}}">
+                @if (session('success_msg'))
+                    <div class="success_msg">
+                        {{ session('success_msg') }}
                     </div>
-                    <div class="info float">
-                        <div>
-                            <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Beschrijving:</h4>
-                            <p>{!! $activity->description !!}</p>
-                        </div>
-                        <div>
-                            <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Algemene info:</h4>
-                            <div>
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                                {{$activity->min_participants}} - {{$activity->max_participants}} deelnemers
-                            </div>
-                            <div>
-                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                {{date('d-m-Y', strtotime($activity->startdate))}} (inschrijven tot {{date('d-m-Y', strtotime($activity->deadline))}})
-                            </div>
-                            <div>
-                                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                {{date('H:i', strtotime($activity->startdate))}}
-                            </div>
-                            @if($activity->price > 0)
-                            <div>
-                                <i class="fa fa-eur" aria-hidden="true"></i>
-                                {{ $activity->price }}
-                            </div>
-                            @endif
-                            @if($activity->url)
-                            <div>
-                                <i class="fa fa-link" aria-hidden="true"></i>
-                                <a href="{{ $activity->url }}" target="_blank">{{ $activity->url }}</a>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
+                @endif
 
-                    <div class="sign_up float">
-                        <div>
-                            <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
-                            <p>Wil je deelnemen aan deze activiteit? Schrijf jezelf en/of anderen dan hieronder in!</p>
-                            @if($activity->price > 0)
-                            <p>Vergeet het inschrijvingsgeld niet over te schrijven naar BE66 7333 2013 0443.</p>
-                            @endif
-                            <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Wie wil je inschrijven:</h4>
-                            <div class="sign_up_for">
+                <div class="activity_info">
+                    <div class="activity_details clearfix">
+                        <div class="poster float">
+                            <img src="{{url('images/activity_images/' . $activity->poster)}}" alt="{{$activity->title}}">
+                        </div>
+                        <div class="info float">
+                            <div>
+                                <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Beschrijving:</h4>
+                                <p>{!! $activity->description !!}</p>
+                            </div>
+                            <div>
+                                <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Algemene info:</h4>
                                 <div>
-                                    <input type="checkbox" name="sign_up_me" id="sign_up_me" hidden>
-                                    <label for="sign_up_me">
-                                        <span class="checkbox">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </span>
-                                        <span>Mezelf inschrijven</span>
-                                    </label>
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    {{$activity->min_participants}} - {{$activity->max_participants}} deelnemers
                                 </div>
                                 <div>
-                                    <input type="checkbox" name="sign_up_others" id="sign_up_others" hidden>
-                                    <label for="sign_up_others">
-                                        <span class="checkbox">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </span>
-                                        <span>Anderen inschrijven</span>
-                                    </label>
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    {{date('d-m-Y', strtotime($activity->start))}} 
+                                    @if($activity->deadline)
+                                    (inschrijven tot {{date('d-m-Y', strtotime($activity->deadline))}})
+                                    @endif
+                                </div>
+                                <div>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    {{date('H:i', strtotime($activity->start))}} - {{date('H:i', strtotime($activity->end))}}
+                                </div>
+                                @if($activity->price > 0)
+                                <div>
+                                    <i class="fa fa-eur" aria-hidden="true"></i>
+                                    {{ $activity->price }}
+                                </div>
+                                @endif
+                                @if($activity->url)
+                                <div>
+                                    <i class="fa fa-link" aria-hidden="true"></i>
+                                    <a href="{{ $activity->url }}" target="_blank">{{ $activity->url }}</a>
+                                </div>
+                                @endif
+                                <div>
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    {{ $activity->location }}
                                 </div>
                             </div>
-                            <div class="sign_up_others">
-                                wordt pas getoond wanneer je de checkbox aanvinkt
+                            <div class="google_maps">
+                                <div id="map">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="sign_up clearfix">
+                        <div class="sign_up_list float">
+                            <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Inschrijvingslijst:</h4>
+                            
+                            <div class="people clearfix">
+                                <div class="amount_participants">
+                                    <span class="current_amount @if(count($activity->participants) >= $activity->min_participants){{'okay'}}@endif">{{count($activity->participants)}}</span>
+                                     / <span>{{$activity->max_participants}}</span>
+                                </div>
+                                @foreach($activity->participants as $participant)
+                                <div class="person float">
+                                    <figure>
+                                        <img src="{{url('images/profile_pictures/' . $participant->image)}}" alt="{{$participant->first_name}} {{$participant->last_name}}">
+                                        <figcaption>
+                                            {{$participant->first_name}}
+                                            @if($participant->pivot->status == 2)
+                                            <i class="fa fa-check" aria-hidden="true" title="Betaald"></i>
+                                            @endif
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                @endforeach
+                                @if(!count($activity->participants))
+                                <div class="empty">
+                                    Er is nog niemand ingeschreven voor deze activiteit. <br>
+                                    Schrijf je nu als eerste in !
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="sign_up_info float">
+                            @if( strtotime($activity->start) < strtotime('now') || ($activity->deadline && strtotime($activity->deadline) < strtotime('now')))
+                            <div>
+                                <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
+                                <p>Inschrijven voor deze activiteit is niet meer mogelijk omdat de deadline of de activiteit zelf reeds voorbij is...</p>
+                            </div>
+                            @else
+                            <div>
+                                <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
+                                <p>Wil je deelnemen aan deze activiteit? Schrijf jezelf en/of anderen dan hieronder in!</p>
+                                @if($activity->price > 0)
+                                <p>Vergeet het inschrijvingsgeld niet over te schrijven naar BE66 7333 2013 0443.</p>
+                                @endif
+                                <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Wie wil je inschrijven:</h4>
+                                <form class="sign_up_form" method="post" action="{{url('sign_up_for_activity')}}">
+                                {{ csrf_field() }}
+                                    <input type="number" name="activity_id" id="activity_id" value="{{$activity->id}}" hidden="">
+                                    <div class="sign_up_for">
+                                        @if($user_signed_up)
+                                        <div class="me">Je bent reeds ingeschreven. (<a id="sign_out" href="#">Uitschrijven?</a>)</div>
+                                        @else
+                                        <div class="me">
+                                            <input type="checkbox" name="sign_up_me" id="sign_up_me" hidden>
+                                            <label for="sign_up_me">
+                                                <span class="checkbox {{str_replace(' ', '_', strtolower($activity->category->name))}}">
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                </span>
+                                                <span>Mezelf inschrijven</span>
+                                            </label>
+                                        </div>
+                                        @endif
+                                        <div class="others">
+                                            <input type="checkbox" name="sign_up_others" id="sign_up_others" hidden>
+                                            <label for="sign_up_others">
+                                                <span class="checkbox {{str_replace(' ', '_', strtolower($activity->category->name))}}">
+                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                </span>
+                                                <span>Anderen inschrijven</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="sign_up_others">
+                                        wordt pas getoond wanneer je de checkbox aanvinkt
+                                    </div>
+                                    <div>
+                                        <input type="submit" name="submit" value="Inschrijven">
+                                    </div>
+                                </form>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    
 
                 </div>
 
             </div>
         </div>
 
-        <div class="lightbox_modal">
+        <div id="poster_modal" class="lightbox_modal">
             <div class="modal">
                 <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
                 <div class="modal_body">
@@ -113,9 +183,31 @@
             </div>
         </div>
 
+        <div id="sign_out_modal" class="lightbox_modal light">
+            <div class="modal">
+                <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+                <div class="modal_body">
+                    Zeker dat je wil uitschrijven?
+                </div>
+                <div class="modal_footer">
+                    <form method="post" action="{{url('sign_out_for_activity')}}">
+                        {{ csrf_field() }}
+                        <input type="number" name="activity_id" value="{{$activity->id}}" hidden="">
+                        <input type="submit" name="submit" value="Ja, nu uitschrijven">
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection
 @section('custom_js')
+<script type="text/javascript">
+    var latitude = {{$activity->latitude}}
+    var longitude = {{$activity->longitude}};
+</script>
 <script src="{{ asset('js/activities/activity_details.js') }}"></script>
-
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c&callback=initMap">
+    </script>
 @endsection

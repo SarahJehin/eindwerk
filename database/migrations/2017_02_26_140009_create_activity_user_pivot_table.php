@@ -21,8 +21,8 @@ class CreateActivityUserPivotTable extends Migration
             $table->foreign('signed_up_by')->references('id')->on('users');
             $table->integer('activity_id')->unsigned()->index();
             $table->foreign('activity_id')->references('id')->on('activities');
-            $table->tinyInteger('helper_participant');
-            $table->tinyInteger('paid');
+            //$table->tinyInteger('helper_participant');
+            $table->tinyInteger('status');
             $table->softDeletes();
             $table->timestamps();
         });
