@@ -1,0 +1,46 @@
+.activities_list {
+    .list {
+        .activity {
+            border-bottom: 1px solid $form_font_color;
+            border-bottom: 1px solid rgba($theme_color01, 0.25);
+            padding: 5px;
+            
+            &.header {
+                background-color: $theme_color01;
+                color: #fff;
+                &:hover {
+                    background-color: $theme_color01;
+                    color: #fff;
+                }
+            }
+            
+            &:hover {
+                background-color: rgba($theme_color01, 0.5);
+                color: #fff;
+            }
+            .date {
+                width: 16%;
+            }
+            .title {
+                width: 62%;
+            }
+            .participants {
+                width: 16%;
+                a {
+                    color: $form_font_color;
+                    text-decoration: none;
+                }
+            }
+            .edit {
+                width: 3%;
+                a {
+                    color: $form_font_color;
+                }
+            }
+            .delete {
+                width: 3%;
+                text-align: right;
+            }
+        }
+    }
+}

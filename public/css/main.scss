@@ -19,6 +19,8 @@ $success_font_color: #1d6920;
 $error_bg_color: #d7b3b2;
 $error_font_color: #872619;
 
+$delete_color: #b73928;
+
 
 //category colors:
 $battle_bunny: #395696;
@@ -163,6 +165,88 @@ nav {
   margin-bottom: 20px;
 }
 
+.descriptive_info {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.edit_button {
+    display: none;
+    margin: 7px 10px;
+    
+    a {
+        display: block;
+        padding: 3px 8px;
+        color: rgba($form_font_color, 0.5);
+        border: 1px rgba($form_font_color, 0.5) solid;
+        border-radius: 5px;
+        text-decoration: none;
+        
+        &:hover {
+            border-color: $form_font_color;
+            color: $form_font_color;
+        }
+    }
+}
+
+.lightbox_modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, 0.6);
+    z-index: 5;
+    display: none;
+    
+    .modal {
+        width: 45%;
+        margin: 30px auto;
+        background-color: rgba(#000, .75);
+        box-shadow: 0 0 10px #000, 0 0 25px #000;
+        color: rgba(#fff, 0.8);
+        
+        .modal_header, .modal_footer {
+            padding: 10px;
+        }
+        .modal_header {
+            text-align: right;
+            i {
+                cursor: pointer;
+                &:hover {
+                    color: #fff;
+                }
+            }
+        }
+        .modal_body {
+            text-align: center;
+            img {
+                width: 90%;
+                height: auto;
+            }
+        }
+        .modal_footer {
+            text-align: center;
+            //font-style: italic;
+        }
+        
+    }
+    
+    &.light {
+        .modal {
+            background-color: #fff;
+            box-shadow: none;
+            color: $form_font_color;
+            border-radius: 5px;
+            i {
+                &:hover {
+                    color: #000;
+                }
+            }
+        }
+    }
+}
+
 .timeline {
   margin: 25px;
   position: relative;
@@ -222,6 +306,8 @@ nav {
 @import "activities/add_activity";
 @import "activities/activities_overview";
 @import "activities/activity_details";
+@import "activities/activities_list";
+@import "activities/activity_participants";
 
 
 

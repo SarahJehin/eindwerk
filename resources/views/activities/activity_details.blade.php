@@ -87,12 +87,17 @@
                             <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Inschrijvingslijst:</h4>
                             
                             <div class="people clearfix">
+                                @if($is_admin)
+                                <div class="edit_button">
+                                    <a href="{{url('activity_participants/' . $activity->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
+                                </div>
+                                @endif
                                 <div class="amount_participants">
                                     <span class="current_amount @if(count($activity->participants) >= $activity->min_participants){{'okay'}}@endif">{{count($activity->participants)}}</span>
                                      / <span>{{$activity->max_participants}}</span>
                                 </div>
                                 @foreach($activity->participants as $participant)
-                                <div class="person float">
+                                <div class="person float" user_id="{{$participant->id}}">
                                     <figure>
                                         <img src="{{url('images/profile_pictures/' . $participant->image)}}" alt="{{$participant->first_name}} {{$participant->last_name}}">
                                         <figcaption>
@@ -118,6 +123,11 @@
                                 <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
                                 <p>Inschrijven voor deze activiteit is niet meer mogelijk omdat de deadline of de activiteit zelf reeds voorbij is...</p>
                             </div>
+                            @elseif(count($activity->participants) >= $activity->max_participants)
+                            <div>
+                                <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
+                                <p>Inschrijven voor deze activiteit is niet meer mogelijk omdat het maximum aantal inschrijvingen bereikt is...</p>
+                            </div>
                             @else
                             <div>
                                 <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
@@ -126,7 +136,7 @@
                                 <p>Vergeet het inschrijvingsgeld niet over te schrijven naar BE66 7333 2013 0443.</p>
                                 @endif
                                 <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Wie wil je inschrijven:</h4>
-                                <form class="sign_up_form" method="post" action="{{url('sign_up_for_activity')}}">
+                                <form id="activity_sign_up" class="sign_up_form" method="post" action="{{url('sign_up_for_activity')}}">
                                 {{ csrf_field() }}
                                     <input type="number" name="activity_id" id="activity_id" value="{{$activity->id}}" hidden="">
                                     <div class="sign_up_for">
@@ -154,12 +164,34 @@
                                         </div>
                                     </div>
                                     <div class="sign_up_others">
-                                        wordt pas getoond wanneer je de checkbox aanvinkt
+                                        <p class="descriptive_info">Hieronder kan je leden zoeken om in te schrijven voor deze activiteit.<br>
+                                        Enkel personen die lid zijn bij Sportiva kunnen ingeschreven worden.</p>
+                                        <div class="search_participants">
+                                            <input id="search_participants" type="text" name="search_participants" placeholder="Zoek leden" autocomplete="off">
+                                            <div class="search_results">
+                                                <ul>
+                                                    <li>Sarah Jehin</li>
+                                                    <li>Glass Sorenson</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="added_participants">
+                                            <p class="descriptive_info">Volgende personen worden ingeschreven wanneer je op inschrijven klikt:</p>
+                                            <div class="participant template">
+                                                <input type="number" name="participant[]" value="0" hidden="">
+                                                <i class="fa fa-dot-circle-o" aria-hidden="true"></i> <span>Sarah Jehin</span>
+                                                <i class="fa fa-times remove" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <input type="submit" name="submit" value="Inschrijven">
+                                    <div class="error_msg">
+                                        test
                                     </div>
                                 </form>
+                                <div>
+                                    <input type="submit" name="submit" value="Inschrijven">
+                                </div>
+                                
                             </div>
                             @endif
                         </div>

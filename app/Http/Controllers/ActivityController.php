@@ -25,6 +25,7 @@ class ActivityController extends Controller
 
     public function activity_details($id) {
         $activity = Activity::where('id', $id)->with('category')->first();
+        $is_admin = false;
         
         $user_signed_up = false;
         if($activity->participants->contains(Auth::user()->id)) {
@@ -34,6 +35,12 @@ class ActivityController extends Controller
             if($status == 1 || $status == 2) {
                 $user_signed_up = true;
             }
+        }
+        //check if currently logged in user is admin (has roles), if yes: show edit buttons:
+        if (count(Auth::user()->roles))
+        {
+            // extra check for correct role = TODO
+            $is_admin = true;
         }
         //dd($activity->participants);
         
@@ -45,24 +52,48 @@ class ActivityController extends Controller
         //dd($activity->participants->where('id', 1)->first()->pivot->status);
 
         //dd($activity->participants[0]->pivot->status);
-        return view('activities/activity_details', ['activity' => $activity, 'user_signed_up' => $user_signed_up]);
+        return view('activities/activity_details', ['activity' => $activity, 'user_signed_up' => $user_signed_up, 'is_admin' => $is_admin]);
     }
 
     public function sign_up_for_activity(Request $request) {
         $activity = Activity::find($request->activity_id);
+        $activity_is_free = !$activity->price;
+        //dd($request);
         if($request->sign_up_me == 'on') {
             $user = User::find(Auth::user()->id);
+            
             //check if the record already exists, if yes, update, if not create
-            if($activity->participants->contains(Auth::user()->id)) {
-                //if it is a free activity, status should be set to '2' immediately
+            if($activity->users->contains(Auth::user()->id)) {
                 $user->activities()->updateExistingPivot($request->activity_id, ['status' => 1]);
             }
             else {
-                //if it is a free activity, status should be set to '2' immediately
                 $user->activities()->attach($request->activity_id, ['signed_up_by' => $user->id, 'status' => 1]);
             }
-            
+            //if it's a free activity update status to '2', which means paid
+            if($activity_is_free) {
+                $user->activities()->updateExistingPivot($request->activity_id, ['status' => 2]);
+            }
         }
+        if($request->sign_up_others == 'on') {
+            $participants = $request->participant;
+            array_shift($participants);
+
+            foreach ($participants as $key => $participant_id) {
+                $user = User::find($participant_id);
+                //check if the record already exists, if yes, update, if not create
+                if($activity->participants->contains($participant_id)) {
+                    $user->activities()->updateExistingPivot($request->activity_id, ['status' => 1]);
+                }
+                else {
+                    $user->activities()->attach($request->activity_id, ['signed_up_by' => Auth::user()->id, 'status' => 1]);
+                }
+                //if it's a free activity update status to '2', which means paid
+                if($activity_is_free) {
+                    $user->activities()->updateExistingPivot($request->activity_id, ['status' => 2]);
+                }
+            }
+        }
+
         return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Dankjewel voor je inschrijving!');
     }
 
@@ -208,6 +239,8 @@ class ActivityController extends Controller
         $enddatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->endtime  . ':00';
 
+        $deadlinedatetime = date('Y-m-d', strtotime($request->deadline)) . ' ' . '23:59:59';
+
 
         $activity = new Activity([
             'title'         => $request->title,
@@ -215,7 +248,7 @@ class ActivityController extends Controller
             'poster'        => $new_file_name,
             'extra_url'     => $request->extra_url,
             'start'         => $startdatetime,
-            'deadline'      => $request->deadline,
+            'deadline'      => $deadlinedatetime,
             'end'           => $enddatetime,
             'location'      => $location,
             'latitude'      => $latitude,
@@ -236,5 +269,33 @@ class ActivityController extends Controller
         $activity->save();
 
         return redirect('activities_overview')->with('message', 'Activiteit succesvol toegevoegd');
+    }
+
+    public function update_activity(Request $request) {
+        //
+    }
+
+    public function delete_activity(Request $request) {
+        //
+    }
+
+    public function get_activities_list() {
+        $activities = Activity::select('id', 'title', 'start', 'max_participants')
+                                ->with('participants')
+                                ->whereDate('start', '>', date('Y-m-d').' 00:00:00')
+                                ->orderBy('start')
+                                ->get();
+        //dd($activities[0]->participants);
+        return view('activities/admin_activities_overview', ['activities' => $activities]);
+    }
+
+    public function get_activity_participants($id) {
+        $activity = Activity::find($id);
+        
+        foreach ($activity->participants as $key => $participant) {
+            $participant->pivot["signed_up_by_user"] = User::select('id', 'first_name', 'last_name')->where('id', $participant->pivot->signed_up_by)->first();
+        }
+        //dd($activity->participants[0]->pivot->signed_up_by_user);
+        return view('activities/activity_participants_overview', ['activity' => $activity]);
     }
 }

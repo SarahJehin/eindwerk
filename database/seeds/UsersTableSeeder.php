@@ -66,7 +66,7 @@ class UsersTableSeeder extends Seeder
 
         $role_user2 = array(
             'user_id' => DB::table('users')
-                ->where('last_name', '=', 'Jehin')
+                ->where('last_name', '=', 'Sorenson')
                 ->select('id')->first()->id,
             'role_id' => DB::table('roles')
                 ->where('level', '=', 20)
@@ -75,5 +75,68 @@ class UsersTableSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
         );
         DB::table('role_user')->insert($role_user2);
+
+
+        $user_row3 =
+            array(
+                'first_name'    => 'Jorien',
+                'last_name'     => 'Geenen',
+                'vtv_nr'        => '0718080',
+                'email'         => 'jorien.geenen@tcs.be',
+                'gsm'           => '',
+                'birth_date'    => '1996-04-14',
+                'gender'        => 'V',
+                'ranking'       => 'C+30/2',
+                'image'         => 'jorien_geenen.jpg',
+                'level_id'      => 6,
+                'password'      => Hash::make('jorien'),
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            );
+        DB::table('users')->insert($user_row3);
+
+
+        $role_user3 = array(
+            'user_id' => DB::table('users')
+                ->where('last_name', '=', 'Geenen')
+                ->select('id')->first()->id,
+            'role_id' => DB::table('roles')
+                ->where('level', '=', 20)
+                ->select('id')->first()->id,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        );
+        DB::table('role_user')->insert($role_user3);
+
+        $user_row4 =
+            array(
+                'first_name'    => 'Sarah',
+                'last_name'     => 'Huysmans',
+                'vtv_nr'        => '0753883',
+                'email'         => 'sarah.huysmans@tcs.be',
+                'gsm'           => '',
+                'birth_date'    => '1990-08-24',
+                'gender'        => 'V',
+                'ranking'       => 'C+30/4',
+                'image'         => 'sarah_huysmans.jpg',
+                'level_id'      => 6,
+                'password'      => Hash::make('sarah_huysmans'),
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            );
+        DB::table('users')->insert($user_row4);
+
+
+        $role_user4 = array(
+            'user_id' => DB::table('users')
+                ->where('last_name', '=', 'Huysmans')
+                ->select('id')->first()->id,
+            'role_id' => DB::table('roles')
+                ->where('level', '=', 20)
+                ->select('id')->first()->id,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+        );
+        DB::table('role_user')->insert($role_user4);
     }
 }

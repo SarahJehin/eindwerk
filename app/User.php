@@ -47,7 +47,7 @@ class User extends Authenticatable
     //return all the activities associated with this user
     public function activities()
     {
-        return $this->belongsToMany('App\Activity');
+        return $this->belongsToMany('App\Activity')->withPivot('status');
     }
     
     //return all the activities where this user was a helper (code = 2)

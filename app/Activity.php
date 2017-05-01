@@ -19,7 +19,7 @@ class Activity extends Model
     //return all the users associated with an activity
     public function users()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')->withPivot('status');
     }
     
     //return all the helpers (code = 5)
@@ -31,7 +31,7 @@ class Activity extends Model
     //return all the participants (code = 1 (not paid) en 2 (paid))
     public function participants()
     {
-        return $this->belongsToMany('App\User')->withPivot('status')->wherePivotIn('status', [1, 2])->orderBy('last_name')->orderBy('first_name');
+        return $this->belongsToMany('App\User')->withPivot('status', 'signed_up_by')->wherePivotIn('status', [1, 2])->orderBy('last_name')->orderBy('first_name');
     }
     
     //return all the participants who have already paid (code = 2)

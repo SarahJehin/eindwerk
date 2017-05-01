@@ -92,6 +92,10 @@
                 .people {
                     box-shadow: 5px 5px 5px rgba(#777272, 0.5);
                     
+                    .edit_button {
+                        float: left;
+                    }
+                    
                     .amount_participants {
                         text-align: right;
                         margin: 15px;
@@ -125,6 +129,12 @@
                             }
                         }
                     }
+                    
+                    &:hover {
+                        .edit_button {
+                            display: block;
+                        }
+                    }
                 }
                 
                 .empty {
@@ -138,6 +148,7 @@
             
             .sign_up_info {
                 .sign_up_for {
+                    margin-bottom: 15px;
                     
                     .me {
                         margin-bottom: 10px;
@@ -179,6 +190,69 @@
                     
                 }
                 .sign_up_others {
+                    display: none;
+                    margin-bottom: 15px;
+                    
+                    .search_participants {
+                        input[name="search_participants"] {
+                            font-size: inherit;
+                            width: calc(100% - 21px);
+                            padding: 5px 10px;
+                            border: 1px solid $form_color;
+                            &:hover, &:focus {
+                                border-color: $theme_color01;
+                            }
+                        }
+                        .search_results {
+                            position: relative;
+
+                            ul {
+                                display: none;
+                                padding: 0;
+                                list-style: none;
+                                margin: 0;
+                                //padding: 10px;
+                                position: absolute;
+                                background-color: #fff;
+                                width: 100%;
+                                border: 1px $form_color solid;
+                                border-top: 0;
+                                border-bottom-left-radius: 5px;
+                                border-bottom-right-radius: 5px;
+                                
+                                li {
+                                    padding: 6px 10px;
+                                    &:hover {
+                                        cursor: pointer;
+                                        background-color: $theme_color01;
+                                        color: #fff;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    .added_participants {
+                        display: none;
+                        .participant {
+                            &.template {
+                                display: none;
+                            }
+                            .remove {
+                                float: right;
+                                text-align: right;
+                                color: rgba($delete_color, 0.8);
+                                &:hover {
+                                    cursor: pointer;
+                                    color: $delete_color;
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                
+                .error_msg {
                     display: none;
                 }
             }

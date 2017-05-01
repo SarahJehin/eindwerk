@@ -1,0 +1,41 @@
+.activity_participants {
+    .list {
+        .participant_block {
+            border-bottom: 1px solid $form_font_color;
+            border-bottom: 1px solid rgba($theme_color01, 0.25);
+            padding: 5px;
+            
+            &.header {
+                background-color: $theme_color01;
+                color: #fff;
+                &:hover {
+                    background-color: $theme_color01;
+                    color: #fff;
+                }
+            }
+            
+            &:hover {
+                background-color: rgba($theme_color01, 0.5);
+                color: #fff;
+            }
+            
+            .participant {
+                width: 30%;
+                margin-right: 15%;
+                .name {
+                    width: 80%;
+                }
+                .age {
+                    width: 20%;
+                }
+            }
+            .signed_up_by {
+                width: 45%;
+            }
+            .paid {
+                width: 10%;
+                text-align: right;
+            }
+        }
+    }
+}
