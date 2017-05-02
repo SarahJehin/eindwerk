@@ -1,73 +1,5 @@
 (function ( window, document, $, undefined ) {
 
-
-    console.log("Welcome in the console of the TCS Dashboard!");
-
-    // LOGIN
-    //login anims (code from: http://codepen.io/ehermanson/pen/KwKWEv)
-    $('#login_form').find('input, textarea').on('keyup blur focus', function (e) {
-
-        var $this = $(this),
-            label = $this.prev('label');
-
-        if (e.type === 'keyup') {
-            if ($this.val() === '') {
-                label.removeClass('active highlight');
-            } else {
-                label.addClass('active highlight');
-            }
-        } else if (e.type === 'blur') {
-            if( $this.val() === '' ) {
-                label.removeClass('active highlight');
-            } else {
-                label.removeClass('highlight');
-            }
-        } else if (e.type === 'focus') {
-
-            if( $this.val() === '' ) {
-                label.removeClass('highlight');
-            }
-            else if( $this.val() !== '' ) {
-                label.addClass('highlight');
-            }
-        }
-
-    });
-
-    //LIGHTBOX
-    /*
-    var lightbox = false;
-    $('.lightbox_modal .modal').click(function(event) {
-        event.stopPropagation();
-    });
-
-    $(window).click(function() {
-        console.log(lightbox);
-        console.log("knlk");
-        close_lightbox_modal();
-    });
-
-    $('.lightbox_modal .modal .fa-times').click(function() {
-        close_lightbox_modal();
-    });
-
-    $( window ).on( "keydown", function( event ) {
-        //if esc key is pressed, close modal
-        if(event.which == 27) {
-            close_lightbox_modal();
-        }
-    });
-
-    function close_lightbox_modal() {
-        if(lightbox) {
-            $('.lightbox_modal').fadeOut(350, function() {
-                lightbox = false;
-            });
-        }
-    }
-*/
-
-/*
     // ADD ACTIVITY
     //multistep form
     $(".timeline div[class^='step']").click(function () {
@@ -163,13 +95,20 @@
         }
     });
 
+    //check if there already exists a poster (when on edit activity)
+    if($('.uploaded_poster').attr('src')) {
+        $('.uploaded_poster').show();
+        $(".poster label").addClass("with_poster");
+    }
+
+
     //wysiwyg editor for description
     //initiate editor with custom toolbar
     $('#summernote').summernote({
         placeholder: 'Type hier je beschrijving...',
         toolbar: [
             // [groupName, [list of button]]
-            ['style', ['bold', 'italic', 'underline']],
+            ['style', ['bold', 'italic', 'underline'/*, 'clear'*/]],
             ['font', ['strikethrough', 'superscript', 'subscript']],
             ['fontsize', ['fontsize']],
             ['insert', ['link']],
@@ -197,18 +136,6 @@
         $(this).parent().parent().removeClass('focus');
     });
 
-    //on focus immediately remove placeholder
-    /*
-    $('.note-editable').focus(function() {
-        $('.note-editing-area .note-placeholder').hide();
-    });
-    $('.note-editable').focusout(function() {
-        if($('.note-editable').html($('#description').val() == '')) {
-            $('.note-editing-area .note-placeholder').show();
-        }
-    });
-    */
-/*
     //Prefill placeholders
     $($('.modal.link-dialog .form-group input')[0]).attr('placeholder', "Weer te geven tekst");
     $($('.modal.link-dialog .form-group input')[1]).attr('placeholder', "URL (bvb http://google.com)");
@@ -219,34 +146,6 @@
         $('#description').html($description_html);
     }, false);
     
-/*
-    //timepicker
-    $(".timepicker .arrow_up").click(function () {
-
-        $timepicker = $(this).parent().find('ul');
-        $current_top = $timepicker.css("top");
-        $current_top = $current_top.replace("px", "");
-        $next_top = parseInt($current_top)+50;
-        console.log($current_top);
-        if($next_top < 0) {
-            $timepicker.css("top", $next_top);
-        }
-        else {
-            $timepicker.css("top", 0);
-        }
-    });
-    $(".timepicker .arrow_down").click(function () {
-        $timepicker = $(this).parent().find('ul');
-        $current_top = $timepicker.css("top");
-        $current_top = $current_top.replace("px", "");
-        $next_top = $current_top-50;
-        console.log($current_top);
-        if($current_top > (-400)) {
-            $timepicker.css("top", $next_top);
-        }
-    });
-    */
-    /*
     $('#starttime').timepicker({ 
         'timeFormat': 'H:i',
         'scrollDefault': 'now',
@@ -276,6 +175,11 @@
         $(".loc_else .bullet").addClass("selected");
         $('.google_maps').addClass('show');
     });
+
+    //check if other location was selected, on edit_activity
+    if($(".loc_else .bullet").hasClass("selected")) {
+        $('.google_maps').addClass('show');
+    }
     
     
 
@@ -329,6 +233,19 @@
         $(".owner ul").hide();
         $show_owner_select = false;
     });
-*/
+
 
 })(window, window.document, window.jQuery);
+/*
+//google maps
+function initMap() {
+    var location = {lat: 51.083253, lng: 4.805906};
+    var map = new google.maps.Map(document.getElementById('sportiva_map'), {
+        zoom: 12,
+        center: location
+    });
+    var marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+}*/

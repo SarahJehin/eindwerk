@@ -193,6 +193,10 @@
                     display: none;
                     margin-bottom: 15px;
                     
+                    .descriptive_info {
+                        margin-top: 0;
+                    }
+                    
                     .search_participants {
                         input[name="search_participants"] {
                             font-size: inherit;

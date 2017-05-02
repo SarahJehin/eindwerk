@@ -170,6 +170,19 @@ nav {
     font-style: italic;
 }
 
+.center {
+    text-align: center;
+}
+
+.link {
+    color: rgba($theme_color01, 0.6);
+    cursor: pointer;
+    //text-decoration: none;
+    &:hover {
+        color: $theme_color01;
+    }
+}
+
 .edit_button {
     display: none;
     margin: 7px 10px;

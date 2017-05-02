@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'TC Sportiva') }}</title>
+    <title>{{ config('app.name', 'TC Sportiva') }} - @yield('title')</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700" rel="stylesheet">
@@ -55,6 +55,7 @@
 
             <ul>
                 <li><a href="{{url('activities_overview')}}"><i class="fa fa-calendar" aria-hidden="true"></a></i></li>
+                <li><a href="{{url('activities_overview')}}"><i class="fa fa-trophy" aria-hidden="true"></a></i></li>
             </ul>
 
 

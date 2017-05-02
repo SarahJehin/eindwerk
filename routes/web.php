@@ -19,13 +19,20 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => ['auth']], function () {
+	//admin
     Route::get('add_activity', 'ActivityController@add_activity');
     Route::post('add_activity', 'ActivityController@create_activity');
+    Route::get('edit_activity/{id}', 'ActivityController@edit_activity');
+    Route::post('update_activity', 'ActivityController@update_activity');
+    Route::post('delete_activity', 'ActivityController@delete_activity');
+    Route::get('activities_list', 'ActivityController@get_activities_list');
+    Route::get('activity_participants/{id}', 'ActivityController@get_activity_participants');
 
+    //users
     Route::get('activities_overview', 'ActivityController@activities_overview');
     Route::get('activity_details/{id}', 'ActivityController@activity_details');
     Route::post('sign_up_for_activity', 'ActivityController@sign_up_for_activity');
     Route::post('sign_out_for_activity', 'ActivityController@sign_out_for_activity');
-    Route::get('activities_list', 'ActivityController@get_activities_list');
-    Route::get('activity_participants/{id}', 'ActivityController@get_activity_participants');
+
+    Route::get('scoreboard', 'ActivityController@get_scoreboard');
 });

@@ -49,17 +49,21 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Activity')->withPivot('status');
     }
+
+    public function paid_activities() {
+        return $this->belongsToMany('App\Activity')->withPivot('status')->wherePivot('status', 2);
+    }
     
     //return all the activities where this user was a helper (code = 2)
     public function activities_as_helper()
     {
-        return $this->belongsToMany('App\User')->withPivot('helper_participant')->wherePivot('helper_participant', 2);
+        return $this->belongsToMany('App\Activity')->withPivot('status')->wherePivot('status', 5);
     }
     
     //return all the activities where this user was a participant (code = 1)
     public function activities_as_participant()
     {
-        return $this->belongsToMany('App\User')->withPivot('helper_participant')->wherePivot('helper_participant', 1);
+        return $this->belongsToMany('App\Activity')->withPivot('status')->wherePivot('status', 1);
     }
     
 }

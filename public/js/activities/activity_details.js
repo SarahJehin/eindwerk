@@ -58,10 +58,10 @@
     //sign up others
     $('#sign_up_others').change(function() {
         if($('#sign_up_others:checked').length > 0) {
-            $('.sign_up_others').show();
+            $('.sign_up_others').slideDown();
         }
         else {
-            $('.sign_up_others').hide();
+            $('.sign_up_others').slideUp();
         }
     });
 

@@ -63,10 +63,10 @@
                                     {{ $activity->price }}
                                 </div>
                                 @endif
-                                @if($activity->url)
+                                @if($activity->extra_url)
                                 <div>
                                     <i class="fa fa-link" aria-hidden="true"></i>
-                                    <a href="{{ $activity->url }}" target="_blank">{{ $activity->url }}</a>
+                                    <a href="{{ $activity->extra_url }}" target="_blank">{{ $activity->extra_url }}</a>
                                 </div>
                                 @endif
                                 <div>

@@ -20,8 +20,8 @@
             }
             
             .participant {
-                width: 30%;
-                margin-right: 15%;
+                width: 25%;
+                margin-right: 5%;
                 .name {
                     width: 80%;
                 }
@@ -29,8 +29,11 @@
                     width: 20%;
                 }
             }
+            .email {
+                width: 35%;
+            }
             .signed_up_by {
-                width: 45%;
+                width: 25%;
             }
             .paid {
                 width: 10%;

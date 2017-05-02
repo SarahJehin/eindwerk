@@ -1,6 +1,12 @@
 function initAutocomplete() {
+    var basicLatLng = {lat: 51.083253, lng: 4.805906};
+    if($('#latitude').val() && $('#longitude').val()) {
+        var latitude = parseFloat($('#latitude').val());
+        var longitude = parseFloat($('#longitude').val());
+        basicLatLng = {lat: latitude, lng: longitude};
+    }
     var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 51.083253, lng: 4.805906},
+        center: basicLatLng,
         zoom: 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -16,6 +22,54 @@ function initAutocomplete() {
     });
 
     var markers = [];
+
+    //if latitude and longitude contain old values or values from existing activity, render the marker on the map
+    if($('#latitude').val() && $('#longitude').val()) {
+        //basic marker
+        var basicMarker = new google.maps.Marker({
+            position: basicLatLng,
+            map: map,
+            title: 'Locatie',
+            draggable: true
+          });
+        
+        basicMarker.setMap(map);
+        
+        markers.push(basicMarker);
+    }
+    //if location = sportiva, render a non draggable marker on the map
+    if($('input[name="location_type"]').val() == 'sportiva') {
+        var basicMarker = new google.maps.Marker({
+            position: basicLatLng,
+            map: map,
+            title: 'Locatie'
+          });
+        
+        basicMarker.setMap(map);
+        
+        markers.push(basicMarker);
+    }
+    //if other location is selected, clear all markers from map
+    $(".loc_else").click(function(){
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = [];
+    });
+    //when sportiva location is selected, put marker back on map
+    $(".loc_sportiva").click(function(){
+        var basicMarker = new google.maps.Marker({
+            position: basicLatLng,
+            map: map,
+            title: 'Locatie'
+          });
+        
+        basicMarker.setMap(map);
+        
+        markers.push(basicMarker);
+    });
+
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', function() {

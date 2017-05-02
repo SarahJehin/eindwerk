@@ -63,4 +63,12 @@ class ApiController extends Controller
         return $user->activities->where('id', $request->activity_id)->first()->pivot->status;
     }
 
+    public function update_activity_visibility(Request $request) {
+        //
+        $activity = Activity::find($request->activity_id);
+        $activity->is_visible = $request->is_visible;
+        $activity->save();
+        return "success";
+    }
+
 }

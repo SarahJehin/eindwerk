@@ -1,20 +1,10 @@
 (function ( window, document, $, undefined ) {
-	console.log("yip");
-	console.log($('input[name^="paid"]'));
 
-	$('input[name^="paid"]').change(function(){
-		var activity_id = $(".heading").attr('activity_id');
-		var user_id 	= ($(this).attr('name')).replace('paid', '');
-		var is_checked 	= !($(this).attr('is_checked') == 'true');
-		$(this).attr('is_checked', is_checked);
-		//post request to change paid status
-		$.post( location.origin + "/api/update_activity_participant_status", { activity_id: activity_id, user_id: user_id, is_checked: is_checked }, function( data ) {
-			//console.log(data);
-		});
-	});
-
+	//activities_list
 	var lightbox = false;
 	$('.activity .delete').click(function() {
+		$activity_id_to_delete = $(this).attr('activity_id');
+		$('#delete_activity_modal input[name="activity_id"]').val($activity_id_to_delete);
 		$('#delete_activity_modal').fadeIn(350, function() {
             lightbox = true;
         });
@@ -47,4 +37,31 @@
             });
         }
     }
+
+    //change visibility
+    $('.is_visible label').click(function() {
+    	var activity_id = $(this).attr('activity_id');
+    	var is_visible = 0;
+    	if(!$($(this).parent().find('input[type="checkbox"]:checked')).length) {
+    		is_visible = 1;
+    	}
+    	$.post( location.origin + "/api/update_activity_visibility", { activity_id: activity_id, is_visible: is_visible }, function( data ) {
+			//console.log(data);
+		});
+    });
+
+
+	//activity_participants
+	$('input[name^="paid"]').change(function(){
+		var activity_id = $(".heading").attr('activity_id');
+		var user_id 	= ($(this).attr('name')).replace('paid', '');
+		var is_checked 	= !($(this).attr('is_checked') == 'true');
+		$(this).attr('is_checked', is_checked);
+		//post request to change paid status
+		$.post( location.origin + "/api/update_activity_participant_status", { activity_id: activity_id, user_id: user_id, is_checked: is_checked }, function( data ) {
+			//console.log(data);
+		});
+	});
+
+	
 })(window, window.document, window.jQuery);

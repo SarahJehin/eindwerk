@@ -18,6 +18,7 @@
 
                 <div class="list">
                     <div class="activity header clearfix">
+                        <div class="is_visible float"><i class="fa fa-eye" aria-hidden="true"></i></div>
                         <div class="date float">Datum</div>
                         <div class="title float">Titel</div>
                         <div class="participants float">Inschrijvingen</div>
@@ -26,11 +27,15 @@
                     </div>
                     @foreach($activities as $activity)
                     <div class="activity clearfix">
+                        <div class="is_visible float">
+                            <input type="checkbox" id="visible{{$activity->id}}" name="visible{{$activity->id}}"  @if($activity->is_visible) {{'checked'}}@endif hidden>
+                            <label for="visible{{$activity->id}}" activity_id="{{$activity->id}}"><i class="fa fa-eye" aria-hidden="true"></i></label>
+                        </div>
                         <div class="date float">{{date('d/m/Y', strtotime($activity->start))}}</div>
                         <div class="title float">{{$activity->title}}</div>
                         <div class="participants float"><a href="{{url('activity_participants/' . $activity->id)}}">{{count($activity->participants)}}/{{$activity->max_participants}}</a></div>
-                        <div class="edit float"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
-                        <div class="delete float"><i class="fa fa-times" aria-hidden="true"></i></div>
+                        <div class="edit float"><a href="{{url('edit_activity/' . $activity->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                        <div class="delete link float" activity_id="{{$activity->id}}""><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
                     @endforeach
                 </div>
@@ -45,7 +50,7 @@
                     Zeker dat de activiteit <span class="activity_name">"activiteit x"</span> wil verwijderen?
                 </div>
                 <div class="modal_footer">
-                    <form method="post" action="#">
+                    <form method="post" action="{{url('delete_activity')}}">
                         {{ csrf_field() }}
                         <input type="number" name="activity_id" value="0" hidden="">
                         <input type="submit" name="submit" value="Ja, nu verwijderen">

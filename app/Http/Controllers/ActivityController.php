@@ -237,7 +237,7 @@ class ActivityController extends Controller
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
         //echo($startdatetime);
         $enddatetime = date('Y-m-d', strtotime($request->startdate));
-        $startdatetime = $startdatetime . ' ' . $request->endtime  . ':00';
+        $enddatetime = $enddatetime . ' ' . $request->endtime  . ':00';
 
         $deadlinedatetime = date('Y-m-d', strtotime($request->deadline)) . ' ' . '23:59:59';
 
@@ -271,16 +271,144 @@ class ActivityController extends Controller
         return redirect('activities_overview')->with('message', 'Activiteit succesvol toegevoegd');
     }
 
+    public function edit_activity($id) {
+        $activity = Activity::find($id);
+        if($activity->location == 'Sportiva (Industriepark 5, Hulshout)') {
+            $activity['location_type'] = 'sportiva';
+        }
+        else {
+            $activity['location_type'] = 'else';
+        }
+        $owner = User::find($activity->owner_id);
+        $activity['owner_name'] = $owner->first_name . ' ' . $owner->last_name;
+        $categories = Category::all();
+        //onderstaande moet nog aangepast worden (waar rol = jeugdbestsuur)
+        $possible_owners = User::all();
+        return view('activities/edit_activity', ['activity' => $activity, 'categories' => $categories, 'owners' => $possible_owners]);
+    }
+
     public function update_activity(Request $request) {
-        //
+        $activity = Activity::find($request->activity_id);
+
+        $min_participants = explode(",", $request->participants)[0];
+        $max_participants = explode(",", $request->participants)[1];
+
+        if($request->is_visible == "on") {
+            $is_visible = 1;
+        }
+        else {
+            $is_visible = 0;
+        }
+
+        $made_by = Auth::user()->id;
+
+        if($request->location_type == 'sportiva') {
+            $location = "Sportiva (Industriepark 5, Hulshout)";
+            $latitude = 51.083253;
+            $longitude = 4.805906;
+        }
+        else {
+            $location = $request->location;
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+        }
+
+        //get day before startdate, in order to check whether the enddate is equal to or after startdate
+        $startdate = strtotime($request->startdate);
+        $day_after_start = strtotime("tomorrow", $startdate);
+        $formatted_day_after = date('Y-m-d', $day_after_start);
+
+        $rules = [
+            'category'      => 'required',
+            'title'         => 'required|string',
+            'description'   => 'required',
+            'startdate'     => 'required|date',
+            'starttime'     => 'required|date_format:H:i',
+            'endtime'       => 'nullable|date_format:H:i|after:starttime',
+            'deadline'      => $request->deadline != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
+            'helpers'       => 'required|integer|max:20',
+            'price'         => 'required|integer|max:20',
+            'owner'         => 'required',
+            'extra_url'     => $request->extra_url != null ? 'url': '',
+        ];
+
+        if($request->location_type == 'else') {
+            $rules['location']  = 'required';
+            $rules['longitude'] = 'required';
+            $rules['latitude']  = 'required';
+        }
+        
+        $this->validate($request, $rules);
+
+        $allowed_extensions = ["jpeg", "png"];
+        if ($request->hasFile('poster')) {
+            if ($request->poster->isValid()) {
+                if (in_array($request->poster->guessClientExtension(), $allowed_extensions)) {
+                    //create new file name
+                    $name = strtolower($request->title);
+                    //keep only letters, numbers and spaces
+                    $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
+                    //remove space at the beginning and end
+                    $name = trim($name);
+                    //convert all multispaces to space
+                    $name = preg_replace ("/ +/", " ", $name);
+                    //replace all spaces with underscores
+                    $name = str_replace(' ', '_', $name);
+
+                    $new_file_name = time() . $name . '.' . $request->poster->getClientOriginalExtension();
+                    //echo($new_file_name);
+                    $request->poster->move(base_path() . '/public/images/activity_images/', $new_file_name);
+
+                    $activity->poster = $new_file_name;
+                }
+            }
+        }
+
+        $startdatetime = date('Y-m-d', strtotime($request->startdate));
+        $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
+        //echo($startdatetime);
+        $enddatetime = date('Y-m-d', strtotime($request->startdate));
+        $enddatetime = $enddatetime . ' ' . $request->endtime  . ':00';
+
+        $deadlinedatetime = date('Y-m-d', strtotime($request->deadline)) . ' ' . '23:59:59';
+
+        $activity->title             = $request->title;
+        $activity->description       = $request->description;
+        $activity->extra_url         = $request->extra_url;
+        $activity->start             = $startdatetime;
+        $activity->deadline          = $deadlinedatetime;
+        $activity->end               = $enddatetime;
+        $activity->location          = $location;
+        $activity->latitude          = $latitude;
+        $activity->longitude         = $longitude;
+        $activity->min_participants  = $min_participants;
+        $activity->max_participants  = $max_participants;
+        $activity->helpers           = $request->helpers;
+        $activity->price             = $request->price;
+        $activity->is_visible        = $is_visible;
+        $activity->made_by_id        = $made_by;
+        $activity->owner_id          = $request->owner;
+        $activity->category_id       = $request->category;
+
+        //dd($activity);
+
+        $activity->save();
+
+        return redirect('edit_activity/' . $activity->id)->with('success_msg', 'De activiteit werd geüpdatet.');
     }
 
     public function delete_activity(Request $request) {
-        //
+        $activity = Activity::find($request->activity_id);
+        //delete the activity
+        $activity->delete();
+        //delete all users related to this activity
+        $activity->users()->detach();
+
+        return redirect('activities_list')->with('success_msg', 'De activiteit werd verwijderd');
     }
 
     public function get_activities_list() {
-        $activities = Activity::select('id', 'title', 'start', 'max_participants')
+        $activities = Activity::select('id', 'title', 'start', 'max_participants', 'is_visible')
                                 ->with('participants')
                                 ->whereDate('start', '>', date('Y-m-d').' 00:00:00')
                                 ->orderBy('start')
@@ -297,5 +425,17 @@ class ActivityController extends Controller
         }
         //dd($activity->participants[0]->pivot->signed_up_by_user);
         return view('activities/activity_participants_overview', ['activity' => $activity]);
+    }
+
+    public function get_scoreboard() {
+        $activities = Activity::where('is_visible', 1)
+                                ->whereDate('start', '<', date('Y-m-d'))
+                                ->with('paid_participants')
+                                ->get();
+
+        $users = User::has('paid_activities')->with('paid_activities')->get();
+        //dd($users);
+        //dd($activities);
+        return view('scoreboard/scoreboard', ['activities' => $activities, 'users' => $users]);
     }
 }

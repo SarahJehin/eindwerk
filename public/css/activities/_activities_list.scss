@@ -14,28 +14,60 @@
                 }
             }
             
+            a {
+                color: rgba($theme_color01, 0.6);
+                text-decoration: none;
+            }
+            
             &:hover {
                 background-color: rgba($theme_color01, 0.5);
                 color: #fff;
+                a {
+                    color: #fff;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+                i {
+                    color: #fff;
+                }
+                .is_visible {
+                    label {
+                        i {
+                            color: rgba(#fff, 0.4);
+                        }
+                    }
+                    input[type="checkbox"]:checked + label {
+                        i {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+            .is_visible {
+                width: 6%;
+                label {
+                    i {
+                        color: rgba($theme_color01, 0.25);
+                    }
+                }
+                input[type="checkbox"]:checked + label {
+                    i {
+                        color: rgba($theme_color01, 0.6);
+                    }
+                }
             }
             .date {
                 width: 16%;
             }
             .title {
-                width: 62%;
+                width: 56%;
             }
             .participants {
                 width: 16%;
-                a {
-                    color: $form_font_color;
-                    text-decoration: none;
-                }
             }
             .edit {
                 width: 3%;
-                a {
-                    color: $form_font_color;
-                }
             }
             .delete {
                 width: 3%;
