@@ -4,7 +4,9 @@
 	var lightbox = false;
 	$('.activity .delete').click(function() {
 		$activity_id_to_delete = $(this).attr('activity_id');
+		$title = $(this).parent().find('.title').text();
 		$('#delete_activity_modal input[name="activity_id"]').val($activity_id_to_delete);
+		$('#delete_activity_modal .activity_name').text($title);
 		$('#delete_activity_modal').fadeIn(350, function() {
             lightbox = true;
         });

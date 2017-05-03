@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Activiteit bewerken')
 
 @section('custom_css')
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">

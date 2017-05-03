@@ -47,7 +47,7 @@
             <div class="modal">
                 <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
                 <div class="modal_body">
-                    Zeker dat de activiteit <span class="activity_name">"activiteit x"</span> wil verwijderen?
+                    Zeker dat je de activiteit "<strong class="activity_name">"activiteit x"</strong>" wil verwijderen?
                 </div>
                 <div class="modal_footer">
                     <form method="post" action="{{url('delete_activity')}}">

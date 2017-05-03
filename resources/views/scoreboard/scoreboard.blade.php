@@ -9,12 +9,70 @@
             </div>
             <div class="content">
 
-                <div class="tabs">
-                    Hierin moeten nog 2 tabs komen: 1 voor de jeugd en 1 voor de volwassenen
+                <div class="tabs clearfix">
+                    <div class="tab adults float active">
+                        <div class="bg_helper"></div>
+                        Volwassenen
+                    </div>
+                    <div class="tab youth float">
+                        <div class="bg_helper"></div>
+                        Jeugd
+                    </div>
                 </div>
                 <div class="podium">
-                    Hierin komt de top 3 of top 5
+                    <div class="outer_arc">
+                        <ul class='pie'>
+                            <li class='slice'>
+                                <div class='slice-contents'>
+                                    <div class="real_content"><span>plaats 1</span></div>
+                                </div>
+                            </li>
+                            <li class='slice'>
+                                <div class='slice-contents'>
+                                    <div class="real_content"><span>plaats 2</span></div>
+                                </div>
+                            </li>
+                            <li class='slice'>
+                                <div class='slice-contents'>
+                                    <div class="real_content"><span>plaats 3</span></div>
+                                </div>
+                            </li>
+                            <!-- you can add more slices here -->
+                        </ul>
+                        <div class="inner_arc">
+                            <div class="trophy">
+                                <i class="fa fa-trophy" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+<!--
+                <svg class="pie">
+                  <circle cx="115" cy="115" r="110"></circle>
+                  <path d="M115,115 L115,5 A110,110 1 0,1 190,35 z"><span>test</span></path>
+                </svg>
+-->
+<!--
+<ul class='pie'>
+    <li class='slice'>
+        <div class='slice-contents'>
+            <div class="content">plaats 1</div>
+        </div>
+    </li>
+    <li class='slice'>
+        <div class='slice-contents'>
+            <div class="content">plaats 2</div>
+        </div>
+    </li>
+    <li class='slice'>
+        <div class='slice-contents'>
+            <div class="content">plaats 3</div>
+        </div>
+    </li>
+</ul>
+-->
+
+
 
                 <div class="board">
                     <table>

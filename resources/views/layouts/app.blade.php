@@ -55,7 +55,7 @@
 
             <ul>
                 <li><a href="{{url('activities_overview')}}"><i class="fa fa-calendar" aria-hidden="true"></a></i></li>
-                <li><a href="{{url('activities_overview')}}"><i class="fa fa-trophy" aria-hidden="true"></a></i></li>
+                <li><a href="{{url('scoreboard')}}"><i class="fa fa-trophy" aria-hidden="true"></a></i></li>
             </ul>
 
 
