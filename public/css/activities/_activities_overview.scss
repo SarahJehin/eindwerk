@@ -1,3 +1,23 @@
-#calendar {
-	padding: 25px;
+.activities_overview {
+    
+    .content {
+    
+        .edit_button {
+            margin: 0;
+            position: absolute;
+            top: 40px;
+            padding: 25px;
+            right: 40px;
+        }
+
+        #calendar {
+            padding: 25px;
+        }
+        
+        &:hover {
+            .edit_button {
+                display: block;
+            }
+        }
+    }
 }

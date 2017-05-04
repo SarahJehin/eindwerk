@@ -105,6 +105,87 @@ class ActivityController extends Controller
         return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Je bent uitgeschreven voor deze activiteit');
     }
 
+
+    public function get_scoreboard() {
+        //dd(Auth::user()->youth_activities_past);
+        $activities = Activity::where('is_visible', 1)
+                                ->whereDate('start', '<', date('Y-m-d'))
+                                ->with('paid_participants')
+                                ->get();
+
+        $users = User::has('paid_activities')->with('paid_activities')->get();
+        $top_3 = $this->get_top_3('test');
+        
+        $youth_activities = Activity::where('is_visible', 1)
+                                    ->whereDate('start', '<', date('Y-m-d'))
+                                    ->whereHas('category', function ($query) {
+                                        $query->where('root', 'youth');
+                                    })
+                                    ->with('paid_participants')
+                                    ->get();
+
+        $adult_activities = Activity::where('is_visible', 1)
+                                    ->whereDate('start', '<', date('Y-m-d'))
+                                    ->whereHas('category', function ($query) {
+                                        $query->where('root', 'adult');
+                                    })
+                                    ->with('paid_participants')
+                                    ->get();
+//dd($youth_activities);
+        //dd($users);
+        //dd($activities);
+
+        //all adult activities
+        $adult_activities = Activity::where('is_visible', 1)
+                                ->whereDate('start', '<', date('Y-m-d'))
+                                ->whereHas('category', function ($query) {
+                                    $query->where('root', 'adult');
+                                })
+                                ->get();
+        //all users who have participated in adult activities
+        $adult_participants = User::has('adult_activities_past')->with('adult_activities_past')->get();
+        //top 3 for adults
+
+
+        //all youth activities
+        $youth_activities = Activity::where('is_visible', 1)
+                                ->whereDate('start', '<', date('Y-m-d'))
+                                ->whereHas('category', function ($query) {
+                                    $query->where('root', 'youth');
+                                })
+                                ->get();
+        //all users who have participated in youth activities
+        $youth_participants = User::has('youth_activities_past')->with('youth_activities_past')->get();
+        //top 3 of youth
+
+
+        return view('scoreboard/scoreboard', [  'activities' => $activities, 
+                                                'users' => $users,
+                                                'adult_activities' => $adult_activities,
+                                                'adult_participants' => $adult_participants,
+                                                'youth_activities' => $youth_activities,
+                                                'youth_participants' => $youth_participants
+                                                ]);
+    }
+
+    public function get_top_3($youth_adult) {
+        //get top 3 members with highest scores
+        $users = User::all();
+        $users_with_total_scores = array();
+        foreach ($users as $user) {
+            $users_with_total_scores[$user->id] = $user->total_score();
+        }
+        rsort($users_with_total_scores);
+        $top3 = array_slice($users_with_total_scores, 0, 3);
+        return $top3;
+    }
+
+
+    /* ************************ ADMIN FUNCTIONS ********************** */
+
+
+
+
     //admins
     public function add_activity() {
         $categories = Category::all();
@@ -259,6 +340,7 @@ class ActivityController extends Controller
             'price'             => $request->price,
             //'youth_adult'       => $youth_adult,
             'is_visible'        => $is_visible,
+            'status'            => 1,
             'made_by_id'        => $made_by,
             'owner_id'          => $request->owner,
             'category_id'       => $request->category
@@ -427,15 +509,5 @@ class ActivityController extends Controller
         return view('activities/activity_participants_overview', ['activity' => $activity]);
     }
 
-    public function get_scoreboard() {
-        $activities = Activity::where('is_visible', 1)
-                                ->whereDate('start', '<', date('Y-m-d'))
-                                ->with('paid_participants')
-                                ->get();
-
-        $users = User::has('paid_activities')->with('paid_activities')->get();
-        //dd($users);
-        //dd($activities);
-        return view('scoreboard/scoreboard', ['activities' => $activities, 'users' => $users]);
-    }
+    
 }

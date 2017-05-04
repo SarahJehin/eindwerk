@@ -22,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('gsm')->nullable();
             $table->date('birth_date');
             $table->string('gender');
-            $table->string('ranking');
+            $table->string('ranking_singles')->nullable();
+            $table->string('ranking_doubles')->nullable();
             $table->string('image')->nullable();
             $table->integer('level_id')->unsigned()->nullable();
             $table->foreign('level_id')->references('id')->on('levels');

@@ -31,6 +31,7 @@ class CreateActivitiesTable extends Migration
             $table->decimal('price', 6, 2)->nullable();
             //$table->tinyInteger('youth_adult');
             $table->tinyInteger('is_visible');
+            $table->tinyInteger('status');
             $table->integer('category_id')->unsigned()->index();
             $table->foreign('category_id')->references('id')->on('categories');
             $table->integer('made_by_id')->unsigned()->index();

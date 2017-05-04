@@ -23,6 +23,7 @@ class CreateActivityUserPivotTable extends Migration
             $table->foreign('activity_id')->references('id')->on('activities');
             //$table->tinyInteger('helper_participant');
             $table->tinyInteger('status');
+            $table->integer('extra_points')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

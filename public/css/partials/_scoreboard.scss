@@ -61,6 +61,7 @@ svg.pie {
     }
 }
 .slice:first-child {
+    z-index: 1;
     transform: rotate(-35deg) skewY(-20deg);
         /*
 	transform: rotate(40deg) /* angle between vertical axis (12 o'clock) 
@@ -74,7 +75,7 @@ svg.pie {
     border: 1px solid $theme_color01;
 }
 .slice:first-child .slice-contents {
-    transform: skewY(20deg) rotate(35deg);
+    transform: skewY(19deg) rotate(35deg);
 }
 .slice:nth-child(1) .slice-contents .real_content {
     left: 25%;
@@ -139,7 +140,7 @@ svg.pie {
 
 
 .podium {
-    margin-bottom: 50px;
+    margin: 50px 0;
     .outer_arc {
         width: 45%;
         height: 170px;
@@ -147,6 +148,7 @@ svg.pie {
         border-top-left-radius: 170px;
         border-top-right-radius: 170px;
         position: relative;
+        margin: 0 auto;
         
         .pie {
             margin: 0 auto;
@@ -159,6 +161,7 @@ svg.pie {
         }
 
         .inner_arc {
+            z-index: 1;
             width: 32%;
             height: 58px;
             //background-color: pink;

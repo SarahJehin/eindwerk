@@ -1,6 +1,5 @@
 @extends('layouts.app')
-
-
+@section('title', $activity->title)
 @section('content')
 
 
@@ -118,7 +117,7 @@
                             </div>
                         </div>
                         <div class="sign_up_info float">
-                            @if( strtotime($activity->start) < strtotime('now') || ($activity->deadline && strtotime($activity->deadline) < strtotime('now')))
+                            @if( strtotime($activity->start) < strtotime('now') || (date('Y', strtotime($activity->deadline)) != 1970 && strtotime($activity->deadline) < strtotime('now')))
                             <div>
                                 <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Deelnemen:</h4>
                                 <p>Inschrijven voor deze activiteit is niet meer mogelijk omdat de deadline of de activiteit zelf reeds voorbij is...</p>

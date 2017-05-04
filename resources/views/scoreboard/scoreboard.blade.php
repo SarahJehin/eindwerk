@@ -82,6 +82,7 @@
                                 @foreach($activities as $activity)
                                 <td>{{$activity->title}}</td>
                                 @endforeach
+                                <td>Totale score</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,6 +91,7 @@
                                 <td>{{$user->first_name}} {{$user->last_name}}</td>
                                 @foreach($activities as $activity)
                                 <td>
+                                    <!-- has activities in the past for which he she has paid -->
                                     @if($user->activities()->where('activities.id', $activity->id)->exists())
                                     <!-- dat hieronder moet dan + de extra score gedaan worden -->
                                     {{1 + $user->activities()->where('activities.id', $activity->id)->first()->pivot->status}}
@@ -98,11 +100,82 @@
                                     @endif
                                 </td>
                                 @endforeach
+                                <td>{{$user->total_score()}}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+
+                <h4>Volwassenen</h4>
+                <div class="board">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Naam</td>
+                                @foreach($adult_activities as $activity)
+                                <td>{{$activity->title}}</td>
+                                @endforeach
+                                <td>Totale score</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($adult_participants as $participant)
+                            <tr>
+                                <td>{{$participant->first_name}} {{$participant->last_name}}</td>
+                                @foreach($adult_activities as $activity)
+                                <td>
+                                    <!-- has activities in the past for which he she has paid -->
+                                    @if($participant->activities()->where('activities.id', $activity->id)->exists())
+                                    <!-- dat hieronder moet dan + de extra score gedaan worden -->
+                                    {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->extra_points}}
+                                    @else
+                                    no
+                                    @endif
+                                </td>
+                                @endforeach
+                                <td>{{$participant->total_score()}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Jeugd</h4>
+                <div class="board">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Naam</td>
+                                @foreach($youth_activities as $activity)
+                                <td>{{$activity->title}}</td>
+                                @endforeach
+                                <td>Totale score</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($youth_participants as $participant)
+                            <tr>
+                                <td>{{$participant->first_name}} {{$participant->last_name}}</td>
+                                @foreach($youth_activities as $activity)
+                                <td>
+                                    <!-- has activities in the past for which he she has paid -->
+                                    @if($participant->activities()->where('activities.id', $activity->id)->exists())
+                                    <!-- dat hieronder moet dan + de extra score gedaan worden -->
+                                    {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->status}}
+                                    @else
+                                    no
+                                    @endif
+                                </td>
+                                @endforeach
+                                <td>{{$participant->total_score()}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+
             </div>
         </div>
 

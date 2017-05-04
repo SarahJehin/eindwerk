@@ -424,6 +424,7 @@ button[type="submit"] {
         float: left;
         margin-right: 10px; }
         .total div[class^="part0"] .categories .category label {
+          overflow: hidden;
           position: absolute;
           width: 80%;
           height: 80%;
@@ -839,8 +840,16 @@ button[type="submit"] {
 .slider_block::after {
   clear: both; }
 
-#calendar {
+.activities_overview .content .edit_button {
+  margin: 0;
+  position: absolute;
+  top: 40px;
+  padding: 25px;
+  right: 40px; }
+.activities_overview .content #calendar {
   padding: 25px; }
+.activities_overview .content:hover .edit_button {
+  display: block; }
 
 .activity_details {
   position: relative;
@@ -1007,6 +1016,8 @@ button[type="submit"] {
       color: #395696; }
     .activity_details .activity_info h4.party_penguin {
       color: #e51853; }
+    .activity_details .activity_info h4.clubdagen {
+      color: #d07821; }
   .activity_details .activity_info i {
     width: 25px; }
   .activity_details .lightbox_modal {
@@ -1180,6 +1191,7 @@ svg.pie {
     left: 20%; }
 
 .slice:first-child {
+  z-index: 1;
   transform: rotate(-35deg) skewY(-20deg);
         /*
 	transform: rotate(40deg) /* angle between vertical axis (12 o'clock) 
@@ -1194,7 +1206,7 @@ svg.pie {
   border: 1px solid #1abc9c; }
 
 .slice:first-child .slice-contents {
-  transform: skewY(20deg) rotate(35deg); }
+  transform: skewY(19deg) rotate(35deg); }
 
 .slice:nth-child(1) .slice-contents .real_content {
   left: 25%; }
@@ -1239,14 +1251,15 @@ svg.pie {
 
 /****************************/
 .podium {
-  margin-bottom: 50px; }
+  margin: 50px 0; }
   .podium .outer_arc {
     width: 45%;
     height: 170px;
     border: 5px solid #1abc9c;
     border-top-left-radius: 170px;
     border-top-right-radius: 170px;
-    position: relative; }
+    position: relative;
+    margin: 0 auto; }
     .podium .outer_arc .pie {
       margin: 0 auto;
       border: 0;
@@ -1256,6 +1269,7 @@ svg.pie {
       margin-top: -2px;
       overflow: hidden; }
     .podium .outer_arc .inner_arc {
+      z-index: 1;
       width: 32%;
       height: 58px;
       background-color: #fff;

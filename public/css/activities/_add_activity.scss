@@ -46,14 +46,15 @@
         margin-right: 10px;
 
         label {
-          position: absolute;
-          width: 80%;
-          height: 80%;
-          margin: calc(10% - 6px);
-          border: 6px solid $form_color_radio;
-          border-radius: 50%;
-          background-color: #fff;
-          box-sizing: content-box;
+            overflow: hidden;
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            margin: calc(10% - 6px);
+            border: 6px solid $form_color_radio;
+            border-radius: 50%;
+            background-color: #fff;
+            box-sizing: content-box;
 
           img {
             width: 90%;

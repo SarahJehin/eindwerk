@@ -10,7 +10,7 @@ class Category extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'name', 'color', 'image',
+        'name', 'color', 'image', 'root'
     ];
     
     protected $dates = ['deleted_at'];

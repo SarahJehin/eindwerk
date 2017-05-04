@@ -1,24 +1,27 @@
 @extends('layouts.app')
-
+@section('title', 'Activiteiten')
 @section('custom_css')
 <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css" type="text/css" rel="stylesheet">
 @endsection
 
 @section('content')
-    <div class="">
+    <div class="activities_overview">
 
         <div class="block">
             <div class="heading">
                 Activiteiten overzicht
             </div>
             <div class="content">
-                Hierin komt een overzichtje met activiteiten
 
                 @if (session('message'))
                     <div>
                         {{ session('message') }}
                     </div>
                 @endif
+
+                <div class="edit_button">
+                    <a href="{{url('activities_list')}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
+                </div>
 
                 {{--
                 <ul>
