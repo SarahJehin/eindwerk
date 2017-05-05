@@ -2,6 +2,14 @@
     position: relative;
     height: 100%;
     
+    .block .content:hover {
+        .buttons {
+            .edit_button {
+                display: block;
+            }
+        }
+    }
+    
     .tabs {
         .tab {
             //border: 2px solid $theme_color01;
@@ -45,14 +53,22 @@
         }
     }
     
-    .back {
-        margin: 15px 0;
-        a {
-            color: rgba($theme_color01, 0.6);
-            text-decoration: none;
-            &:hover {
-                color: $theme_color01;
+    .buttons {
+        
+        .back {
+            margin: 15px 0;
+            a {
+                color: rgba($theme_color01, 0.6);
+                text-decoration: none;
+                &:hover {
+                    color: $theme_color01;
+                }
             }
+        }
+        
+        .edit_button {
+            float: right;
+            margin: 10px 0;
         }
     }
     
@@ -185,6 +201,9 @@
                           }
                           &.party_penguin {
                               color: $party_penguin;
+                          }
+                          &.clubdagen {
+                              color: $clubdagen;
                           }
                       }
                     

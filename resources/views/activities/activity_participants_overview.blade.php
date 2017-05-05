@@ -27,7 +27,7 @@
                     @foreach($activity->participants as $participant)
                     <div class="participant_block clearfix">
                         <div class="participant float clearfix">
-                            <div class="name float">{{$participant->first_name}} {{$participant->last_name}}</div>
+                            <div class="name float">{{$participant->last_name}} {{$participant->first_name}}</div>
                             <div class="age float">({{(date('Y')-date('Y', strtotime($participant->birth_date)))}}j.)</div>
                         </div>
                         <div class="email float">{{$participant->email}}</div>

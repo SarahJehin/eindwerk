@@ -21,7 +21,16 @@
                     </div>
                 </div>
 
-                <div class="back"><a href="{{url('activities_overview')}}"><i class="fa fa-angle-left" aria-hidden="true"></i> Terug naar overzicht</a></div>
+                <div class="buttons clearfix">
+                    <div class="float back"><a href="{{url('activities_overview')}}"><i class="fa fa-angle-left" aria-hidden="true"></i> Terug naar overzicht</a></div>
+
+                    @if($is_admin)
+                    <div class="edit_button">
+                        <a href="{{url('edit_activity/' . $activity->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
+                    </div>
+                    @endif
+                </div>
+                
 
                 @if (session('success_msg'))
                     <div class="success_msg">

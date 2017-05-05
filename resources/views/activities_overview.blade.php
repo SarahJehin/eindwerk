@@ -19,21 +19,11 @@
                     </div>
                 @endif
 
+                @if($is_admin)
                 <div class="edit_button">
                     <a href="{{url('activities_list')}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
                 </div>
-
-                {{--
-                <ul>
-                @foreach($activities as $activity)
-                    <li>{{$activity->title}}
-                    <ul>
-                        <li>{{$activity->startdate}}</li>
-                        <li>{{$activity->min_participants}}</li>
-                    </ul></li>
-                @endforeach
-                </ul>
-                --}}
+                @endif
                 
                 <div id="calendar">
                     

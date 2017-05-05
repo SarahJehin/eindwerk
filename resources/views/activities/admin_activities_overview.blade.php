@@ -12,6 +12,8 @@
             </div>
             <div class="content">
 
+                <div class="link"><a href="{{url('add_activity')}}"><i class="fa fa-plus" aria-hidden="true"></i> Activiteit toevoegen</a></div>
+
                 <div class="searchbox">
                     Searchbox for filtering the activities
                 </div>

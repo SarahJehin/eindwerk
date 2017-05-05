@@ -19,168 +19,163 @@
                         Jeugd
                     </div>
                 </div>
-                <div class="podium">
-                    <div class="outer_arc">
-                        <ul class='pie'>
-                            <li class='slice'>
-                                <div class='slice-contents'>
-                                    <div class="real_content"><span>plaats 1</span></div>
+
+
+                <div class="scoreboard adults">
+                    @if($adult_top_3)
+                    <div class="podium">
+                        <div class="outer_arc">
+                            <ul class='pie'>
+                                <li class='slice'>
+                                    <div class='slice-contents'>
+                                        <div class="real_content">
+                                            <span class="ranking">1</span>
+                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[0]->image)}}">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class='slice'>
+                                    <div class='slice-contents'>
+                                        <div class="real_content">
+                                            <span class="ranking">2</span>
+                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[1]->image)}}">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class='slice'>
+                                    <div class='slice-contents'>
+                                        <div class="real_content">
+                                            <span class="ranking">3</span>
+                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[2]->image)}}">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="inner_arc">
+                                <div class="trophy">
+                                    <i class="fa fa-trophy" aria-hidden="true"></i>
                                 </div>
-                            </li>
-                            <li class='slice'>
-                                <div class='slice-contents'>
-                                    <div class="real_content"><span>plaats 2</span></div>
-                                </div>
-                            </li>
-                            <li class='slice'>
-                                <div class='slice-contents'>
-                                    <div class="real_content"><span>plaats 3</span></div>
-                                </div>
-                            </li>
-                            <!-- you can add more slices here -->
-                        </ul>
-                        <div class="inner_arc">
-                            <div class="trophy">
-                                <i class="fa fa-trophy" aria-hidden="true"></i>
                             </div>
                         </div>
                     </div>
-                </div>
-<!--
-                <svg class="pie">
-                  <circle cx="115" cy="115" r="110"></circle>
-                  <path d="M115,115 L115,5 A110,110 1 0,1 190,35 z"><span>test</span></path>
-                </svg>
--->
-<!--
-<ul class='pie'>
-    <li class='slice'>
-        <div class='slice-contents'>
-            <div class="content">plaats 1</div>
-        </div>
-    </li>
-    <li class='slice'>
-        <div class='slice-contents'>
-            <div class="content">plaats 2</div>
-        </div>
-    </li>
-    <li class='slice'>
-        <div class='slice-contents'>
-            <div class="content">plaats 3</div>
-        </div>
-    </li>
-</ul>
--->
+                    @endif
 
-
-
-                <div class="board">
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Naam</td>
-                                @foreach($activities as $activity)
-                                <td>{{$activity->title}}</td>
+                    <div class="board">
+                        <table class="table table-header-rotated">
+                            <thead>
+                                <tr>
+                                    <th>Naam</th>
+                                    @foreach($adult_activities as $activity)
+                                    <th class="rotate"><div><span>{{$activity->title}}</span></div></th>
+                                    @endforeach
+                                    <th class="rotate"><div><span>Totale score</span></div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($adult_participants as $participant)
+                                <tr>
+                                    <td>{{$participant->last_name}} {{$participant->first_name}}</td>
+                                    @foreach($adult_activities as $activity)
+                                    <td title="{{$activity->title}}">
+                                        <!-- has activities in the past for which he she has paid -->
+                                        @if($participant->activities()->where('activities.id', $activity->id)->exists())
+                                        {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->extra_points}}
+                                        @else
+                                        
+                                        @endif
+                                    </td>
+                                    @endforeach
+                                    <td>{{$participant->total_score()}}</td>
+                                </tr>
                                 @endforeach
-                                <td>Totale score</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($users as $user)
-                            <tr>
-                                <td>{{$user->first_name}} {{$user->last_name}}</td>
-                                @foreach($activities as $activity)
-                                <td>
-                                    <!-- has activities in the past for which he she has paid -->
-                                    @if($user->activities()->where('activities.id', $activity->id)->exists())
-                                    <!-- dat hieronder moet dan + de extra score gedaan worden -->
-                                    {{1 + $user->activities()->where('activities.id', $activity->id)->first()->pivot->status}}
-                                    @else
-                                    no
-                                    @endif
-                                </td>
-                                @endforeach
-                                <td>{{$user->total_score()}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <h4>Volwassenen</h4>
-                <div class="board">
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Naam</td>
-                                @foreach($adult_activities as $activity)
-                                <td>{{$activity->title}}</td>
-                                @endforeach
-                                <td>Totale score</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($adult_participants as $participant)
-                            <tr>
-                                <td>{{$participant->first_name}} {{$participant->last_name}}</td>
-                                @foreach($adult_activities as $activity)
-                                <td>
-                                    <!-- has activities in the past for which he she has paid -->
-                                    @if($participant->activities()->where('activities.id', $activity->id)->exists())
-                                    <!-- dat hieronder moet dan + de extra score gedaan worden -->
-                                    {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->extra_points}}
-                                    @else
-                                    no
-                                    @endif
-                                </td>
-                                @endforeach
-                                <td>{{$participant->total_score()}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                <div class="scoreboard youth">
+                    @if($youth_top_3)
+                    <div class="podium">
+                        <div class="outer_arc">
+                            <ul class='pie'>
+                                <li class='slice'>
+                                    <div class='slice-contents'>
+                                        <div class="real_content">
+                                            <span class="ranking">1</span>
+                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[0]->image)}}">
+                                            <span class="name">{{$youth_top_3[0]->first_name}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class='slice'>
+                                    <div class='slice-contents'>
+                                        <div class="real_content">
+                                            <span class="ranking">2</span>
+                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[1]->image)}}">
+                                            <span class="name">{{$youth_top_3[1]->first_name}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class='slice'>
+                                    <div class='slice-contents'>
+                                        <div class="real_content">
+                                            <span class="ranking">3</span>
+                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[2]->image)}}">
+                                            <span class="name">{{$youth_top_3[2]->first_name}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="inner_arc">
+                                <div class="trophy">
+                                    <i class="fa fa-trophy" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
-                <h4>Jeugd</h4>
-                <div class="board">
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Naam</td>
-                                @foreach($youth_activities as $activity)
-                                <td>{{$activity->title}}</td>
+                    <div class="board">
+                        <table class="table table-header-rotated">
+                            <thead>
+                                <tr>
+                                    <th>Naam</th>
+                                    @foreach($youth_activities as $activity)
+                                    <th class="rotate"><div><span>{{$activity->title}}</span></div></th>
+                                    @endforeach
+                                    <th class="rotate"><div><span>Totale score</span></div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($youth_participants as $participant)
+                                <tr>
+                                    <td>{{$participant->last_name}} {{$participant->first_name}}</td>
+                                    @foreach($youth_activities as $activity)
+                                    <td title="{{$activity->title}}">
+                                        <!-- has activities in the past for which he she has paid -->
+                                        @if($participant->activities()->where('activities.id', $activity->id)->exists())
+                                        <!-- dat hieronder moet dan + de extra score gedaan worden -->
+                                        {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->extra_points}}
+                                        @else
+                                        
+                                        @endif
+                                    </td>
+                                    @endforeach
+                                    <td>{{$participant->total_youth_score()}}</td>
+                                </tr>
                                 @endforeach
-                                <td>Totale score</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($youth_participants as $participant)
-                            <tr>
-                                <td>{{$participant->first_name}} {{$participant->last_name}}</td>
-                                @foreach($youth_activities as $activity)
-                                <td>
-                                    <!-- has activities in the past for which he she has paid -->
-                                    @if($participant->activities()->where('activities.id', $activity->id)->exists())
-                                    <!-- dat hieronder moet dan + de extra score gedaan worden -->
-                                    {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->status}}
-                                    @else
-                                    no
-                                    @endif
-                                </td>
-                                @endforeach
-                                <td>{{$participant->total_score()}}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-
 
             </div>
+
         </div>
 
     </div>
 @endsection
 @section('custom_js')
-
+<script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/modernizr-2.7.1.js"></script>
+<script src="{{ asset('js/scoreboard.js') }}"></script>
 @endsection

@@ -11,7 +11,7 @@
             <p>Op deze persoonlijke pagina vind je een overzicht van activiteiten waarvoor je bent ingeschreven, je winteruurschema('s), ...</p>
 
             <div class="current_score">
-                Je huidige score is {{$current_score}}
+                Je huidige score is {{$total_adult_score}}
             </div>
 
             <h4>Mijn activiteiten:</h4>

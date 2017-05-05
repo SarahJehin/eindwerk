@@ -175,7 +175,8 @@ nav {
     text-align: center;
 }
 
-.link {
+.link,
+.link a {
     color: rgba($theme_color01, 0.6);
     cursor: pointer;
     //text-decoration: none;
@@ -441,4 +442,14 @@ nav {
     }
     
 }
+
+
+//print media queries
+@media print {
+   nav {
+       display: none;
+   }
+}
+
+
 

@@ -103,11 +103,11 @@ class User extends Authenticatable
 
     public function total_score() {
         $user_with_activity = User::where('id', $this->id)
-                                ->has('activities_as_participant_past')
-                                ->with('activities_as_participant_past')
+                                ->has('adult_activities_past')
+                                ->with('adult_activities_past')
                                 ->first();
         if($user_with_activity) {
-            $activities_count = $user_with_activity->activities_as_participant_past
+            $activities_count = $user_with_activity->adult_activities_past
                                                     ->count();
 
             $bonus_points = DB::table('activity_user')
@@ -115,7 +115,9 @@ class User extends Authenticatable
                             ->where('activity_user.status', 2)
                             ->join('activities', 'activities.id', '=', 'activity_user.activity_id')
                             ->where('activities.start', '<', date('Y-m-d') . ' 00:00:00')
-                            ->sum('activity_user.status');
+                            ->join('categories', 'categories.id', '=', 'activities.category_id')
+                            ->where('categories.root', '=', 'adult')
+                            ->sum('activity_user.extra_points');
             $total_score = $activities_count + $bonus_points;
         }
         else {
@@ -139,9 +141,9 @@ class User extends Authenticatable
                             ->where('activity_user.status', 2)
                             ->join('activities', 'activities.id', '=', 'activity_user.activity_id')
                             ->where('activities.start', '<', date('Y-m-d') . ' 00:00:00')
-                            ->join('categories', 'category.id', '=', 'activities.category_id')
-                            ->where('category.root', '=', 'youth')
-                            ->sum('activity_user.status');
+                            ->join('categories', 'categories.id', '=', 'activities.category_id')
+                            ->where('categories.root', '=', 'youth')
+                            ->sum('activity_user.extra_points');
             $total_score = $activities_count + $bonus_points;
         }
         else {

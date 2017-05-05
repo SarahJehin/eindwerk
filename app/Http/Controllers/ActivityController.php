@@ -20,7 +20,13 @@ class ActivityController extends Controller
     public function activities_overview() {
         $activities = Activity::all();
 
-        return view('activities_overview', ['activities' => $activities]);
+        $is_admin = false;
+        $user_roles = Auth::user()->roles->pluck('level')->toArray();
+        if (Auth::user() && $user_roles && min($user_roles) < 30) {
+            $is_admin = true;
+        }
+
+        return view('activities_overview', ['activities' => $activities, 'is_admin' => $is_admin]);
     }
 
     public function activity_details($id) {
@@ -36,10 +42,9 @@ class ActivityController extends Controller
                 $user_signed_up = true;
             }
         }
-        //check if currently logged in user is admin (has roles), if yes: show edit buttons:
-        if (count(Auth::user()->roles))
-        {
-            // extra check for correct role = TODO
+        //check if currently logged in user is admin (has roles board or youth_board), if yes: show edit buttons:
+        $user_roles = Auth::user()->roles->pluck('level')->toArray();
+        if (Auth::user() && $user_roles && min($user_roles) < 30) {
             $is_admin = true;
         }
         //dd($activity->participants);
@@ -107,76 +112,94 @@ class ActivityController extends Controller
 
 
     public function get_scoreboard() {
-        //dd(Auth::user()->youth_activities_past);
-        $activities = Activity::where('is_visible', 1)
-                                ->whereDate('start', '<', date('Y-m-d'))
-                                ->with('paid_participants')
-                                ->get();
-
-        $users = User::has('paid_activities')->with('paid_activities')->get();
-        $top_3 = $this->get_top_3('test');
-        
-        $youth_activities = Activity::where('is_visible', 1)
-                                    ->whereDate('start', '<', date('Y-m-d'))
-                                    ->whereHas('category', function ($query) {
-                                        $query->where('root', 'youth');
-                                    })
-                                    ->with('paid_participants')
-                                    ->get();
-
-        $adult_activities = Activity::where('is_visible', 1)
-                                    ->whereDate('start', '<', date('Y-m-d'))
-                                    ->whereHas('category', function ($query) {
-                                        $query->where('root', 'adult');
-                                    })
-                                    ->with('paid_participants')
-                                    ->get();
-//dd($youth_activities);
-        //dd($users);
-        //dd($activities);
-
         //all adult activities
         $adult_activities = Activity::where('is_visible', 1)
-                                ->whereDate('start', '<', date('Y-m-d'))
+                                ->where('start', '<', date('Y-m-d'))
                                 ->whereHas('category', function ($query) {
                                     $query->where('root', 'adult');
                                 })
+                                ->orderBy('start')
                                 ->get();
         //all users who have participated in adult activities
-        $adult_participants = User::has('adult_activities_past')->with('adult_activities_past')->get();
+        $adult_participants = User::has('adult_activities_past')
+                                    ->with('adult_activities_past')
+                                    ->orderBy('last_name')
+                                    ->orderBy('first_name')
+                                    ->get();
         //top 3 for adults
-
+        $adult_top_3 = $this->get_top_3('adult');
+        //dd($adult_top_3);
 
         //all youth activities
         $youth_activities = Activity::where('is_visible', 1)
-                                ->whereDate('start', '<', date('Y-m-d'))
+                                ->where('start', '<', date('Y-m-d'))
                                 ->whereHas('category', function ($query) {
                                     $query->where('root', 'youth');
                                 })
+                                ->orderBy('start')
                                 ->get();
         //all users who have participated in youth activities
-        $youth_participants = User::has('youth_activities_past')->with('youth_activities_past')->get();
+        $youth_participants = User::has('youth_activities_past')
+                                    ->with('youth_activities_past')
+                                    ->orderBy('last_name')
+                                    ->orderBy('first_name')
+                                    ->get();
         //top 3 of youth
+        $youth_top_3 = $this->get_top_3('youth');
+        //dd($youth_top_3);
 
-
-        return view('scoreboard/scoreboard', [  'activities' => $activities, 
-                                                'users' => $users,
-                                                'adult_activities' => $adult_activities,
-                                                'adult_participants' => $adult_participants,
-                                                'youth_activities' => $youth_activities,
-                                                'youth_participants' => $youth_participants
+        return view('scoreboard/scoreboard', [  'adult_activities'      => $adult_activities,
+                                                'adult_participants'    => $adult_participants,
+                                                'adult_top_3'           => $adult_top_3,
+                                                'youth_activities'      => $youth_activities,
+                                                'youth_participants'    => $youth_participants,
+                                                'youth_top_3'           => $youth_top_3
                                                 ]);
     }
 
     public function get_top_3($youth_adult) {
-        //get top 3 members with highest scores
-        $users = User::all();
-        $users_with_total_scores = array();
-        foreach ($users as $user) {
-            $users_with_total_scores[$user->id] = $user->total_score();
+        if($youth_adult == 'adult') {
+            //get all users who have adult activities in the past
+            $adult_users = User::has('adult_activities_past')->select('id')->get();
+            $adult_users_with_total_score = array();
+            foreach ($adult_users as $user) {
+                $adult_users_with_total_score[$user->id] = $user->total_score();
+            }
+            $top3 = $this->get_top_3_users_from_array($adult_users_with_total_score);
         }
-        rsort($users_with_total_scores);
-        $top3 = array_slice($users_with_total_scores, 0, 3);
+        elseif($youth_adult == 'youth') {
+            //get all users who have youth activities in the past
+            $youth_users = User::has('youth_activities_past')->select('id')->get();
+            $youth_users_with_total_score = array();
+            foreach ($youth_users as $user) {
+                $youth_users_with_total_score[$user->id] = $user->total_youth_score();
+            }
+            $top3 = $this->get_top_3_users_from_array($youth_users_with_total_score);
+        }
+        else {
+            $top3 = null;
+        }
+        //if there are less than 3 users, top3 doesn't exist and podium should not be displayed
+        if(count($top3) < 3) {
+            $top3 = null;
+        }
+        
+        return $top3;
+    }
+
+    //parameter: array(user_id => total score) //key = user_id, value = total_score
+    //return top 3 users
+    public function get_top_3_users_from_array($user_total_score_array) {
+        //sort the array in reverse order, while preserving the keys (which are the user id's)
+        arsort($user_total_score_array);
+        //get the first 3 results of the array while preserving the keys (which are the user id's)
+        $top3_ids = array_slice($user_total_score_array, 0, 3, true);
+        $top3 = array();
+        foreach ($top3_ids as $key => $score) {
+            $top_3_user = User::find($key);
+            array_push($top3, $top_3_user);
+        }
+
         return $top3;
     }
 
@@ -191,7 +214,9 @@ class ActivityController extends Controller
         $categories = Category::all();
         //dd($categories);
         //onderstaande moet nog aangepast worden (waar rol = jeugdbestsuur)
-        $possible_owners = User::all();
+        $possible_owners = User::whereHas('roles', function ($query) {
+                                    $query->where('level', '<', 30);
+                                })->get();
         return view('activities/add_activity', ['categories' => $categories, 'owners' => $possible_owners]);
     }
 
@@ -199,10 +224,6 @@ class ActivityController extends Controller
 
         $min_participants = explode(",", $request->participants)[0];
         $max_participants = explode(",", $request->participants)[1];
-
-        //onderstaande bepalen adhv persoon die activiteit gemaakt heeft, just category, not youth_adult
-        //0 = adult, 1 = youth
-        //$youth_adult = 1;
 
         if($request->is_visible == "on") {
             $is_visible = 1;
@@ -492,10 +513,11 @@ class ActivityController extends Controller
     public function get_activities_list() {
         $activities = Activity::select('id', 'title', 'start', 'max_participants', 'is_visible')
                                 ->with('participants')
-                                ->whereDate('start', '>', date('Y-m-d').' 00:00:00')
+                                ->where('start', '>', date('Y-m-d').' 00:00:00')
                                 ->orderBy('start')
                                 ->get();
-        //dd($activities[0]->participants);
+        //dd($activities);
+        
         return view('activities/admin_activities_overview', ['activities' => $activities]);
     }
 
@@ -503,7 +525,11 @@ class ActivityController extends Controller
         $activity = Activity::find($id);
         
         foreach ($activity->participants as $key => $participant) {
-            $participant->pivot["signed_up_by_user"] = User::select('id', 'first_name', 'last_name')->where('id', $participant->pivot->signed_up_by)->first();
+            $participant->pivot["signed_up_by_user"] = User::select('id', 'first_name', 'last_name')
+                                                            ->where('id', $participant->pivot->signed_up_by)
+                                                            ->orderBy('last_name')
+                                                            ->orderBy('first_name')
+                                                            ->first();
         }
         //dd($activity->participants[0]->pivot->signed_up_by_user);
         return view('activities/activity_participants_overview', ['activity' => $activity]);
