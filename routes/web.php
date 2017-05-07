@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'youth_board']], function () {
-	//admin
+	//activities
     Route::get('add_activity', 'ActivityController@add_activity');
     Route::post('add_activity', 'ActivityController@create_activity');
     Route::get('edit_activity/{id}', 'ActivityController@edit_activity');
@@ -37,4 +37,7 @@ Route::group(['middleware' => ['auth', 'youth_board']], function () {
     Route::post('delete_activity', 'ActivityController@delete_activity');
     Route::get('activities_list', 'ActivityController@get_activities_list');
     Route::get('activity_participants/{id}', 'ActivityController@get_activity_participants');
+
+    //member management
+    Route::post('import_members', 'UserController@import_members');
 });
