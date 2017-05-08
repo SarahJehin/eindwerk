@@ -232,6 +232,7 @@
                 <div class="modal_footer">
                     <form method="post" action="{{url('sign_out_for_activity')}}">
                         {{ csrf_field() }}
+                        <input type="number" name="user_id" value="{{Auth::user()->id}}" hidden="">
                         <input type="number" name="activity_id" value="{{$activity->id}}" hidden="">
                         <input type="submit" name="submit" value="Ja, nu uitschrijven">
                     </form>

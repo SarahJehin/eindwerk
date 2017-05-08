@@ -29,25 +29,61 @@ nav {
   background-color: #24313c;
   position: fixed;
   height: 100%;
-  width: 100px;
+  width: 200px;
   z-index: 5; }
-  nav .profile_pic {
-    width: 50%;
-    height: 50px;
-    border-radius: 50%;
-    margin: 0 auto;
-    background-color: #6b7d87; }
-    nav .profile_pic img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%; }
+  nav .personal_details {
+    padding: 15px; }
+    nav .personal_details .profile_pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 0 auto;
+      margin-right: 10px;
+      background-color: #6b7d87; }
+      nav .personal_details .profile_pic img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%; }
+    nav .personal_details .name_total {
+      color: #fff;
+      width: 110px;
+      padding-top: 5px; }
+      nav .personal_details .name_total .name a {
+        color: inherit;
+        text-decoration: none; }
+        nav .personal_details .name_total .name a::after {
+          content: '';
+          display: block;
+          width: 0;
+          height: 1px;
+          background: #fff;
+          transition: width .25s; }
+        nav .personal_details .name_total .name a:hover::after {
+          width: 80%; }
+      nav .personal_details .name_total .logout a {
+        color: rgba(255, 255, 255, 0.65);
+        font-size: 0.8em;
+        text-decoration: none; }
+        nav .personal_details .name_total .logout a:hover {
+          color: #fff; }
   nav ul {
     list-style: none;
-    padding: 0;
-    text-align: center; }
-    nav ul li a {
-      color: #fff;
-      font-size: 2em; }
+    padding: 0; }
+    nav ul li {
+      border-bottom: 1px solid #202c36; }
+      nav ul li a {
+        color: #fff;
+        padding: 15px;
+        padding-left: 15px;
+        display: block;
+        text-decoration: none;
+        transition: padding-left 0.25s; }
+        nav ul li a i.fa {
+          font-size: 1.5em;
+          margin-right: 15px; }
+        nav ul li a:hover, nav ul li a.active {
+          background-color: #202c36;
+          padding-left: 25px; }
 
 #hamburger {
   display: none; }
@@ -84,7 +120,7 @@ nav {
     padding-bottom: 25px; }
   .block h3 {
     font-weight: lighter;
-    color: #fff; }
+    font-family: "Quicksand", sans-serif; }
 
 .success_msg {
   padding: 5px;
@@ -396,6 +432,46 @@ button[type="submit"] {
           background: linear-gradient(to bottom right, #00ffa7, #009688); /* Standard syntax */
           cursor: pointer;
           background-position: 100%; }
+
+.personal_info .profile_pic {
+  width: 30%;
+  margin-right: 3%; }
+  .personal_info .profile_pic img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%; }
+.personal_info .data {
+  width: 67%; }
+  .personal_info .data h2 {
+    margin: 0;
+    margin-bottom: 15px;
+    font-weight: normal;
+    border-bottom: 1px solid #1abc9c; }
+
+.upcoming_activities .list .row,
+.past_activities .list .row {
+  border-bottom: 1px solid rgba(26, 188, 156, 0.25);
+  padding: 5px; }
+  .upcoming_activities .list .row.header,
+  .past_activities .list .row.header {
+    background-color: #1abc9c;
+    color: #fff; }
+    .upcoming_activities .list .row.header:hover,
+    .past_activities .list .row.header:hover {
+      background-color: #1abc9c; }
+  .upcoming_activities .list .row:hover,
+  .past_activities .list .row:hover {
+    background-color: rgba(26, 188, 156, 0.5);
+    color: #fff; }
+  .upcoming_activities .list .row .date,
+  .past_activities .list .row .date {
+    width: 15%; }
+  .upcoming_activities .list .row .title,
+  .past_activities .list .row .title {
+    width: 65%; }
+  .upcoming_activities .list .row .paid,
+  .past_activities .list .row .paid {
+    width: 20%; }
 
 .form_part {
   overflow: hidden; }
@@ -1117,30 +1193,46 @@ button[type="submit"] {
 .activity_participants .list .participant_block {
   border-bottom: 1px solid #9CAFB9;
   border-bottom: 1px solid rgba(26, 188, 156, 0.25);
-  padding: 5px; }
+  /*
+  .email {
+      width: 35%;
+  }*/ }
   .activity_participants .list .participant_block.header {
     background-color: #1abc9c;
-    color: #fff; }
+    color: #fff;
+    padding: 5px; }
     .activity_participants .list .participant_block.header:hover {
       background-color: #1abc9c;
       color: #fff; }
-  .activity_participants .list .participant_block:hover {
+  .activity_participants .list .participant_block:hover .row, .activity_participants .list .participant_block.opened .row {
     background-color: rgba(26, 188, 156, 0.5);
     color: #fff; }
+    .activity_participants .list .participant_block:hover .row .link, .activity_participants .list .participant_block:hover .row .link a, .activity_participants .list .participant_block.opened .row .link, .activity_participants .list .participant_block.opened .row .link a {
+      color: #fff; }
+  .activity_participants .list .participant_block .row {
+    padding: 5px; }
   .activity_participants .list .participant_block .participant {
     width: 25%;
-    margin-right: 5%; }
+    margin-right: 50%; }
     .activity_participants .list .participant_block .participant .name {
       width: 80%; }
     .activity_participants .list .participant_block .participant .age {
       width: 20%; }
-  .activity_participants .list .participant_block .email {
-    width: 35%; }
-  .activity_participants .list .participant_block .signed_up_by {
-    width: 25%; }
+  .activity_participants .list .participant_block .sign_out {
+    width: 15%; }
   .activity_participants .list .participant_block .paid {
     width: 10%;
     text-align: right; }
+  .activity_participants .list .participant_block .details {
+    display: none;
+    padding: 5px; }
+    .activity_participants .list .participant_block .details .gsm, .activity_participants .list .participant_block .details .phone, .activity_participants .list .participant_block .details .email {
+      width: 33%; }
+  .activity_participants .list .participant_block .link, .activity_participants .list .participant_block .link a {
+    text-decoration: none; }
+    .activity_participants .list .participant_block .link:hover, .activity_participants .list .participant_block .link a:hover {
+      text-decoration: underline;
+      color: #fff; }
 
 .podium {
   margin: 50px 0; }
@@ -1400,6 +1492,10 @@ button[type="submit"] {
       padding-bottom: 25px; } }
 @media print {
   nav {
-    display: none; } }
+    display: none; }
+
+  .block {
+    width: 90%;
+    box-shadow: none; } }
 
 /*# sourceMappingURL=main.css.map */

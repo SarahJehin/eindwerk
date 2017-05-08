@@ -3,25 +3,36 @@
         .participant_block {
             border-bottom: 1px solid $form_font_color;
             border-bottom: 1px solid rgba($theme_color01, 0.25);
-            padding: 5px;
+            //padding: 5px;
             
             &.header {
                 background-color: $theme_color01;
                 color: #fff;
+                padding: 5px;
                 &:hover {
                     background-color: $theme_color01;
                     color: #fff;
                 }
             }
             
-            &:hover {
-                background-color: rgba($theme_color01, 0.5);
-                color: #fff;
+            &:hover, &.opened {
+                .row {
+                    background-color: rgba($theme_color01, 0.5);
+                    color: #fff;
+                    .link, .link a {
+                        color: #fff;
+                    }
+                }
+            }
+            
+            .row {
+                padding: 5px;
             }
             
             .participant {
                 width: 25%;
-                margin-right: 5%;
+                //margin-right: 5%;
+                margin-right: 50%;
                 .name {
                     width: 80%;
                 }
@@ -29,15 +40,32 @@
                     width: 20%;
                 }
             }
+            /*
             .email {
                 width: 35%;
-            }
-            .signed_up_by {
-                width: 25%;
+            }*/
+            .sign_out {
+                width: 15%;
             }
             .paid {
                 width: 10%;
                 text-align: right;
+            }
+            
+            .details {
+                display: none;
+                padding: 5px;
+                .gsm, .phone, .email {
+                    width: 33%;
+                }
+            }
+            
+            .link, .link a {
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                    color: #fff;
+                }
             }
         }
     }

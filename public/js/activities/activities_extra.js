@@ -65,5 +65,28 @@
 		});
 	});
 
+    $('.participant_block .participant .name').click(function() {
+        //
+        var participant_block = $(this).parent().parent().parent();
+        participant_block.find('.details').slideToggle( 250);
+        if(participant_block.hasClass('opened')) {
+            participant_block.removeClass('opened');
+        }
+        else {
+            participant_block.addClass('opened');
+        }
+        
+    });
+
+    $('.participant_block .sign_out').click(function() {
+        var participant_block = $(this).parent().parent();
+        //console.log(participant_block.attr('user_id'));
+        $('#sign_out_modal input[name="user_id"]').val(participant_block.attr('user_id'));
+        $('#sign_out_modal .participant').text(participant_block.find('.name').text());
+        $('#sign_out_modal').fadeIn(350, function() {
+            lightbox = true;
+        });
+    });
+
 	
 })(window, window.document, window.jQuery);

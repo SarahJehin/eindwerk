@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth', 'youth_board']], function () {
     Route::post('delete_activity', 'ActivityController@delete_activity');
     Route::get('activities_list', 'ActivityController@get_activities_list');
     Route::get('activity_participants/{id}', 'ActivityController@get_activity_participants');
+    Route::get('download_participants_as_excel/{id}', 'ActivityController@download_participants_as_excel');
 
     //member management
     Route::post('import_members', 'UserController@import_members');

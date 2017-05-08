@@ -35,27 +35,34 @@
         <input type="checkbox" name="hamburger" id="hamburger">
 
         <nav>
-
-            <div class="profile_pic">
-                <img src="{{url('images/profile_pictures/' . Auth::user()->image)}}">
+            <div class="personal_details clearfix">
+                <div class="profile_pic float">
+                    <img src="{{url('images/profile_pictures/' . Auth::user()->image)}}">
+                </div>
+                <div class="name_total float">
+                    <div class="name"><a href="{{url('/')}}">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</a></div>
+                    <div class="logout">
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                                 document.getElementById('logout-form').submit();">
+                            <i class="fa fa-sign-out" aria-hidden="true"></i> Uitloggen
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div>
-                {{Auth::user()->first_name}} {{Auth::user()->last_name}}
-            </div>
+            
 
-            <a href="{{ route('logout') }}"
-               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                Logout
-            </a>
+            
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 {{ csrf_field() }}
             </form>
 
             <ul>
-                <li><a href="{{url('activities_overview')}}"><i class="fa fa-calendar" aria-hidden="true"></a></i></li>
-                <li><a href="{{url('scoreboard')}}"><i class="fa fa-trophy" aria-hidden="true"></a></i></li>
+                <li><a class="{{ (Request::is('activities_overview') ? 'active' : '') }}" href="{{url('activities_overview')}}"><i class="fa fa-calendar" aria-hidden="true"></i><span class="menu_name">Activiteiten</span></a></li>
+                <li><a class="{{ (Request::is('scoreboard') ? 'active' : '') }}" href="{{url('scoreboard')}}"><i class="fa fa-trophy" aria-hidden="true"></i><span class="menu_name">Scorebord</span></a></li>
+                <li><a class="{{ (Request::is('winter_hours') ? 'active' : '') }}" href="{{url('#')}}"><i class="fa fa-snowflake-o" aria-hidden="true"></i><span class="menu_name">Winteruren</span></a></li>
+                <li><a class="{{ (Request::is('members') ? 'active' : '') }}" href="{{url('#')}}"><i class="fa fa-users" aria-hidden="true"></i><span class="menu_name">Leden</span></a></li>
             </ul>
 
 

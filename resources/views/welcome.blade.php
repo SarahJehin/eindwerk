@@ -26,8 +26,8 @@
                     <form id="login_form" method="post" action="{{ route('login') }}">
                         {{ csrf_field() }}
                         <div class="field_wrap">
-                            <label>E-mail</label>
-                            <input type="text" name="email" id="email">
+                            <label>VTV-nr</label>
+                            <input type="text" name="vtv_nr" id="vtv_nr">
                         </div>
 
                         <div class="field_wrap">

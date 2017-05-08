@@ -25,26 +25,34 @@ class UserController extends Controller
 				$password	= Hash::make('sportiva');
 				foreach ($sheet1 as $key => $member) {
 					$vtv_nr 	= $member->vtv;
+					$email		= null;
 					$first_name = ucfirst(mb_strtolower($member->voornaam));
 					$last_name 	= ucfirst(mb_strtolower($member->naam));
 					$gsm_nr 	= '0' . str_replace(' ', '', (string)$member->gsmnr);
 					$birth_date = $member->datum;
 					$gender		= strtoupper($member->mv);
-					$ranking_singles = $this->number_to_ranking($member->e);
-					$ranking_doubles = $this->number_to_ranking($member->d);
+					if($member->e_2017 == 'NG') {
+						$ranking_singles = 'NG (5)';
+						$ranking_doubles = 'NG (5)';
+					}
+					else {
+						$ranking_singles = $this->number_to_ranking($member->e);
+						$ranking_doubles = $this->number_to_ranking($member->d);
+					}
 					$image		= null;
 					$level		= $this->get_level_by_birth_date($birth_date);
 					$tel_nr 	= '0' . str_replace(' ', '', (string)$member->telefoonnr);
 					echo($member->naam . ' ' . $member->voornaam . ' (' .$vtv_nr . '):  ' . $ranking_singles . $ranking_doubles . '<br>');
 					//check if a user with this vtv nr already exists, if not instantiate a new one
 					//actually better updateOrCreate //but maybe not because level should not be overrided, nor should password
-					$member = User::firstOrNew(
+					$user = User::firstOrNew(
 					    ['vtv_nr' => $vtv_nr], 
-					    ['email' 		=> $member->email,
+					    ['email' 		=> $email,
 					     'first_name'	=> $first_name,
 					     'last_name'	=> $last_name,
 					     'gsm'			=> $gsm_nr,
-					     'birth_date'	=> $member->datum,
+					     //'tel_nr'		=> $tel_nr,
+					     'birth_date'	=> $birth_date,
 					     'gender'		=> strtoupper($member->mv),
 					     'ranking_singles'	=> $ranking_singles,
 					     'ranking_doubles'	=> $ranking_doubles,
@@ -52,7 +60,20 @@ class UserController extends Controller
 					     'level_id'		=> $level,
 					     'password'		=> $password]
 					);
-					dump($member);
+					if($user->exists) {
+						//update the current user
+						echo('user, already exists, only some attributes will be updated');
+						$user->ranking_singles 	= $ranking_singles;
+						$user->ranking_doubles 	= $ranking_doubles;
+						$user->gsm_nr			= $gsm_nr;
+						$user->tel_nr			= $tel_nr;
+					}
+					else {
+						//new user was initialized, save to create
+						echo('completely new');
+					}
+					dump($user);
+					$user->save();
 				}
 				/*
 				foreach ($data as $key => $value) {

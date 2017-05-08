@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Activity;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Excel;
 
 class ActivityController extends Controller
 {
@@ -103,11 +104,15 @@ class ActivityController extends Controller
     }
 
     public function sign_out_for_activity(Request $request) {
-        $user = User::find(Auth::user()->id);
+        $user = User::find($request->user_id);
         //set status to 10 (signed out)
         $user->activities()->updateExistingPivot($request->activity_id, ['status' => 10]);
-
-        return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Je bent uitgeschreven voor deze activiteit');
+        if($request->user_id == Auth::user()->id) {
+            return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Je bent uitgeschreven voor deze activiteit.');
+        }
+        else {
+            return redirect('activity_participants/' . $request->activity_id)->with('success_msg', 'Je hebt ' . $user->first_name . ' ' . $user->last_name . ' uitgeschreven voor deze activiteit.');
+        }
     }
 
 
@@ -127,7 +132,8 @@ class ActivityController extends Controller
                                     ->orderBy('first_name')
                                     ->get();
         //top 3 for adults
-        $adult_top_3 = $this->get_top_3('adult');
+        //$adult_top_3 = $this->get_top_3('adult');
+        $adult_top_3 = $this->get_top_3_from_collection($adult_participants, 'adult');
         //dd($adult_top_3);
 
         //all youth activities
@@ -145,8 +151,7 @@ class ActivityController extends Controller
                                     ->orderBy('first_name')
                                     ->get();
         //top 3 of youth
-        $youth_top_3 = $this->get_top_3('youth');
-        //dd($youth_top_3);
+        $youth_top_3 = $this->get_top_3_from_collection($youth_participants, 'youth');
 
         return view('scoreboard/scoreboard', [  'adult_activities'      => $adult_activities,
                                                 'adult_participants'    => $adult_participants,
@@ -157,49 +162,42 @@ class ActivityController extends Controller
                                                 ]);
     }
 
-    public function get_top_3($youth_adult) {
-        if($youth_adult == 'adult') {
-            //get all users who have adult activities in the past
-            $adult_users = User::has('adult_activities_past')->select('id')->get();
-            $adult_users_with_total_score = array();
-            foreach ($adult_users as $user) {
-                $adult_users_with_total_score[$user->id] = $user->total_score();
+    public function get_top_3_from_collection($users_collection, $youth_adult) {
+        $array_to_sort = array();
+        foreach ($users_collection as $user) {
+            if($youth_adult == 'youth') {
+                $score = $user->total_youth_score();
             }
-            $top3 = $this->get_top_3_users_from_array($adult_users_with_total_score);
-        }
-        elseif($youth_adult == 'youth') {
-            //get all users who have youth activities in the past
-            $youth_users = User::has('youth_activities_past')->select('id')->get();
-            $youth_users_with_total_score = array();
-            foreach ($youth_users as $user) {
-                $youth_users_with_total_score[$user->id] = $user->total_youth_score();
+            elseif ($youth_adult == 'adult') {
+                $score = $user->total_score();
             }
-            $top3 = $this->get_top_3_users_from_array($youth_users_with_total_score);
+            else {
+                return null;
+            }
+            array_push($array_to_sort, ['score' => $score,
+                                        'id' => $user->id,
+                                        'last_name' => $user->last_name,
+                                        'first_name' => $user->first_name]);
         }
-        else {
-            $top3 = null;
+        $sort = array();
+        foreach($array_to_sort as $k=>$v) {
+            $sort['score'][$k] = $v['score'];
+            $sort['last_name'][$k] = $v['last_name'];
+            $sort['first_name'][$k] = $v['first_name'];
+        }
+        //first sort by score descending, then by last name ascending, then by first name ascending
+        array_multisort($sort['score'], SORT_DESC, $sort['last_name'], SORT_ASC, $sort['first_name'], SORT_ASC, $array_to_sort);
+        //get first 3 results
+        $top3_array = array_slice($array_to_sort, 0, 3, true);
+        //get users for top 3
+        $top3 = array();
+        foreach ($top3_array as $user) {
+            array_push($top3, User::find($user['id']));
         }
         //if there are less than 3 users, top3 doesn't exist and podium should not be displayed
         if(count($top3) < 3) {
             $top3 = null;
         }
-        
-        return $top3;
-    }
-
-    //parameter: array(user_id => total score) //key = user_id, value = total_score
-    //return top 3 users
-    public function get_top_3_users_from_array($user_total_score_array) {
-        //sort the array in reverse order, while preserving the keys (which are the user id's)
-        arsort($user_total_score_array);
-        //get the first 3 results of the array while preserving the keys (which are the user id's)
-        $top3_ids = array_slice($user_total_score_array, 0, 3, true);
-        $top3 = array();
-        foreach ($top3_ids as $key => $score) {
-            $top_3_user = User::find($key);
-            array_push($top3, $top_3_user);
-        }
-
         return $top3;
     }
 
@@ -516,9 +514,15 @@ class ActivityController extends Controller
                                 ->where('start', '>', date('Y-m-d').' 00:00:00')
                                 ->orderBy('start')
                                 ->get();
+
+        $past_activities = Activity::select('id', 'title', 'start', 'max_participants', 'is_visible')
+                                ->with('participants')
+                                ->where('start', '<', date('Y-m-d').' 00:00:00')
+                                ->orderBy('start', 'desc')
+                                ->get();
         //dd($activities);
         
-        return view('activities/admin_activities_overview', ['activities' => $activities]);
+        return view('activities/admin_activities_overview', ['activities' => $activities, 'past_activities' => $past_activities]);
     }
 
     public function get_activity_participants($id) {
@@ -533,6 +537,34 @@ class ActivityController extends Controller
         }
         //dd($activity->participants[0]->pivot->signed_up_by_user);
         return view('activities/activity_participants_overview', ['activity' => $activity]);
+    }
+
+    public function download_participants_as_excel($activity_id) {
+        $activity = Activity::where('id', $activity_id)->with(array('participants'=>function($query){
+            $query->select('users.id','first_name', 'last_name', 'activity_user.status as betaald');
+        }))->first();
+        
+        foreach ($activity->participants as $key => $participant) {
+            if($participant->betaald == 2) {
+                $participant->betaald = 'JA';
+            }
+            else {
+                $participant->betaald = 'NEEN';
+            }
+        }
+        $participants_full_array = $activity->participants->toArray();
+        $participants_array = array();
+        foreach ($participants_full_array as $participant) {
+            array_push($participants_array, ['achternaam'   => $participant['last_name'],
+                                             'voornaam'     => $participant['first_name'],
+                                             'betaald'      => $participant['betaald']]);
+        }
+        //export participants as Excel file
+        return Excel::create('deelnemers_' . $activity->title, function($excel) use ($participants_array) {
+            $excel->sheet('mySheet', function($sheet) use ($participants_array) {
+                $sheet->fromArray($participants_array);
+            });
+        })->download('xlsx');
     }
 
     
