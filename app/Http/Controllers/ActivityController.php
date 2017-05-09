@@ -63,7 +63,7 @@ class ActivityController extends Controller
 
     public function sign_up_for_activity(Request $request) {
         $activity = Activity::find($request->activity_id);
-        $activity_is_free = !$activity->price;
+        $activity_is_free = !intval($activity->price);
         //dd($request);
         if($request->sign_up_me == 'on') {
             $user = User::find(Auth::user()->id);
@@ -83,7 +83,7 @@ class ActivityController extends Controller
         if($request->sign_up_others == 'on') {
             $participants = $request->participant;
             array_shift($participants);
-
+            
             foreach ($participants as $key => $participant_id) {
                 $user = User::find($participant_id);
                 //check if the record already exists, if yes, update, if not create

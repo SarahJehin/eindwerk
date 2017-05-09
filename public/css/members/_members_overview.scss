@@ -1,0 +1,134 @@
+.members_overview {
+    //
+    
+    .search {
+        margin-bottom: 50px;
+        
+        .quick {
+            input {
+                width: 92%;
+                padding: 5px 10px;
+                font-size: inherit;
+                color: inherit;
+                border: 1px solid $theme_color01;
+                &::placeholder {
+                    color: $form_font_color;
+                    font-style: italic;
+                }
+            }
+            span {
+                padding: 6px 10px 5px;
+                border: 1px solid $theme_color01;
+                color: #fff;
+                background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
+                background-size: 200% 100%;
+                transition: background 0.3s ease;
+                &:hover {
+                    background-position: 100%;
+                    cursor: pointer;
+                }
+            }
+        }
+        
+        .advanced {
+            display: none;
+            background-color: rgba($theme_color01, 0.1);
+            margin-bottom: 50px;
+            margin-top: 5px;
+            padding: 15px;
+            
+            label {
+                display: none;
+            }
+            
+            .ranking, .birth_year {
+                width: 50%;
+                //padding: 0px 2.5%;
+                h3 {
+                    margin-top: 0;
+                }
+            }
+            .ranking {
+                .btn-group.bootstrap-select {
+                    width: 160px;
+                }
+            }
+            .birth_year {
+                .btn-group.bootstrap-select {
+                    width: 120px;
+                }
+            }
+            
+            input[type="submit"] {
+                margin-top: 25px;
+            }
+        }
+    }
+    
+    .download {
+        margin-bottom: 10px;
+    }
+    
+    .list {
+        .member_block {
+            border-bottom: 1px solid rgba($theme_color01, 0.25);
+            .row {
+                padding: 5px;
+                &.header{
+                    background-color: $theme_color01;
+                    color: #fff;
+                }
+                .name {
+                    width: 50%;
+                }
+                .date {
+                    width: 20%;
+                }
+                .singles {
+                    width: 12%;
+                    margin-right: 6%;
+                }
+                .doubles {
+                    width: 12%;
+                }
+            }
+            .details {
+                display: none;
+                padding: 5px;
+                background-color: rgba($theme_color01, 0.1);
+                
+                .profile_pic {
+                    width: 8%;
+                    margin-right: 2%;
+                    img {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 50%;
+                    }
+                }
+                
+                .contact_info {
+                    width: 90%;
+                    margin-top: 15px;
+                    
+                    .gsm, .tel {
+                        width: 25%;
+                    }
+                    .email {
+                        width: 50%;
+                    }
+                }
+            }
+            
+            &:hover, &.opened {
+                .row {
+                    background-color: rgba($theme_color01, 0.5);
+                    color: #fff;
+                    .link {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}

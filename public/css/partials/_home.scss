@@ -1,4 +1,32 @@
 .personal_info {
+    position: relative;
+    
+    .edit_button {
+        margin: 0;
+        position: absolute;
+        right: 0;
+        top: 2px;
+    }
+    
+    .save_button {
+        display: none;
+        padding: 3px 8px;
+        color: rgba($form_font_color, 0.5);
+        border: 1px rgba($form_font_color, 0.5) solid;
+        border-radius: 5px;
+        text-decoration: none;
+        position: absolute;
+        right: 0;
+        top: 2px;
+        background-color: #fff;
+        cursor: pointer;
+        
+        &:hover {
+            color: $form_font_color;
+            border: 1px $form_font_color solid;
+        }
+    }
+    
     .profile_pic {
         width: 30%;
         margin-right: 3%;
@@ -10,11 +38,92 @@
     }
     .data {
         width: 67%;
+        
         h2 {
             margin: 0;
             margin-bottom: 15px;
             font-weight: normal;
             border-bottom: 1px solid $theme_color01;
+            font-family: "Quicksand", sans-serif;
+        }
+        
+        .contact_info {
+            width: 65%;
+            margin-right: 2%;
+            padding-right: 2.5%;
+            border-right: 1px solid $form_font_color;
+            & > div {
+                padding: 5px 0;
+                border-bottom: 1px solid rgba($theme_color02, 0.1);
+            }
+            
+            .gsm, .tel, .email {
+                position: relative;
+                div {
+                    input {
+                        background-color: transparent;
+                        color: inherit;
+                        font-size: inherit;
+                        border: 0;
+                        padding: 0;
+                        border-bottom: 1px solid transparant;
+                        width: 100%;
+                        
+                        &:focus {
+                            border-bottom: 1px solid $theme_color01;
+                        }
+                        
+                        &.valid {
+                            color: $valid_color;
+                        }
+                        &.not_valid {
+                            color: $delete_color;
+                        }
+                    }
+                }
+                
+                &:hover {
+                    .edit_button {
+                        display: block;
+                    }
+                }
+            }
+            .title {
+                width: 60px;
+            }
+            .colon {
+                width: 10px;
+            }
+            .value {
+                width: 215px;
+            }
+        }
+        
+        .tennis_info {
+            width: 30%;
+        }
+    }
+    /*
+    &:hover {
+        .edit_button {
+            display: block;
+        }
+    }
+    */
+}
+
+.badges {
+    .badge {
+        width: 40px;
+        position: relative;
+        span {
+            position: absolute;
+            color: #fff;
+            top: 25%;
+            left: 30%;
+        }
+        i.fa {
+            font-size: 2.5em;
         }
     }
 }
@@ -35,6 +144,11 @@
             &:hover {
                 background-color: rgba($theme_color01, 0.5);
                 color: #fff;
+                .title {
+                    a {
+                        color: #fff;
+                    }
+                }
             }
             
             .date {
@@ -42,9 +156,17 @@
             }
             .title {
                 width: 65%;
+                a {
+                    text-decoration: none;
+                    &:hover {
+                        color: #fff;
+                        text-decoration: underline;
+                    }
+                }
             }
             .paid {
                 width: 20%;
+                text-align: right;
             }
         }
     }

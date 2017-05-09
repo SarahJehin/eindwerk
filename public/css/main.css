@@ -433,20 +433,95 @@ button[type="submit"] {
           cursor: pointer;
           background-position: 100%; }
 
-.personal_info .profile_pic {
-  width: 30%;
-  margin-right: 3%; }
-  .personal_info .profile_pic img {
-    width: 100%;
-    height: auto;
-    border-radius: 50%; }
-.personal_info .data {
-  width: 67%; }
-  .personal_info .data h2 {
+.personal_info {
+  position: relative;
+  /*
+  &:hover {
+      .edit_button {
+          display: block;
+      }
+  }
+  */ }
+  .personal_info .edit_button {
     margin: 0;
-    margin-bottom: 15px;
-    font-weight: normal;
-    border-bottom: 1px solid #1abc9c; }
+    position: absolute;
+    right: 0;
+    top: 2px; }
+  .personal_info .save_button {
+    display: none;
+    padding: 3px 8px;
+    color: rgba(156, 175, 185, 0.5);
+    border: 1px rgba(156, 175, 185, 0.5) solid;
+    border-radius: 5px;
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 2px;
+    background-color: #fff;
+    cursor: pointer; }
+    .personal_info .save_button:hover {
+      color: #9CAFB9;
+      border: 1px #9CAFB9 solid; }
+  .personal_info .profile_pic {
+    width: 30%;
+    margin-right: 3%; }
+    .personal_info .profile_pic img {
+      width: 100%;
+      height: auto;
+      border-radius: 50%; }
+  .personal_info .data {
+    width: 67%; }
+    .personal_info .data h2 {
+      margin: 0;
+      margin-bottom: 15px;
+      font-weight: normal;
+      border-bottom: 1px solid #1abc9c;
+      font-family: "Quicksand", sans-serif; }
+    .personal_info .data .contact_info {
+      width: 65%;
+      margin-right: 2%;
+      padding-right: 2.5%;
+      border-right: 1px solid #9CAFB9; }
+      .personal_info .data .contact_info > div {
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(36, 49, 60, 0.1); }
+      .personal_info .data .contact_info .gsm, .personal_info .data .contact_info .tel, .personal_info .data .contact_info .email {
+        position: relative; }
+        .personal_info .data .contact_info .gsm div input, .personal_info .data .contact_info .tel div input, .personal_info .data .contact_info .email div input {
+          background-color: transparent;
+          color: inherit;
+          font-size: inherit;
+          border: 0;
+          padding: 0;
+          border-bottom: 1px solid transparant;
+          width: 100%; }
+          .personal_info .data .contact_info .gsm div input:focus, .personal_info .data .contact_info .tel div input:focus, .personal_info .data .contact_info .email div input:focus {
+            border-bottom: 1px solid #1abc9c; }
+          .personal_info .data .contact_info .gsm div input.valid, .personal_info .data .contact_info .tel div input.valid, .personal_info .data .contact_info .email div input.valid {
+            color: #5dcb9a; }
+          .personal_info .data .contact_info .gsm div input.not_valid, .personal_info .data .contact_info .tel div input.not_valid, .personal_info .data .contact_info .email div input.not_valid {
+            color: #b73928; }
+        .personal_info .data .contact_info .gsm:hover .edit_button, .personal_info .data .contact_info .tel:hover .edit_button, .personal_info .data .contact_info .email:hover .edit_button {
+          display: block; }
+      .personal_info .data .contact_info .title {
+        width: 60px; }
+      .personal_info .data .contact_info .colon {
+        width: 10px; }
+      .personal_info .data .contact_info .value {
+        width: 215px; }
+    .personal_info .data .tennis_info {
+      width: 30%; }
+
+.badges .badge {
+  width: 40px;
+  position: relative; }
+  .badges .badge span {
+    position: absolute;
+    color: #fff;
+    top: 25%;
+    left: 30%; }
+  .badges .badge i.fa {
+    font-size: 2.5em; }
 
 .upcoming_activities .list .row,
 .past_activities .list .row {
@@ -463,15 +538,26 @@ button[type="submit"] {
   .past_activities .list .row:hover {
     background-color: rgba(26, 188, 156, 0.5);
     color: #fff; }
+    .upcoming_activities .list .row:hover .title a,
+    .past_activities .list .row:hover .title a {
+      color: #fff; }
   .upcoming_activities .list .row .date,
   .past_activities .list .row .date {
     width: 15%; }
   .upcoming_activities .list .row .title,
   .past_activities .list .row .title {
     width: 65%; }
+    .upcoming_activities .list .row .title a,
+    .past_activities .list .row .title a {
+      text-decoration: none; }
+      .upcoming_activities .list .row .title a:hover,
+      .past_activities .list .row .title a:hover {
+        color: #fff;
+        text-decoration: underline; }
   .upcoming_activities .list .row .paid,
   .past_activities .list .row .paid {
-    width: 20%; }
+    width: 20%;
+    text-align: right; }
 
 .form_part {
   overflow: hidden; }
@@ -1441,6 +1527,87 @@ button[type="submit"] {
   .board .table-header-rotated th.row-header {
     padding: 0 10px;
     border-bottom: 1px solid #ccc; }
+
+.members_overview .search {
+  margin-bottom: 50px; }
+  .members_overview .search .quick input {
+    width: 92%;
+    padding: 5px 10px;
+    font-size: inherit;
+    color: inherit;
+    border: 1px solid #1abc9c; }
+    .members_overview .search .quick input::placeholder {
+      color: #9CAFB9;
+      font-style: italic; }
+  .members_overview .search .quick span {
+    padding: 6px 10px 5px;
+    border: 1px solid #1abc9c;
+    color: #fff;
+    background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
+    background-size: 200% 100%;
+    transition: background 0.3s ease; }
+    .members_overview .search .quick span:hover {
+      background-position: 100%;
+      cursor: pointer; }
+  .members_overview .search .advanced {
+    display: none;
+    background-color: rgba(26, 188, 156, 0.1);
+    margin-bottom: 50px;
+    margin-top: 5px;
+    padding: 15px; }
+    .members_overview .search .advanced label {
+      display: none; }
+    .members_overview .search .advanced .ranking, .members_overview .search .advanced .birth_year {
+      width: 50%; }
+      .members_overview .search .advanced .ranking h3, .members_overview .search .advanced .birth_year h3 {
+        margin-top: 0; }
+    .members_overview .search .advanced .ranking .btn-group.bootstrap-select {
+      width: 160px; }
+    .members_overview .search .advanced .birth_year .btn-group.bootstrap-select {
+      width: 120px; }
+    .members_overview .search .advanced input[type="submit"] {
+      margin-top: 25px; }
+.members_overview .download {
+  margin-bottom: 10px; }
+.members_overview .list .member_block {
+  border-bottom: 1px solid rgba(26, 188, 156, 0.25); }
+  .members_overview .list .member_block .row {
+    padding: 5px; }
+    .members_overview .list .member_block .row.header {
+      background-color: #1abc9c;
+      color: #fff; }
+    .members_overview .list .member_block .row .name {
+      width: 50%; }
+    .members_overview .list .member_block .row .date {
+      width: 20%; }
+    .members_overview .list .member_block .row .singles {
+      width: 12%;
+      margin-right: 6%; }
+    .members_overview .list .member_block .row .doubles {
+      width: 12%; }
+  .members_overview .list .member_block .details {
+    display: none;
+    padding: 5px;
+    background-color: rgba(26, 188, 156, 0.1); }
+    .members_overview .list .member_block .details .profile_pic {
+      width: 8%;
+      margin-right: 2%; }
+      .members_overview .list .member_block .details .profile_pic img {
+        width: 100%;
+        height: auto;
+        border-radius: 50%; }
+    .members_overview .list .member_block .details .contact_info {
+      width: 90%;
+      margin-top: 15px; }
+      .members_overview .list .member_block .details .contact_info .gsm, .members_overview .list .member_block .details .contact_info .tel {
+        width: 25%; }
+      .members_overview .list .member_block .details .contact_info .email {
+        width: 50%; }
+  .members_overview .list .member_block:hover .row, .members_overview .list .member_block.opened .row {
+    background-color: rgba(26, 188, 156, 0.5);
+    color: #fff; }
+    .members_overview .list .member_block:hover .row .link, .members_overview .list .member_block.opened .row .link {
+      color: #fff; }
 
 .float {
   float: left; }

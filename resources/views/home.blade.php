@@ -8,41 +8,69 @@
         </div>
         <div class="content">
             <div class="personal_info clearfix">
+                <div class="edit_button">
+                    <a href="{{url('edit_profile')}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
+                </div>
                 <div class="profile_pic float">
                     <img src="{{url('images/profile_pictures/' . Auth::user()->image)}}" alt="{{Auth::user()->first_name}} {{Auth::user()->last_name}}">
                 </div>
                 <div class="data float">
                     <h2>{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h2>
-                    <div class="contact_info">
-                        <div class="gsm">
-                            <span class="title">GSM:</span>
-                            <span class="value">{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}</span>
+                    <div class="clearfix">
+                        <div class="contact_info float">
+                            <div class="vtv_nr clearfix">
+                                <div class="title float">VTV</div>
+                                <div class="colon float">:</div>
+                                <div class="value float">{{Auth::user()->vtv_nr}}</div>
+                            </div>
+                            <div class="gsm clearfix">
+                                <div class="title float">GSM</div>
+                                <div class="colon float">:</div>
+                                <div class="value float"><input type="text" name="new_gsm" value="{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}" readonly="" disabled=""></div>
+                                <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
+                            </div>
+                            <div class="tel clearfix">
+                                <div class="title float">Tel.</div>
+                                <div class="colon float">:</div>
+                                <div class="value float"><input type="text" name="new_tel" value="{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}" readonly="" disabled=""></div>
+                                <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
+                            </div>
+                            <div class="email clearfix">
+                                <div class="title float">E-mail</div>
+                                <div class="colon float">:</div>
+                                <div class="value float"><input type="text" name="new_tel" value="{{Auth::user()->email}}" readonly="" disabled=""></div>
+                                <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                                <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
+                            </div>
                         </div>
-                        <div class="tel">
-                            <span class="title">Tel.:</span>
-                            <span class="value">{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}</span>
+                        <div class="tennis_info float">
+                            <div class="singles">
+                                <span>Enkel:</span>
+                                <span>{{Auth::user()->ranking_singles}}</span>
+                            </div>
+                            <div class="doubles">
+                                <span>Dubbel:</span>
+                                <span>{{Auth::user()->ranking_doubles}}</span>
+                            </div>
                         </div>
-                        <div class="email">
-                            <span class="title">E-mail:</span>
-                            <span class="value">{{Auth::user()->email}}</span>
-                        </div>
-                        email, gsm enz
                     </div>
-                    <div class="tennis_info">
-                        <div class="singles">
-                            <span>Enkel:</span>
-                            <span>{{Auth::user()->ranking_singles}}</span>
-                        </div>
-                        <div class="doubles">
-                            <span>Dubbel:</span>
-                            <span>{{Auth::user()->ranking_doubles}}</span>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="badges">
                 <h3>Badges</h3>
+                @if(count($badges) > 0)
+                    @foreach($badges as $badge)
+                    <div class="badge" title="{{$badge['title']}}">
+                        <span>{{$badge['amount_activities']}}</span>
+                        <i style="color: {{$badge['bg_color']}};" class="fa fa-certificate" aria-hidden="true"></i>
+                    </div>
+                    @endforeach
+                @else
                 <p class="descriptive_info">Je hebt nog geen badges verdiend.</p>
+                @endif
             </div>
 
             <div class="upcoming_activities">
@@ -57,7 +85,7 @@
                     @foreach($user->activities_as_participant_coming as $activity)
                     <div class="row activity clearfix">
                         <div class="date float">{{date('d-m-Y', strtotime($activity->start))}}</div>
-                        <div class="title float">{{$activity->title}}</div>
+                        <div class="title float"><a class="link" href="{{url('activity_details/' . $activity->id)}}">{{$activity->title}}</a></div>
                         <div class="paid float">
                             @if($activity->price > 0)
                                 @if($activity->pivot->status == 2)
@@ -87,7 +115,7 @@
                     @foreach($user->activities_as_participant_past as $activity)
                     <div class="row activity clearfix">
                         <div class="date float">{{date('d-m-Y', strtotime($activity->start))}}</div>
-                        <div class="title float">{{$activity->title}}</div>
+                        <div class="title float"><a class="link" href="{{url('activity_details/' . $activity->id)}}">{{$activity->title}}</a></div>
                         <div class="paid float">
                             @if($activity->price > 0)
                                 @if($activity->pivot->status == 2)
@@ -105,6 +133,10 @@
                 @endif
             </div>
 
+            <div class="winter_hours">
+                <h3>Mijn winteruren</h3>
+            </div>
+
 
 
             <p>Welkom op het dashboard van TC Sportiva!</p>
@@ -112,20 +144,6 @@
 
             <div class="current_score">
                 Je huidige score is {{$total_adult_score}}
-            </div>
-
-            <h4>Mijn activiteiten:</h4>
-            <div>
-            	@foreach($user->activities_as_participant_coming as $activity)
-            	<div>{{date('d-m-Y', strtotime($activity->start))}} - {{$activity->title}}</div>
-            	@endforeach
-            </div>
-
-            <h4>Activiteiten waaraan ik dit seizoen heb deelgenomen:</h4>
-            <div>
-                @foreach($user->activities_as_participant_past as $activity)
-                <div>{{date('d-m-Y', strtotime($activity->start))}} - {{$activity->title}}</div>
-                @endforeach
             </div>
 
             <div class="test">
@@ -138,4 +156,7 @@
         </div>
     </div>
 </div>
+@endsection
+@section('custom_js')
+<script type="text/javascript" src="{{asset('js/members/edit_profile.js')}}"></script>
 @endsection

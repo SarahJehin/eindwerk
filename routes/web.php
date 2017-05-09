@@ -20,12 +20,17 @@ Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => ['auth']], function () {
     //users
+    //activities
     Route::get('activities_overview', 'ActivityController@activities_overview');
     Route::get('activity_details/{id}', 'ActivityController@activity_details');
     Route::post('sign_up_for_activity', 'ActivityController@sign_up_for_activity');
     Route::post('sign_out_for_activity', 'ActivityController@sign_out_for_activity');
 
     Route::get('scoreboard', 'ActivityController@get_scoreboard');
+    //members
+    Route::get('members_overview', 'UserController@get_members_overview');
+    Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
+    Route::post('members_overview', 'UserController@search_members');
 });
 
 Route::group(['middleware' => ['auth', 'youth_board']], function () {

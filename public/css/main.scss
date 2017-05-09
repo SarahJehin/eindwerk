@@ -21,6 +21,8 @@ $error_font_color: #872619;
 
 $delete_color: #b73928;
 
+$valid_color: #5dcb9a;
+
 
 //category colors:
 $battle_bunny: #395696;
@@ -427,6 +429,9 @@ nav {
 
 //scoreboard
 @import "partials/scoreboard";
+
+//members
+@import "members/members_overview";
 
 
 
