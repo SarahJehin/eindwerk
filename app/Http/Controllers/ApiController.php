@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Activity;
 use App\User;
+use Auth;
 use DB;
 
 use Illuminate\Http\Request;
@@ -48,6 +49,32 @@ class ApiController extends Controller
         return $matching_users;
     }
 
+    //update profile contactinfo (like mobile, phone and email)
+    public function update_profile(Request $request) {
+        //return $request->new_value;
+        //type can be: mobile/phone/email
+        $type = $request->type;
+        //this new value is already validated in javascript
+        $new_value = $request->new_value;
+        $user = User::find($request->user_id);
+        //dd($user);
+        switch ($type) {
+            case 'mobile':
+                $user->gsm = $new_value;
+                break;
+            case 'phone':
+                $user->phone = $new_value;
+                break;
+            case 'email':
+                $user->email = $new_value;
+                break;
+        }
+
+        $user->save();
+        return 'success';
+    }
+
+    //admin
     //update paid status
     public function update_activity_participant_status(Request $request) {
         //dd($request);

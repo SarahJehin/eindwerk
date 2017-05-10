@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Welkom')
+@section('custom_css')
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.css">
+
+@endsection
 @section('content')
-<div class="">
+<div class="home profile">
     <div class="block">
         <div class="heading">
             Welkom {{Auth::user()->first_name}}
@@ -137,6 +141,61 @@
                 <h3>Mijn winteruren</h3>
             </div>
 
+            <div class="croppie-test">
+                <!--<img src="{{url('images/profile_pictures/' . Auth::user()->image)}}">-->
+                <img src="{{url('images/activity_images/gps_messages_idea.jpg')}}">
+                <form id="testform01" method="post" action="{{url('update_profile_pic')}}">
+                    {{ csrf_field() }}
+                    <input id="testbase64" type="text" name="testbase64">
+                </form>
+            </div>
+            <img id="profile_image" src="http://www.assuropoil.fr/wp-content/uploads/chat-heureux-en-appartement-savoir.jpg"/>
+
+            <div class="croppietest">
+                <div class="demo-wrap upload-demo">
+                    <div class="container">
+                    <div class="grid">
+                        <div class="col-1-2">
+                            <strong>Upload Example (with exif orientation compatability)</strong>
+                            <div class="actions">
+                                <a class="btn file-btn">
+                                    <span>Upload</span>
+                                    <input id="upload" value="Choose a file" accept="image/*" type="file">
+                                </a>
+                                <button class="upload-result">Result</button>
+                            </div>
+                        </div>
+                        <div class="col-1-2">
+                            <div class="upload-msg">
+                                Upload a file to start cropping
+                            </div>
+                            <div class="upload-demo-wrap">
+                                <div id="upload-demo" class="croppie-container"><div class="cr-boundary" style=""><canvas class="cr-image"></canvas><div class="cr-viewport cr-vp-circle" style="width: 100px; height: 100px;" tabindex="0"></div><div class="cr-overlay"></div></div><div class="cr-slider-wrap"><input class="cr-slider" step="0.0001" type="range"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="testtest">
+                    <div class="resultaat_test">resultaat</div>
+                    <img src="">
+                </div>
+
+                <div class="last_test">
+                    <form id="last_test" method="post" action="{{url('update_profile_pic')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <input id="last_test_input" type="file" name="last_test_upload">
+                        <img class="img_tag_to_render" src="">
+                        <input id="last_test_base64" type="text" name="last_test_base64">
+                        <div class="last_test_result">
+                            Resultaat
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
 
 
             <p>Welkom op het dashboard van TC Sportiva!</p>
@@ -155,8 +214,88 @@
             </div>
         </div>
     </div>
+
+    
+    <div id="update_profile_pic_modal" class="lightbox_modal light">
+        <div class="modal">
+            <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="modal_body">
+                <p>Upload hieronder een nieuwe profielfoto van minstens 400x400:</p>
+                <div>
+                    <form id="upload_profile_pic_form" method="post" action="{{url('update_profile_pic')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <label for="upload"><i class="fa fa-upload" aria-hidden="true"></i> Upload nieuwe profielfoto:</label>
+                        <input id="upload" value="Choose a file" accept="image/*" type="file" hidden="">
+
+                        <div class="upload-wrap">
+                            <div id="upload-container" class="croppie-container"></div>
+                        </div>
+                        <button type="button" class="upload-result submit">Profielfoto bewaren</button>
+                        <input type="hidden" id="imagebase64" name="imagebase64">
+                    </form>
+                </div>
+            </div>
+            <div class="modal_footer">
+
+            </div>
+        </div>
+    </div>
+    
 </div>
 @endsection
 @section('custom_js')
+<script type="text/javascript">
+    var user_id = {{Auth::user()->id}};
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.js"></script>
 <script type="text/javascript" src="{{asset('js/members/edit_profile.js')}}"></script>
+<!--<script type="text/javascript">
+(function ( window, document, $, undefined ) {
+    var $uploadCrop;
+
+        function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('.upload-demo').addClass('ready');
+                    $uploadCrop.croppie('bind', {
+                        url: e.target.result
+                    }).then(function(){
+                        console.log('jQuery bind complete');
+                    });
+                    
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                console.log("Sorry - you're browser doesn't support the FileReader API");
+            }
+        }
+
+        $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+                width: 400,
+                height: 400,
+                type: 'circle'
+            },
+            enableExif: true
+        });
+
+        $('#upload').on('change', function () { readFile(this); });
+        $('.upload-result').on('click', function (ev) {
+            $uploadCrop.croppie('result', {
+                type: 'canvas',
+                size: 'viewport'
+            }).then(function (resp) {
+        $('#imagebase64').val(resp);
+        console.log($('#imagebase64').val());
+                popupResult({
+                    src: resp
+                });
+            });
+        });
+        })(window, window.document, window.jQuery);
+</script>-->
 @endsection

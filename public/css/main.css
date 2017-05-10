@@ -332,7 +332,8 @@ nav {
       background-position: 100%; }
 
 input[type="submit"],
-button[type="submit"] {
+button[type="submit"],
+button.submit {
   background: #1abc9c;
   /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
@@ -348,7 +349,8 @@ button[type="submit"] {
   font-size: 1.2em;
   font-family: inherit; }
   input[type="submit"]:hover,
-  button[type="submit"]:hover {
+  button[type="submit"]:hover,
+  button.submit:hover {
     cursor: pointer;
     background-position: 100%; }
 
@@ -558,6 +560,33 @@ button[type="submit"] {
   .past_activities .list .row .paid {
     width: 20%;
     text-align: right; }
+
+#update_profile_pic_modal label {
+  display: block;
+  width: 400px;
+  margin: 0 auto;
+  cursor: pointer;
+  border: 1px solid #1abc9c;
+  margin-bottom: 15px;
+  padding: 5px; }
+  #update_profile_pic_modal label:hover {
+    background-color: #1abc9c;
+    color: #fff; }
+#update_profile_pic_modal button.submit {
+  width: 400px; }
+#update_profile_pic_modal .upload-container .upload-wrap,
+#update_profile_pic_modal .upload-container .upload-result,
+#update_profile_pic_modal .upload-container.ready .upload-msg {
+  display: none; }
+#update_profile_pic_modal .upload-container.ready .upload-wrap {
+  display: block; }
+#update_profile_pic_modal .upload-container.ready .upload-result {
+  display: inline-block; }
+#update_profile_pic_modal .upload-wrap {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+  margin-bottom: 70px; }
 
 .form_part {
   overflow: hidden; }

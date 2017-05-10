@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 use Excel;
 use Hash;
 use DB;
@@ -112,6 +113,32 @@ class UserController extends Controller
     	$rankings = $this->rankings_array();
     	//dd($search_results);
     	return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
+    }
+
+    public function update_profile_pic(Request $request) {
+    	//$base64_encoded_image = $request->imagebase64;
+    	//$base64_encoded_image = $request->testbase64;
+    	$base64_encoded_image = $request->last_test_base64;
+    	//get the base64 code
+    	$data = explode(';', $base64_encoded_image)[1];
+        $data = explode(',', $data)[1];
+        $profile_pictures_path = public_path() . '/images/profile_pictures/';
+        $image_name = time() . strtolower(Auth::user()->first_name . '_' . Auth::user()->last_name) . '.png';
+
+        //decode the data
+        $data = base64_decode($data);
+        //save the data
+        $total_path = $profile_pictures_path . $image_name;
+        file_put_contents($total_path, $data);
+
+        //update the user model
+        //Auth::user()->image = $image_name;
+        //Auth::user()->save();
+
+        //return redirect()->back();
+
+        dd($profile_pictures_path . $image_name);
+        dd($data);
     }
 
     //admin

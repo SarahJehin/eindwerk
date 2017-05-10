@@ -99,7 +99,8 @@
 
 //submit button or input type submit
 input[type="submit"],
-button[type="submit"] {
+button[type="submit"],
+button.submit {
 
   background: $theme_color01; /* For browsers that do not support gradients */
 

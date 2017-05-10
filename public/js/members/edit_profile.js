@@ -13,7 +13,7 @@
         var gsm_new_value = $(this).val();
         gsm_new_value = gsm_new_value.replace(/\s/g,'');
         var valid_format = /^\d{10}$/.test(gsm_new_value);
-        console.log(valid_format);
+        //console.log(valid_format);
         if(valid_format) {
             $(this).removeClass('not_valid');
             $(this).addClass('valid');
@@ -32,11 +32,14 @@
         var valid_format = /^\d{10}$/.test(gsm_new_value);   // true
         if(valid_format) {
             //send post request to server to update gsm number
+            $.post( location.origin + "/api/update_profile", { type: 'mobile', user_id: user_id, new_value: gsm_new_value }, function( data ) {
+                //console.log(data);
+            });
         }
         
         gsm_old_value = $(this).parent().find('input').val();
         $(this).parent().find('.save_button').hide();
-        console.log('save');
+        //console.log('save');
 
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
@@ -47,7 +50,7 @@
         var gsm_input = $(this).find('input');
         var gsm_save_btn = $(this).parent().find('.save_button');
         setTimeout(function() {
-            console.log('focusout');
+            //console.log('focusout');
             gsm_input.val(gsm_old_value).attr('disabled', 'true').attr('readonly', 'true');
             gsm_save_btn.hide();
         }, 200);
@@ -70,7 +73,7 @@
         var tel_new_value = $(this).val();
         tel_new_value = tel_new_value.replace(/\s/g,'');
         var valid_format = /^\d{9}$/.test(tel_new_value);
-        console.log(valid_format);
+        //console.log(valid_format);
         if(valid_format) {
             $(this).removeClass('not_valid');
             $(this).addClass('valid');
@@ -89,11 +92,14 @@
         //check whether it is a correct mobile number format
         var valid_format = /^\d{9}$/.test(tel_new_value);
         if(valid_format) {
-            //send post request to server to update gsm number
+            //send post request to server to update tel number
+            $.post( location.origin + "/api/update_profile", { type: 'phone', user_id: user_id, new_value: tel_new_value }, function( data ) {
+                //console.log(data);
+            });
         }
         tel_old_value = $(this).parent().find('input').val();
         $(this).parent().find('.save_button').hide();
-        console.log('save');
+        //console.log('save');
 
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
@@ -104,7 +110,7 @@
         var tel_input = $(this).find('input');
         var tel_save_btn = $(this).parent().find('.save_button');
         setTimeout(function() {
-            console.log('focusout');
+            //console.log('focusout');
             tel_input.val(tel_old_value).attr('disabled', 'true').attr('readonly', 'true');
             tel_save_btn.hide();
         }, 200);
@@ -127,7 +133,7 @@
         var email_new_value = $(this).val();
         var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var valid_format = email_regex.test(email_new_value);   // true
-        console.log(valid_format);
+        //console.log(valid_format);
         if(valid_format) {
             $(this).removeClass('not_valid');
             $(this).addClass('valid');
@@ -140,7 +146,7 @@
 
     $('.email .save_button').click(function() {
         var email_new_value = $(this).parent().find('input').val();
-        console.log(email_new_value);
+        //console.log(email_new_value);
         //replace all spaces
         email_new_value = email_new_value.replace(/\s/g,'');
         //check whether it is a correct email format
@@ -149,13 +155,15 @@
         console.log(valid_format);
         if(valid_format) {
             //send post request to server to update email
-            console.log('valid email');
+            $.post( location.origin + "/api/update_profile", { type: 'email', user_id: user_id, new_value: email_new_value }, function( data ) {
+                //console.log(data);
+            });
             email_old_value = $(this).parent().find('input').val();
             $(this).parent().find('.save_button').hide();
-            console.log('save');
+            //console.log('save');
         }
         else {
-            console.log('not valid');
+            //console.log('not valid');
         }
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
@@ -167,7 +175,7 @@
         var email_input = $(this).find('input');
         var email_save_btn = $(this).parent().find('.save_button');
         setTimeout(function() {
-            console.log('focusout');
+            //console.log('focusout');
             email_input.val(email_old_value).attr('disabled', 'true').attr('readonly', 'true');
             email_save_btn.hide();
         }, 200);
@@ -176,5 +184,174 @@
         $(this).find('input').removeClass('valid');
     });
 
+
+    //modal
+    var lightbox = false;
+
+    $('.lightbox_modal .modal').click(function(event) {
+        event.stopPropagation();
+    });
+
+    $(window).click(function() {
+        //console.log(lightbox);
+        close_lightbox_modal();
+    });
+
+    $('.lightbox_modal .modal .fa-times').click(function() {
+        close_lightbox_modal();
+    });
+
+    $( window ).on( "keydown", function( event ) {
+        //if esc key is pressed, close modal
+        if(event.which == 27) {
+            close_lightbox_modal();
+        }
+    });
+
+    function close_lightbox_modal() {
+        if(lightbox) {
+            $('.lightbox_modal').fadeOut(350, function() {
+                lightbox = false;
+            });
+        }
+    }
+
+//croppietest
+
+
+$('.croppie-test img').croppie({
+                                                viewport: {width: 200, height: 200,type: "circle"},
+                                                boundary: {width: 250, height: 250},
+                                                showZoomer: true
+
+                                                 
+                });
+
+jQuery('#profile_image').croppie({
+                                                viewport: {width: 200, height: 200,type: "square"},
+                                                boundary: {width: 250, height: 250},
+                                                showZoomer: true
+
+                                                 
+                });
+
+$('.resultaat_test').click(function() {
+    console.log("test");
+    $('.croppie-test img').croppie('result', {
+        type: 'canvas',
+        size: 'viewport'
+    }).then(function (resp) {
+        console.log(resp);
+        $('.testtest img').attr('src', resp);
+        $('#testbase64').val(resp);
+        console.log($('#testbase64').val());
+        $('#testform01').submit();
+        /*
+        popupResult({
+            src: resp
+        });
+        */
+    });
+});
+
+var $uploadCrop;
+
+function readFile(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            $('.upload-container').addClass('ready');
+            $uploadCrop.croppie('bind', {
+                url: e.target.result
+            }).then(function(){
+                console.log('jQuery bind complete');
+            });
+            
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+    else {
+        alert("Sorry - you're browser doesn't support the FileReader API");
+    }
+}
+
+
+
+$uploadCrop = $('#upload-container').croppie({
+    viewport: {
+        width: 300,
+        height: 300,
+        type: 'circle'
+    },
+    boundary: {width: 350, height: 350},
+    showZoomer: true
+});
+
+$('#upload').on('change', function () { readFile(this); });
+$('.upload-result').on('click', function (ev) {
+    $uploadCrop.croppie('result', {
+        type: 'canvas',
+        size: 'viewport'
+    }).then(function (resp) {
+        //get the result (base64 encoded image) and put it in the hidden input
+        $('#imagebase64').val(resp);
+        console.log($('#imagebase64').val());
+        $('#upload_profile_pic_form').submit();
+        /*
+        popupResult({
+            src: resp
+        });
+        */
+    });
+});
+
+
+///////////////////////////////// last test //////////////////::
+function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('.img_tag_to_render').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#last_test_input").change(function(){
+    readURL(this);
+    setTimeout(function() {
+        $('.img_tag_to_render').croppie({
+                                                viewport: {width: 200, height: 200,type: "circle"},
+                                                boundary: {width: 250, height: 250},
+                                                showZoomer: true
+
+                                                 
+                });
+    }, 5000);
+});
+
+$('.last_test_result').click(function() {
+    $('.img_tag_to_render').croppie('result', {
+        type: 'canvas',
+        size: 'viewport'
+    }).then(function (resp) {
+        //get the result (base64 encoded image) and put it in the hidden input
+        //$('#imagebase64').val(resp);
+        console.log(resp);
+        $('#last_test_base64').val(resp);
+        $('#last_test').submit();
+        //$('#upload_profile_pic_form').submit();
+        /*
+        popupResult({
+            src: resp
+        });
+        */
+    });
+});
 
 })(window, window.document, window.jQuery);

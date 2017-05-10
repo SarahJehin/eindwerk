@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('members_overview', 'UserController@get_members_overview');
     Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
     Route::post('members_overview', 'UserController@search_members');
+    Route::post('update_profile_pic', 'UserController@update_profile_pic');
 });
 
 Route::group(['middleware' => ['auth', 'youth_board']], function () {
