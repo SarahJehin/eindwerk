@@ -6,17 +6,34 @@
 @endsection
 @section('content')
 <div class="members_overview">
-
     <div class="block">
         <div class="heading">
             Ledenlijst
         </div>
         <div class="content">
+
+       		@if (session('success_msg'))
+                <div class="success_msg">
+                    {{ session('success_msg') }}
+                </div>
+            @endif
+            @if (session('warning_users'))
+                <div class="warning_msg">
+                    <strong>Opmerking:</strong> <br>
+                    Bij onderstaande leden ontbrak de geboortedatum of was het geslacht ongeldig (enkel M/V zijn toegelaten):
+                    <ul>
+                    	@foreach(session('warning_users') as $user)
+                    	<li>{{$user}}</li>
+                    	@endforeach
+                    </ul>
+                </div>
+            @endif
+
         	<p>Hieronder vind je een overzicht van alle Sportiva leden</p>
 
         	<div class="search">
-        		<form id="search_members" method="post" action="{{url('members_overview')}}">
-        			{{ csrf_field() }}
+        		<form id="search_members" method="get" action="{{url('members_overview')}}">
+        			<input type="text" name="searching" value="true" hidden="">
 	        		<div class="quick">
 	        			<div class="clearfix">
 	        				<input class="float" type="text" name="name" placeholder="Wie wil je zoeken?"
@@ -100,12 +117,20 @@
         		</form>
         	</div>
 
-        	<div class="download link">
-        		<a href="{{url('download_members_as_excel')}}">
-	        		<i class="fa fa-file-excel-o" aria-hidden="true"></i>
-	        		Ledenlijst downloaden
-	        	</a>
+        	<div class="links clearfix">
+        		<div class="download link float">
+	        		<a href="{{url('download_members_as_excel')}}">
+		        		<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+		        		Ledenlijst downloaden
+		        	</a>
+	        	</div>
+	        	@if($is_admin)
+	        	<div class="import_members link float">
+	        		<i class="fa fa-upload" aria-hidden="true"></i> Ledenlijst importeren
+	        	</div>
+	        	@endif
         	</div>
+        	
         	<div class="list">
         		<div class="member_block">
         			<div class="row header clearfix">
@@ -119,7 +144,11 @@
         		<div class="member_block">
         			<div class="row clearfix">
         				<div class="name float link">{{$member->last_name}} {{$member->first_name}}</div>
-        				<div class="date float">{{date('d-m-Y', strtotime($member->birth_date))}}</div>
+        				<div class="date float">
+        					@if(strtotime($member->birth_date))
+        					{{date('d-m-Y', strtotime($member->birth_date))}}
+        					@endif
+        				</div>
         				<div class="singles float">{{$member->ranking_singles}}</div>
         				<div class="doubles float">{{$member->ranking_doubles}}</div>
         			</div>
@@ -134,7 +163,7 @@
 	        				</div>
 	        				<div class="tel float">
 	        					<i class="fa fa-phone" aria-hidden="true"></i>
-	        					<span>{{$member->gsm}}</span>
+	        					<span>{{$member->tel}}</span>
 	        				</div>
 	        				<div class="email float">
 	        					<i class="fa fa-envelope-o" aria-hidden="true"></i>
@@ -145,12 +174,65 @@
         		</div>
         		@endforeach
         	</div>
+        	<div class="pagination_container apply_bootstrap">
+        		{{ $members->links() }}
+        	</div>
+        	
+
+        </div>
+    </div>
+
+
+    <div id="import_members_modal" class="lightbox_modal light">
+        <div class="modal">
+            <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="modal_body">
+
+	            <div class="descriptive_info">
+	            	<p>Hieronder kan je de ledenlijst importeren.</p>
+	            	<p>Gebruikers waarvan er geen VTV-nr beschikbaar is krijgen een willekeurig nummer toegewezen om te kunnen inloggen op de applicatie.</p>
+	            	<p>Het importeren kan even duren.</p>
+	            </div>
+            	@if(session('error_messages'))
+            	<div class="error_msg">
+            		<p>Niet alle leden werden geïmporteerd om de volgende redenen:</p>
+            		<ul>
+            			@foreach(session('error_messages') as $error)
+            			<li>{{$error}}</li>
+            			@endforeach
+            		</ul>
+            		<p>Volgende leden leverden problemen op:</p>
+            		<ul>
+            			@foreach(session('problem_users') as $user)
+            			<li>{{$user}}</li>
+            			@endforeach
+            		</ul>
+            		
+            	</div>
+            	@endif
+                
+            </div>
+            <div class="modal_footer">
+                <form method="post" action="{{url('import_members')}}" enctype="multipart/form-data">
+	                {{ csrf_field() }}
+	                <input id="import_members" type="file" name="members_excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden="">
+	                <label for="import_members"><i class="fa fa-upload" aria-hidden="true"></i>
+	        		Selecteer een Excel (.xlsx) om te importeren</label>
+	                <input type="submit" name="submit" value="Leden importeren">
+	            </form>
+            </div>
         </div>
     </div>
 </div>
 
 @endsection
 @section('custom_js')
+<script type="text/javascript">
+	var errors = false;
+
+	errors = <?php if(session('error_messages')) {echo("true");} else {echo("false"); } ?>
+
+</script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="{{ asset('js/members/members_overview.js') }}"></script>

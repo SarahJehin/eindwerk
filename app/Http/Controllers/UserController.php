@@ -14,10 +14,22 @@ class UserController extends Controller
 {
     //
 
-    public function get_members_overview() {
-    	$members = User::orderBy('last_name')->orderBy('first_name')->get();
-    	$rankings = $this->rankings_array();
-    	return view('members/members_overview', ['members' => $members, 'rankings' => $rankings]);
+    public function get_members_overview(Request $request) {
+        $rankings = $this->rankings_array();
+        $is_admin = false;
+        $user_roles = Auth::user()->roles->pluck('level')->toArray();
+        if (Auth::user() && $user_roles && min($user_roles) < 30) {
+            $is_admin = true;
+        }
+
+        if($request->has('searching')) {
+            $search_results = $this->search_members($request);
+            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings, 'is_admin' => $is_admin])->with(['input' => Input::all()]);
+        }
+        else {
+            $members = User::orderBy('last_name')->orderBy('first_name')->paginate(50);
+            return view('members/members_overview', ['members' => $members, 'rankings' => $rankings, 'is_admin' => $is_admin]);
+        }
     }
 
     public function download_members_as_excel() {
@@ -32,7 +44,12 @@ class UserController extends Controller
     }
 
     public function search_members(Request $request) {
-    	//
+        $is_admin = false;
+        $user_roles = Auth::user()->roles->pluck('level')->toArray();
+        if (Auth::user() && $user_roles && min($user_roles) < 30) {
+            $is_admin = true;
+        }
+
     	$name = $request->name;
     	$from_ranking = ($request->from_ranking != 'from') ? $request->from_ranking : null;
     	$to_ranking = ($request->to_ranking != 'to') ? $request->to_ranking : null;
@@ -108,17 +125,23 @@ class UserController extends Controller
     		$search_results = $search_results->where('birth_date', '<', $to_birth_date);
     	}
 
-    	$search_results = $search_results->get();
+    	$search_results = $search_results->paginate(50)->appends(['name'                => $request->name,
+                                                                  'from_ranking'        => $request->from_ranking,
+                                                                  'to_ranking'          => $request->to_ranking,
+                                                                  'from_birth_year'     => $request->from_birth_year,
+                                                                  'to_birth_year'       => $request->to_birth_year,
+                                                                  'searching'           => $request->searching]);
 
-    	$rankings = $this->rankings_array();
     	//dd($search_results);
-    	return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
+        //dd($search_results);
+        return $search_results;
+    	//return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings, 'is_admin' => $is_admin])->with(['input' => Input::all()]);
     }
 
     public function update_profile_pic(Request $request) {
-    	//$base64_encoded_image = $request->imagebase64;
+    	$base64_encoded_image = $request->imagebase64;
     	//$base64_encoded_image = $request->testbase64;
-    	$base64_encoded_image = $request->last_test_base64;
+    	//$base64_encoded_image = $request->last_test_base64;
     	//get the base64 code
     	$data = explode(';', $base64_encoded_image)[1];
         $data = explode(',', $data)[1];
@@ -144,36 +167,137 @@ class UserController extends Controller
     //admin
     public function import_members(Request $request) {
 
+        //init an empty array which will hold all of the import errors
+        /*
+        $errors = array('first_name'    => [],
+                        'last_name'     => [],
+                        'gsm_nr'        => [],
+                        'tel_nr'        => [],
+                        'birth_date'    => [],
+                        'gender'        => [],
+                        'ranking_singles'   => [],
+                        'ranking_doubles'   => []);
+        */
+        $error_messages = array();
+        $problem_users  = array();
+        $warning_users  = array();
+
     	//check if post request contains file, if yes, read out the excel file, with all the members
     	if ($request->hasFile('members_excel')) {
 		    //
 		    $path = $request->file('members_excel')->getRealPath();
 			$data = Excel::load($path, function($reader) {
 			})->get();
-			$test = array();
 			if(!empty($data) && $data->count()){
 				$sheet1 = $data[0];
+
+                $e_year = $this->get_singles_property($sheet1[0]);
+                //some default fields that are not coming from the Excel
+                $email      = null;
+				$image = 'default.jpg';
 				$password	= Hash::make('sportiva');
 				foreach ($sheet1 as $key => $member) {
-					$vtv_nr 	= $member->vtv;
-					$email		= null;
+                    //array to hold only errors for this user
+                    $user_errors = false;
+                    $errs = array();
+
+                    if($member->vtv) {
+                        $vtv_nr     = $member->vtv;
+                    }
+					else {
+                        //generate random nr
+                        $vtv_nr = $this->get_unique_vtv_nr();
+                    }
 					$first_name = ucfirst(mb_strtolower($member->voornaam));
-					$last_name 	= ucfirst(mb_strtolower($member->naam));
-					$gsm_nr 	= '0' . str_replace(' ', '', (string)$member->gsmnr);
-					$birth_date = $member->datum;
-					$gender		= strtoupper($member->mv);
-					if($member->e_2017 == 'NG') {
-						$ranking_singles = 'NG (5)';
-						$ranking_doubles = 'NG (5)';
+					$last_name 	= $this->get_clean_last_name($member->naam);
+					if($member->gsmnr) {
+						$gsm_nr 	= '0' . str_replace(' ', '', (string)$member->gsmnr);
 					}
 					else {
-						$ranking_singles = $this->number_to_ranking($member->e);
-						$ranking_doubles = $this->number_to_ranking($member->d);
+						$gsm_nr = null;
 					}
-					$image		= null;
+					if($member->telefoonnr) {
+						$tel_nr 	= '0' . str_replace(' ', '', (string)$member->telefoonnr);
+					}
+					else {
+						$tel_nr = null;
+					}
+                    if(strtotime($member->datum)) {
+                        //echo('valid date <br>');
+                        $birth_date = date('Y-m-d', strtotime($member->datum));
+                    }
+                    elseif(!$member->datum) {
+                        //echo('no date: ' . $last_name);
+                        $birth_date = null;
+                        array_push($warning_users, $last_name . ' ' .$first_name);
+                    }
+                    else {
+
+                        //echo('invalid birth date <br>');
+                        $birth_date = $this->format_date($member->datum);
+                        //if the date still is not valid, add to errors
+                        if(!$this->validate_date($birth_date)) {
+                            $err_msg = 'Incorrecte datums: zorg ervoor dat alle datums in de Excel file in datumformaat staan.';
+                            array_push($errs, $err_msg);
+                            $user_errors = true;
+                            if((!in_array($err_msg, $error_messages))) {
+                                array_push($error_messages, $err_msg);
+                            }
+                        }
+                    }
+                    //echo($last_name);
+					$gender		= strtoupper($member->mv);
+                    if($gender != 'M' && $gender != 'V') {
+                        $gender = null;
+                        if(!in_array($last_name . ' ' .$first_name, $warning_users)) {
+                            array_push($warning_users, $last_name . ' ' .$first_name);
+                        }
+                        /*
+                        $err_msg = 'Geslacht moet ofwel M of V zijn.';
+                        array_push($errs, $err_msg);
+                        $user_errors = true;
+                        if((!in_array($err_msg, $error_messages))) {
+                            array_push($error_messages, $err_msg);
+                        }
+                        */
+                    }
+                    
+					if(strtoupper($member->{$e_year}) == 'NG') {
+						$ranking_singles = 'NG (5)';
+					}
+					else {
+                        if(is_numeric($member->e)) {
+                            $ranking_singles = $this->number_to_ranking($member->e);
+                        }
+						else {
+                            $ranking_singles = null;
+                            /*
+                            $err_msg = 'De enkelklassement-kolom (E) moet een cijfer bevatten (5, 10, 15, ..., 115).';
+                            $user_errors = true;
+                            array_push($errs, $err_msg);
+                            if((!in_array($err_msg, $error_messages))) {
+                                array_push($error_messages, $err_msg);
+                            }
+                            */
+                        }
+					}
+                    if(is_numeric($member->d)) {
+                        $ranking_doubles = $this->number_to_ranking($member->d);
+                    }
+                    else {
+                        $ranking_doubles = null;
+                        /*
+                        $err_msg = 'De dubbelklassement-kolom (D) moet een cijfer bevatten (5, 10, 15, ..., 115).';
+                        $user_errors = true;
+                        array_push($errs, $err_msg);
+                        if((!in_array($err_msg, $error_messages))) {
+                            array_push($error_messages, $err_msg);
+                        }
+                        */
+                    }
 					$level		= $this->get_level_by_birth_date($birth_date);
-					$tel_nr 	= '0' . str_replace(' ', '', (string)$member->telefoonnr);
-					echo($member->naam . ' ' . $member->voornaam . ' (' .$vtv_nr . '):  ' . $ranking_singles . $ranking_doubles . '<br>');
+                    //echo($last_name . ' ' . $first_name);
+					//echo($member->naam . ' ' . $member->voornaam . ' (' .$vtv_nr . '):  ' . $ranking_singles . $ranking_doubles . '<br>');
 					//check if a user with this vtv nr already exists, if not instantiate a new one
 					//actually better updateOrCreate //but maybe not because level should not be overrided, nor should password
 					$user = User::firstOrNew(
@@ -182,7 +306,7 @@ class UserController extends Controller
 					     'first_name'	=> $first_name,
 					     'last_name'	=> $last_name,
 					     'gsm'			=> $gsm_nr,
-					     //'tel_nr'		=> $tel_nr,
+					     'tel'			=> $tel_nr,
 					     'birth_date'	=> $birth_date,
 					     'gender'		=> strtoupper($member->mv),
 					     'ranking_singles'	=> $ranking_singles,
@@ -191,40 +315,124 @@ class UserController extends Controller
 					     'level_id'		=> $level,
 					     'password'		=> $password]
 					);
+
 					if($user->exists) {
 						//update the current user
-						echo('user, already exists, only some attributes will be updated');
+						//echo('user, already exists, only some attributes will be updated <br>');
+                        $user->first_name       = $first_name;
+                        $user->last_name        = $last_name;
 						$user->ranking_singles 	= $ranking_singles;
 						$user->ranking_doubles 	= $ranking_doubles;
-						$user->gsm_nr			= $gsm_nr;
-						$user->tel_nr			= $tel_nr;
+						$user->gsm 				= $gsm_nr;
+						$user->tel 				= $tel_nr;
+                        $user->updated_at       = date('Y-m-d H:i:s');
 					}
-					else {
-						//new user was initialized, save to create
-						echo('completely new');
-					}
-					dump($user);
-					$user->save();
+                    else {
+                        //echo('user does not exist, create from scratch <br>');
+                    }
+                    //before the user is saved, check if there are no errors for this user
+                    if(!$user_errors) {
+                        $user->save();
+                    }
+                    else {
+                        array_push($problem_users, $user->last_name . ' ' . $user->first_name);
+                    }
+                    
+					//dump($user);
 				}
-				/*
-				foreach ($data as $key => $value) {
-					array_push($test, $value);
-					//$insert[] = ['title' => $value->title, 'description' => $value->description];
-				}
-				dd($test);*/
-				/*
-				if(!empty($insert)){
-					DB::table('items')->insert($insert);
-					dd('Insert Record successfully.');
-				}
-				*/
-				//dd($insert);
+                //all where updated at is more than a minute ago
+                $users_to_delete = User::select('id', 'updated_at', 'last_name')->where('updated_at', '<', (date('Y-m-d H:') . (date('i')-1) . ':00'))->get();
+                //dump($users_to_delete);
+                foreach ($users_to_delete as $user) {
+                    //dump($user);
+                    //echo('stap 1: ' . $user->first_name . ' ' . $user->last_name . ' (' . $user->id . ')');
+                    //beneath is temporary :)
+                    if($user->id != 2 && $user->id != 6 && $user->id != 7) {
+                        //echo('stap2 : ');
+                        //echo($user->first_name . ' ' . $user->last_name);
+                        //this users may be hard deleted, cause most of them just will be doubles
+                        //$user->delete();
+                        $user->forceDelete();
+                    }
+                }
 			}
 		}
-		dd('test');
-    	dd($request);
+        //dd($warning_users);
+        //dd('stop right here!');
+		//dd('test');
+        //dd($error_messages);
+        if (!empty($error_messages)) {
+            //dd('redirect back with errors', $error_messages);
+            //return back with errors
+            return redirect()->back()->with('error_messages', $error_messages)->with('problem_users', $problem_users);
+        }
+        else {
+            //dd("nope!");
+            //return back with success message
+            return redirect()->back()->with('success_msg', 'Alle leden werden succesvol geïmporteerd!')->with('warning_users', $warning_users);
+        }
+
+    	//dd($request);
     }
 
+    public function get_unique_vtv_nr() {
+        $unique_nr = mt_rand(100000, 999999);
+        $user_exists = User::where('vtv_nr', $unique_nr)->first();
+        if($user_exists) {
+            return $this->get_unique_vtv_nr();
+        }
+        else {
+            return $unique_nr;
+        }
+    }
+
+
+    public function get_clean_last_name($member_last_name) {
+        $last_name = mb_strtolower($member_last_name);
+        $last_name_pieces = explode(' ', $last_name);
+        $last_name = array();
+        foreach($last_name_pieces as $piece) {
+            array_push($last_name, ucfirst($piece));
+        }
+        $last_name = implode(' ', $last_name);
+        return $last_name;
+    }
+
+    //check if the date passed is a valid date
+    function validate_date($date) {
+        $d = \DateTime::createFromFormat('Y-m-d', $date);
+        return $d && $d->format('Y-m-d') === $date;
+    }
+
+    //function to convert an invalid date to a valid one
+    //only works for the folowwing invalid format: dd/mm/yy
+    public function format_date($date) {
+        //split date by delimter
+        $new_date   = explode('/', $date);
+        //reverse the order from dd,mm,yy to yy,mm,dd
+        $new_date   = array_reverse($new_date);
+        //join together again with - as delimiter
+        $new_date   = implode('-', $new_date);
+        return $new_date;
+    }
+
+    public function get_singles_property($member) {
+        //check for previous, current and coming year
+        $previous_year  = 'e_' . (date('Y')-1);
+        $current_year   = 'e_' . date('Y');
+        $next_year      = 'e_' . (date('Y')+1);
+        if($member->{$previous_year}) {
+            $e_year = $previous_year;
+        }
+        elseif($member->{$current_year}) {
+            $e_year = $current_year;
+        }
+        elseif($member->{$next_year}) {
+            $e_year = $next_year;
+        }
+        echo($e_year);
+        return $e_year;
+    }
 
     public function number_to_ranking($number) {
     	//array with all rankings as number and offcial name (//if 5 points two possibilities: N.G. / C+30/5)
@@ -304,4 +512,6 @@ class UserController extends Controller
     			'A nationaal (110)',
     			'A internationaal (115)'];
     }
+
+    
 }

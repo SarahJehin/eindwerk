@@ -30,10 +30,20 @@
     .profile_pic {
         width: 30%;
         margin-right: 3%;
+        position: relative;
         img {
             width: 100%;
             height: auto;
             border-radius: 50%;
+        }
+        .edit_button {
+            top: 0;
+            right: 0;
+        }
+        &:hover {
+            .edit_button {
+                display: block;
+            }
         }
     }
     .data {
@@ -48,6 +58,7 @@
         }
         
         .contact_info {
+            font-size: 0.9em;
             width: 65%;
             margin-right: 2%;
             padding-right: 2.5%;
@@ -99,8 +110,24 @@
             }
         }
         
-        .tennis_info {
+        .badges {
             width: 30%;
+            h3 {
+                margin-top: 0;
+            }
+            .badge {
+                width: 40px;
+                position: relative;
+                span {
+                    position: absolute;
+                    color: #fff;
+                    top: 25%;
+                    left: 30%;
+                }
+                i.fa {
+                    font-size: 2.5em;
+                }
+            }
         }
     }
     /*
@@ -112,21 +139,7 @@
     */
 }
 
-.badges {
-    .badge {
-        width: 40px;
-        position: relative;
-        span {
-            position: absolute;
-            color: #fff;
-            top: 25%;
-            left: 30%;
-        }
-        i.fa {
-            font-size: 2.5em;
-        }
-    }
-}
+
 
 .upcoming_activities,
 .past_activities {
@@ -209,5 +222,78 @@
         height: 400px;
         margin: 0 auto;
         margin-bottom: 70px;
+    }
+}
+
+.edit_profile_pic_modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, 0.6);
+    
+    .content {
+        width: 50%;
+        margin: 30px auto;
+        background-color: #fff;
+        color: $form_font_color;
+        border-radius: 5px;
+        
+        .header {
+            text-align: right;
+            i {
+                margin: 15px;
+                cursor: pointer;
+                &:hover {
+                    color: #000;
+                }
+            }
+        }
+        
+        .body {
+            text-align: center;
+            
+            label {
+                display: block;
+                width: 338px;
+                margin: 0 auto;
+                cursor: pointer;
+                border: 1px solid $theme_color01;
+                margin-bottom: 15px;
+                padding: 5px;
+
+                &:hover {
+                    background-color: $theme_color01;
+                    color: #fff;
+                }
+            }
+            
+            .upload-container .upload-wrap,
+            .upload-container .upload-result,
+            .upload-container.ready .upload-msg {
+                display: none;
+            }
+            .upload-container.ready .upload-wrap {
+                display: block;
+            }
+            .upload-container.ready .upload-result {
+                display: inline-block;    
+            }
+            .upload-wrap {
+                width: 350px;
+                height: 350px;
+                margin: 0 auto;
+                margin-bottom: 70px;
+            }
+            
+            button.submit {
+                width: 350px;
+                margin-top: 0;
+                margin-bottom: 15px;
+            }
+        }
     }
 }

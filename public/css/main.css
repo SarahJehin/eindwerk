@@ -90,9 +90,10 @@ nav {
 
 .hamburger {
   font-size: 1.5em;
+  width: 100%;
   text-align: center;
   color: #1abc9c;
-  position: relative;
+  position: fixed;
   z-index: 5;
   display: none; }
   .hamburger i {
@@ -134,6 +135,13 @@ nav {
   border-radius: 5px;
   background-color: #d7b3b2;
   color: #872619;
+  margin-bottom: 20px; }
+
+.warning_msg {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #e9c9a2;
+  color: #9b5d12;
   margin-bottom: 20px; }
 
 .descriptive_info {
@@ -466,11 +474,17 @@ button.submit {
       border: 1px #9CAFB9 solid; }
   .personal_info .profile_pic {
     width: 30%;
-    margin-right: 3%; }
+    margin-right: 3%;
+    position: relative; }
     .personal_info .profile_pic img {
       width: 100%;
       height: auto;
       border-radius: 50%; }
+    .personal_info .profile_pic .edit_button {
+      top: 0;
+      right: 0; }
+    .personal_info .profile_pic:hover .edit_button {
+      display: block; }
   .personal_info .data {
     width: 67%; }
     .personal_info .data h2 {
@@ -480,6 +494,7 @@ button.submit {
       border-bottom: 1px solid #1abc9c;
       font-family: "Quicksand", sans-serif; }
     .personal_info .data .contact_info {
+      font-size: 0.9em;
       width: 65%;
       margin-right: 2%;
       padding-right: 2.5%;
@@ -511,19 +526,20 @@ button.submit {
         width: 10px; }
       .personal_info .data .contact_info .value {
         width: 215px; }
-    .personal_info .data .tennis_info {
+    .personal_info .data .badges {
       width: 30%; }
-
-.badges .badge {
-  width: 40px;
-  position: relative; }
-  .badges .badge span {
-    position: absolute;
-    color: #fff;
-    top: 25%;
-    left: 30%; }
-  .badges .badge i.fa {
-    font-size: 2.5em; }
+      .personal_info .data .badges h3 {
+        margin-top: 0; }
+      .personal_info .data .badges .badge {
+        width: 40px;
+        position: relative; }
+        .personal_info .data .badges .badge span {
+          position: absolute;
+          color: #fff;
+          top: 25%;
+          left: 30%; }
+        .personal_info .data .badges .badge i.fa {
+          font-size: 2.5em; }
 
 .upcoming_activities .list .row,
 .past_activities .list .row {
@@ -587,6 +603,59 @@ button.submit {
   height: 400px;
   margin: 0 auto;
   margin-bottom: 70px; }
+
+.edit_profile_pic_modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); }
+  .edit_profile_pic_modal .content {
+    width: 50%;
+    margin: 30px auto;
+    background-color: #fff;
+    color: #9CAFB9;
+    border-radius: 5px; }
+    .edit_profile_pic_modal .content .header {
+      text-align: right; }
+      .edit_profile_pic_modal .content .header i {
+        margin: 15px;
+        cursor: pointer; }
+        .edit_profile_pic_modal .content .header i:hover {
+          color: #000; }
+    .edit_profile_pic_modal .content .body {
+      text-align: center; }
+      .edit_profile_pic_modal .content .body label {
+        display: block;
+        width: 338px;
+        margin: 0 auto;
+        cursor: pointer;
+        border: 1px solid #1abc9c;
+        margin-bottom: 15px;
+        padding: 5px; }
+        .edit_profile_pic_modal .content .body label:hover {
+          background-color: #1abc9c;
+          color: #fff; }
+      .edit_profile_pic_modal .content .body .upload-container .upload-wrap,
+      .edit_profile_pic_modal .content .body .upload-container .upload-result,
+      .edit_profile_pic_modal .content .body .upload-container.ready .upload-msg {
+        display: none; }
+      .edit_profile_pic_modal .content .body .upload-container.ready .upload-wrap {
+        display: block; }
+      .edit_profile_pic_modal .content .body .upload-container.ready .upload-result {
+        display: inline-block; }
+      .edit_profile_pic_modal .content .body .upload-wrap {
+        width: 350px;
+        height: 350px;
+        margin: 0 auto;
+        margin-bottom: 70px; }
+      .edit_profile_pic_modal .content .body button.submit {
+        width: 350px;
+        margin-top: 0;
+        margin-bottom: 15px; }
 
 .form_part {
   overflow: hidden; }
@@ -1578,6 +1647,8 @@ button.submit {
     .members_overview .search .quick span:hover {
       background-position: 100%;
       cursor: pointer; }
+  .members_overview .search .open_advanced {
+    margin-top: 5px; }
   .members_overview .search .advanced {
     display: none;
     background-color: rgba(26, 188, 156, 0.1);
@@ -1596,8 +1667,12 @@ button.submit {
       width: 120px; }
     .members_overview .search .advanced input[type="submit"] {
       margin-top: 25px; }
-.members_overview .download {
+.members_overview .links {
   margin-bottom: 10px; }
+  .members_overview .links .download {
+    margin-right: 25px; }
+  .members_overview .links .import_members {
+    text-decoration: underline; }
 .members_overview .list .member_block {
   border-bottom: 1px solid rgba(26, 188, 156, 0.25); }
   .members_overview .list .member_block .row {
@@ -1637,6 +1712,32 @@ button.submit {
     color: #fff; }
     .members_overview .list .member_block:hover .row .link, .members_overview .list .member_block.opened .row .link {
       color: #fff; }
+.members_overview .pagination_container {
+  text-align: center; }
+  .members_overview .pagination_container .pagination li a {
+    color: #1abc9c; }
+    .members_overview .pagination_container .pagination li a:hover {
+      background-color: #1abc9c;
+      color: #fff;
+      border-color: #1abc9c; }
+  .members_overview .pagination_container .pagination li.active span {
+    background-color: #1abc9c;
+    border-color: #1abc9c; }
+.members_overview #import_members_modal .error_msg {
+  text-align: left;
+  margin: 0 15px 15px;
+  font-size: 0.9em; }
+.members_overview #import_members_modal .descriptive_info {
+  margin: 0 15px 15px; }
+.members_overview #import_members_modal label {
+  border: 1px solid #1abc9c;
+  display: block;
+  padding: 5px;
+  margin-bottom: 15px;
+  cursor: pointer; }
+  .members_overview #import_members_modal label:hover {
+    background-color: #1abc9c;
+    color: #fff; }
 
 .float {
   float: left; }
@@ -1663,6 +1764,9 @@ button.submit {
     nav .profile_pic {
       width: 50px;
       height: 50px; }
+    nav ul li a {
+      padding: 15px 32%;
+      width: 35%; }
 
   .hamburger {
     display: block; }

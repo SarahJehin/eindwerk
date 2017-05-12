@@ -19,6 +19,9 @@ $success_font_color: #1d6920;
 $error_bg_color: #d7b3b2;
 $error_font_color: #872619;
 
+$warning_bg_color: #e9c9a2;
+$warning_font_color: #9b5d12;
+
 $delete_color: #b73928;
 
 $valid_color: #5dcb9a;
@@ -162,9 +165,10 @@ nav {
 
 .hamburger {
     font-size: 1.5em;
+    width: 100%;
     text-align: center;
     color: $theme_color01;
-    position: relative;
+    position: fixed;
     z-index: 5;
     display: none;
     
@@ -223,6 +227,14 @@ nav {
   background-color: $error_bg_color;
   color: $error_font_color;
   margin-bottom: 20px;
+}
+
+.warning_msg {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: $warning_bg_color;
+    color: $warning_font_color;
+    margin-bottom: 20px;
 }
 
 .descriptive_info {
@@ -470,6 +482,14 @@ nav {
         width: 50px;
         height: 50px;
       }
+        ul {
+            li {
+                a {
+                    padding: 15px 32%;
+                    width: 35%;
+                }
+            }
+        }
     }
     
     .hamburger {

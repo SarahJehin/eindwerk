@@ -30,6 +30,10 @@
             }
         }
         
+        .open_advanced {
+            margin-top: 5px;
+        }
+        
         .advanced {
             display: none;
             background-color: rgba($theme_color01, 0.1);
@@ -65,9 +69,16 @@
         }
     }
     
-    .download {
+    .links {
         margin-bottom: 10px;
+        .download {
+            margin-right: 25px;
+        }
+        .import_members {
+            text-decoration: underline;
+        }
     }
+    
     
     .list {
         .member_block {
@@ -128,6 +139,51 @@
                         color: #fff;
                     }
                 }
+            }
+        }
+    }
+    
+    .pagination_container {
+        text-align: center;
+        .pagination {
+            li {
+                a {
+                    color: $theme_color01;
+                    &:hover {
+                        background-color: $theme_color01;
+                        color: #fff;
+                        border-color: $theme_color01;
+                    }
+                }
+                &.active {
+                    span {
+                        background-color: $theme_color01;
+                        border-color: $theme_color01;
+                    }
+                }
+            }
+        }
+    }
+    
+    #import_members_modal {
+        
+        .error_msg {
+            text-align: left;
+            margin: 0 15px 15px;
+            font-size: 0.9em;
+        }
+        .descriptive_info {
+            margin: 0 15px 15px;
+        }
+        label {
+            border: 1px solid $theme_color01;
+            display: block;
+            padding: 5px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            &:hover {
+                background-color: $theme_color01;
+                color: #fff;
             }
         }
     }

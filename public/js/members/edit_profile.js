@@ -216,43 +216,8 @@
         }
     }
 
-//croppietest
+//croppie
 
-
-$('.croppie-test img').croppie({
-                                                viewport: {width: 200, height: 200,type: "circle"},
-                                                boundary: {width: 250, height: 250},
-                                                showZoomer: true
-
-                                                 
-                });
-
-jQuery('#profile_image').croppie({
-                                                viewport: {width: 200, height: 200,type: "square"},
-                                                boundary: {width: 250, height: 250},
-                                                showZoomer: true
-
-                                                 
-                });
-
-$('.resultaat_test').click(function() {
-    console.log("test");
-    $('.croppie-test img').croppie('result', {
-        type: 'canvas',
-        size: 'viewport'
-    }).then(function (resp) {
-        console.log(resp);
-        $('.testtest img').attr('src', resp);
-        $('#testbase64').val(resp);
-        console.log($('#testbase64').val());
-        $('#testform01').submit();
-        /*
-        popupResult({
-            src: resp
-        });
-        */
-    });
-});
 
 var $uploadCrop;
 
@@ -277,8 +242,6 @@ function readFile(input) {
     }
 }
 
-
-
 $uploadCrop = $('#upload-container').croppie({
     viewport: {
         width: 300,
@@ -299,59 +262,43 @@ $('.upload-result').on('click', function (ev) {
         $('#imagebase64').val(resp);
         console.log($('#imagebase64').val());
         $('#upload_profile_pic_form').submit();
-        /*
-        popupResult({
-            src: resp
-        });
-        */
     });
 });
 
 
-///////////////////////////////// last test //////////////////::
-function readURL(input) {
+var profile_pic_modal_active = false;
+$('.profile_pic .edit_button').click(function() {
+    //$('.lightbox_modal').show();
+    $('.edit_profile_pic_modal').show();
+    profile_pic_modal_active = true;
+});
 
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
 
-        reader.onload = function (e) {
-            $('.img_tag_to_render').attr('src', e.target.result);
-        }
+$(window).click(function(event) {
+    console.log(event.target);
+    if($(event.target).hasClass('edit_profile_pic_modal')) {
+        close_profile_pic_modal();
+    }
+});
 
-        reader.readAsDataURL(input.files[0]);
+$('.edit_profile_pic_modal .fa-times').click(function() {
+    close_profile_pic_modal();
+});
+
+$( window ).on( "keydown", function( event ) {
+    //if esc key is pressed, close modal
+    if(event.which == 27) {
+        close_profile_pic_modal();
+    }
+});
+
+function close_profile_pic_modal() {
+    if(profile_pic_modal_active) {
+        $('.edit_profile_pic_modal').fadeOut(350, function() {
+            profile_pic_modal_active = false;
+        });
     }
 }
 
-$("#last_test_input").change(function(){
-    readURL(this);
-    setTimeout(function() {
-        $('.img_tag_to_render').croppie({
-                                                viewport: {width: 200, height: 200,type: "circle"},
-                                                boundary: {width: 250, height: 250},
-                                                showZoomer: true
-
-                                                 
-                });
-    }, 5000);
-});
-
-$('.last_test_result').click(function() {
-    $('.img_tag_to_render').croppie('result', {
-        type: 'canvas',
-        size: 'viewport'
-    }).then(function (resp) {
-        //get the result (base64 encoded image) and put it in the hidden input
-        //$('#imagebase64').val(resp);
-        console.log(resp);
-        $('#last_test_base64').val(resp);
-        $('#last_test').submit();
-        //$('#upload_profile_pic_form').submit();
-        /*
-        popupResult({
-            src: resp
-        });
-        */
-    });
-});
 
 })(window, window.document, window.jQuery);
