@@ -1,0 +1,42 @@
+.add_winterhour {
+    
+    .form_part {
+        .groupname {
+            margin-top: 25px;
+        }
+        
+        .date_and_time {
+            .day_and_time {
+                width: 50%;
+            }
+            .date {
+                width: 50%;
+                .container_date {
+                    width: 215px;
+                    border: 1px solid #eee;
+                    padding: 15px 25px;
+
+                    table {
+                        tr {
+                          td {
+                            padding: 5px;
+                            cursor: default;
+                            &.disabled {
+                              background-color: rgba(#d0dae2, 0.2);
+                            }
+                          }
+                        }
+                    }
+
+                    table tr td.active:active,
+                    tr td.active.highlighted:active,
+                    tr td.active.active,
+                    tr td.active.highlighted.active {
+                        background: $theme_gradient01;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}

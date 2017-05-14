@@ -47,7 +47,7 @@
                             <div class="tel clearfix">
                                 <div class="title float">Tel.</div>
                                 <div class="colon float">:</div>
-                                <div class="value float"><input type="text" name="new_tel" value="{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}" readonly="" disabled=""></div>
+                                <div class="value float"><input type="text" name="new_tel" value="{{substr(Auth::user()->tel, 0, 3) . ' ' . chunk_split(substr(Auth::user()->tel, 3), 2, ' ')}}" readonly="" disabled=""></div>
                                 <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
                                 <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
                             </div>

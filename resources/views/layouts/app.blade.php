@@ -61,7 +61,7 @@
             <ul>
                 <li><a class="{{ (Request::is('activities_overview') ? 'active' : '') }}" href="{{url('activities_overview')}}"><i class="fa fa-calendar" aria-hidden="true"></i><span class="menu_name">Activiteiten</span></a></li>
                 <li><a class="{{ (Request::is('scoreboard') ? 'active' : '') }}" href="{{url('scoreboard')}}"><i class="fa fa-trophy" aria-hidden="true"></i><span class="menu_name">Scorebord</span></a></li>
-                <li><a class="{{ (Request::is('winter_hours') ? 'active' : '') }}" href="{{url('#')}}"><i class="fa fa-snowflake-o" aria-hidden="true"></i><span class="menu_name">Winteruren</span></a></li>
+                <li><a class="{{ (Request::is('winterhours_overview') ? 'active' : '') }}" href="{{url('winterhours_overview')}}"><i class="fa fa-snowflake-o" aria-hidden="true"></i><span class="menu_name">Winteruren</span></a></li>
                 <li><a class="{{ (Request::is('members_overview') ? 'active' : '') }}" href="{{url('members_overview')}}"><i class="fa fa-users" aria-hidden="true"></i><span class="menu_name">Leden</span></a></li>
             </ul>
 

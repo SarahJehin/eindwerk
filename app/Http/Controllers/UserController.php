@@ -155,10 +155,10 @@ class UserController extends Controller
         file_put_contents($total_path, $data);
 
         //update the user model
-        //Auth::user()->image = $image_name;
-        //Auth::user()->save();
+        Auth::user()->image = $image_name;
+        Auth::user()->save();
 
-        //return redirect()->back();
+        return redirect()->back();
 
         dd($profile_pictures_path . $image_name);
         dd($data);

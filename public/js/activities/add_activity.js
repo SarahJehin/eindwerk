@@ -2,6 +2,7 @@
 
     // ADD ACTIVITY
     //multistep form
+    /*
     $(".timeline div[class^='step']").click(function () {
         //console.log($(this).attr("class"));
         $('div[class^="step"]').removeClass('reached');
@@ -20,6 +21,7 @@
         $('.filled_line').css('width', $filled_percentage + "%");
 
     });
+    */
     
     
     //input anims

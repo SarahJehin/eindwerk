@@ -32,6 +32,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
     Route::get('search_members', 'UserController@search_members');
     Route::post('update_profile_pic', 'UserController@update_profile_pic');
+
+    //winterhours
+    Route::get('winterhours_overview', 'WinterhourController@get_winterhours_overview');
+    Route::get('add_winterhour', 'WinterhourController@add_winterhour');
 });
 
 Route::group(['middleware' => ['auth', 'youth_board']], function () {

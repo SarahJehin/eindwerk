@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMemberWinterhourTable extends Migration
+class CreateDatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class CreateMemberWinterhourTable extends Migration
      */
     public function up()
     {
-        Schema::create('member_winterhour', function (Blueprint $table) {
+        Schema::create('dates', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('date');
+            $table->integer('winterhour_id')->unsigned();
+            $table->foreign('winterhour_id')->references('id')->on('winterhours');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class CreateMemberWinterhourTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member_winterhour');
+        Schema::dropIfExists('dates');
     }
 }

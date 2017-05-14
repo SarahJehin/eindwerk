@@ -11,10 +11,12 @@ class CreateWinterhourDatesTable extends Migration
      *
      * @return void
      */
+    //this won't be used -> will be just the dates table
     public function up()
     {
         Schema::create('winterhour_dates', function (Blueprint $table) {
             $table->increments('id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
