@@ -6,11 +6,48 @@
         }
         
         .date_and_time {
+            .descriptive_info {
+                margin-bottom: 10px;
+            }
+            
             .day_and_time {
-                width: 50%;
+                padding-left: 1%;
+                width: 40%;
+                margin-right: 19%;
+                .day_select, .hour_select {
+                    margin-bottom: 35px;
+                    
+                    .bootstrap-select {
+                        .dropdown-toggle {
+                            border: 1px solid $form_color;
+                            border-radius: 0px;
+                            &:hover, &:focus {
+                                background-color: transparent;
+                            }
+                        }
+                        .dropdown-menu {
+                            border-radius: 0px;
+                            border-color: $form_color;
+                            border-top: 0;
+                            margin: 0;
+                            ul {
+                                li {
+                                    a {
+                                        padding: 3px 15px;
+                                        
+                                        &:hover {
+                                            background-color: $theme_color01;
+                                            color: #fff;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             .date {
-                width: 50%;
+                width: 40%;
                 .container_date {
                     width: 215px;
                     border: 1px solid #eee;
@@ -37,6 +74,82 @@
                     }
                 }
             }
+        }
+        
+        .add_participants {
+            .add_participant {
+                &.template {
+                    display: none;
+                }
+                .search_functionality {
+                    width: 80%;
+                    
+                    input.search_participants {
+                        font-size: inherit;
+                        width: calc(100% - 21px);
+                        padding: 5px 10px;
+                        border: 0;
+                        border-bottom: 1px solid $form_color;
+                        color: $form_color;
+                        &:hover, &:focus {
+                            border-color: $theme_color01;
+                        }
+                        &:disabled {
+                            background-color: transparent;
+                            border: 0;
+                            color: inherit;
+                        }
+                    }
+                    
+                    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                      color: lighten($form_font_color, 0.5);
+                    }
+                    ::-moz-placeholder { /* Firefox 19+ */
+                      color: lighten($form_font_color, 0.5);
+                    }
+                    :-ms-input-placeholder { /* IE 10+ */
+                      color: lighten($form_font_color, 0.5);
+                    }
+                    :-moz-placeholder { /* Firefox 18- */
+                      color: lighten($form_font_color, 0.5);
+                    }
+                    
+                    .search_results {
+                        position: relative;
+
+                        ul {
+                            display: none;
+                            padding: 0;
+                            list-style: none;
+                            margin: 0;
+                            //padding: 10px;
+                            position: absolute;
+                            background-color: #fff;
+                            width: calc(100% - 2px);
+                            border: 1px $form_color solid;
+                            border-top: 0;
+                            border-bottom-left-radius: 5px;
+                            border-bottom-right-radius: 5px;
+
+                            li {
+                                padding: 6px 10px;
+                                &:hover {
+                                    cursor: pointer;
+                                    background-color: $theme_color01;
+                                    color: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+                .delete {
+                    width: 20%;
+                    height: 32px;
+                    line-height: 32px;
+                    text-align: right;
+                }
+            }
+            
         }
     }
 }

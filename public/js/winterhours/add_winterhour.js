@@ -1,5 +1,13 @@
 (function ( window, document, $, undefined ) {
 
+    //add method on Date object
+    //return the date that is 'days' from the date on which the method is called
+    Date.prototype.addDays = function(days) {
+        var dat = new Date(this.valueOf())
+        dat.setDate(dat.getDate() + days);
+        return dat;
+    }
+
     //input anims
     $('#add_winterhour').find('input, textarea').on('keyup blur focus', function (e) {
         var $this = $(this),
@@ -66,6 +74,43 @@
         $(this).removeClass('dropup');
     });
 
+    $('.day_select select').change(function() {
+
+        if($('.day_select select').val() != 'select_day') {
+            var enddate = new Date((new Date().getFullYear() + 1) + '-04-30');
+            var days = {
+                'monday'    : 1,
+                'tuesday'   : 2,
+                'wednesday' : 3,
+                'thursday'  : 4,
+                'friday'    : 5,
+                'saturday'  : 6,
+                'sunday'    : 0
+            }
+
+            var new_day = $('.day_select select').val();
+            var new_day_number = days[new_day];
+            var first_date = get_first_date_of_day(new_day_number);
+            var active_dates = getDates(first_date, enddate);
+            //reverse the array, because the calendar view jumps to the last date set as active
+            //by reversing, this last date will actually be the first date, so the calendar doesn't jump to next year
+            active_dates = active_dates.reverse();
+            var disabled_dates = [];
+            for(var day in days) {
+                if(days[day] != new_day_number) {
+                    disabled_dates.push(days[day]);
+                }
+            }
+            console.log('disabled dates are: ' + disabled_dates);
+            console.log(active_dates);
+            //disable all the other days
+            $('.container_date').datepicker('setDaysOfWeekDisabled', disabled_dates);
+            //auto select all the dates that fall on this day of the week
+            $('.container_date').datepicker('setDates', active_dates);
+        }
+        
+    });
+
 
     //datepicker
     $('.container_date').datepicker({
@@ -74,16 +119,119 @@
         maxViewMode: 0,
         multidate: true,
         toggleActive: true,
-        startDate: 'today',
-        //disabled days are necessary to make only selected day clickable (0 = sunday, 6 = saturday)
-        daysOfWeekDisabled: [0,6]
+        startDate: '01/09/' + new Date().getFullYear()
     }).on('changeDate', function (e) {
-            //console.log(e.format());
             var startdate = e.format();
-            console.log(startdate);
+            //console.log(startdate);
         }
 
     );
 
+
+    //get the first eg. Friday of the month September
+    function get_first_date_of_day(day) {
+        //month is September, but because it is zero based, the number will be 8 instead of 9
+        var month = 8;
+        var startdate = new Date(new Date().getFullYear(), month, 1);
+        console.log('startdate: ' + startdate);
+
+        //while the weekday of the date is not the requested weekday, get the next date
+        while (startdate.getDay() !== day) {
+            startdate.setDate(startdate.getDate() + 1);
+            console.log('new date: ' + startdate);
+        }
+        console.log('real startdate: ' + startdate);
+        console.log(startdate);
+        //for a weird reason if you only log the date, you get one day before the real date, but not if it's parsed to a string
+        //has something to do with GMT with a difference of 2 hours
+        return startdate;
+    }
+
+    function getDates(startDate, stopDate) {
+        var dateArray = new Array();
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            var string_date = currentDate.getDate() + '/' + (currentDate.getMonth()+1) + '/' + currentDate.getFullYear();
+            dateArray.push(string_date);
+            //dateArray.push( new Date (currentDate) )
+            currentDate = currentDate.addDays(7);
+        }
+        return dateArray;
+    }
+
+
+
+    //search participants for winterhour
+
+    $('.add_participants').on('keyup', '.search_participants', function() {
+        var search_results = $(this).parent().find('.search_results ul');
+        search_results.show();
+        var searchstring    = $(this).val();
+        var not_ids         = [0];
+        /*
+        $.each($('.sign_up_list .people .person'), function(key, person) {
+            console.log($(person));
+            not_ids.push($(person).attr('user_id'));
+        });
+        $.each($('.added_participants .participant input'), function(key, person) {
+            not_ids.push($(person).val());
+        });
+        */
+        //console.log(not_ids);
+        if(searchstring.length > 1) {
+            //get 5 first search results //add , not_ids: not_ids beneath
+            $.get( location.origin + "/api/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
+                //console.log(data[0]['first_name']);
+                $('.search_results ul').empty();
+                $.each(data, function( key, result ) {
+                    var id = result["id"];
+                    var first_name = result["first_name"];
+                    var last_name = result["last_name"];
+                    $new_list_item = '<li user_id=' + id + '>' + first_name + ' ' + last_name + '</li>';
+                    $('.search_results ul').append($new_list_item);
+                });
+                if(data.length < 1) {
+                    $new_list_item = '<li>Geen leden gevonden</li>';
+                    $('.search_results ul').append($new_list_item);
+                }
+            }, "json" );
+        }
+        else {
+            $('.search_results ul').empty();
+        }
+    });
+
+    $('.add_participants').on('click', '.search_results ul li', function() {
+        //console.log($(this).parent().parent().parent().find('input'));
+        var input = $(this).parent().parent().parent().find('input.name');
+        var id_input = $(this).parent().parent().parent().find('input.id');
+        input.val($(this).text());
+        input.attr('readonly', 'true');
+        input.attr('disabled', 'true');
+        id_input.val($(this).attr('user_id'));
+        $('.search_results ul').hide();
+
+        $new_input = $('.add_participants .template').clone();
+        $new_input.removeClass('template');
+        $('.add_participants').append($new_input);
+        //new_input.appendTo('.add_participants form');
+        /*
+        //console.log("clicked");
+       
+        //console.log($(this));
+        var id = $(this).attr('user_id');
+        var full_name = $(this).text();
+        console.log(id + ': ' + full_name);
+        $new_participant = $('.added_participants .template').clone();
+        $new_participant.removeClass('template');
+        $new_participant.find('input').val(id);
+        $new_participant.find('span').text(full_name);
+        //console.log($new_participant);
+        $('.added_participants').append($new_participant);
+        $('.added_participants').show();
+        */
+    });
+
+    
 
 })(window, window.document, window.jQuery);

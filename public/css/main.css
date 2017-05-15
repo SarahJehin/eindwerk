@@ -1741,10 +1741,31 @@ button.submit {
 
 .add_winterhour .form_part .groupname {
   margin-top: 25px; }
+.add_winterhour .form_part .date_and_time .descriptive_info {
+  margin-bottom: 10px; }
 .add_winterhour .form_part .date_and_time .day_and_time {
-  width: 50%; }
+  padding-left: 1%;
+  width: 40%;
+  margin-right: 19%; }
+  .add_winterhour .form_part .date_and_time .day_and_time .day_select, .add_winterhour .form_part .date_and_time .day_and_time .hour_select {
+    margin-bottom: 35px; }
+    .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-toggle, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-toggle {
+      border: 1px solid #6b7d87;
+      border-radius: 0px; }
+      .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-toggle:hover, .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-toggle:focus, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-toggle:hover, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-toggle:focus {
+        background-color: transparent; }
+    .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-menu, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-menu {
+      border-radius: 0px;
+      border-color: #6b7d87;
+      border-top: 0;
+      margin: 0; }
+      .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-menu ul li a, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-menu ul li a {
+        padding: 3px 15px; }
+        .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-menu ul li a:hover, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-menu ul li a:hover {
+          background-color: #1abc9c;
+          color: #fff; }
 .add_winterhour .form_part .date_and_time .date {
-  width: 50%; }
+  width: 40%; }
   .add_winterhour .form_part .date_and_time .date .container_date {
     width: 215px;
     border: 1px solid #eee;
@@ -1760,6 +1781,60 @@ button.submit {
     .add_winterhour .form_part .date_and_time .date .container_date tr td.active.highlighted.active {
       background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
       color: #fff; }
+.add_winterhour .form_part .add_participants .add_participant.template {
+  display: none; }
+.add_winterhour .form_part .add_participants .add_participant .search_functionality {
+  width: 80%; }
+  .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants {
+    font-size: inherit;
+    width: calc(100% - 21px);
+    padding: 5px 10px;
+    border: 0;
+    border-bottom: 1px solid #6b7d87;
+    color: #6b7d87; }
+    .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:hover, .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:focus {
+      border-color: #1abc9c; }
+    .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:disabled {
+      background-color: transparent;
+      border: 0;
+      color: inherit; }
+  .add_winterhour .form_part .add_participants .add_participant .search_functionality ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: #9db0ba; }
+  .add_winterhour .form_part .add_participants .add_participant .search_functionality ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: #9db0ba; }
+  .add_winterhour .form_part .add_participants .add_participant .search_functionality :-ms-input-placeholder {
+    /* IE 10+ */
+    color: #9db0ba; }
+  .add_winterhour .form_part .add_participants .add_participant .search_functionality :-moz-placeholder {
+    /* Firefox 18- */
+    color: #9db0ba; }
+  .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results {
+    position: relative; }
+    .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul {
+      display: none;
+      padding: 0;
+      list-style: none;
+      margin: 0;
+      position: absolute;
+      background-color: #fff;
+      width: calc(100% - 2px);
+      border: 1px #6b7d87 solid;
+      border-top: 0;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px; }
+      .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li {
+        padding: 6px 10px; }
+        .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li:hover {
+          cursor: pointer;
+          background-color: #1abc9c;
+          color: #fff; }
+.add_winterhour .form_part .add_participants .add_participant .delete {
+  width: 20%;
+  height: 32px;
+  line-height: 32px;
+  text-align: right; }
 
 .float {
   float: left; }

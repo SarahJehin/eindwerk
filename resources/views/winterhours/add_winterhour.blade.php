@@ -39,6 +39,10 @@
 
                                     <div class="date_and_time clearfix">
                                         <div class="day_and_time float">
+                                            <div class="descriptive_info">
+                                                Kies hieronder de dag waarop jullie zullen spelen.
+                                                De data worden dan automatisch aangevuld op de kalender.
+                                            </div>
                                             <div class="day_select apply_bootstrap">
                                                 <select class="selectpicker" data-size="10" id="from_ranking" name="from_ranking">
                                                     <option value="select_day">Selecteer dag</option>
@@ -51,9 +55,23 @@
                                                     <option value="sunday">Zondag</option>
                                                 </select>
                                             </div>
-                                            timepicker
+                                            <div class="descriptive_info">
+                                                Selecteer het uur waarop jullie zullen spelen.
+                                            </div>
+                                            <div class="hour_select apply_bootstrap">
+                                                <select class="selectpicker" data-size="10" id="from_ranking" name="from_ranking">
+                                                    <option value="select_hour">Selecteer uur</option>
+                                                    @for($hour = 8; $hour < 24; $hour++)
+                                                    <option value="{{sprintf('%02d', $hour)}}:00">{{sprintf("%02d", $hour)}}:00</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="date float">
+                                            <div class="descriptive_info">
+                                                Klik hieronder de dagen af waarop er niet gespeeld kan worden. 
+                                                (bvb. tornooi, Kerstmis, Oudjaar, ...)
+                                            </div>
                                             <div class="container_date">
 
                                             </div>
@@ -63,7 +81,38 @@
                             </div>
                             <div class="part02">
                                 <div class="step_content">
-                                    stap 2
+                                    <div class="descriptive_info">
+                                        Hieronder kan je alle groepsleden toevoegen.  Enkel personen die lid (winter- of zomerlid) zijn bij Sportiva kunnen toegevoegd worden.
+                                    </div>
+
+                                    <div class="add_participants">
+                                        <div class="add_participant clearfix template">
+                                            <div class="search_functionality float">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
+                                                <input type="number" name="participant_id[]" class="id" hidden="">
+                                                <div class="search_results">
+                                                    <ul>
+                                                        <li>Sarah Jehin</li>
+                                                        <li>Glass Sorenson</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <span class="float delete"><i class="fa fa-times"></i></span>
+                                        </div>
+                                        <div class="add_participant clearfix">
+                                            <div class="search_functionality float">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
+                                                <input type="number" name="participant_id[]" class="id" hidden="">
+                                                <div class="search_results">
+                                                    <ul>
+                                                        <li>Sarah Jehin</li>
+                                                        <li>Glass Sorenson</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <span class="float delete"><i class="fa fa-times"></i></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="part03">
