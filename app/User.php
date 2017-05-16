@@ -153,5 +153,12 @@ class User extends Authenticatable
         return $total_score;
     }
 
+
+    //winterhours
+    public function winterhours()
+    {
+        return $this->belongsToMany('App\Winterhour');
+    }
+
     
 }

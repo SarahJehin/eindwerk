@@ -59,6 +59,12 @@ function initAutocomplete() {
     });
     //when sportiva location is selected, put marker back on map
     $(".loc_sportiva").click(function(){
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = [];
+
         var basicMarker = new google.maps.Marker({
             position: basicLatLng,
             map: map,
@@ -68,6 +74,7 @@ function initAutocomplete() {
         basicMarker.setMap(map);
         
         markers.push(basicMarker);
+        map.setCenter(basicLatLng);
     });
 
     // Listen for the event fired when the user selects a prediction and retrieve

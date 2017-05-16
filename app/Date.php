@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Winterhour extends Model
+class Date extends Model
 {
     use SoftDeletes;
 
@@ -15,18 +15,14 @@ class Winterhour extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'day', 'time', 'vtv_nr', 'amount_of_courts', 'mixed_doubles', 'made_by', 'status',
+        'date', 'winterhour_id',
     ];
     
     protected $dates = ['deleted_at'];
 
-    public function participants()
-    {
-        return $this->belongsToMany('App\User');
-    }
 
-    public function dates()
+    public function winterhours()
     {
-        return $this->hasMany('App\Date');
+        return $this->belongsTo('App\Winterhour');
     }
 }

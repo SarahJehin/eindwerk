@@ -76,7 +76,7 @@
 
     $('.day_select select').change(function() {
 
-        if($('.day_select select').val() != 'select_day') {
+        if($('.day_select select').val()) {
             var enddate = new Date((new Date().getFullYear() + 1) + '-04-30');
             var days = {
                 'monday'    : 1,
@@ -107,10 +107,18 @@
             $('.container_date').datepicker('setDaysOfWeekDisabled', disabled_dates);
             //auto select all the dates that fall on this day of the week
             $('.container_date').datepicker('setDates', active_dates);
+
+            //get all selected dates and pass them to the input
+            $('.inputs').empty();
+            var dates = $('.container_date').datepicker('getDates');
+            dates = dates.reverse();
+            for(var i = 0; i < dates.length; i++) {
+                var formatted_date = dates[i].getFullYear() + '-' + ('0' + (dates[i].getMonth()+1)).slice(-2) + '-' + ('0' + dates[i].getDate()).slice(-2);
+                $('.inputs').append('<input type="text" name="date[]" value="' + formatted_date + '" hidden>');
+            }
         }
         
     });
-
 
     //datepicker
     $('.container_date').datepicker({
@@ -123,10 +131,28 @@
     }).on('changeDate', function (e) {
             var startdate = e.format();
             //console.log(startdate);
+            //get all selected dates and pass them to the input
+            $('.inputs').empty();
+            var dates = $('.container_date').datepicker('getDates');
+            for(var i = 0; i < dates.length; i++) {
+                var formatted_date = dates[i].getFullYear() + '-' + ('0' + (dates[i].getMonth()+1)).slice(-2) + '-' + ('0' + dates[i].getDate()).slice(-2);
+                $('.inputs').append('<input type="text" name="date[]" value="' + formatted_date + '" hidden>');
+            }
         }
-
     );
 
+    if($('.day_select select').val()) {
+        //this underneath won't do, since it'll activate all the dates, also the ones who were checked off
+        //$( ".day_select select" ).trigger( "change" );
+        var dates = $('.inputs input');
+        var new_dates = [];
+        for(var i = 0; i < dates.length; i++) {
+            var splitted_date = $(dates[i]).val().split('-');
+            var new_date = splitted_date[2] + '/' + splitted_date[1] + '/' + splitted_date[0];
+            new_dates.push(new_date);
+        }
+        $('.container_date').datepicker('setDates', new_dates);
+    }
 
     //get the first eg. Friday of the month September
     function get_first_date_of_day(day) {
@@ -159,25 +185,22 @@
         return dateArray;
     }
 
-
-
+    var not_ids = [0];
     //search participants for winterhour
-
     $('.add_participants').on('keyup', '.search_participants', function() {
         var search_results = $(this).parent().find('.search_results ul');
         search_results.show();
         var searchstring    = $(this).val();
-        var not_ids         = [0];
-        /*
-        $.each($('.sign_up_list .people .person'), function(key, person) {
-            console.log($(person));
-            not_ids.push($(person).attr('user_id'));
+        not_ids = [0];
+        
+        $.each($('.add_participants .add_participant input.id'), function(key, person) {
+            var value = $(person).val();
+            if(value) {
+                not_ids.push(parseInt(value));
+            }
         });
-        $.each($('.added_participants .participant input'), function(key, person) {
-            not_ids.push($(person).val());
-        });
-        */
-        //console.log(not_ids);
+        
+        console.log(not_ids);
         if(searchstring.length > 1) {
             //get 5 first search results //add , not_ids: not_ids beneath
             $.get( location.origin + "/api/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
@@ -205,33 +228,54 @@
         //console.log($(this).parent().parent().parent().find('input'));
         var input = $(this).parent().parent().parent().find('input.name');
         var id_input = $(this).parent().parent().parent().find('input.id');
+        var name_input = $(this).parent().parent().parent().find('input.participant_name');
         input.val($(this).text());
         input.attr('readonly', 'true');
         input.attr('disabled', 'true');
         id_input.val($(this).attr('user_id'));
+        name_input.val($(this).text());
         $('.search_results ul').hide();
 
         $new_input = $('.add_participants .template').clone();
         $new_input.removeClass('template');
+        $new_input.find('input.id').removeAttr('disabled');
+        $new_input.find('input.participant_name').removeAttr('disabled');
         $('.add_participants').append($new_input);
-        //new_input.appendTo('.add_participants form');
-        /*
-        //console.log("clicked");
-       
-        //console.log($(this));
-        var id = $(this).attr('user_id');
-        var full_name = $(this).text();
-        console.log(id + ': ' + full_name);
-        $new_participant = $('.added_participants .template').clone();
-        $new_participant.removeClass('template');
-        $new_participant.find('input').val(id);
-        $new_participant.find('span').text(full_name);
-        //console.log($new_participant);
-        $('.added_participants').append($new_participant);
-        $('.added_participants').show();
-        */
+        console.log(name_input);
+        console.log($('.add_participants input.participant_name'));
     });
 
+    //remove already added participant
+    $('.add_participants').on('click', '.delete', function() {
+        var participant = $(this).parent();
+        //remove this id from the not_ids
+        var participant_id = parseInt(participant.find('input.id').val());
+        var index = not_ids.indexOf(participant_id);
+        if (index > -1) {
+            not_ids.splice(index, 1);
+        }
+        //remove particpant block
+        participant.remove();
+
+        //hier moet eigenlijk ook nog ne check opkomen -> als er al een winteruur bestaat moeten deze personen ook gedetached worden van de tabel
+    });
+    
+    if($('.block').parent().hasClass('add_winterhour')) {
+        $(".timeline div[class^='step']").click(function () {
+            if($(this).hasClass('step3') || $(this).hasClass('step4')) {
+                //nothing must happen
+                console.log('not allowed');
+                var left = $(".total").css("left");
+                console.log(left);
+                $(".total").css("left", left);
+                var filled_line = $('.filled_line').css('width');
+                $('.filled_line').css('width', filled_line);
+
+                $(this).removeClass('reached');
+                //show message that this step can only be reached when the group has been created
+            }
+        });
+    }
     
 
 })(window, window.document, window.jQuery);

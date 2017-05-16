@@ -36,6 +36,8 @@ Route::group(['middleware' => ['auth']], function () {
     //winterhours
     Route::get('winterhours_overview', 'WinterhourController@get_winterhours_overview');
     Route::get('add_winterhour', 'WinterhourController@add_winterhour');
+    Route::post('add_winterhour', 'WinterhourController@create_winterhour');
+    Route::get('edit_winterhour/{id}', 'WinterhourController@edit_winterhour');
 });
 
 Route::group(['middleware' => ['auth', 'youth_board']], function () {

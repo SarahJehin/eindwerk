@@ -11,11 +11,11 @@
 @section('content')
 
 
-    <div class="add_winterhour">
+    <div class="edit_winterhour">
 
         <div class="block">
             <div class="heading">
-                Nieuwe winteruur groep
+                {{$winterhour->title}}
             </div>
             <div class="content">
                 <div class="timeline">
@@ -27,23 +27,14 @@
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
-                    <form id="add_winterhour" method="post" enctype="multipart/form-data" action="{{url('add_winterhour')}}" novalidate>
+                    <form id="add_winterhour" method="post" enctype="multipart/form-data" action="{{url('edit_winterhour')}}" novalidate>
                         {{ csrf_field() }}
                         <div class="total">
                             <div class="part01">
                                 <div class="step_content">
-                                    @if (count($errors) > 0)
-                                        <div class="error_msg">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
                                     <div class="field_wrap groupname">
                                         <label>Groepsnaam</label>
-                                        <input type="text" name="groupname" id="groupname" value="{{old('groupname')}}">
+                                        <input type="text" name="groupname" id="groupname" value="{{old('groupname', $winterhour->title)}}">
                                     </div>
 
                                     <div class="date_and_time clearfix">
@@ -54,14 +45,14 @@
                                             </div>
                                             <div class="day_select apply_bootstrap">
                                                 <select class="selectpicker" data-size="10" id="day" name="day">
-                                                    <option value="">Selecteer dag</option>
-                                                    <option value="maandag" {{ (old("day") == 'maandag' ? "selected":"") }}>Maandag</option>
-                                                    <option value="dinsdag" {{ (old("day") == 'dinsdag' ? "selected":"") }}>Dinsdag</option>
-                                                    <option value="woensdag" {{ (old("day") == 'woensdag' ? "selected":"") }}>Woensdag</option>
-                                                    <option value="donderdag" {{ (old("day") == 'donderdag' ? "selected":"") }}>Donderdag</option>
-                                                    <option value="vrijdag" {{ (old("day") == 'vrijdag' ? "selected":"") }}>Vrijdag</option>
-                                                    <option value="zaterdag" {{ (old("day") == 'zaterdag' ? "selected":"") }}>Zaterdag</option>
-                                                    <option value="zondag" {{ (old("day") == 'zondag' ? "selected":"") }}>Zondag</option>
+                                                    <option value="select_day">Selecteer dag</option>
+                                                    <option value="maandag" {{ (old("day") == 'maandag' ? "selected":($winterhour->day == 'maandag' ? "selected" : "")) }}>Maandag</option>
+                                                    <option value="dinsdag" {{ (old("day") == 'dinsdag' ? "selected":($winterhour->day == 'dinsdag' ? "selected" : "")) }}>Dinsdag</option>
+                                                    <option value="woensdag" {{ (old("day") == 'woensdag' ? "selected":($winterhour->day == 'woensdag' ? "selected" : "")) }}>Woensdag</option>
+                                                    <option value="donderdag" {{ (old("day") == 'donderdag' ? "selected":($winterhour->day == 'donderdag' ? "selected" : "")) }}>Donderdag</option>
+                                                    <option value="vrijdag" {{ (old("day") == 'vrijdag' ? "selected":($winterhour->day == 'vrijdag' ? "selected" : "")) }}>Vrijdag</option>
+                                                    <option value="zaterdag" {{ (old("day") == 'zaterdag' ? "selected":($winterhour->day == 'zaterdag' ? "selected" : "")) }}>Zaterdag</option>
+                                                    <option value="zondag" {{ (old("day") == 'zondag' ? "selected":($winterhour->day == 'zondag' ? "selected" : "")) }}>Zondag</option>
                                                 </select>
                                             </div>
                                             <div class="descriptive_info">
@@ -69,9 +60,9 @@
                                             </div>
                                             <div class="hour_select apply_bootstrap">
                                                 <select class="selectpicker" data-size="7" id="time" name="time">
-                                                    <option value="">Selecteer uur</option>
+                                                    <option value="select_hour">Selecteer uur</option>
                                                     @for($hour = 8; $hour < 24; $hour++)
-                                                    <option value="{{sprintf('%02d', $hour)}}:00" {{ (old("time") == sprintf('%02d', $hour).':00' ? "selected":"") }}>{{sprintf("%02d", $hour)}}:00</option>
+                                                    <option value="{{sprintf('%02d', $hour)}}:00" {{ (old("time") == (sprintf('%02d', $hour).':00') ? "selected":(substr($winterhour->time, 0, 5) == (sprintf('%02d', $hour).':00') ? "selected" : "")) }}>{{sprintf("%02d", $hour)}}:00</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -83,13 +74,6 @@
                                             </div>
                                             <div class="container_date">
 
-                                            </div>
-                                            <div class="inputs">
-                                                @if (old('date'))
-                                                    @foreach(old('date') as $date)
-                                                    <input type="text" name="date[]" value="{{$date}}" hidden>
-                                                    @endforeach
-                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -104,9 +88,8 @@
                                     <div class="add_participants">
                                         <div class="add_participant clearfix template">
                                             <div class="search_functionality float">
-                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off">
-                                                <input type="text" name="participant_name[]" class="participant_name" hidden="" disabled="">
-                                                <input type="number" name="participant_id[]" class="id" hidden="" disabled="">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
+                                                <input type="number" name="participant_id[]" class="id" hidden="">
                                                 <div class="search_results">
                                                     <ul>
                                                         <li>Sarah Jehin</li>
@@ -133,11 +116,27 @@
                                                 <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
                                             </div>
                                             @endfor
+                                        @else
+                                            @for($i = 0; $i < (count($winterhour->participants)-1); $i++)
+                                            <div class="add_participant clearfix">
+                                                <div class="search_functionality float">
+                                                    <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off" readonly="" disabled="" value="{{$winterhour->participants[$i]->first_name}} {{$winterhour->participants[$i]->last_name}}">
+                                                    <input type="text" name="participant_name[]" class="participant_name" hidden="" value="{{$winterhour->participants[$i]->first_name}} {{$winterhour->participants[$i]->last_name}}">
+                                                    <input type="number" name="participant_id[]" class="id" hidden="" value="{{$winterhour->participants[$i]->id}}">
+                                                    <div class="search_results">
+                                                        <ul>
+                                                            <li>Sarah Jehin</li>
+                                                            <li>Glass Sorenson</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                            </div>
+                                            @endfor
                                         @endif
                                         <div class="add_participant clearfix">
                                             <div class="search_functionality float">
-                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off">
-                                                <input type="text" name="participant_name[]" class="participant_name" hidden="">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
                                                 <input type="number" name="participant_id[]" class="id" hidden="">
                                                 <div class="search_results">
                                                     <ul>
@@ -150,23 +149,32 @@
                                         </div>
                                     </div>
 
-                                    <div class="descriptive_info">
-                                        Om naar stap 3 en 4 te kunnen gaan, moet je deze groep eerst aanmaken, daarna kan je het schema genereren.
-                                    </div>
                                     <div>
-                                        <input type="submit" value="Groep aanmaken">
+                                        <input type="submit" value="Groep updaten">
                                     </div>
 
                                 </div>
                             </div>
                             <div class="part03">
                                 <div class="step_content">
-                                    stap 3
+                                    <div class="availabilities">
+                                        <div class="descriptive_info">
+                                            Hieronder heb je een overzicht met alle deelnemers en of zij al dan niet hun beschikbaarheid hebben ingevuld. Als organisator van dit winteruur kan jij de beschikbaarheden van anderen ook aanpassen.
+                                        </div>
+                                        <div class="participants">
+                                            @foreach($winterhour->participants as $participant)
+                                            <div class="participant">
+                                                {{$participant->first_name}} {{$participant->last_name}}
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="part04">
                                 <div class="step_content">
-                                    stap 4
+                                    In deze stap kan je het schema genereren
                                 </div>
                             </div>
                         </div>
@@ -183,7 +191,6 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
-    <!--<script src="{{ asset('js/custom_datepicker.js') }}"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <script src="{{ asset('js/winterhours/add_winterhour.js') }}"></script>

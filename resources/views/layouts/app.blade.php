@@ -80,8 +80,8 @@
     <!-- Scripts -->
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    @yield('custom_js')
     <script src="{{ asset('js/main.js') }}"></script>
+    @yield('custom_js')
 
     <!--
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>

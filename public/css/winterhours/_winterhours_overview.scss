@@ -1,0 +1,16 @@
+.winterhours_overview {
+    .winterhour_group {
+        .participants {
+            width: 30%;
+            font-size: 0.9em;
+            .participant {
+                .name {
+                    width: 60%;
+                }
+                .gsm {
+                    width: 40%;
+                }
+            }
+        }
+    }
+}
