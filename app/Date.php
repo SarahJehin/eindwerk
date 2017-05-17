@@ -21,8 +21,12 @@ class Date extends Model
     protected $dates = ['deleted_at'];
 
 
-    public function winterhours()
+    public function winterhour()
     {
         return $this->belongsTo('App\Winterhour');
+    }
+
+    public function users() {
+    	return $this->belongsToMany('App\User')->withPivot('available', 'assigned');
     }
 }

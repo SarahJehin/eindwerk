@@ -373,6 +373,14 @@ button.submit {
   margin-left: 50px;
   overflow: hidden;
   display: inline-block; }
+  .login_block .error_msg {
+    width: 80%;
+    margin: 0 auto;
+    background-color: transparent; }
+    .login_block .error_msg .asterix {
+      width: 5%; }
+    .login_block .error_msg .error {
+      width: 95%; }
   .login_block .login-heading {
     text-align: center;
     color: #fff;
@@ -812,11 +820,23 @@ button.submit {
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate tr td.active.highlighted.active {
             background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
             color: #fff; }
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td.active.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate tr td.active.highlighted.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate tr td.active.active.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate tr td.active.highlighted.active.white_color {
+            color: #fff; }
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td.active:active,
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.highlighted:active,
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.active,
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.highlighted.active {
             background: linear-gradient(-216deg, #ff9f23 0%, #dd5128 100%);
+            color: #fff; }
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td.active.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.highlighted.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.active.white_color,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.highlighted.active.white_color {
             color: #fff; }
         .total div[class^="part0"] .date_time_info .date_info .date_type {
           margin-bottom: 10px; }

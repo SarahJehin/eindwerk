@@ -79,18 +79,20 @@
         if($('.day_select select').val()) {
             var enddate = new Date((new Date().getFullYear() + 1) + '-04-30');
             var days = {
-                'monday'    : 1,
-                'tuesday'   : 2,
-                'wednesday' : 3,
-                'thursday'  : 4,
-                'friday'    : 5,
-                'saturday'  : 6,
-                'sunday'    : 0
+                'maandag'   : 1,
+                'dinsdag'   : 2,
+                'woensdag'  : 3,
+                'donderdag' : 4,
+                'vrijdag'   : 5,
+                'zaterdag'  : 6,
+                'zondag'    : 0
             }
 
             var new_day = $('.day_select select').val();
             var new_day_number = days[new_day];
+            
             var first_date = get_first_date_of_day(new_day_number);
+            
             var active_dates = getDates(first_date, enddate);
             //reverse the array, because the calendar view jumps to the last date set as active
             //by reversing, this last date will actually be the first date, so the calendar doesn't jump to next year
@@ -116,6 +118,7 @@
                 var formatted_date = dates[i].getFullYear() + '-' + ('0' + (dates[i].getMonth()+1)).slice(-2) + '-' + ('0' + dates[i].getDate()).slice(-2);
                 $('.inputs').append('<input type="text" name="date[]" value="' + formatted_date + '" hidden>');
             }
+            
         }
         
     });

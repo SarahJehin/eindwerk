@@ -240,16 +240,31 @@
                       background: $theme_gradient01;
                         color: #fff;
                     }
+                      
+                      table tr td.white_color,
+                      table tr td.active.white_color,
+                      tr td.active.highlighted.white_color,
+                      tr td.active.active.white_color,
+                      tr td.active.highlighted.active.white_color {
+                          color: #fff;
+                      }
                   }
   
                   .container_deadline {
-                    table tr td.active:active,
-                    tr td.active.highlighted:active,
-                    tr td.active.active,
-                    tr td.active.highlighted.active {
-                      background: $theme_gradient03;
-                        color: #fff;
-                    }
+                      table tr td.active:active,
+                      tr td.active.highlighted:active,
+                      tr td.active.active,
+                      tr td.active.highlighted.active {
+                          background: $theme_gradient03;
+                          color: #fff;
+                      }
+                      table tr td.white_color,
+                      table tr td.active.white_color,
+                      tr td.active.highlighted.white_color,
+                      tr td.active.active.white_color,
+                      tr td.active.highlighted.active.white_color {
+                          color: #fff;
+                      }
                   }
 
               }

@@ -10,12 +10,31 @@ use Auth;
 class WinterhourController extends Controller
 {
     //
-
+	//all
     public function get_winterhours_overview() {
     	//$winterhour_groups = Winterhour::all();
     	$winterhour_groups = Auth::user()->winterhours;
     	//dd($winterhour_groups);
     	return view('winterhours/winterhours_overview', ['winterhour_groups' => $winterhour_groups]);
+    }
+
+    public function edit_availabilities($id) {
+    	$winterhour = Winterhour::find($id);
+    	$dates_by_month = $winterhour->dates->groupBy(function($item) {
+		    return((new \DateTime($item->date))->format('Y-m'));
+		})->reverse();
+    	//dd($winterhour->participants);
+    	//dd($winterhour->dates[0]->users);
+    	//dd(Auth::user()->dates->where('winterhour_id', $winterhour->id));
+    	$user_dates = Auth::user()->dates->where('winterhour_id', $winterhour->id);
+    	//dd($user_dates);
+    	$user_dates_array = array();
+    	foreach ($user_dates as $user_date) {
+    		$user_dates_array[$user_date->id] = $user_date;
+    	}
+    	//dd($user_dates_array);
+    	//dd($test);
+    	return view('winterhours/availabilities', ['winterhour' => $winterhour, 'dates_by_month' => $dates_by_month, 'user_dates_array' => $user_dates_array]);
     }
 
     public function add_winterhour() {
@@ -73,6 +92,7 @@ class WinterhourController extends Controller
         return redirect('edit_winterhour/' . $winterhour->id);
     }
 
+    //author
     public function edit_winterhour($id) {
     	$winterhour = Winterhour::find($id);
     	//dd($winterhour->participants);

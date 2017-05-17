@@ -15,7 +15,10 @@
         $(".container_deadline").removeClass("front");
         $(".container_startdate").addClass("front");
 
-
+        $('.container_startdate').datepicker('update');
+        if(startdate) {
+            $('.container_startdate').datepicker('setDate', startdate);
+        }
 
     });
 
@@ -28,20 +31,27 @@
 
         $(".container_startdate").removeClass("front");
         $(".container_deadline").addClass("front");
+
+        $('.container_deadline').datepicker('update');
+        if(deadline) {
+            $('.container_deadline').datepicker('setDate', deadline);
+        }
     });
 
     var next_prev = "";
     //console.log(startMonth);
 
+    var startdate;
     $('.container_startdate').datepicker({
         language: 'nl-BE',
         multidateSeparator: ",",
         maxViewMode: 0,
         toggleActive: true,
-        startDate: 'today'
+        startDate: 'today',
+        beforeShowDay: beforeShowDateFunction
     }).on('changeDate', function (e) {
             //console.log(e.format());
-            var startdate = e.format();
+            startdate = e.format();
             var formatted_date = startdate.split("/");
             $("#startdate").val(formatted_date[2] + "-" + formatted_date[1] + "-" + formatted_date[0]);
         }
@@ -68,18 +78,20 @@
         }
     });
 
+    
 
-
+    var deadline;
     $('.container_deadline').datepicker({
         language: 'nl-BE',
         multidateSeparator: ",",
         maxViewMode: 0,
         toggleActive: true,
-        startDate: 'today'
+        startDate: 'today',
+        beforeShowDay: beforeShowDateFunction
 
     }).on('changeDate', function (e) {
             console.log(e.format());
-            var deadline = e.format();
+            deadline = e.format();
             var formatted_date = deadline.split("/");
             $("#deadline").val(formatted_date[2] + "-" + formatted_date[1] + "-" + formatted_date[0]);
         }
@@ -141,6 +153,24 @@
         }
 
 
+    }
+
+    function beforeShowDateFunction(date) {
+        //check which is the current date type and whether the current date is startdate or deadline to return an appropriate classname
+        var current_date = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
+        
+        if(startdate && type_date == 'deadline') {
+            if(startdate == current_date) {
+                return 'white_color';
+            }
+        }
+        if(deadline && type_date == 'startdate') {
+            if(deadline == current_date) {
+                return 'white_color';
+            }
+        }
+        //Here for the default days
+        return [true, ''];
     }
 
 })(window, window.document, window.jQuery);

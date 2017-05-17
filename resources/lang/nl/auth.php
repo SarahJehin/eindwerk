@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed'   => 'Deze combinatie van e-mailadres en wachtwoord is niet geldig.',
+    'failed'   => 'Deze combinatie van VTV-nr en wachtwoord is niet geldig.',
     'throttle' => 'Teveel mislukte login pogingen. Probeer het over :seconds seconden nogmaals.',
 
 ];

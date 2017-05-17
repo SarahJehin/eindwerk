@@ -160,5 +160,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Winterhour');
     }
 
+    public function dates() 
+    {
+        return $this->belongsToMany('App\Date')->withPivot('available', 'assigned');
+    }
+
     
 }

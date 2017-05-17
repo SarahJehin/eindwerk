@@ -16,6 +16,18 @@
   margin-left: 50px;
   overflow: hidden;
   display: inline-block;
+    
+    .error_msg {
+        width: 80%;
+        margin: 0 auto;
+        background-color: transparent;
+        .asterix {
+            width: 5%;
+        }
+        .error {
+            width: 95%;
+        }
+    }
 
   .login-heading {
     text-align: center;
