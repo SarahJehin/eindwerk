@@ -14,6 +14,16 @@ class UserController extends Controller
 {
     //
 
+    public function get_authenticated_user() {
+        if (Auth::check()) {
+            return Auth::user();
+        }
+        else {
+            return null;
+        }
+        
+    }
+
     public function get_members_overview(Request $request) {
         $rankings = $this->rankings_array();
         $is_admin = false;

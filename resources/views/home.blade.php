@@ -150,14 +150,6 @@
             <div class="current_score">
                 Je huidige score is {{$total_adult_score}}
             </div>
-
-            <div class="test">
-                <form method="post" action="{{url('import_members')}}" enctype="multipart/form-data">
-                    {{ csrf_field() }}
-                    <input type="file" name="members_excel">
-                    <input type="submit" name="submit" value="Leden importeren">
-                </form>
-            </div>
         </div>
     </div>
 

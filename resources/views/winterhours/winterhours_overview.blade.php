@@ -8,6 +8,7 @@
                 Winteruren
             </div>
             <div class="content">
+
                 <h3>Mijn winteruurgroepen</h3>
                 @if(!$winterhour_groups->isEmpty())
                     @foreach($winterhour_groups as $winterhour)
@@ -15,12 +16,21 @@
                         <h4>{{$winterhour->title}}</h4>
                         <div class="info">
                             <div class="day_time">
-                                Dag en uur: {{$winterhour->day}} om {{substr($winterhour->time, 0, 5)}}
+                                <div class="day">
+                                    Dag: {{$winterhour->day}}
+                                </div>
+                                <div class="time">
+                                    Uur: {{substr($winterhour->time, 0, 5)}}
+                                </div>
+                                <div class="author">
+                                    Aangemaakt door: {{$winterhour->made_by_user->first_name}} {{$winterhour->made_by_user->last_name}}
+                                    @if($winterhour->made_by == Auth::user()->id)
+                                    (als auteur kan jij dit winteruur <a href="{{url('edit_winterhour/' . $winterhour->id)}}">beheren</a>)
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <div class="scheme">
-                            hierin komt het schema wanneer dat gegenereerd is :)
-                        </div>
+                        
                         <div class="participants">
                             <h4>Deelnemers</h4>
                             @foreach($winterhour->participants as $participant)
@@ -29,6 +39,18 @@
                                 <div class="gsm float">{{$participant->gsm}}</div>
                             </div>
                             @endforeach
+                        </div>
+                        @if(count(Auth::user()->dates) > 0)
+                        Jij of de verantwoordelijke hebben je beschikbaarheid reeds doorgegeven. <a href="{{url('availabilities/' . $winterhour->id)}}">Beschikbaarheid aanpassen</a>.
+                        @else
+                        Je hebt nog geen beschikbaarheid doorgegeven.  De verantwoordelijke kan het schema pas aanmaken wanneer jij je beschikbaarheid hebt doorgegeven. <a href="{{url('availabilities/' . $winterhour->id)}}">Beschikbaarheid doorgeven</a>.
+                        @endif
+                        <div class="scheme">
+                            @if($winterhour->status != 3)
+                            Het schema verschijnt hier zodra de verantwoordelijke het gegenereerd heeft.
+                            @else
+                            show scheme
+                            @endif
                         </div>
                     </div>
                     @endforeach

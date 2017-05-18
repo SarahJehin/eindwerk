@@ -29,7 +29,7 @@
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
-                    <form id="add_winterhour" method="post" enctype="multipart/form-data" action="{{url('edit_winterhour')}}" novalidate>
+                    <form id="add_winterhour" class="winterhour_form" method="post" enctype="multipart/form-data" action="{{url('edit_winterhour')}}" novalidate>
                         {{ csrf_field() }}
                         <div class="total">
                             <div class="part01">
@@ -161,12 +161,30 @@
                                 <div class="step_content">
                                     <div class="availabilities">
                                         <div class="descriptive_info">
-                                            Hieronder heb je een overzicht met alle deelnemers en of zij al dan niet hun beschikbaarheid hebben ingevuld. Als organisator van dit winteruur kan jij de beschikbaarheden van anderen ook aanpassen.
+                                            Hieronder heb je een overzicht met alle deelnemers en of zij al dan niet hun beschikbaarheid hebben ingevuld. Als organisator van dit winteruur kan jij de beschikbaarheden van anderen ook aanpassen.<br>
+                                            Pas als iedereen z'n beschikbaarheid heeft doorgegeven, kan je naar stap 4 gaan om het winteruur te genereren.
                                         </div>
                                         <div class="participants">
+                                            <div class="participant header clearfix">
+                                                <div class="name float">
+                                                    Deelnemer
+                                                </div>
+                                                <div class="availability_ok float">
+                                                    Beschikbaarheid
+                                                </div>
+                                            </div>
                                             @foreach($winterhour->participants as $participant)
-                                            <div class="participant">
-                                                {{$participant->first_name}} {{$participant->last_name}}
+                                            <div class="participant clearfix">
+                                                <div class="name float">
+                                                    {{$participant->first_name}} {{$participant->last_name}}
+                                                </div>
+                                                <div class="availability_ok float">
+                                                    @if(count($participant->dates) > 0)
+                                                    <i class="fa fa-check"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                    @else
+                                                    <i class="fa fa-times"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                    @endif
+                                                </div>
                                             </div>
                                             @endforeach
                                         </div>
@@ -177,6 +195,22 @@
                             <div class="part04">
                                 <div class="step_content">
                                     In deze stap kan je het schema genereren
+                                    @if($winterhour->status >= 2)
+                                    <div class="descriptive_info">
+                                        Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
+                                        Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren.
+                                    </div>
+                                    <div class="submit">
+                                        <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
+                                    </div>
+                                    @if($scheme)
+                                    <div class="scheme">
+                                        testtets
+                                    </div>
+                                    @endif
+                                    @else
+                                    Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.
+                                    @endif
                                 </div>
                             </div>
                         </div>

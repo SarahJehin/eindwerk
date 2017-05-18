@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Winterhour;
 use App\Date;
+use App\User;
 use Auth;
 
 class WinterhourController extends Controller
@@ -14,27 +15,84 @@ class WinterhourController extends Controller
     public function get_winterhours_overview() {
     	//$winterhour_groups = Winterhour::all();
     	$winterhour_groups = Auth::user()->winterhours;
+    	foreach ($winterhour_groups as $winterhour_group) {
+    		$winterhour_group->made_by_user = User::find($winterhour_group->made_by);
+    		//dump($winterhour_group);
+    	}
+    	//dd('test');
     	//dd($winterhour_groups);
     	return view('winterhours/winterhours_overview', ['winterhour_groups' => $winterhour_groups]);
     }
 
-    public function edit_availabilities($id) {
+    public function edit_availabilities($id, $user_id = null) {
     	$winterhour = Winterhour::find($id);
+    	$is_author = (Auth::user()->id == $winterhour->made_by);
+    	//dd($is_author);
+
+    	if($user_id) {
+    		$user = User::find($user_id);
+    		//if the currently authenticated user is not the one who made the winterhour or the user of whom you want to edit the availability is not a participant of this winterhour, -> abort to 404
+    		//so only the author of the winterhour can update everyones availability
+    		if(!$is_author || count($user->winterhours->where('id', $id)) <= 0) {
+    			abort(404);
+    		}
+    	}
+    	else {
+    		$user = Auth::user();
+    	}
+    	//dd($winterhour->dates);
     	$dates_by_month = $winterhour->dates->groupBy(function($item) {
 		    return((new \DateTime($item->date))->format('Y-m'));
-		})->reverse();
+		});
     	//dd($winterhour->participants);
     	//dd($winterhour->dates[0]->users);
     	//dd(Auth::user()->dates->where('winterhour_id', $winterhour->id));
-    	$user_dates = Auth::user()->dates->where('winterhour_id', $winterhour->id);
+    	$user_dates = $user->dates->where('winterhour_id', $winterhour->id);
     	//dd($user_dates);
     	$user_dates_array = array();
     	foreach ($user_dates as $user_date) {
     		$user_dates_array[$user_date->id] = $user_date;
     	}
+
     	//dd($user_dates_array);
     	//dd($test);
-    	return view('winterhours/availabilities', ['winterhour' => $winterhour, 'dates_by_month' => $dates_by_month, 'user_dates_array' => $user_dates_array]);
+    	return view('winterhours/availabilities', ['winterhour' => $winterhour, 'dates_by_month' => $dates_by_month, 'user_dates_array' => $user_dates_array, 'user' => $user]);
+    }
+
+    public function update_availability(Request $request) {
+    	//dd($request);
+    	$winterhour_id = $request->winterhour_id;
+    	$user = User::where('id', $request->user_id)->first();
+    	foreach ($request->date as $key => $value) {
+    		$available = 0;
+    		if($value == 'on') {
+    			$available = 1;
+    		}
+    		//echo($available);
+    		//check whether the logged in user has this date in the pivot table
+    		/*
+    		$user_has_date = $user->whereHas('dates', function ($query) use ($key) {
+			    $query->where('dates.id', $key);
+			})->first();*/
+			$user_has_date = $user->dates->where('id', $key)->first();
+			//dump($user_has_date);
+			
+			if($user_has_date) {
+				//if the user already has an entry with this date id in the pivot table -> update existing
+				$user->dates()->updateExistingPivot($key, ['available' => $available, 'assigned' => 0]);
+			}
+			else {
+				//if not, create a new entry for this date
+				$user->dates()->attach($key, ['available' => $available, 'assigned' => 0]);
+			}
+    	}
+    	if($user->id != Auth::user()->id) {
+    		$redirect_path = 'availabilities/' . $winterhour_id . '/' . $user->id;
+    	}
+    	else {
+    		$redirect_path = 'availabilities/' . $winterhour_id;
+    	}
+    	return redirect($redirect_path)->with('success_msg', 'Dankjewel om je beschikbaarheid te updaten!');
     }
 
     public function add_winterhour() {
@@ -96,10 +154,178 @@ class WinterhourController extends Controller
     public function edit_winterhour($id) {
     	$winterhour = Winterhour::find($id);
     	//dd($winterhour->participants);
-    	return view('winterhours/edit_winterhour', ['winterhour' => $winterhour]);
+    	//only the author of the winterhour is allowed to edit it
+    	if(Auth::user()->id != $winterhour->made_by) {
+    		abort(404);
+    	}
+    	$all_availabilities_ok = true;
+    	//check whether all the participants have updated their availability
+    	foreach ($winterhour->participants as $participant) {
+    		if(count($participant->dates) <= 0) {
+    			$all_availabilities_ok = false;
+    		}
+    	}
+    	if($all_availabilities_ok) {
+    		$winterhour->status = 2;
+    		$winterhour->save();
+    	}
+
+    	$scheme = null;
+
+    	return view('winterhours/edit_winterhour', ['winterhour' => $winterhour, 'scheme' => $scheme]);
     }
 
-    public function generate_scheme() {
+    public function generate_scheme($id) {
     	//this function will generate a random scheme considering each participant's availability
+    	$winterhour = Winterhour::find($id);
+    	
+
+    	//total spots = total amounts of spots when someone can play = amount_of_courts * 4 (4 players per court) * dates;
+    	$total_spots = $winterhour->amount_of_courts * 4 * count($winterhour->dates);
+
+    	//the amount of times people can play = total_spots / participants -> rounded down
+    	$amount_of_turns = intval(floor($total_spots/count($winterhour->participants)));
+    	//the remaining spots, so #$rest people can play one time more than the others
+		$rest = $total_spots%count($winterhour->participants);
+
+		//create an array of user id's and amount of turns
+		//participants with the most available dates will have one more turn than the others
+		$ordered_participants = $this->order_participants_by_availability($winterhour->participants);
+		$ordered_participants_ids = $this->get_ids_array($ordered_participants);
+		//dd($ordered_participants);
+		//people who get an extra turns will be saved in the extra turn array
+		$extra_turn = array();
+		for($i = 0; $i < $rest; $i++) {
+			array_push($extra_turn, $ordered_participants[$i]->id);
+		}
+
+		$participants_per_turn = $winterhour->amount_of_courts * 4;
+		$date_participants = array();
+		//foreach date get 4 participants (per court) (taking availabilties into account)
+		foreach ($winterhour->dates as $date) {
+			//dump($date);
+			//exclude array which will hold all of the already assigned participants
+			$exclude_ids = array();
+			echo('test');
+
+			$date_participants[$date->id] = array();
+			
+			for($i = 0; $i < ($winterhour->amount_of_courts * 4); $i++) {
+				echo('blib');
+				//for the amount of spots get random participant (that is not yet in the exclude ids)
+				$participant = $this->get_random_participant($ordered_participants_ids, $exclude_ids, $date->id);
+				//push id from above participant to the exclude ids list
+				array_push($exclude_ids, $participant->id);
+				array_push($date_participants[$date->id], $participant->first_name);
+			}
+		}
+		dd($date_participants);
+		dd($ordered_participants_ids);
+
+    	dd($amount_of_turns);
+
+		dd($winterhour);
+    	/*
+    	deelnemers + beschikbaarheid
+
+		als je 10 deelnemers hebt en 22x dat je kan spelen
+		= in totaal : 88 vrije plekjes
+
+		foreach date() {
+			//get 4 random mensen van de winterhour leden  (of 8 als 2 pleinen) (is dus 4 * amount of courts)
+			//als ze er nog niet in staan -> voeg ze toe aan de array
+			//staan ze beschikbaar voor deze dag
+			//(eventueel extra controle -> als ze er vorige week instonden -> niet inzetten)
+			//check of het aantal occurencies niet groter is dan de max (dus 8 in dit geval)
+			//als het de laatste date is -> mag er voor 2 wel meer als 8 instaan
+			//eventueel nog checken op geslacht -> dubbel gemengd maken
+		)
+
+		hoe ga je nog checken dat de mensen niet te vaak tegen dezelfde mensen moeten spelen??
+
+		als het niet uitkomt -> opnieuw de functie runnen
+
+		scheme = [	1 (=date_id)	=> array('Lies', 'Boris', 'Fiona', 'Landon'),
+				2		=> array('Jasper', 'Inte', 'Gilles', 'Dries'),
+				3		=> array('Jasper', 'Boris', 'Lies', 'Jente')];
+
+		$aantal_keer = floor(88/10);
+		$rest = 88%10;
+
+		echo($aantal_keer);
+		echo('<br>' . $rest);
+		//dus dan heb je 8*9 + 2*8
+		$result = ($rest * ceil(88/10)) + (10- $rest) * 8;
+		echo('<br>' . $result);
+		*/
+    }
+
+    public function order_participants_by_availability($participants) {
+    	$participants_with_amount_availabilities = array();
+    	foreach ($participants as $participant) {
+    		//get the amount of dates that this participant is available
+    		$total_availabilities = $participant->dates->sum('pivot.available');
+    		$participants_with_amount_availabilities[$participant->id] = $total_availabilities;
+    	}
+    	arsort($participants_with_amount_availabilities);
+    	$sorted_participants = array();
+    	foreach ($participants_with_amount_availabilities as $key => $value) {
+    		array_push($sorted_participants, User::find($key));
+    	}
+    	//dd($sorted_participants);
+    	return $sorted_participants;
+    }
+
+    public function get_ids_array($collection) {
+    	$ids_array = array();
+    	foreach ($collection as $item) {
+    		array_push($ids_array, $item->id);
+    	}
+    	return $ids_array;
+    }
+
+    public function get_random_participant($haystack_ids, $exclude_ids, $date_id) {
+    	//dd(array_unique(array_merge($haystack_ids, $exclude_ids)));
+    	$available_ids = array_unique(array_merge($haystack_ids, $exclude_ids));
+    	$random_nr = rand(0,(count($available_ids)-1));
+    	$participant = User::find($available_ids[$random_nr]);
+    	//check if this user is available, otherwise get another random participant
+    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
+    	//dd($available->pivot->available);
+    	if($available) {
+    		//echo('available <br>');
+    	}
+    	else {
+    		//echo('not available <br>');
+    	}
+    	
+    	//as long as the participant is not available find another one
+    	//for testing stop after 5 tries
+    	$a = 0;
+    	while(!$available) {
+    		//
+    		//echo('av?');
+
+    		array_push($exclude_ids, $participant->id);
+    		$available_ids = array_unique(array_merge($haystack_ids, $exclude_ids));
+	    	$random_nr = rand(0,(count($available_ids)-1));
+	    	$participant = User::find($available_ids[$random_nr]);
+	    	//check if this user is available, otherwise get another random participant
+	    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
+	    	//echo($participant->first_name);
+	    	if($available) {
+	    		//echo('available <br>');
+	    	}
+	    	else {
+	    		//echo('not available <br>');
+	    	}
+
+    		$a++;
+    		if($a > 5) {
+    			break;
+    		}
+    	}
+    	return $participant;
+    	//dd($participant->first_name);
     }
 }

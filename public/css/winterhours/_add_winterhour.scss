@@ -1,4 +1,5 @@
 .add_winterhour, .edit_winterhour {
+
     
     .form_part {
         .groupname {
@@ -150,6 +151,42 @@
                 }
             }
             
+        }
+        
+        .availabilities {
+            .participants {
+                .participant {
+                    padding: 5px;
+                    border-bottom: 1px solid rgba($theme_color01, 0.25);
+                    
+                    &.header {
+                        background-color: $theme_color01;
+                        color: #fff;
+                        &:hover {
+                            background-color: $theme_color01;
+                            color: #fff;
+                        }
+                    }
+                    .name {
+                        width: 50%;
+                    }
+                    .availability_ok {
+                        width: 50%;
+                        text-align: right;
+                        i {
+                            width: 10%;
+                            text-align: center;
+                        }
+                    }
+                    &:hover, &.opened {
+                        background-color: rgba($theme_color01, 0.5);
+                        color: #fff;
+                        .link {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
         }
     }
 }

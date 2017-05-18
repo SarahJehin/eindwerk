@@ -1858,6 +1858,28 @@ button.submit {
   height: 32px;
   line-height: 32px;
   text-align: right; }
+.add_winterhour .form_part .availabilities .participants .participant, .edit_winterhour .form_part .availabilities .participants .participant {
+  padding: 5px;
+  border-bottom: 1px solid rgba(26, 188, 156, 0.25); }
+  .add_winterhour .form_part .availabilities .participants .participant.header, .edit_winterhour .form_part .availabilities .participants .participant.header {
+    background-color: #1abc9c;
+    color: #fff; }
+    .add_winterhour .form_part .availabilities .participants .participant.header:hover, .edit_winterhour .form_part .availabilities .participants .participant.header:hover {
+      background-color: #1abc9c;
+      color: #fff; }
+  .add_winterhour .form_part .availabilities .participants .participant .name, .edit_winterhour .form_part .availabilities .participants .participant .name {
+    width: 50%; }
+  .add_winterhour .form_part .availabilities .participants .participant .availability_ok, .edit_winterhour .form_part .availabilities .participants .participant .availability_ok {
+    width: 50%;
+    text-align: right; }
+    .add_winterhour .form_part .availabilities .participants .participant .availability_ok i, .edit_winterhour .form_part .availabilities .participants .participant .availability_ok i {
+      width: 10%;
+      text-align: center; }
+  .add_winterhour .form_part .availabilities .participants .participant:hover, .add_winterhour .form_part .availabilities .participants .participant.opened, .edit_winterhour .form_part .availabilities .participants .participant:hover, .edit_winterhour .form_part .availabilities .participants .participant.opened {
+    background-color: rgba(26, 188, 156, 0.5);
+    color: #fff; }
+    .add_winterhour .form_part .availabilities .participants .participant:hover .link, .add_winterhour .form_part .availabilities .participants .participant.opened .link, .edit_winterhour .form_part .availabilities .participants .participant:hover .link, .edit_winterhour .form_part .availabilities .participants .participant.opened .link {
+      color: #fff; }
 
 .winterhours_overview .winterhour_group .participants {
   width: 30%;
@@ -1866,6 +1888,26 @@ button.submit {
     width: 60%; }
   .winterhours_overview .winterhour_group .participants .participant .gsm {
     width: 40%; }
+
+.availabilities .back {
+  margin-bottom: 25px; }
+.availabilities .descriptive_info {
+  text-align: center;
+  margin-bottom: 30px; }
+.availabilities .dates_overview .monthly_dates {
+  width: calc(22% - 1px);
+  margin-right: 4%;
+  border-right: 1px solid rgba(26, 188, 156, 0.25);
+  height: 170px;
+  margin-top: 25px; }
+  .availabilities .dates_overview .monthly_dates:nth-child(4n+4) {
+    margin-right: 0; }
+  .availabilities .dates_overview .monthly_dates h4 {
+    margin-top: 0; }
+  .availabilities .dates_overview .monthly_dates .dates .date .date_date {
+    width: 55%; }
+.availabilities .submit_btn {
+  margin-top: 25px; }
 
 .float {
   float: left; }

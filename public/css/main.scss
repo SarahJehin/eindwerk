@@ -1,6 +1,7 @@
 //colors
 $theme_color01 : #1abc9c;
 $theme_color01_shade01 : #16a085;
+$theme_color01_25_opacity : rgba(#1abc9c, .25);
 $theme_gradient01: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
 
 $theme_color02 : #24313c;
@@ -448,6 +449,7 @@ nav {
 //winterhours
 @import "winterhours/add_winterhour";
 @import "winterhours/winterhours_overview";
+@import "winterhours/availabilities";
 
 
 //floats

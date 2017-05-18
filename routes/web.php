@@ -17,6 +17,8 @@ Route::get('/', 'HomeController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+//get authenticated user for 404
+Route::get('get_authenticated_user', 'UserController@get_authenticated_user');
 
 Route::group(['middleware' => ['auth']], function () {
     //users
@@ -38,7 +40,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('add_winterhour', 'WinterhourController@add_winterhour');
     Route::post('add_winterhour', 'WinterhourController@create_winterhour');
     Route::get('edit_winterhour/{id}', 'WinterhourController@edit_winterhour');
-    Route::get('availabilities/{id}', 'WinterhourController@edit_availabilities');
+    Route::get('availabilities/{id}/{user_id?}', 'WinterhourController@edit_availabilities');
+    Route::post('update_availability', 'WinterhourController@update_availability');
+    Route::get('generate_scheme/{id}', 'WinterhourController@generate_scheme');
+
 });
 
 Route::group(['middleware' => ['auth', 'youth_board']], function () {

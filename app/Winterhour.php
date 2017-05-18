@@ -22,11 +22,12 @@ class Winterhour extends Model
 
     public function participants()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User')->orderBy('last_name')->orderBy('first_name');
     }
 
     public function dates()
     {
-        return $this->hasMany('App\Date');
+        return $this->hasMany('App\Date')->orderBy('date');
     }
+
 }
