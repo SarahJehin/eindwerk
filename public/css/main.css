@@ -1880,6 +1880,16 @@ button.submit {
     color: #fff; }
     .add_winterhour .form_part .availabilities .participants .participant:hover .link, .add_winterhour .form_part .availabilities .participants .participant.opened .link, .edit_winterhour .form_part .availabilities .participants .participant:hover .link, .edit_winterhour .form_part .availabilities .participants .participant.opened .link {
       color: #fff; }
+.add_winterhour .form_part .scheme_generation .scheme .date, .edit_winterhour .form_part .scheme_generation .scheme .date {
+  width: 22%;
+  margin-right: 4%;
+  font-size: 0.9em; }
+  .add_winterhour .form_part .scheme_generation .scheme .date:nth-child(4n+4), .edit_winterhour .form_part .scheme_generation .scheme .date:nth-child(4n+4) {
+    margin-right: 0; }
+  .add_winterhour .form_part .scheme_generation .scheme .date h3, .edit_winterhour .form_part .scheme_generation .scheme .date h3 {
+    margin-bottom: 5px;
+    border-bottom: 1px solid #1abc9c;
+    padding-bottom: 3px; }
 
 .winterhours_overview .winterhour_group .participants {
   width: 30%;
@@ -1888,6 +1898,10 @@ button.submit {
     width: 60%; }
   .winterhours_overview .winterhour_group .participants .participant .gsm {
     width: 40%; }
+.winterhours_overview .winterhour_group .scheme .date {
+  width: 25%; }
+  .winterhours_overview .winterhour_group .scheme .date .participant.active {
+    color: #1abc9c; }
 
 .availabilities .back {
   margin-bottom: 25px; }

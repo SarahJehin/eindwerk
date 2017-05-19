@@ -12,5 +12,16 @@
                 }
             }
         }
+        
+        .scheme {
+            .date {
+                width: 25%;
+                .participant {
+                    &.active {
+                        color: $theme_color01;
+                    }
+                }
+            }
+        }
     }
 }

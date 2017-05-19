@@ -193,7 +193,7 @@
                                 </div>
                             </div>
                             <div class="part04">
-                                <div class="step_content">
+                                <div class="step_content scheme_generation">
                                     In deze stap kan je het schema genereren
                                     @if($winterhour->status >= 2)
                                     <div class="descriptive_info">
@@ -204,8 +204,17 @@
                                         <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
                                     </div>
                                     @if($scheme)
-                                    <div class="scheme">
-                                        testtets
+                                    <div class="scheme clearfix">
+                                        @foreach($scheme as $date => $participants)
+                                        <div class="date float">
+                                            <h3>{{$date}}</h3>
+                                            @foreach($participants as $participant)
+                                            <div class="participant">
+                                                {{$participant->first_name}} {{$participant->last_name}}
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        @endforeach
                                     </div>
                                     @endif
                                     @else

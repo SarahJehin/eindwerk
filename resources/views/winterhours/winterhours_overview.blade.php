@@ -45,11 +45,20 @@
                         @else
                         Je hebt nog geen beschikbaarheid doorgegeven.  De verantwoordelijke kan het schema pas aanmaken wanneer jij je beschikbaarheid hebt doorgegeven. <a href="{{url('availabilities/' . $winterhour->id)}}">Beschikbaarheid doorgeven</a>.
                         @endif
-                        <div class="scheme">
+                        <div class="scheme clearfix">
                             @if($winterhour->status != 3)
                             Het schema verschijnt hier zodra de verantwoordelijke het gegenereerd heeft.
                             @else
-                            show scheme
+                                @foreach($winterhour->scheme as $date => $participants)
+                                <div class="date float">
+                                    <h3>{{$date}}</h3>
+                                    @foreach($participants as $participant)
+                                    <div class="participant {{ ($participant->id == Auth::user()->id ? 'active':'') }}">
+                                        {{$participant->first_name}} {{$participant->last_name}}
+                                    </div>
+                                    @endforeach
+                                </div>
+                                @endforeach
                             @endif
                         </div>
                     </div>

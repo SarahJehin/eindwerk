@@ -29,4 +29,8 @@ class Date extends Model
     public function users() {
     	return $this->belongsToMany('App\User')->withPivot('available', 'assigned');
     }
+
+    public function assigned_participants() {
+        return $this->belongsToMany('App\User')->withPivot('available', 'assigned')->wherePivot('assigned', 1);
+    }
 }

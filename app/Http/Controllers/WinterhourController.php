@@ -17,8 +17,24 @@ class WinterhourController extends Controller
     	$winterhour_groups = Auth::user()->winterhours;
     	foreach ($winterhour_groups as $winterhour_group) {
     		$winterhour_group->made_by_user = User::find($winterhour_group->made_by);
+
+    		$scheme = null;
+	    	//if winterhour status is 3, the scheme is generated and should be passed to the view as well
+	    	if($winterhour_group->status == 3) {
+	    		$scheme = array();
+	    		foreach ($winterhour_group->dates as $date) {
+	    			$scheme[$date->date] = array();
+	    			foreach ($date->assigned_participants as $participant) {
+	    				array_push($scheme[$date->date], $participant);
+	    			}
+	    		}
+	    	}
+
+	    	$winterhour_group->scheme = $scheme;
+
     		//dump($winterhour_group);
     	}
+
     	//dd('test');
     	//dd($winterhour_groups);
     	return view('winterhours/winterhours_overview', ['winterhour_groups' => $winterhour_groups]);
@@ -165,12 +181,23 @@ class WinterhourController extends Controller
     			$all_availabilities_ok = false;
     		}
     	}
-    	if($all_availabilities_ok) {
+    	if($all_availabilities_ok && $winterhour->status != 3) {
     		$winterhour->status = 2;
     		$winterhour->save();
     	}
 
     	$scheme = null;
+    	//if winterhour status is 3, the scheme is generated and should be passed to the view as well
+    	if($winterhour->status == 3) {
+    		$scheme = array();
+    		foreach ($winterhour->dates as $date) {
+    			$scheme[$date->date] = array();
+    			foreach ($date->assigned_participants as $participant) {
+    				array_push($scheme[$date->date], $participant);
+    			}
+    		}
+    	}
+    	//dd($scheme);
 
     	return view('winterhours/edit_winterhour', ['winterhour' => $winterhour, 'scheme' => $scheme]);
     }
@@ -178,7 +205,6 @@ class WinterhourController extends Controller
     public function generate_scheme($id) {
     	//this function will generate a random scheme considering each participant's availability
     	$winterhour = Winterhour::find($id);
-    	
 
     	//total spots = total amounts of spots when someone can play = amount_of_courts * 4 (4 players per court) * dates;
     	$total_spots = $winterhour->amount_of_courts * 4 * count($winterhour->dates);
@@ -187,6 +213,7 @@ class WinterhourController extends Controller
     	$amount_of_turns = intval(floor($total_spots/count($winterhour->participants)));
     	//the remaining spots, so #$rest people can play one time more than the others
 		$rest = $total_spots%count($winterhour->participants);
+		//dd($amount_of_turns);
 
 		//create an array of user id's and amount of turns
 		//participants with the most available dates will have one more turn than the others
@@ -199,32 +226,72 @@ class WinterhourController extends Controller
 			array_push($extra_turn, $ordered_participants[$i]->id);
 		}
 
+		//array with the participant id's and the amount of turn they already have, so they don't exceed the total amount of turns
+		$participant_with_amount_of_turns = array();
+		//prefill with all participants id's and 0 turns
+		foreach ($ordered_participants_ids as $participant_id) {
+			$participant_with_amount_of_turns[$participant_id] = 0;
+		}
+		//dd($participant_with_amount_of_turns);
+
 		$participants_per_turn = $winterhour->amount_of_courts * 4;
 		$date_participants = array();
+
+		//total amount of dates
+		$amount_of_dates = count($winterhour->dates);
+		$date_iterator = 0;
+
 		//foreach date get 4 participants (per court) (taking availabilties into account)
 		foreach ($winterhour->dates as $date) {
+			//when scheme is regenerated, first set all assigned back to 0
+			foreach ($date->users as $user) {
+				$user->dates()->updateExistingPivot($date->id, ['assigned' => 0]);
+			}
+
+			$date_iterator++;
+			$last_date = false;
+			if($date_iterator >= $amount_of_dates) {
+				$last_date = true;
+			}
 			//dump($date);
 			//exclude array which will hold all of the already assigned participants
 			$exclude_ids = array();
-			echo('test');
+			//echo('test');
 
 			$date_participants[$date->id] = array();
 			
 			for($i = 0; $i < ($winterhour->amount_of_courts * 4); $i++) {
-				echo('blib');
+				echo('<h2>Nieuwe deelnemer toevoegen</h2>');
+				echo('<br>Uitgesloten ids: <br>');
+				dump($exclude_ids);
 				//for the amount of spots get random participant (that is not yet in the exclude ids)
-				$participant = $this->get_random_participant($ordered_participants_ids, $exclude_ids, $date->id);
+				$participant = $this->get_random_participant($ordered_participants_ids, $exclude_ids, $date->id, $participant_with_amount_of_turns, $amount_of_turns, $extra_turn, $last_date);
 				//push id from above participant to the exclude ids list
 				array_push($exclude_ids, $participant->id);
-				array_push($date_participants[$date->id], $participant->first_name);
+				//array_push($date_participants[$date->id], $participant->first_name . ' ' . substr($participant->last_name, 0, 1) . ' (' . $participant->id . ')');
+				array_push($date_participants[$date->id], $participant->id);
+				//add 1 to the amount of turns of the assigned participant
+				$participant_with_amount_of_turns[$participant->id]++;
+			}
+			//echo('Deelnemers datum: <br>');
+			//dump($date_participants);
+		}
+		//dd($date_participants);
+		
+		//when the scheme is generated update all the necessary entries in the date_user table to assigned 1
+		//this could also be done in the foreach loop above, but to keep it clearer it's seperated
+		foreach ($date_participants as $date_id => $participants) {
+			foreach ($participants as $key => $participant_id) {
+				$participant = User::find($participant_id);
+				$participant->dates()->updateExistingPivot($date_id, ['assigned' => 1]);
 			}
 		}
-		dd($date_participants);
-		dd($ordered_participants_ids);
-
-    	dd($amount_of_turns);
-
-		dd($winterhour);
+		//scheme is generated so update the status
+		$winterhour->status = 3;
+    	$winterhour->save();
+    	//dd($winterhour);
+		//dd("scheme generated, redirect back to edit winterhour and display the scheme");
+		return redirect('edit_winterhour/' . $winterhour->id);
     	/*
     	deelnemers + beschikbaarheid
 
@@ -284,13 +351,44 @@ class WinterhourController extends Controller
     	return $ids_array;
     }
 
-    public function get_random_participant($haystack_ids, $exclude_ids, $date_id) {
-    	//dd(array_unique(array_merge($haystack_ids, $exclude_ids)));
-    	$available_ids = array_unique(array_merge($haystack_ids, $exclude_ids));
-    	$random_nr = rand(0,(count($available_ids)-1));
-    	$participant = User::find($available_ids[$random_nr]);
-    	//check if this user is available, otherwise get another random participant
-    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
+    public function get_random_participant($haystack_ids, $exclude_ids, $date_id, $participant_turns, $amount_of_turns, $extra_turn, $last_date) {
+    	//dd($amount_of_turns, $extra_turn, $amount_of_turns+1);
+    	//array diff -> keep only haystack id's that are not in the excluded id's, array_values -> reindex array
+    	$available_ids = array_values(array_diff($haystack_ids, $exclude_ids));
+    	//echo('<br> Available ids <br>');
+    	//dump($available_ids);
+
+    	//first check if there are available priority id's, if not get random
+    	$priority_ids = $this->get_priority_participants($participant_turns);
+    	if($priority_ids) {
+    		//foreach if not available
+    		foreach ($priority_ids as $priority_id) {
+    			$participant = User::find($priority_id);
+		    	//check if this user is available
+		    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
+		    	//echo('<br>Available ids: <br>');
+		    	//dump($available_ids);
+		    	//echo('<br>is id of Jorien in available_ids, dont thin so..<br>');
+		    	//dump(in_array($priority_id, $available_ids));
+		    	if($available && in_array($priority_id, $available_ids)) {
+		    		//if this priority participant is available, break, else continue the loop and try the next one
+		    		break;
+		    	}
+		    	else {
+		    		$available = false;
+		    	}
+    		}
+    	}
+    	else {
+    		//random
+    		$random_nr = rand(0,(count($available_ids)-1));
+	    	//echo('<br> Random nummer: ' . $random_nr . '<br>');
+	    	$participant = User::find($available_ids[$random_nr]);
+	    	//check if this user is available, otherwise get another random participant
+	    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
+    	}
+
+    	
     	//dd($available->pivot->available);
     	if($available) {
     		//echo('available <br>');
@@ -298,34 +396,102 @@ class WinterhourController extends Controller
     	else {
     		//echo('not available <br>');
     	}
+
+    	//if it is the last date, the participant is allowed to exceed his max turns by one
+    	if($last_date) {
+    		if($participant_turns[$participant->id] < ($amount_of_turns+1)) {
+		    	//then everything is ok
+		    	echo('<br> Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
+		    }
+    	}
+    	else {
+    		//check whether this person doesn't exceed his max turns
+		    if($participant_turns[$participant->id] < $amount_of_turns) {
+		    	//then everything is ok
+		    	echo('<br> Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
+		    }
+		    else {
+		    	//if the id is in the array with one more turn and is still smaller then ok, else not ok (-> not available)
+		    	if(in_array($participant->id, $extra_turn) && $participant_turns[$participant->id] < ($amount_of_turns+1)) {
+		    		//ok
+		    		echo('<br>Extra_Turn_Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
+		    	}
+		    	else {
+		    		//if this participant has reached his max amount of participations, set available to false and find another participant
+		    		$available = false;
+		    	}
+		    }
+    	}
+    	
     	
     	//as long as the participant is not available find another one
     	//for testing stop after 5 tries
     	$a = 0;
     	while(!$available) {
-    		//
-    		//echo('av?');
-
+    		//echo('<br> amount of turns:');
+    		//dump($participant_turns);
     		array_push($exclude_ids, $participant->id);
-    		$available_ids = array_unique(array_merge($haystack_ids, $exclude_ids));
+    		$available_ids = array_values(array_diff($haystack_ids, $exclude_ids));
+    		//echo('<br> Available ids <br>');
+    		//dump($available_ids);
 	    	$random_nr = rand(0,(count($available_ids)-1));
+	    	//echo('<br> Random nummer: ' . $random_nr . '<br>');
 	    	$participant = User::find($available_ids[$random_nr]);
 	    	//check if this user is available, otherwise get another random participant
 	    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
 	    	//echo($participant->first_name);
-	    	if($available) {
-	    		//echo('available <br>');
+
+	    	//check whether this person doesn't exceed his max turns
+	    	if($participant_turns[$participant->id] < $amount_of_turns) {
+	    		//then everything is ok
+	    		//echo('<br> Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
 	    	}
 	    	else {
-	    		//echo('not available <br>');
+	    		//if the id is in the array with one more turn and is still smaller then ok, else not ok (-> not available)
+	    		if(in_array($participant->id, $extra_turn) && $participant_turns[$participant->id] < ($amount_of_turns+1)) {
+	    			//ok
+	    			//echo('<br>Extra_Turn_Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
+	    		}
+	    		else {
+	    			//if this participant has reached his max amount of participations, set available to false and find another participant
+	    			//echo('<br> Participants had too many turns<br>');
+	    			$available = false;
+	    		}
 	    	}
+	    	//echo('a is' . $a);
+	    	//extra check (didn't this person play last week) --> optional
 
     		$a++;
-    		if($a > 5) {
+    		if($a > 12) {
     			break;
     		}
     	}
     	return $participant;
     	//dd($participant->first_name);
     }
+
+    public function get_priority_participants($participant_turns) {
+    	$priority_ids = array();
+    	//asort($participant_turns, SORT_NUMERIC );
+    	dump($participant_turns);
+    	$lowest_value = min($participant_turns);
+    	$id_lowest_value = array_keys($participant_turns, min($participant_turns))[0];
+    	unset($participant_turns[$id_lowest_value]);
+    	$second_lowest_value = min($participant_turns);
+    	$id_second_lowest_value = array_keys($participant_turns, min($participant_turns))[0];
+    	$highest_value = max($participant_turns);
+    	$id_highest_value = array_keys($participant_turns, max($participant_turns))[0];
+    	if($lowest_value <= ($highest_value-2)) {
+    		array_push($priority_ids, $id_lowest_value);
+    		if($second_lowest_value <= ($highest_value-2)) {
+    			array_push($priority_ids, $id_second_lowest_value);
+    		}
+    	}
+    	else {
+    		$priority_ids = null;
+    	}
+    	//dd($priority_ids);
+    	return $priority_ids;
+    }
+
 }
