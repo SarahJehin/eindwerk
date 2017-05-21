@@ -57,18 +57,6 @@
                                                 </label>
                                             </div>
                                         @endforeach
-                                        <div class="category">
-                                            <input type="radio" name="category" id="cat01">
-                                            <label for="cat01"></label>
-                                        </div>
-                                        <div class="category">
-                                            <input type="radio" name="category" id="cat02">
-                                            <label for="cat02"></label>
-                                        </div>
-                                        <div class="category">
-                                            <input type="radio" name="category" id="cat03">
-                                            <label for="cat03"></label>
-                                        </div>
                                     </div>
 
                                     <h3>Upload poster</h3>

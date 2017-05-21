@@ -9,12 +9,13 @@
 
 
 .total {
-  //width: 2000px;
-  width: 400%;
-  position: relative;
-  left: 0%;
+    //width: 2000px;
+    width: 400%;
+    position: relative;
+    left: 0%;
 
-  transition: left 0.75s;
+    //transition: left 0.75s;
+    @include transition(left 0.75s ease);
     
     h3 {
         color: $form_color_radio;
@@ -113,10 +114,12 @@
         }
 
         &.with_poster {
-          span {
-            opacity: 0;
-            -webkit-transition: opacity 0.2s; /* Safari */
-            transition: opacity 0.2s;
+            span {
+                opacity: 0;
+                //-webkit-transition: opacity 0.2s; /* Safari */
+                //transition: opacity 0.2s;
+               @include transition(opacity 0.2s ease);
+              
           }
           &:hover {
             span {
@@ -573,7 +576,7 @@
     padding: 10px 5%;
     color: $form_color;
     border-radius: 0;
-    transition: border-color .25s ease, box-shadow .25s ease;
+    //transition: border-color .25s ease, box-shadow .25s ease;
     border: 1px solid $form_color;
     background-color: transparent;
     cursor: pointer;

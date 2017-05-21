@@ -15,6 +15,9 @@
                     color: $form_font_color;
                     font-style: italic;
                 }
+                @include smartphone {
+                    width: 75%;
+                }
             }
             span {
                 padding: 6px 10px 5px;
@@ -22,7 +25,8 @@
                 color: #fff;
                 background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
                 background-size: 200% 100%;
-                transition: background 0.3s ease;
+                //transition: background 0.3s ease;
+                @include transition(background 0.3s ease);
                 &:hover {
                     background-position: 100%;
                     cursor: pointer;
@@ -32,6 +36,7 @@
         
         .open_advanced {
             margin-top: 5px;
+            width: 150px;
         }
         
         .advanced {
@@ -50,16 +55,16 @@
                 //padding: 0px 2.5%;
                 h3 {
                     margin-top: 0;
+                    @include smartphone {
+                        &:nth:child(2) {
+                            margin-top: 20px;
+                        }
+                    }
                 }
             }
-            .ranking {
+            .ranking, .birth_year {
                 .btn-group.bootstrap-select {
                     width: 160px;
-                }
-            }
-            .birth_year {
-                .btn-group.bootstrap-select {
-                    width: 120px;
                 }
             }
             
@@ -91,16 +96,28 @@
                 }
                 .name {
                     width: 50%;
+                    @include smartphone {
+                        width: 100%;
+                    }
                 }
                 .date {
                     width: 20%;
+                    @include smartphone {
+                        display: none;
+                    }
                 }
                 .singles {
                     width: 12%;
                     margin-right: 6%;
+                    @include smartphone {
+                        display: none;
+                    }
                 }
                 .doubles {
                     width: 12%;
+                    @include smartphone {
+                        display: none;
+                    }
                 }
             }
             .details {
@@ -111,6 +128,11 @@
                 .profile_pic {
                     width: 8%;
                     margin-right: 2%;
+                    @include smartphone {
+                        //width: 15%;
+                        //margin-right: 5%;
+                        display: none;
+                    }
                     img {
                         width: 100%;
                         height: auto;
@@ -121,12 +143,36 @@
                 .contact_info {
                     width: 90%;
                     margin-top: 15px;
+                    @include smartphone {
+                        width: 100%;
+                        margin-top: 0;
+                        
+                        span {
+                            font-size: 0.9em;
+                            &:first-child {
+                                display: block;
+                                width: 25px;
+                            }
+                        }
+                    }
                     
                     .gsm, .tel {
                         width: 25%;
+                        @include smartphone {
+                            width: 100%;
+                        }
                     }
                     .email {
                         width: 50%;
+                        @include smartphone {
+                            width: 100%;
+                        }
+                    }
+                    
+                    @include smartphone {
+                        i {
+                            width: 20px;
+                        }
                     }
                 }
             }
@@ -146,6 +192,16 @@
     .pagination_container {
         text-align: center;
         .pagination {
+            
+            @include smartphone {
+                li {
+                    display: none;
+                    &:first-child, &.active, &:last-child {
+                        display: inline;
+                    }
+                }
+            }
+            
             li {
                 a {
                     color: $theme_color01;

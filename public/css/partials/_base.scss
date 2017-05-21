@@ -1,0 +1,78 @@
+//all variables + all mixin declarations
+//colors
+$theme_color01 : #1abc9c;
+$theme_color01_shade01 : #16a085;
+$theme_color01_25_opacity : rgba(#1abc9c, .25);
+$theme_gradient01: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
+
+$theme_color02 : #24313c;
+$theme_color02_alpha : rgba(36, 49, 60, 0.8);
+
+$theme_color03: #ff9f23;
+$theme_gradient03: linear-gradient(-216deg, $theme_color03 0%, #dd5128 100%);
+
+$form_color: #6b7d87;
+$form_color_radio: #3d4b53;
+$form_font_color: #9CAFB9;
+
+$success_bg_color: #a2d8a6;
+$success_font_color: #1d6920;
+
+$error_bg_color: #d7b3b2;
+$error_font_color: #872619;
+
+$warning_bg_color: #e9c9a2;
+$warning_font_color: #9b5d12;
+
+$delete_color: #b73928;
+
+$valid_color: #5dcb9a;
+
+
+//category colors:
+$battle_bunny: #395696;
+$party_penguin: #e51853;
+$clubdagen: #d07821;
+
+
+//fonts
+$main_font : 'Titillium Web', sans-serif;
+$h3_font : 'Quicksand', sans-serif;
+
+
+
+
+
+//mixin
+
+//properties
+@mixin transition($values...) {
+  -webkit-transition: $values;
+     -moz-transition: $values;
+      -ms-transition: $values;
+          transition: $values;
+}
+
+
+//mediaqueries
+$smartphone-width: 400px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin tablet {
+  @media (max-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+@mixin smartphone {
+  @media (max-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin smartphone_small {
+  @media (max-width: #{$smartphone-width}) {
+    @content;
+  }
+}

@@ -24,7 +24,8 @@
             background-color: rgba($form_font_color, 0.25);
             z-index: 5;
             
-            transition: background-color .5s;
+            //transition: background-color .5s;
+             @include transition(background-color 0.5s ease);
             
             &:first-child {
                 //margin-right: 1%;
@@ -39,7 +40,8 @@
                 height: 100%;
                 background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
                 opacity: 0;
-                transition: opacity .5s;
+                //transition: opacity .5s;
+                @include transition(opacity .5s ease);
             }
             
             &:hover, &.active {

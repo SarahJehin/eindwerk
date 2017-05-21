@@ -31,6 +31,7 @@
                                         <div class="real_content">
                                             <span class="ranking">1</span>
                                             <img src="{{url('images/profile_pictures/' . $adult_top_3[0]->image)}}">
+                                            <span class="name">{{$adult_top_3[0]->first_name}}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -39,6 +40,7 @@
                                         <div class="real_content">
                                             <span class="ranking">2</span>
                                             <img src="{{url('images/profile_pictures/' . $adult_top_3[1]->image)}}">
+                                            <span class="name">{{$adult_top_3[1]->first_name}}</span>
                                         </div>
                                     </div>
                                 </li>
@@ -47,6 +49,7 @@
                                         <div class="real_content">
                                             <span class="ranking">3</span>
                                             <img src="{{url('images/profile_pictures/' . $adult_top_3[2]->image)}}">
+                                            <span class="name">{{$adult_top_3[2]->first_name}}</span>
                                         </div>
                                     </div>
                                 </li>

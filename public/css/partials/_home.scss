@@ -31,6 +31,12 @@
         width: 30%;
         margin-right: 3%;
         position: relative;
+        
+        @include smartphone {
+            float: none;
+            width: 50%;
+            margin: 0 auto;
+        }
         img {
             width: 100%;
             height: auto;
@@ -49,12 +55,21 @@
     .data {
         width: 67%;
         
+        @include smartphone {
+            float: none;
+            width: 100%;
+        }
+        
         h2 {
             margin: 0;
             margin-bottom: 15px;
             font-weight: normal;
             border-bottom: 1px solid $theme_color01;
             font-family: "Quicksand", sans-serif;
+            
+            @include smartphone {
+                text-align: center;
+            }
         }
         
         .contact_info {
@@ -63,6 +78,13 @@
             margin-right: 2%;
             padding-right: 2.5%;
             border-right: 1px solid $form_font_color;
+            
+            @include smartphone {
+                float: none;
+                width: 100%;
+                border: none;
+            }
+            
             & > div {
                 padding: 5px 0;
                 border-bottom: 1px solid rgba($theme_color02, 0.1);
@@ -70,6 +92,13 @@
             
             .gsm, .tel, .email {
                 position: relative;
+                
+                @include smartphone {
+                    .edit_button {
+                        display: block;
+                    }
+                }
+                
                 div {
                     input {
                         background-color: transparent;
@@ -107,6 +136,10 @@
             }
             .value {
                 width: 215px;
+                
+                @include smartphone {
+                    width: 200px;
+                }
             }
         }
         
@@ -114,6 +147,9 @@
             width: 30%;
             h3 {
                 margin-top: 0;
+                @include smartphone {
+                    margin-top: 25px;
+                }
             }
             .badge {
                 width: 40px;
@@ -153,6 +189,10 @@
                 &:hover {
                     background-color: $theme_color01;
                 }
+                
+                @include smartphone {
+                    display: none;
+                }
             }
             &:hover {
                 background-color: rgba($theme_color01, 0.5);
@@ -166,6 +206,16 @@
             
             .date {
                 width: 15%;
+                
+                @include smartphone {
+                    width: 20%;
+                }
+                
+                .year {
+                    @include smartphone {
+                        display: none;
+                    }
+                }
             }
             .title {
                 width: 65%;
@@ -180,6 +230,9 @@
             .paid {
                 width: 20%;
                 text-align: right;
+                @include smartphone {
+                    display: none;
+                }
             }
         }
     }

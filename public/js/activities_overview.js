@@ -46,4 +46,15 @@
     ]
     */
      });
+
+
+    //if the screen is smartphone size, switch to month list view
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        console.log('whut?');
+        //when on a mobile change the view to listMonth-view, for one reason or another the events should be rerendered first
+        $('#calendar').fullCalendar('rerenderEvents');
+        $('#calendar').fullCalendar('changeView', 'listMonth');
+        $('#calendar').fullCalendar('option', 'height', 400);
+    }
+
 })(window, window.document, window.jQuery);

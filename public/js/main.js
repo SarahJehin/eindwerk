@@ -34,6 +34,19 @@
 
     });
 
+    //HAMBURGER nav opening
+    $('.hamburger .hamburger_icon i').click(function() {
+        //check if the nav has the opened class or not
+        if($('nav').hasClass('open')) {
+            $('nav').removeClass('open');
+            $(this).parent().parent().removeClass('open');
+        }
+        else {
+            $('nav').addClass('open');
+            $(this).parent().parent().addClass('open');
+        }
+    });
+
     //TIMELINE
     //multistep form
     $(".timeline div[class^='step']").click(function () {

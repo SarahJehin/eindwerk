@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-        	<p>Hieronder vind je een overzicht van alle Sportiva leden</p>
+        	<p class="descriptive_info">Hieronder vind je een overzicht van alle Sportiva leden.  Wanneer je op hun naam klikt kan je extra contact informatie bekijken.</p>
 
         	<div class="search">
         		<form id="search_members" method="get" action="{{url('members_overview')}}">
@@ -46,7 +46,7 @@
 	        		<div class="open_advanced link">Uitgebreid zoeken</div>
 
 	        		<div class="advanced clearfix">
-	        			<div class="ranking float">
+	        			<div class="ranking float small_no_float">
 	        				<h3>Klassement</h3>
 	        				<div class="apply_bootstrap">
 	        					<label for="from_ranking">Van:</label>
@@ -79,7 +79,7 @@
 		        				</select>
 		        			</div>
 	        			</div>
-	        			<div class="birth_year float">
+	        			<div class="birth_year float small_no_float">
 	        				<h3>Geboortejaar</h3>
 	        				<div class="apply_bootstrap">
 	        					<label for="from_birth_year">Van:</label>
@@ -157,15 +157,27 @@
 	        				<img src="{{url('images/profile_pictures/' . $member->image)}}" alt="{{$member->first_name}} {{$member->last_name}}">
 	        			</div>
 	        			<div class="contact_info float clearfix">
-	        				<div class="gsm float">
+	        				<div class="rs clearfix smartphone">
+	        					<span class="float">S</span>
+	        					<span class="float">{{$member->ranking_singles}}</span>
+	        				</div>
+	        				<div class="rd clearfix smartphone">
+	        					<span class="float">D</span>
+	        					<span class="float">{{$member->ranking_doubles}}</span>
+	        				</div>
+	        				<div class="birth_date smartphone">
+	        					<i class="fa fa-birthday-cake" aria-hidden="true"></i>
+	        					<span>{{$member->birth_date}}</span>
+	        				</div>
+	        				<div class="gsm float small_no_float">
 	        					<i class="fa fa-mobile" aria-hidden="true"></i>
-	        					<span>{{$member->gsm}}</span>
+	        					<span>{{substr($member->gsm, 0, 4) . ' ' . chunk_split(substr($member->gsm, 4), 2, ' ')}}</span>
 	        				</div>
-	        				<div class="tel float">
+	        				<div class="tel float small_no_float">
 	        					<i class="fa fa-phone" aria-hidden="true"></i>
-	        					<span>{{$member->tel}}</span>
+	        					<span>{{substr($member->tel, 0, 3) . ' ' . chunk_split(substr($member->tel, 3), 2, ' ')}}</span>
 	        				</div>
-	        				<div class="email float">
+	        				<div class="email float small_no_float">
 	        					<i class="fa fa-envelope-o" aria-hidden="true"></i>
 	        					<span>{{$member->email}}</span>
 	        				</div>

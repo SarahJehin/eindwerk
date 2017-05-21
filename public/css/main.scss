@@ -1,42 +1,4 @@
-//colors
-$theme_color01 : #1abc9c;
-$theme_color01_shade01 : #16a085;
-$theme_color01_25_opacity : rgba(#1abc9c, .25);
-$theme_gradient01: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
-
-$theme_color02 : #24313c;
-$theme_color02_alpha : rgba(36, 49, 60, 0.8);
-
-$theme_color03: #ff9f23;
-$theme_gradient03: linear-gradient(-216deg, $theme_color03 0%, #dd5128 100%);
-
-$form_color: #6b7d87;
-$form_color_radio: #3d4b53;
-$form_font_color: #9CAFB9;
-
-$success_bg_color: #a2d8a6;
-$success_font_color: #1d6920;
-
-$error_bg_color: #d7b3b2;
-$error_font_color: #872619;
-
-$warning_bg_color: #e9c9a2;
-$warning_font_color: #9b5d12;
-
-$delete_color: #b73928;
-
-$valid_color: #5dcb9a;
-
-
-//category colors:
-$battle_bunny: #395696;
-$party_penguin: #e51853;
-$clubdagen: #d07821;
-
-
-//fonts
-$main_font : 'Titillium Web', sans-serif;
-$h3_font : 'Quicksand', sans-serif;
+@import "partials/base";
 
 html, body {
   margin: 0;
@@ -71,11 +33,23 @@ body {
 }
 
 nav {
-  background-color: $theme_color02;
-  position: fixed;
-  height: 100%;
-  width: 200px;
+    background-color: $theme_color02;
+    position: fixed;
+    height: 100%;
+    width: 200px;
     z-index: 5;
+    
+    @include smartphone {
+        top: -100%;
+        height: calc(100% - 50px);
+        width: 100%;
+        transition: top 1s;
+        padding-top: 50px;
+        
+        &.open {
+            top: 0;
+        }
+    }
     
     .personal_details {
         padding: 15px;
@@ -139,6 +113,9 @@ nav {
 
     li {
         border-bottom: 1px solid darken($theme_color02, 2);
+        &.active {
+            background-color: darken($theme_color02, 2);
+        }
       a {
           color: #fff;
           padding: 15px;
@@ -151,10 +128,19 @@ nav {
               margin-right: 15px;
           }
           
-          &:hover, &.active {
-              background-color: darken($theme_color02, 2);
-              padding-left: 25px;
-          }
+            &:hover, &.active {
+                background-color: darken($theme_color02, 2);
+                padding-left: 25px;
+            }
+          
+            @include smartphone {
+                width: 40%;
+                margin: 0 auto;
+
+                &:hover, &.active {
+                    padding-left: 15px;
+                }
+            }
       }
     }
   }
@@ -165,18 +151,30 @@ nav {
 }
 
 .hamburger {
-    font-size: 1.5em;
+    font-size: 1em;
     width: 100%;
     text-align: center;
-    color: $theme_color01;
+    color: #fff;
+    background-color: rgba($theme_color02, 0.9);
     position: fixed;
-    z-index: 5;
+    z-index: 6;
     display: none;
+    margin-top: -10px;
+    padding-bottom: 15px;
+    box-shadow: 5px 5px 8px rgba($theme_color02, 0.5);
+    
+    &.open {
+        box-shadow: none;
+    }
+    
+    @include smartphone {
+        display: block;
+    }
     
     i {
-        padding: 5px 10px;
+        padding: 5px 8px;
         margin-top: 25px;
-        border: 1px $theme_color01 solid;
+        border: 1px #fff solid;
         border-radius: 5px;
     }
 }
@@ -193,6 +191,11 @@ nav {
     top: 50px;
     margin-bottom: 150px;
     box-shadow: 10px 10px 15px rgba(#000, 0.6);
+    
+    @include smartphone {
+        top: 85px;
+        width: 85%;
+    }
     
   .heading {
     background-color: $theme_color01;
@@ -455,6 +458,11 @@ nav {
 //floats
 .float {
     float: left;
+    @include smartphone {
+        &.small_no_float {
+            float: none;
+        }
+    }
 }
 
 
@@ -471,17 +479,30 @@ nav {
   clear: both;
 }
 
+//other general things
+.smartphone {
+    display: none;
+    
+    @include smartphone {
+        display: block;
+    }
+}
+
 //mediaqueries
 @media screen and (max-width: 375px) {
     nav {
         background-color: $theme_color02;
         position: fixed;
         top: -100%;
-        height: 100%;
+        //height: 100%;
         width: 100%;
         z-index: 2;
         
         transition: top 1s;
+        
+        &.open {
+            top: 0;
+        }
 
       .profile_pic {
         width: 50px;
@@ -513,7 +534,7 @@ nav {
       //width: 800px;
       width: 100%;
       margin: 0px auto;
-      top: 50px;
+      //top: 50px;
       margin-bottom: 50px;
       .heading {
         background-color: $theme_color01;

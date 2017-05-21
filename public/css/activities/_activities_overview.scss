@@ -12,6 +12,16 @@
 
         #calendar {
             padding: 25px;
+            @include smartphone {
+                padding: 0;
+            }
+            .fc-toolbar {
+                .fc-right {
+                    @include smartphone {
+                        display: none;
+                    }
+                }
+            }
         }
         
         &:hover {

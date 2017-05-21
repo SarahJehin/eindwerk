@@ -31,6 +31,15 @@ nav {
   height: 100%;
   width: 200px;
   z-index: 5; }
+  @media (max-width: 768px) {
+    nav {
+      top: -100%;
+      height: calc(100% - 50px);
+      width: 100%;
+      transition: top 1s;
+      padding-top: 50px; }
+      nav.open {
+        top: 0; } }
   nav .personal_details {
     padding: 15px; }
     nav .personal_details .profile_pic {
@@ -71,6 +80,8 @@ nav {
     padding: 0; }
     nav ul li {
       border-bottom: 1px solid #202c36; }
+      nav ul li.active {
+        background-color: #202c36; }
       nav ul li a {
         color: #fff;
         padding: 15px;
@@ -84,22 +95,37 @@ nav {
         nav ul li a:hover, nav ul li a.active {
           background-color: #202c36;
           padding-left: 25px; }
+        @media (max-width: 768px) {
+          nav ul li a {
+            width: 40%;
+            margin: 0 auto; }
+            nav ul li a:hover, nav ul li a.active {
+              padding-left: 15px; } }
 
 #hamburger {
   display: none; }
 
 .hamburger {
-  font-size: 1.5em;
+  font-size: 1em;
   width: 100%;
   text-align: center;
-  color: #1abc9c;
+  color: #fff;
+  background-color: rgba(36, 49, 60, 0.9);
   position: fixed;
-  z-index: 5;
-  display: none; }
+  z-index: 6;
+  display: none;
+  margin-top: -10px;
+  padding-bottom: 15px;
+  box-shadow: 5px 5px 8px rgba(36, 49, 60, 0.5); }
+  .hamburger.open {
+    box-shadow: none; }
+  @media (max-width: 768px) {
+    .hamburger {
+      display: block; } }
   .hamburger i {
-    padding: 5px 10px;
+    padding: 5px 8px;
     margin-top: 25px;
-    border: 1px #1abc9c solid;
+    border: 1px #fff solid;
     border-radius: 5px; }
 
 .block {
@@ -111,6 +137,10 @@ nav {
   top: 50px;
   margin-bottom: 150px;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.6); }
+  @media (max-width: 768px) {
+    .block {
+      top: 85px;
+      width: 85%; } }
   .block .heading {
     background-color: #1abc9c;
     color: #fff;
@@ -484,6 +514,11 @@ button.submit {
     width: 30%;
     margin-right: 3%;
     position: relative; }
+    @media (max-width: 768px) {
+      .personal_info .profile_pic {
+        float: none;
+        width: 50%;
+        margin: 0 auto; } }
     .personal_info .profile_pic img {
       width: 100%;
       height: auto;
@@ -495,23 +530,38 @@ button.submit {
       display: block; }
   .personal_info .data {
     width: 67%; }
+    @media (max-width: 768px) {
+      .personal_info .data {
+        float: none;
+        width: 100%; } }
     .personal_info .data h2 {
       margin: 0;
       margin-bottom: 15px;
       font-weight: normal;
       border-bottom: 1px solid #1abc9c;
       font-family: "Quicksand", sans-serif; }
+      @media (max-width: 768px) {
+        .personal_info .data h2 {
+          text-align: center; } }
     .personal_info .data .contact_info {
       font-size: 0.9em;
       width: 65%;
       margin-right: 2%;
       padding-right: 2.5%;
       border-right: 1px solid #9CAFB9; }
+      @media (max-width: 768px) {
+        .personal_info .data .contact_info {
+          float: none;
+          width: 100%;
+          border: none; } }
       .personal_info .data .contact_info > div {
         padding: 5px 0;
         border-bottom: 1px solid rgba(36, 49, 60, 0.1); }
       .personal_info .data .contact_info .gsm, .personal_info .data .contact_info .tel, .personal_info .data .contact_info .email {
         position: relative; }
+        @media (max-width: 768px) {
+          .personal_info .data .contact_info .gsm .edit_button, .personal_info .data .contact_info .tel .edit_button, .personal_info .data .contact_info .email .edit_button {
+            display: block; } }
         .personal_info .data .contact_info .gsm div input, .personal_info .data .contact_info .tel div input, .personal_info .data .contact_info .email div input {
           background-color: transparent;
           color: inherit;
@@ -534,10 +584,16 @@ button.submit {
         width: 10px; }
       .personal_info .data .contact_info .value {
         width: 215px; }
+        @media (max-width: 768px) {
+          .personal_info .data .contact_info .value {
+            width: 200px; } }
     .personal_info .data .badges {
       width: 30%; }
       .personal_info .data .badges h3 {
         margin-top: 0; }
+        @media (max-width: 768px) {
+          .personal_info .data .badges h3 {
+            margin-top: 25px; } }
       .personal_info .data .badges .badge {
         width: 40px;
         position: relative; }
@@ -560,6 +616,10 @@ button.submit {
     .upcoming_activities .list .row.header:hover,
     .past_activities .list .row.header:hover {
       background-color: #1abc9c; }
+    @media (max-width: 768px) {
+      .upcoming_activities .list .row.header,
+      .past_activities .list .row.header {
+        display: none; } }
   .upcoming_activities .list .row:hover,
   .past_activities .list .row:hover {
     background-color: rgba(26, 188, 156, 0.5);
@@ -570,6 +630,14 @@ button.submit {
   .upcoming_activities .list .row .date,
   .past_activities .list .row .date {
     width: 15%; }
+    @media (max-width: 768px) {
+      .upcoming_activities .list .row .date,
+      .past_activities .list .row .date {
+        width: 20%; } }
+    @media (max-width: 768px) {
+      .upcoming_activities .list .row .date .year,
+      .past_activities .list .row .date .year {
+        display: none; } }
   .upcoming_activities .list .row .title,
   .past_activities .list .row .title {
     width: 65%; }
@@ -584,6 +652,10 @@ button.submit {
   .past_activities .list .row .paid {
     width: 20%;
     text-align: right; }
+    @media (max-width: 768px) {
+      .upcoming_activities .list .row .paid,
+      .past_activities .list .row .paid {
+        display: none; } }
 
 #update_profile_pic_modal label {
   display: block;
@@ -672,7 +744,10 @@ button.submit {
   width: 400%;
   position: relative;
   left: 0%;
-  transition: left 0.75s; }
+  -webkit-transition: left 0.75s ease;
+  -moz-transition: left 0.75s ease;
+  -ms-transition: left 0.75s ease;
+  transition: left 0.75s ease; }
   .total h3 {
     color: #3d4b53;
     font-family: "Quicksand", sans-serif;
@@ -741,9 +816,10 @@ button.submit {
             text-decoration: underline; }
         .total div[class^="part0"] .poster label.with_poster span {
           opacity: 0;
-          -webkit-transition: opacity 0.2s;
-          /* Safari */
-          transition: opacity 0.2s; }
+          -webkit-transition: opacity 0.2s ease;
+          -moz-transition: opacity 0.2s ease;
+          -ms-transition: opacity 0.2s ease;
+          transition: opacity 0.2s ease; }
         .total div[class^="part0"] .poster label.with_poster:hover span {
           opacity: 1;
           background-color: rgba(61, 75, 83, 0.9); }
@@ -1051,7 +1127,6 @@ button.submit {
     padding: 10px 5%;
     color: #6b7d87;
     border-radius: 0;
-    transition: border-color .25s ease, box-shadow .25s ease;
     border: 1px solid #6b7d87;
     background-color: transparent;
     cursor: pointer;
@@ -1130,6 +1205,12 @@ button.submit {
   right: 40px; }
 .activities_overview .content #calendar {
   padding: 25px; }
+  @media (max-width: 768px) {
+    .activities_overview .content #calendar {
+      padding: 0; } }
+  @media (max-width: 768px) {
+    .activities_overview .content #calendar .fc-toolbar .fc-right {
+      display: none; } }
 .activities_overview .content:hover .edit_button {
   display: block; }
 
@@ -1146,7 +1227,10 @@ button.submit {
     cursor: pointer;
     background-color: rgba(156, 175, 185, 0.25);
     z-index: 5;
-    transition: background-color .5s; }
+    -webkit-transition: background-color 0.5s ease;
+    -moz-transition: background-color 0.5s ease;
+    -ms-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease; }
     .activity_details .tabs .tab .bg_helper {
       position: absolute;
       z-index: -1;
@@ -1156,7 +1240,10 @@ button.submit {
       height: 100%;
       background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
       opacity: 0;
-      transition: opacity .5s; }
+      -webkit-transition: opacity 0.5s ease;
+      -moz-transition: opacity 0.5s ease;
+      -ms-transition: opacity 0.5s ease;
+      transition: opacity 0.5s ease; }
     .activity_details .tabs .tab:hover, .activity_details .tabs .tab.active {
       color: #fff; }
       .activity_details .tabs .tab:hover .bg_helper, .activity_details .tabs .tab.active .bg_helper {
@@ -1440,6 +1527,10 @@ button.submit {
 
 .podium {
   margin: 50px 0; }
+  @media (max-width: 768px) {
+    .podium {
+      width: 270px;
+      margin: 50px auto; } }
   .podium .outer_arc {
     width: 45%;
     height: 170px;
@@ -1448,6 +1539,10 @@ button.submit {
     border-top-right-radius: 170px;
     position: relative;
     margin: 0 auto; }
+    @media (max-width: 768px) {
+      .podium .outer_arc {
+        width: 100%;
+        height: 140px; } }
     .podium .outer_arc .pie {
       margin: 0 auto;
       border: 0;
@@ -1492,12 +1587,18 @@ button.submit {
                 width: 100%;
                 bottom: 40%;
                 color: #fff;
-                background-color: #159;
+                background-color: #1abc9c;
                 left: -100%;
-                transition: left 0.25s, opacity 0.5s; }
+                -webkit-transition: left 0.25s ease, opacity 0.5s ease;
+                -moz-transition: left 0.25s ease, opacity 0.5s ease;
+                -ms-transition: left 0.25s ease, opacity 0.5s ease;
+                transition: left 0.25s ease, opacity 0.5s ease; }
+                @media (max-width: 768px) {
+                  .podium .outer_arc .pie .slice:first-child .slice-contents .real_content .name {
+                    left: 0;
+                    bottom: 35%; } }
             .podium .outer_arc .pie .slice:first-child .slice-contents:hover .name {
               left: 0%;
-              bottom: 40%;
               opacity: 1; }
         .podium .outer_arc .pie .slice:nth-child(2) {
           transform: rotate(-90deg) skewY(-35deg); }
@@ -1536,6 +1637,9 @@ button.submit {
               .podium .outer_arc .pie .slice:nth-child(3) .slice-contents .real_content .name {
                 width: 80%;
                 top: 82%; }
+                @media (max-width: 768px) {
+                  .podium .outer_arc .pie .slice:nth-child(3) .slice-contents .real_content .name {
+                    left: 25%; } }
             .podium .outer_arc .pie .slice:nth-child(3) .slice-contents:hover .name {
               left: 25%; }
         .podium .outer_arc .pie .slice .slice-contents {
@@ -1545,7 +1649,10 @@ button.submit {
           height: 200%;
           border-radius: 50%;
           text-align: center;
-          transition: background-color .5s; }
+          -webkit-transition: background-color 0.5s;
+          -moz-transition: background-color 0.5s;
+          -ms-transition: background-color 0.5s;
+          transition: background-color 0.5s; }
           .podium .outer_arc .pie .slice .slice-contents .real_content {
             transform: rotate(0deg);
             width: 50%;
@@ -1564,9 +1671,12 @@ button.submit {
               position: absolute;
               width: 100%;
               color: #fff;
-              background-color: #159;
+              background-color: #1abc9c;
               left: -100%;
               transition: left 0.25s; }
+              @media (max-width: 768px) {
+                .podium .outer_arc .pie .slice .slice-contents .real_content .name {
+                  left: 0; } }
           .podium .outer_arc .pie .slice .slice-contents:hover {
             background-color: #dbfaf4; }
             .podium .outer_arc .pie .slice .slice-contents:hover img {
@@ -1585,6 +1695,9 @@ button.submit {
       border-top-right-radius: 58px;
       border: 5px solid #1abc9c;
       border-bottom: 0; }
+      @media (max-width: 768px) {
+        .podium .outer_arc .inner_arc {
+          height: 45px; } }
       .podium .outer_arc .inner_arc .trophy {
         width: 80%;
         height: 86px;
@@ -1594,10 +1707,18 @@ button.submit {
         border-radius: 50%;
         top: 10%;
         text-align: center; }
+        @media (max-width: 768px) {
+          .podium .outer_arc .inner_arc .trophy {
+            left: 5%;
+            height: 70px; } }
         .podium .outer_arc .inner_arc .trophy i {
           color: #1abc9c;
           font-size: 3.5em;
           line-height: 86px; }
+          @media (max-width: 768px) {
+            .podium .outer_arc .inner_arc .trophy i {
+              font-size: 2.5em;
+              line-height: 70px; } }
 
 .scoreboard.youth {
   display: none; }
@@ -1626,10 +1747,16 @@ button.submit {
     text-align: center; }
   .no-csstransforms .board .table-header-rotated th {
     padding: 5px 10px; }
+  @media (max-width: 768px) {
+    .board .table-header-rotated th:not(:first-child):not(:last-child) {
+      display: none; } }
   .board .table-header-rotated td {
     padding: 10px 5px; }
     .board .table-header-rotated td:not(:first-child) {
       border: 1px solid rgba(26, 188, 156, 0.25); }
+    @media (max-width: 768px) {
+      .board .table-header-rotated td:not(:first-child):not(:last-child) {
+        display: none; } }
   .csstransforms .board .table-header-rotated th.rotate {
     height: 140px;
     white-space: nowrap; }
@@ -1642,6 +1769,9 @@ button.submit {
       display: block;
       width: 200px;
       text-align: left; }
+      @media (max-width: 768px) {
+        .csstransforms .board .table-header-rotated th.rotate > div > span {
+          width: 125px; } }
   .board .table-header-rotated th.row-header {
     padding: 0 10px;
     border-bottom: 1px solid #ccc; }
@@ -1657,18 +1787,25 @@ button.submit {
     .members_overview .search .quick input::placeholder {
       color: #9CAFB9;
       font-style: italic; }
+    @media (max-width: 768px) {
+      .members_overview .search .quick input {
+        width: 75%; } }
   .members_overview .search .quick span {
     padding: 6px 10px 5px;
     border: 1px solid #1abc9c;
     color: #fff;
     background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
     background-size: 200% 100%;
+    -webkit-transition: background 0.3s ease;
+    -moz-transition: background 0.3s ease;
+    -ms-transition: background 0.3s ease;
     transition: background 0.3s ease; }
     .members_overview .search .quick span:hover {
       background-position: 100%;
       cursor: pointer; }
   .members_overview .search .open_advanced {
-    margin-top: 5px; }
+    margin-top: 5px;
+    width: 150px; }
   .members_overview .search .advanced {
     display: none;
     background-color: rgba(26, 188, 156, 0.1);
@@ -1681,10 +1818,11 @@ button.submit {
       width: 50%; }
       .members_overview .search .advanced .ranking h3, .members_overview .search .advanced .birth_year h3 {
         margin-top: 0; }
-    .members_overview .search .advanced .ranking .btn-group.bootstrap-select {
+        @media (max-width: 768px) {
+          .members_overview .search .advanced .ranking h3:nth:child(2), .members_overview .search .advanced .birth_year h3:nth:child(2) {
+            margin-top: 20px; } }
+    .members_overview .search .advanced .ranking .btn-group.bootstrap-select, .members_overview .search .advanced .birth_year .btn-group.bootstrap-select {
       width: 160px; }
-    .members_overview .search .advanced .birth_year .btn-group.bootstrap-select {
-      width: 120px; }
     .members_overview .search .advanced input[type="submit"] {
       margin-top: 25px; }
 .members_overview .links {
@@ -1702,13 +1840,25 @@ button.submit {
       color: #fff; }
     .members_overview .list .member_block .row .name {
       width: 50%; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .row .name {
+          width: 100%; } }
     .members_overview .list .member_block .row .date {
       width: 20%; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .row .date {
+          display: none; } }
     .members_overview .list .member_block .row .singles {
       width: 12%;
       margin-right: 6%; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .row .singles {
+          display: none; } }
     .members_overview .list .member_block .row .doubles {
       width: 12%; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .row .doubles {
+          display: none; } }
   .members_overview .list .member_block .details {
     display: none;
     padding: 5px;
@@ -1716,6 +1866,9 @@ button.submit {
     .members_overview .list .member_block .details .profile_pic {
       width: 8%;
       margin-right: 2%; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .details .profile_pic {
+          display: none; } }
       .members_overview .list .member_block .details .profile_pic img {
         width: 100%;
         height: auto;
@@ -1723,10 +1876,28 @@ button.submit {
     .members_overview .list .member_block .details .contact_info {
       width: 90%;
       margin-top: 15px; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .details .contact_info {
+          width: 100%;
+          margin-top: 0; }
+          .members_overview .list .member_block .details .contact_info span {
+            font-size: 0.9em; }
+            .members_overview .list .member_block .details .contact_info span:first-child {
+              display: block;
+              width: 25px; } }
       .members_overview .list .member_block .details .contact_info .gsm, .members_overview .list .member_block .details .contact_info .tel {
         width: 25%; }
+        @media (max-width: 768px) {
+          .members_overview .list .member_block .details .contact_info .gsm, .members_overview .list .member_block .details .contact_info .tel {
+            width: 100%; } }
       .members_overview .list .member_block .details .contact_info .email {
         width: 50%; }
+        @media (max-width: 768px) {
+          .members_overview .list .member_block .details .contact_info .email {
+            width: 100%; } }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .details .contact_info i {
+          width: 20px; } }
   .members_overview .list .member_block:hover .row, .members_overview .list .member_block.opened .row {
     background-color: rgba(26, 188, 156, 0.5);
     color: #fff; }
@@ -1734,6 +1905,11 @@ button.submit {
       color: #fff; }
 .members_overview .pagination_container {
   text-align: center; }
+  @media (max-width: 768px) {
+    .members_overview .pagination_container .pagination li {
+      display: none; }
+      .members_overview .pagination_container .pagination li:first-child, .members_overview .pagination_container .pagination li.active, .members_overview .pagination_container .pagination li:last-child {
+        display: inline; } }
   .members_overview .pagination_container .pagination li a {
     color: #1abc9c; }
     .members_overview .pagination_container .pagination li a:hover {
@@ -1925,6 +2101,9 @@ button.submit {
 
 .float {
   float: left; }
+  @media (max-width: 768px) {
+    .float.small_no_float {
+      float: none; } }
 
 .clearfix::before, .clearfix::after,
 .timeline::before, .timeline::after {
@@ -1936,15 +2115,22 @@ button.submit {
 .timeline::after {
   clear: both; }
 
+.smartphone {
+  display: none; }
+  @media (max-width: 768px) {
+    .smartphone {
+      display: block; } }
+
 @media screen and (max-width: 375px) {
   nav {
     background-color: #24313c;
     position: fixed;
     top: -100%;
-    height: 100%;
     width: 100%;
     z-index: 2;
     transition: top 1s; }
+    nav.open {
+      top: 0; }
     nav .profile_pic {
       width: 50px;
       height: 50px; }
@@ -1964,7 +2150,6 @@ button.submit {
   .block {
     width: 100%;
     margin: 0px auto;
-    top: 50px;
     margin-bottom: 50px; }
     .block .heading {
       background-color: #1abc9c;
