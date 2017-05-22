@@ -10,6 +10,10 @@ body {
   background-size: cover;
   background-position: 0px -150px;
   background-attachment: fixed; }
+  @media (max-width: 768px) {
+    body {
+      background-size: 350%;
+      background-position-y: 100%; } }
 
 /*
 .page_container {
@@ -22,15 +26,12 @@ body {
   //overflow: hidden;
   background-attachment: fixed;
 }*/
-.page_container, .page_content {
-  height: 100%; }
-
 nav {
   background-color: #24313c;
   position: fixed;
   height: 100%;
   width: 200px;
-  z-index: 5; }
+  z-index: 6; }
   @media (max-width: 768px) {
     nav {
       top: -100%;
@@ -112,7 +113,7 @@ nav {
   color: #fff;
   background-color: rgba(36, 49, 60, 0.9);
   position: fixed;
-  z-index: 6;
+  z-index: 7;
   display: none;
   margin-top: -10px;
   padding-bottom: 15px;
@@ -140,7 +141,7 @@ nav {
   @media (max-width: 768px) {
     .block {
       top: 85px;
-      width: 85%; } }
+      width: 90%; } }
   .block .heading {
     background-color: #1abc9c;
     color: #fff;
@@ -149,6 +150,9 @@ nav {
   .block .content {
     padding: 40px;
     padding-bottom: 25px; }
+    @media (max-width: 768px) {
+      .block .content {
+        padding: 25px; } }
   .block h3 {
     font-weight: lighter;
     font-family: "Quicksand", sans-serif; }
@@ -242,6 +246,10 @@ nav {
     background-color: rgba(0, 0, 0, 0.75);
     box-shadow: 0 0 10px #000, 0 0 25px #000;
     color: rgba(255, 255, 255, 0.8); }
+    @media (max-width: 768px) {
+      .lightbox_modal .modal {
+        width: 80%;
+        margin-top: 80px; } }
     .lightbox_modal .modal .modal_header, .lightbox_modal .modal .modal_footer {
       padding: 10px; }
     .lightbox_modal .modal .modal_header {
@@ -394,6 +402,10 @@ button.submit {
 
 .login {
   height: 100%; }
+  @media (max-width: 768px) {
+    .login {
+      background-size: 350%;
+      background-position-y: 100%; } }
   .login .container {
     height: 100%; }
 
@@ -403,6 +415,11 @@ button.submit {
   margin-left: 50px;
   overflow: hidden;
   display: inline-block; }
+  @media (max-width: 768px) {
+    .login_block {
+      width: 100%;
+      margin: 0;
+      margin-top: 50px; } }
   .login_block .error_msg {
     width: 80%;
     margin: 0 auto;
@@ -526,6 +543,10 @@ button.submit {
     .personal_info .profile_pic .edit_button {
       top: 0;
       right: 0; }
+      @media (max-width: 768px) {
+        .personal_info .profile_pic .edit_button {
+          display: block;
+          right: -15px; } }
     .personal_info .profile_pic:hover .edit_button {
       display: block; }
   .personal_info .data {
@@ -1203,22 +1224,102 @@ button.submit {
   top: 40px;
   padding: 25px;
   right: 40px; }
+  @media (max-width: 768px) {
+    .activities_overview .content .edit_button {
+      display: block;
+      top: 20px;
+      right: 0; } }
 .activities_overview .content #calendar {
   padding: 25px; }
   @media (max-width: 768px) {
     .activities_overview .content #calendar {
-      padding: 0; } }
+      padding: 0;
+      margin-top: 15px; } }
+  @media (max-width: 768px) {
+    .activities_overview .content #calendar .fc-toolbar .fc-left {
+      float: none;
+      width: 100%;
+      display: table; } }
+  @media (max-width: 768px) {
+    .activities_overview .content #calendar .fc-toolbar .fc-left .fc-today-button {
+      float: right; } }
   @media (max-width: 768px) {
     .activities_overview .content #calendar .fc-toolbar .fc-right {
-      display: none; } }
+      display: none;
+      float: none; } }
+  @media (max-width: 768px) {
+    .activities_overview .content #calendar .fc-toolbar .fc-center {
+      margin-top: 15px; } }
 .activities_overview .content:hover .edit_button {
   display: block; }
 
 .activity_details {
   position: relative;
-  height: 100%; }
+  height: 100%;
+  /*    
+      .lightbox_modal {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(#000, 0.6);
+          z-index: 5;
+          display: none;
+          
+          .modal {
+              width: 45%;
+              margin: 30px auto;
+              background-color: rgba(#000, .75);
+              box-shadow: 0 0 10px #000, 0 0 25px #000;
+              color: rgba(#fff, 0.8);
+              
+              .modal_header, .modal_footer {
+                  padding: 10px;
+              }
+              .modal_header {
+                  text-align: right;
+                  i {
+                      cursor: pointer;
+                      &:hover {
+                          color: #fff;
+                      }
+                  }
+              }
+              .modal_body {
+                  text-align: center;
+                  img {
+                      width: 90%;
+                      height: auto;
+                  }
+              }
+              .modal_footer {
+                  text-align: center;
+                  //font-style: italic;
+              }
+              
+          }
+          
+          &.light {
+              .modal {
+                  background-color: #fff;
+                  box-shadow: none;
+                  color: $form_font_color;
+                  border-radius: 5px;
+                  i {
+                      &:hover {
+                          color: #000;
+                      }
+                  }
+              }
+          }
+      }
+      */ }
   .activity_details .block .content:hover .buttons .edit_button {
     display: block; }
+  @media (max-width: 768px) {
+    .activity_details .buttons .edit_button {
+      display: block; } }
   .activity_details .tabs .tab {
     position: relative;
     padding: 8px 0;
@@ -1264,10 +1365,20 @@ button.submit {
     width: 50%;
     margin-right: 5%;
     cursor: pointer; }
+    @media (max-width: 768px) {
+      .activity_details .activity_info .poster {
+        width: 100%; } }
     .activity_details .activity_info .poster img {
       width: 100%;
       height: auto;
       box-shadow: 5px 5px 5px rgba(119, 114, 114, 0.5); }
+  @media (max-width: 768px) {
+    .activity_details .activity_info .info {
+      width: 100%;
+      margin-top: 25px; } }
+  @media (max-width: 768px) {
+    .activity_details .activity_info .info .date .year {
+      display: none; } }
   .activity_details .activity_info .info .google_maps {
     margin-top: 15px; }
     .activity_details .activity_info .info .google_maps #map {
@@ -1275,13 +1386,46 @@ button.submit {
       height: 240px; }
   .activity_details .activity_info .sign_up {
     display: none; }
+    .activity_details .activity_info .sign_up.active {
+      display: block; }
+      @media (max-width: 768px) {
+        .activity_details .activity_info .sign_up.active {
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-box-orient: vertical;
+          -moz-box-orient: vertical;
+          -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+          flex-direction: column;
+          /* optional */
+          -webkit-box-align: start;
+          -moz-box-align: start;
+          -ms-flex-align: start;
+          -webkit-align-items: flex-start;
+          align-items: flex-start; } }
     .activity_details .activity_info .sign_up .sign_up_list {
       width: 50%;
       margin-right: 5%; }
+      @media (max-width: 768px) {
+        .activity_details .activity_info .sign_up .sign_up_list {
+          width: 100%;
+          margin: 0;
+          margin-top: 25px;
+          -webkit-box-ordinal-group: 2;
+          -moz-box-ordinal-group: 2;
+          -ms-flex-order: 2;
+          -webkit-order: 2;
+          order: 2; } }
       .activity_details .activity_info .sign_up .sign_up_list .people {
         box-shadow: 5px 5px 5px rgba(119, 114, 114, 0.5); }
         .activity_details .activity_info .sign_up .sign_up_list .people .edit_button {
           float: left; }
+          @media (max-width: 768px) {
+            .activity_details .activity_info .sign_up .sign_up_list .people .edit_button {
+              display: block; } }
         .activity_details .activity_info .sign_up .sign_up_list .people .amount_participants {
           text-align: right;
           margin: 15px; }
@@ -1312,6 +1456,14 @@ button.submit {
         font-size: 0.9em;
         text-align: center;
         font-style: italic; }
+    @media (max-width: 768px) {
+      .activity_details .activity_info .sign_up .sign_up_info {
+        width: 100%;
+        -webkit-box-ordinal-group: 1;
+        -moz-box-ordinal-group: 1;
+        -ms-flex-order: 1;
+        -webkit-order: 1;
+        order: 1; } }
     .activity_details .activity_info .sign_up .sign_up_info .sign_up_for {
       margin-bottom: 15px; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .me {
@@ -1396,43 +1548,6 @@ button.submit {
       color: #d07821; }
   .activity_details .activity_info i {
     width: 25px; }
-  .activity_details .lightbox_modal {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 5;
-    display: none; }
-    .activity_details .lightbox_modal .modal {
-      width: 45%;
-      margin: 30px auto;
-      background-color: rgba(0, 0, 0, 0.75);
-      box-shadow: 0 0 10px #000, 0 0 25px #000;
-      color: rgba(255, 255, 255, 0.8); }
-      .activity_details .lightbox_modal .modal .modal_header, .activity_details .lightbox_modal .modal .modal_footer {
-        padding: 10px; }
-      .activity_details .lightbox_modal .modal .modal_header {
-        text-align: right; }
-        .activity_details .lightbox_modal .modal .modal_header i {
-          cursor: pointer; }
-          .activity_details .lightbox_modal .modal .modal_header i:hover {
-            color: #fff; }
-      .activity_details .lightbox_modal .modal .modal_body {
-        text-align: center; }
-        .activity_details .lightbox_modal .modal .modal_body img {
-          width: 90%;
-          height: auto; }
-      .activity_details .lightbox_modal .modal .modal_footer {
-        text-align: center; }
-    .activity_details .lightbox_modal.light .modal {
-      background-color: #fff;
-      box-shadow: none;
-      color: #9CAFB9;
-      border-radius: 5px; }
-      .activity_details .lightbox_modal.light .modal i:hover {
-        color: #000; }
   .activity_details #poster_modal .modal_footer {
     text-align: center;
     font-style: italic; }
@@ -1447,6 +1562,9 @@ button.submit {
     .activities_list .list .activity.header:hover {
       background-color: #1abc9c;
       color: #fff; }
+    @media (max-width: 768px) {
+      .activities_list .list .activity.header .participants {
+        color: transparent; } }
   .activities_list .list .activity a {
     color: rgba(26, 188, 156, 0.6);
     text-decoration: none; }
@@ -1465,21 +1583,40 @@ button.submit {
       color: #fff; }
   .activities_list .list .activity .is_visible {
     width: 6%; }
+    @media (max-width: 768px) {
+      .activities_list .list .activity .is_visible {
+        display: none; } }
     .activities_list .list .activity .is_visible label i {
       color: rgba(26, 188, 156, 0.25); }
     .activities_list .list .activity .is_visible input[type="checkbox"]:checked + label i {
       color: rgba(26, 188, 156, 0.6); }
   .activities_list .list .activity .date {
     width: 16%; }
+    @media (max-width: 768px) {
+      .activities_list .list .activity .date {
+        width: 20%; } }
+    @media (max-width: 768px) {
+      .activities_list .list .activity .date .year {
+        display: none; } }
   .activities_list .list .activity .title {
     width: 56%; }
   .activities_list .list .activity .participants {
     width: 16%; }
+    @media (max-width: 768px) {
+      .activities_list .list .activity .participants {
+        width: 14%; } }
   .activities_list .list .activity .edit {
     width: 3%; }
+    @media (max-width: 768px) {
+      .activities_list .list .activity .edit {
+        width: 10%;
+        text-align: right; } }
   .activities_list .list .activity .delete {
     width: 3%;
     text-align: right; }
+    @media (max-width: 768px) {
+      .activities_list .list .activity .delete {
+        display: none; } }
 
 .activity_participants .list .participant_block {
   border-bottom: 1px solid #9CAFB9;
@@ -1505,20 +1642,36 @@ button.submit {
   .activity_participants .list .participant_block .participant {
     width: 25%;
     margin-right: 50%; }
+    @media (max-width: 768px) {
+      .activity_participants .list .participant_block .participant {
+        width: 70%;
+        margin-right: 5%; } }
     .activity_participants .list .participant_block .participant .name {
       width: 80%; }
     .activity_participants .list .participant_block .participant .age {
       width: 20%; }
   .activity_participants .list .participant_block .sign_out {
     width: 15%; }
+    @media (max-width: 768px) {
+      .activity_participants .list .participant_block .sign_out {
+        display: none; } }
   .activity_participants .list .participant_block .paid {
     width: 10%;
     text-align: right; }
+    @media (max-width: 768px) {
+      .activity_participants .list .participant_block .paid {
+        width: 25%; } }
   .activity_participants .list .participant_block .details {
     display: none;
     padding: 5px; }
     .activity_participants .list .participant_block .details .gsm, .activity_participants .list .participant_block .details .phone, .activity_participants .list .participant_block .details .email {
       width: 33%; }
+      @media (max-width: 768px) {
+        .activity_participants .list .participant_block .details .gsm, .activity_participants .list .participant_block .details .phone, .activity_participants .list .participant_block .details .email {
+          width: 100%; } }
+      @media (max-width: 768px) {
+        .activity_participants .list .participant_block .details .gsm i, .activity_participants .list .participant_block .details .phone i, .activity_participants .list .participant_block .details .email i {
+          width: 20px; } }
   .activity_participants .list .participant_block .link, .activity_participants .list .participant_block .link a {
     text-decoration: none; }
     .activity_participants .list .participant_block .link:hover, .activity_participants .list .participant_block .link a:hover {
@@ -2056,6 +2209,20 @@ button.submit {
     color: #fff; }
     .add_winterhour .form_part .availabilities .participants .participant:hover .link, .add_winterhour .form_part .availabilities .participants .participant.opened .link, .edit_winterhour .form_part .availabilities .participants .participant:hover .link, .edit_winterhour .form_part .availabilities .participants .participant.opened .link {
       color: #fff; }
+.add_winterhour .form_part .scheme_generation .submit a, .edit_winterhour .form_part .scheme_generation .submit a {
+  width: 100%;
+  background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
+  background-size: 200% 100%;
+  transition: background 0.3s ease;
+  display: block;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em; }
+  .add_winterhour .form_part .scheme_generation .submit a:hover, .edit_winterhour .form_part .scheme_generation .submit a:hover {
+    cursor: pointer;
+    background-position: 100%; }
 .add_winterhour .form_part .scheme_generation .scheme .date, .edit_winterhour .form_part .scheme_generation .scheme .date {
   width: 22%;
   margin-right: 4%;
@@ -2067,6 +2234,10 @@ button.submit {
     border-bottom: 1px solid #1abc9c;
     padding-bottom: 3px; }
 
+.winterhours_overview .winterhour_group .info .general_info {
+  width: 50%; }
+  .winterhours_overview .winterhour_group .info .general_info h4 {
+    margin-bottom: 0; }
 .winterhours_overview .winterhour_group .participants {
   width: 30%;
   font-size: 0.9em; }
@@ -2075,9 +2246,16 @@ button.submit {
   .winterhours_overview .winterhour_group .participants .participant .gsm {
     width: 40%; }
 .winterhours_overview .winterhour_group .scheme .date {
-  width: 25%; }
-  .winterhours_overview .winterhour_group .scheme .date .participant.active {
-    color: #1abc9c; }
+  width: 22%;
+  margin-right: 4%; }
+  .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
+    margin-right: 0; }
+  .winterhours_overview .winterhour_group .scheme .date h3 {
+    border-bottom: 1px solid #1abc9c; }
+  .winterhours_overview .winterhour_group .scheme .date .participant {
+    font-size: 0.9em; }
+    .winterhours_overview .winterhour_group .scheme .date .participant.active {
+      color: #1abc9c; }
 
 .availabilities .back {
   margin-bottom: 25px; }

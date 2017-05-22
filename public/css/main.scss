@@ -8,12 +8,18 @@ html, body {
 }
 
 body {
-  background-image: url("../images/site_images/background_img.jpg");
+    background-image: url("../images/site_images/background_img.jpg");
+    //background-image: url("../images/site_images/total_img01.jpg");
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 0px -150px;
   //overflow: hidden;
   background-attachment: fixed;
+    
+    @include smartphone {
+        background-size: 350%;
+        background-position-y: 100%;
+    }
 }
 
 /*
@@ -29,7 +35,7 @@ body {
 }*/
 
 .page_container, .page_content {
-    height: 100%;
+    //height: 100%;
 }
 
 nav {
@@ -37,7 +43,7 @@ nav {
     position: fixed;
     height: 100%;
     width: 200px;
-    z-index: 5;
+    z-index: 6;
     
     @include smartphone {
         top: -100%;
@@ -157,7 +163,7 @@ nav {
     color: #fff;
     background-color: rgba($theme_color02, 0.9);
     position: fixed;
-    z-index: 6;
+    z-index: 7;
     display: none;
     margin-top: -10px;
     padding-bottom: 15px;
@@ -194,7 +200,7 @@ nav {
     
     @include smartphone {
         top: 85px;
-        width: 85%;
+        width: 90%;
     }
     
   .heading {
@@ -208,6 +214,9 @@ nav {
   .content {
     padding: 40px;
     padding-bottom: 25px;
+      @include smartphone {
+          padding: 25px;
+      }
   }
 
   h3 {
@@ -338,6 +347,11 @@ nav {
         background-color: rgba(#000, .75);
         box-shadow: 0 0 10px #000, 0 0 25px #000;
         color: rgba(#fff, 0.8);
+        
+        @include smartphone {
+            width: 80%;
+            margin-top: 80px;
+        }
         
         .modal_header, .modal_footer {
             padding: 10px;

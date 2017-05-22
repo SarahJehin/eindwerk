@@ -12,6 +12,12 @@
                     background-color: $theme_color01;
                     color: #fff;
                 }
+                
+                .participants {
+                    @include smartphone {
+                        color: transparent;
+                    }
+                }
             }
             
             a {
@@ -46,6 +52,11 @@
             }
             .is_visible {
                 width: 6%;
+                
+                @include smartphone {
+                    display: none;
+                }
+                
                 label {
                     i {
                         color: rgba($theme_color01, 0.25);
@@ -59,19 +70,38 @@
             }
             .date {
                 width: 16%;
+                @include smartphone {
+                    width: 20%;
+                }
+                
+                .year {
+                    @include smartphone {
+                        display: none;
+                    }
+                }
             }
             .title {
                 width: 56%;
             }
             .participants {
                 width: 16%;
+                @include smartphone {
+                    width: 14%;
+                }
             }
             .edit {
                 width: 3%;
+                @include smartphone {
+                    width: 10%;
+                    text-align: right;
+                }
             }
             .delete {
                 width: 3%;
                 text-align: right;
+                @include smartphone {
+                    display: none;
+                }
             }
         }
     }

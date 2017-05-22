@@ -40,10 +40,10 @@
 
                 <div class="activity_info">
                     <div class="activity_details clearfix">
-                        <div class="poster float">
+                        <div class="poster float small_no_float">
                             <img src="{{url('images/activity_images/' . $activity->poster)}}" alt="{{$activity->title}}">
                         </div>
-                        <div class="info float">
+                        <div class="info float small_no_float">
                             <div>
                                 <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Beschrijving:</h4>
                                 <p>{!! $activity->description !!}</p>
@@ -54,11 +54,11 @@
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                     {{$activity->min_participants}} - {{$activity->max_participants}} deelnemers
                                 </div>
-                                <div>
+                                <div class="date">
                                     <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    {{date('d-m-Y', strtotime($activity->start))}} 
+                                    {{date('d/m/Y', strtotime($activity->start))}} 
                                     @if($activity->deadline)
-                                    (inschrijven tot {{date('d-m-Y', strtotime($activity->deadline))}})
+                                    (inschrijven tot {{date('d/m', strtotime($activity->deadline))}}<span class="year">{{date('/Y', strtotime($activity->deadline))}}</span>)
                                     @endif
                                 </div>
                                 <div>

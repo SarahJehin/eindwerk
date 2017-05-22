@@ -238,16 +238,3 @@
 
 
 })(window, window.document, window.jQuery);
-/*
-//google maps
-function initMap() {
-    var location = {lat: 51.083253, lng: 4.805906};
-    var map = new google.maps.Map(document.getElementById('sportiva_map'), {
-        zoom: 12,
-        center: location
-    });
-    var marker = new google.maps.Marker({
-        position: location,
-        map: map
-    });
-}*/

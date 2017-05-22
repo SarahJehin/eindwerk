@@ -33,6 +33,10 @@
                 width: 25%;
                 //margin-right: 5%;
                 margin-right: 50%;
+                @include smartphone {
+                    width: 70%;
+                    margin-right: 5%;
+                }
                 .name {
                     width: 80%;
                 }
@@ -46,10 +50,16 @@
             }*/
             .sign_out {
                 width: 15%;
+                @include smartphone {
+                    display: none;
+                }
             }
             .paid {
                 width: 10%;
                 text-align: right;
+                @include smartphone {
+                    width: 25%;
+                }
             }
             
             .details {
@@ -57,6 +67,14 @@
                 padding: 5px;
                 .gsm, .phone, .email {
                     width: 33%;
+                    @include smartphone {
+                        width: 100%;
+                    }
+                    i {
+                        @include smartphone {
+                            width: 20px;
+                        }
+                    }
                 }
             }
             

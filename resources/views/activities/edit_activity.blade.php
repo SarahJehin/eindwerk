@@ -49,6 +49,7 @@
                                             @foreach ($errors->get('poster') as $error)
                                                 <li>{{ $error }}</li>@endforeach
                                             </ul>
+                                            <?php dump($errors->all()); ?>
                                         </div>
                                     @endif
 
@@ -62,18 +63,6 @@
                                                 </label>
                                             </div>
                                         @endforeach
-                                        <div class="category">
-                                            <input type="radio" name="category" id="cat01">
-                                            <label for="cat01"></label>
-                                        </div>
-                                        <div class="category">
-                                            <input type="radio" name="category" id="cat02">
-                                            <label for="cat02"></label>
-                                        </div>
-                                        <div class="category">
-                                            <input type="radio" name="category" id="cat03">
-                                            <label for="cat03"></label>
-                                        </div>
                                     </div>
 
                                     <h3>Upload poster</h3>
@@ -218,7 +207,7 @@
                                         </div>
 
                                         <div class="google_maps">
-                                            <input id="place-input" class="controls" type="text" placeholder="Locatie zoeken ..." name="location">
+                                            <input id="place-input" class="controls" type="text" placeholder="Locatie zoeken ..." name="location" value="{{old('location', $activity->location)}}">
                                             <div id="map"></div>
                                         </div>
                                         <input id="latitude" name="latitude" type="text" value="{{old('latitude', $activity->latitude)}}" required hidden>

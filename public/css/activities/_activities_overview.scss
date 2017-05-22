@@ -8,17 +8,42 @@
             top: 40px;
             padding: 25px;
             right: 40px;
+            @include smartphone {
+                display: block;
+                top: 20px;
+                right: 0;
+            }
         }
 
         #calendar {
             padding: 25px;
             @include smartphone {
                 padding: 0;
+                margin-top: 15px;
             }
             .fc-toolbar {
+                .fc-left {
+                    @include smartphone {
+                        float: none;
+                        width: 100%;
+                        display: table;
+                    }
+                    
+                    .fc-today-button {
+                        @include smartphone {
+                            float: right;
+                        }
+                    }
+                }
                 .fc-right {
                     @include smartphone {
                         display: none;
+                        float: none;
+                    }
+                }
+                .fc-center {
+                    @include smartphone {
+                        margin-top: 15px;
                     }
                 }
             }

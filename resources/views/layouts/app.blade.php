@@ -83,7 +83,7 @@
         </nav>
 
 
-        <div class="page_content">
+        <div class="page_content clearfix">
             @yield('content')
         </div>
 

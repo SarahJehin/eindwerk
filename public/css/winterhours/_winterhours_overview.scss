@@ -1,5 +1,13 @@
 .winterhours_overview {
     .winterhour_group {
+        .info {
+            .general_info {
+                width: 50%;
+                h4 {
+                    margin-bottom: 0;
+                }
+            }
+        }
         .participants {
             width: 30%;
             font-size: 0.9em;
@@ -15,8 +23,17 @@
         
         .scheme {
             .date {
-                width: 25%;
+                width: 22%;
+                margin-right: 4%;
+                
+                &:nth-child(4n+4) {
+                    margin-right: 0;
+                }
+                h3 {
+                    border-bottom: 1px solid $theme_color01;
+                }
                 .participant {
+                    font-size: 0.9em;
                     &.active {
                         color: $theme_color01;
                     }

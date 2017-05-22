@@ -45,6 +45,10 @@
         .edit_button {
             top: 0;
             right: 0;
+            @include smartphone {
+                display: block;
+                right: -15px;
+            }
         }
         &:hover {
             .edit_button {

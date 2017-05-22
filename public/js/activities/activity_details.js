@@ -3,7 +3,7 @@
 	$('.tabs .details').click(function() {
         $('.tabs div').removeClass('active');
         $('.tabs .details').addClass('active');
-        $('.activity_info .sign_up').hide();
+        $('.activity_info .sign_up').removeClass('active');
         $('.activity_info .activity_details').show();
     });
 
@@ -11,7 +11,8 @@
         $('.tabs div').removeClass('active');
         $('.tabs .sign_up').addClass('active');
         $('.activity_info .activity_details').hide();
-        $('.activity_info .sign_up').show();
+        //$('.activity_info .sign_up').show();
+        $('.activity_info .sign_up').addClass('active');
     });
 
     var lightbox = false;

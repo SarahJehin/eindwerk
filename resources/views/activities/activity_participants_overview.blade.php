@@ -53,9 +53,9 @@ Deelnemers {{$activity->title}}
                         </div>
                         <div class="details">
                             <div class="clearfix">
-                                <div class="float gsm"><i class="fa fa-mobile" aria-hidden="true"></i> {{$participant->gsm_nr}}</div>
-                                <div class="float phone"><i class="fa fa-phone" aria-hidden="true"></i> 015</div>
-                                <div class="float email"><i class="fa fa-at" aria-hidden="true"></i> {{$participant->email}}</div>
+                                <div class="float gsm small_no_float"><i class="fa fa-mobile" aria-hidden="true"></i> {{substr($participant->gsm, 0, 4) . ' ' . chunk_split(substr($participant->gsm, 4), 2, ' ')}}</div>
+                                <div class="float phone small_no_float"><i class="fa fa-phone" aria-hidden="true"></i> {{substr($participant->tel, 0, 3) . ' ' . chunk_split(substr($participant->tel, 3), 2, ' ')}}</div>
+                                <div class="float email small_no_float"><i class="fa fa-at" aria-hidden="true"></i> {{$participant->email}}</div>
                             </div>
                             <div class="signed_up_by">
                                 Ingeschreven door: {{$participant->pivot->signed_up_by_user->first_name}} {{$participant->pivot->signed_up_by_user->last_name}}

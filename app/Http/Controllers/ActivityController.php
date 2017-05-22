@@ -464,7 +464,7 @@ class ActivityController extends Controller
                 }
             }
         }
-
+        
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
         //echo($startdatetime);

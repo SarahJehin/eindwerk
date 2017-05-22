@@ -194,7 +194,6 @@
                             </div>
                             <div class="part04">
                                 <div class="step_content scheme_generation">
-                                    In deze stap kan je het schema genereren
                                     @if($winterhour->status >= 2)
                                     <div class="descriptive_info">
                                         Iedereen heeft zijn beschikbaarheid doorgegeven.<br>

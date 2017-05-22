@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Activiteitenoverzicht')
 
 @section('content')
 
@@ -35,7 +35,7 @@
                             <input type="checkbox" id="visible{{$activity->id}}" name="visible{{$activity->id}}"  @if($activity->is_visible) {{'checked'}}@endif hidden>
                             <label for="visible{{$activity->id}}" activity_id="{{$activity->id}}"><i class="fa fa-eye" aria-hidden="true"></i></label>
                         </div>
-                        <div class="date float">{{date('d/m/Y', strtotime($activity->start))}}</div>
+                        <div class="date float">{{date('d/m', strtotime($activity->start))}}<span class="year">{{date('/Y', strtotime($activity->start))}}</span></div>
                         <div class="title float"><a href="{{url('activity_details/' . $activity->id)}}">{{$activity->title}}</a></div>
                         <div class="participants float"><a href="{{url('activity_participants/' . $activity->id)}}">{{count($activity->participants)}}/{{$activity->max_participants}}</a></div>
                         <div class="edit float"><a href="{{url('edit_activity/' . $activity->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
@@ -61,7 +61,7 @@
                             <input type="checkbox" id="visible{{$activity->id}}" name="visible{{$activity->id}}"  @if($activity->is_visible) {{'checked'}}@endif hidden>
                             <label for="visible{{$activity->id}}" activity_id="{{$activity->id}}"><i class="fa fa-eye" aria-hidden="true"></i></label>
                         </div>
-                        <div class="date float">{{date('d/m/Y', strtotime($activity->start))}}</div>
+                        <div class="date float">{{date('d/m', strtotime($activity->start))}}<span class="year">{{date('/Y', strtotime($activity->start))}}</span></div>
                         <div class="title float"><a href="{{url('activity_details/' . $activity->id)}}">{{$activity->title}}</div>
                         <div class="participants float"><a href="{{url('activity_participants/' . $activity->id)}}">{{count($activity->participants)}}/{{$activity->max_participants}}</a></div>
                         <div class="edit float"><a href="{{url('edit_activity/' . $activity->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>

@@ -34,6 +34,7 @@
 
         $('.container_deadline').datepicker('update');
         if(deadline) {
+            console.log('test');
             $('.container_deadline').datepicker('setDate', deadline);
         }
     });
@@ -123,14 +124,22 @@
 
         $startdate = $('input[name="startdate"]').val();
         $startdate_arr = $startdate.split('-');
+        startdate = ('0' + $startdate_arr[2]).slice(-2) + '/' + ('0' + $startdate_arr[1]).slice(-2) + '/' + $startdate_arr[0];
         startMonth = $startdate_arr[1];
         $('.container_startdate').datepicker('update', new Date($startdate_arr[0], $startdate_arr[1]-1, $startdate_arr[2]));
     }
     if($('input[name="deadline"]').val() != "") {
         $deadline = $('input[name="deadline"]').val();
-        console.log($deadline);
         $deadline_arr = $deadline.split('-');
+        //reform the deadline from yyy/mm/dd to dd/mm/yyyy
+        deadline = ('0' + $deadline_arr[2]).slice(-2) + '/' + ('0' + $deadline_arr[1]).slice(-2) + '/' + $deadline_arr[0];
+
         $('.container_deadline').datepicker('update', new Date($deadline_arr[0], $deadline_arr[1]-1, $deadline_arr[2]));
+        //$('.container_deadline').datepicker('setDate', deadline);
+        $('.container_startdate').datepicker('update');
+        if(startdate) {
+            $('.container_startdate').datepicker('setDate', startdate);
+        }
 
         $startdate = $('input[name="startdate"]').val();
         $startdate_arr = $startdate.split('-');
@@ -158,7 +167,7 @@
     function beforeShowDateFunction(date) {
         //check which is the current date type and whether the current date is startdate or deadline to return an appropriate classname
         var current_date = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
-        
+        //console.log(date + ' bibi ' + type_date);
         if(startdate && type_date == 'deadline') {
             if(startdate == current_date) {
                 return 'white_color';
