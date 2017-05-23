@@ -51,6 +51,8 @@
     //multistep form
     $(".timeline div[class^='step']").click(function () {
         //console.log($(this).attr("class"));
+        previous_clicked_step = $('.timeline .reached').text();
+        console.log(previous_clicked_step);
         $('div[class^="step"]').removeClass('reached');
         //get current step to display correct content
         var step = $(this).attr("class").replace("step", "");

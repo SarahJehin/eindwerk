@@ -31,6 +31,7 @@
                 <div class="form_part">
                     <form id="add_winterhour" class="winterhour_form" method="post" enctype="multipart/form-data" action="{{url('edit_winterhour')}}" novalidate>
                         {{ csrf_field() }}
+                        <input type="hidden" name="winterhour_id" value="{{$winterhour->id}}">
                         <div class="total">
                             <div class="part01">
                                 <div class="step_content">
@@ -197,7 +198,10 @@
                                     @if($winterhour->status >= 2)
                                     <div class="descriptive_info">
                                         Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
-                                        Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren.
+                                        Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. <br>
+                                        @if($winterhour->status >= 3)
+                                        Wanneer je tevreden bent over het schema, <a href="{{url('save_scheme/' . $winterhour->id)}}">accepteer</a> het dan.
+                                        @endif
                                     </div>
                                     <div class="submit">
                                         <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
@@ -215,6 +219,14 @@
                                         </div>
                                         @endforeach
                                     </div>
+                                    <div class="accept_scheme">
+                                        <div class="descriptive_info">
+                                            Als je tevreden bent met het schema, klik dan op onderstaande knop om het zichtbaar te zetten voor anderen.
+                                        </div>
+                                        <div class="submit">
+                                            <a href="{{url('save_scheme/' . $winterhour->id)}}">Schema accepteren</a>
+                                        </div>
+                                    </div>
                                     @endif
                                     @else
                                     Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.
@@ -231,6 +243,10 @@
     </div>
 @endsection
 @section('custom_js')
+    <script type="text/javascript">
+        var winterhour_id = {{$winterhour->id}};
+        //console.log(winterhour_id);
+    </script>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>

@@ -1,4 +1,16 @@
 .winterhours_overview {
+    
+    .title {
+        h3 {
+            width: 50%;
+            margin-top: 0;
+        }
+        .add_winterhour {
+            width: 50%;
+            text-align: right;
+            line-height: 31px;
+        }
+    }
     .winterhour_group {
         .info {
             .general_info {

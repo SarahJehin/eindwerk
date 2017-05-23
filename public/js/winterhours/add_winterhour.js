@@ -103,8 +103,8 @@
                     disabled_dates.push(days[day]);
                 }
             }
-            console.log('disabled dates are: ' + disabled_dates);
-            console.log(active_dates);
+            //console.log('disabled dates are: ' + disabled_dates);
+            //console.log(active_dates);
             //disable all the other days
             $('.container_date').datepicker('setDaysOfWeekDisabled', disabled_dates);
             //auto select all the dates that fall on this day of the week
@@ -167,10 +167,10 @@
         //while the weekday of the date is not the requested weekday, get the next date
         while (startdate.getDay() !== day) {
             startdate.setDate(startdate.getDate() + 1);
-            console.log('new date: ' + startdate);
+            //console.log('new date: ' + startdate);
         }
-        console.log('real startdate: ' + startdate);
-        console.log(startdate);
+        //console.log('real startdate: ' + startdate);
+        //console.log(startdate);
         //for a weird reason if you only log the date, you get one day before the real date, but not if it's parsed to a string
         //has something to do with GMT with a difference of 2 hours
         return startdate;
@@ -269,16 +269,71 @@
                 //nothing must happen
                 console.log('not allowed');
                 var left = $(".total").css("left");
-                console.log(left);
+                //console.log(left);
                 $(".total").css("left", left);
                 var filled_line = $('.filled_line').css('width');
                 $('.filled_line').css('width', filled_line);
 
-                $(this).removeClass('reached');
+                $('.timeline .step3').removeClass('reached');
+                $('.timeline .step4').removeClass('reached');
+                //console.log(previous_clicked_step);
+                if(previous_clicked_step == 1) {
+                    $('.timeline .step2').removeClass('reached');
+                }
                 //show message that this step can only be reached when the group has been created
+                $('.step_not_reachable').slideDown( "slow", function() {
+                    // Animation complete.
+                    setTimeout(function() {
+                        $('.step_not_reachable').slideUp();
+                    }, 5000);
+                });
             }
         });
     }
     
+
+    //edit winterhour extra's //only if winterhour id is defined
+    if(typeof winterhour_id !== 'undefined') {
+        //set days of weeks disabled according to selected weekday by triggering a change in the weekday (since all dates will be set to active, get real active dates afterwards)
+        $('.day_select select').trigger( "change" );
+        //get the dates from the current winterhour to set them as active for the datepicker
+        $.get(location.origin +  "/get_winterhour_dates", { winterhour_id: winterhour_id }, function( data ) {
+            //console.log(data);
+            var dates = [];
+            $.each( data, function( key, value ) {
+                var date = value.date;
+                date = date.split('-');
+                date.reverse();
+                date = date.join('/');
+                //console.log( date );
+                dates.push(date);
+            });
+            dates.reverse();
+            //console.log(dates);
+            $('.container_date').datepicker('setDates', dates);
+        });
+
+        //check if a certain step is given
+        var step = findGetParameter('step');
+        if(typeof step !== 'undefined') {
+            //console.log('step is: ' + step);
+            //trigger click on this step
+            $('.timeline .step' + step).trigger('click');
+        }
+    }
+
+
+    function findGetParameter(parameterName) {
+        var result = null,
+            tmp = [];
+        location.search
+        .substr(1)
+            .split("&")
+            .forEach(function (item) {
+            tmp = item.split("=");
+            if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+        return result;
+    }
 
 })(window, window.document, window.jQuery);

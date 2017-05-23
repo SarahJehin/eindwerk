@@ -18,7 +18,7 @@
 
                 @if($user->id != Auth::user()->id)
                 <div class="back link">
-                    <a href="{{url('edit_winterhour/' . $winterhour->id)}}">Terug naar overzicht</a>
+                    <a href="{{url('edit_winterhour/' . $winterhour->id . '?step=3')}}">Terug naar overzicht</a>
                 </div>
                 @endif
 

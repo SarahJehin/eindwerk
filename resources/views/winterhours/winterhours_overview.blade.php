@@ -9,7 +9,10 @@
             </div>
             <div class="content">
 
-                <h3>Mijn winteruurgroepen</h3>
+                <div class="title clearfix">
+                    <h3 class="float">Mijn winteruurgroepen</h3>
+                    <div class="add_winterhour link float"><a href="{{url('add_winterhour')}}">+ Nieuwe groep</a></div>
+                </div>
                 @if(!$winterhour_groups->isEmpty())
                     @foreach($winterhour_groups as $winterhour)
                     <div class="winterhour_group">

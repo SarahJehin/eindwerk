@@ -26,6 +26,7 @@
                     <div class="step3">3</div>
                     <div class="step4">4</div>
                 </div>
+                <div class="descriptive_info step_not_reachable">! Deze stap kan je pas bekijken wanneer je de groep hebt aangemaakt !</div>
                 <div class="form_part">
                     <form id="add_winterhour" method="post" enctype="multipart/form-data" action="{{url('add_winterhour')}}" novalidate>
                         {{ csrf_field() }}
@@ -179,6 +180,9 @@
     </div>
 @endsection
 @section('custom_js')
+    <script type="text/javascript">
+        var previous_clicked_step;
+    </script>
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>

@@ -1,5 +1,10 @@
 .add_winterhour, .edit_winterhour {
 
+    .step_not_reachable {
+        text-align: center;
+        margin-bottom: 25px;
+        display: none;
+    }
     
     .form_part {
         .groupname {
@@ -78,6 +83,7 @@
         }
         
         .add_participants {
+            margin-bottom: 25px;
             .add_participant {
                 &.template {
                     display: none;
