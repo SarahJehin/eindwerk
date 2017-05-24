@@ -16,29 +16,22 @@
                 @if(!$winterhour_groups->isEmpty())
                     @foreach($winterhour_groups as $winterhour)
                     <div class="winterhour_group">
-                        <h4>{{$winterhour->title}} <i class="fa fa-angle-down" aria-hidden="true"></i></h4>
+                        <h3>{{$winterhour->title}} <i class="fa fa-angle-down" aria-hidden="true"></i></h3>
+                        <div class="day_time">
+                            ({{$winterhour->day}} - {{date('H:i', strtotime($winterhour->time))}})
+                            @if($winterhour->made_by == Auth::user()->id)
+                            (<a class="link" href="{{url('edit_winterhour/' . $winterhour->id)}}">Beheren</a>)
+                            @endif
+                        </div>
                         <div class="details open">
-                            <div class="info clearfix">
-                                <div class="general_info float">
-                                    <h4>Dag en uur</h4>
-                                    <div class="day_time">
-                                        {{$winterhour->day}} om {{substr($winterhour->time, 0, 5)}}
-                                    </div>
-                                    <h4>Aangemaakt door</h4>
-                                    <div class="author">
-                                        Aangemaakt door: {{$winterhour->made_by_user->first_name}} {{$winterhour->made_by_user->last_name}}
-                                        @if($winterhour->made_by == Auth::user()->id)
-                                        (als auteur kan jij dit winteruur <a href="{{url('edit_winterhour/' . $winterhour->id)}}">beheren</a>)
-                                        @endif
-                                    </div>
-                                </div>
-                                
-                                <div class="participants float">
-                                    <h4>Deelnemers</h4>
+                            <div class="participants">
+                                <h4>Deelnemers <i class="fa fa-angle-right" aria-hidden="true"></i></h4>
+                                <div class="participants_block">
                                     @foreach($winterhour->participants as $participant)
                                     <div class="participant clearfix">
                                         <div class="name float">{{$participant->first_name}} {{$participant->last_name}}</div>
-                                        <div class="gsm float">{{$participant->gsm}}</div>
+                                        <div class="gsm float">{{substr($participant->gsm, 0, 4) . ' ' . chunk_split(substr($participant->gsm, 4), 2, ' ')}}&nbsp;</div>
+                                        <div class="email float">{{$participant->email}}</div>
                                     </div>
                                     @endforeach
                                 </div>
@@ -50,7 +43,7 @@
                             Je hebt nog geen beschikbaarheid doorgegeven.  De verantwoordelijke kan het schema pas aanmaken wanneer jij je beschikbaarheid hebt doorgegeven. <a href="{{url('availabilities/' . $winterhour->id)}}">Beschikbaarheid doorgeven</a>.
                             @endif
                             <div class="scheme clearfix">
-                                @if($winterhour->status != 3)
+                                @if($winterhour->status != 4)
                                 Het schema verschijnt hier zodra de verantwoordelijke het gegenereerd heeft.
                                 @else
                                     @foreach($winterhour->scheme as $date => $participants)

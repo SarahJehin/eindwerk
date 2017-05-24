@@ -6,6 +6,18 @@
         display: none;
     }
     
+    .not_editable_message {
+        display: none;
+        width: 91%;
+        padding: 3px 1%;
+        margin: 0 auto;
+        border: 1px solid orange;
+        border-radius: 5px;
+        i {
+            color: orange;
+        }
+    }
+    
     .form_part {
         .groupname {
             margin-top: 25px;
@@ -89,7 +101,7 @@
                     display: none;
                 }
                 .search_functionality {
-                    width: 80%;
+                    width: 98%;
                     
                     input.search_participants {
                         font-size: inherit;
@@ -150,10 +162,16 @@
                     }
                 }
                 .delete {
-                    width: 20%;
+                    width: 2%;
                     height: 32px;
                     line-height: 32px;
                     text-align: right;
+                    color: $delete_color;
+                    cursor: pointer;
+                    
+                    &.not_working {
+                        display: none;
+                    }
                 }
             }
             
@@ -182,6 +200,7 @@
                         i {
                             width: 10%;
                             text-align: center;
+                            color: $theme_color01;
                         }
                     }
                     &:hover, &.opened {
@@ -197,7 +216,7 @@
         
         .scheme_generation {
             .submit a {
-                width: 100%;
+                width: calc(100% - 20px);
                 background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
                 background-size: 200% 100%;
                 transition: background 0.3s ease;
@@ -213,6 +232,19 @@
                   background-position: 100%;
                 }
             }
+            .swap_message {
+                margin-top: 25px;
+                padding: 2px 5px;
+                border-radius: 5px;
+                text-align: center;
+                display: none;
+                &.failed {
+                    border: 1px solid $error_color;
+                }
+                &.success {
+                    border: 1px solid $success_color;
+                }
+            }
             .scheme {
                 .date {
                     width: 22%;
@@ -226,6 +258,29 @@
                         border-bottom: 1px solid $theme_color01;
                         padding-bottom: 3px;
                     }
+                    
+                    .participant {
+                        border: 1px solid transparent;
+                        margin-bottom: 2px;
+                        &:hover {
+                            cursor: move;
+                            border: 1px dashed $form_font_color;
+                        }
+                        &.ui-state-hover {
+                            background: rgba($theme_color01, 0.1);
+                            border: 1px dashed $form_font_color;
+                        }
+                        &.ui-state-active {
+                            background: rgba($theme_color01, 0.6);
+                            color: #fff;
+                            border: 1px dashed $theme_color01;
+                        }
+                    }
+                }
+            }
+            .accept_scheme {
+                .descriptive_info {
+                    margin-top: 25px;
                 }
             }
         }

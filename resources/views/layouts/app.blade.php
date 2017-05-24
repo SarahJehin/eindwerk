@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'TC Sportiva') }} - @yield('title')</title>
 
     <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,300,300i,400,400i,700" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i,700" rel="stylesheet"> 

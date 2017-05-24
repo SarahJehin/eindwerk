@@ -115,7 +115,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                            <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
                                         @if (count($errors) > 0)
                                             @for($i = 0; $i < (count(old('participant_id'))-1); $i++)

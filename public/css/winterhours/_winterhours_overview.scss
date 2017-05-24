@@ -12,23 +12,36 @@
         }
     }
     .winterhour_group {
-        .info {
-            .general_info {
-                width: 50%;
-                h4 {
-                    margin-bottom: 0;
-                }
+        h3 {
+            margin-bottom: 0;
+        }
+        .day_time {
+            font-size: 0.9em;
+            font-weight: 300;
+            a {
+                font-weight: 500;
             }
         }
         .participants {
-            width: 30%;
             font-size: 0.9em;
+            h4 {
+                margin-bottom: 0px;
+            }
+            .participants_block {
+                display: none;
+            }
             .participant {
                 .name {
-                    width: 60%;
+                    width: 20%;
                 }
                 .gsm {
-                    width: 40%;
+                    width: 20%;
+                }
+                .email {
+                    width: 30%;
+                }
+                &:hover {
+                    background-color: rgba($theme_color01, 0.1);
                 }
             }
         }

@@ -192,8 +192,10 @@ class WinterhourController extends Controller
     		$scheme = array();
     		foreach ($winterhour->dates as $date) {
     			$scheme[$date->date] = array();
+    			$scheme[$date->date]['participants'] = array();
+    			$scheme[$date->date]['date_id'] = $date->id;
     			foreach ($date->assigned_participants as $participant) {
-    				array_push($scheme[$date->date], $participant);
+    				array_push($scheme[$date->date]['participants'], $participant);
     			}
     		}
     	}
@@ -203,6 +205,7 @@ class WinterhourController extends Controller
     }
 
     public function update_winterhour(Request $request) {
+    	//dd($request);
     	$winterhour = Winterhour::find($request->winterhour_id);
     	$this->validate($request, [	'groupname'	=> 'required|string',
     								'day'		=> 'required|not_in:select_day',
@@ -214,20 +217,57 @@ class WinterhourController extends Controller
 
     	$winterhour->title 	= $request->groupname;
     	$winterhour->day 	= $request->day;
+    	$winterhour->time 	= $request->time;
+    	$winterhour->save();
 
     	//update the dates, if dates are gone remove them along with all their entries in the date_user table
     	foreach ($request->date as $date) {
     		//check if date exists in the current winterhour dates, if not create
-
-    		//for all the winterhour dates, check if they also exist in the request->date array, if not, delete.
-    		/*
-        	$new_date = new Date([
-        		'date'	=> $date
-        	]);
-        	$winterhour->dates()->save($new_date);
-        	*/
+    		$date_exists = $winterhour->dates->where('date', $date)->first();
+    		//dump($date_exists);
+    		if(!$date_exists) {
+    			echo('doesnt exist');
+    			//if the date does not yet exist, create it
+    			$new_date = new Date([
+	        		'date'	=> $date
+	        	]);
+        		$winterhour->dates()->save($new_date);
+    		}
         }
+        //dd('test');
+        //for all the winterhour dates, check if they also exist in the request->date array, if not, delete. along with their relations in date_user
+    	foreach ($winterhour->dates as $date) {
+    		if(!in_array($date->date, $request->date)) {
+    			//if the winterhour date isnot in the newly passed date array, remove it along with its user availabilities
+    			$date->users()->detach();
+    			$date->delete();
+    		}
+    	}
     	//add new participants, remove the ones that were removed + their entries in the date_user table (met wherenotin), keep the ones that are kept
+    	foreach ($request->participant_id as $participant_id) {
+    		$participant_exists = $winterhour->participants->where('id', $participant_id)->first();
+    		if(!$participant_exists) {
+    			//if the participant does not yet exist, attach it
+    			$winterhour->participants()->attach($participant_id);
+    			//update the winterhour status back to 2, because this participant does not have an availability yet:
+    			$winterhour->status = 2;
+    			$winterhour->save();
+    		}
+    	}
+    	//for all the winterhour participants, check if they also exist in the request->participant_id array, if not, delete. along with their relations in date_user
+    	foreach ($winterhour->participants as $participant) {
+    		//echo('wh parti: ' . $participant->first_name);
+    		if(!in_array($participant->id, $request->participant_id)) {
+    			$winterhour->participants()->detach($participant->id);
+    			//echo('not in array');
+    			//remove all date_user for this winterhour for this user, must be done this way, because a user can have multiple winterhours
+    			foreach ($winterhour->dates as $date) {
+	    			$date->users()->detach($participant_id);
+	    		}
+    		}
+    	}
+    	//dd('stop right here');
+    	return redirect('edit_winterhour/' . $winterhour->id);
     }
 
     public function get_winterhour_dates(Request $request) {
@@ -238,7 +278,7 @@ class WinterhourController extends Controller
     }
 
     public function get_winterhour_status(Request $request) {
-    	$winterhour_status = Winterhour::where('id', $request->winterhour_id)->select('status')->first();
+    	$winterhour_status = Winterhour::find($request->winterhour_id)->status;
     	return $winterhour_status;
     }
 
@@ -365,6 +405,13 @@ class WinterhourController extends Controller
 		$result = ($rest * ceil(88/10)) + (10- $rest) * 8;
 		echo('<br>' . $result);
 		*/
+    }
+
+    public function save_scheme($id) {
+    	$winterhour = Winterhour::find($id);
+    	$winterhour->status = 4;
+    	$winterhour->save();
+    	return redirect('edit_winterhour/' . $id . '?step=4')->with('success_msg', 'Je hebt het schema geaccepteerd! Het is nu zichtbaar voor alle groepsleden.');
     }
 
     public function order_participants_by_availability($participants) {

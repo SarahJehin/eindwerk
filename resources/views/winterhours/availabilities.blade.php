@@ -74,9 +74,6 @@
                         <input type="submit" value="Beschikbaarheid bewaren">
                     </div>
                 </form>
-                <div>
-                    {{ $test or "Default Message" }}
-                </div>
             </div>
         </div>
 

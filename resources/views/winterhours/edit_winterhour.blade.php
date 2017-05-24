@@ -29,12 +29,25 @@
                     <div class="step4">4</div>
                 </div>
                 <div class="form_part">
+                    <div class="not_editable_message">
+                        <i class="fa fa-asterisk" aria-hidden="true"></i> Je kan dit winteruur niet meer aanpassen omdat het schema reeds gegenereerd is.
+                    </div>
                     <form id="add_winterhour" class="winterhour_form" method="post" enctype="multipart/form-data" action="{{url('edit_winterhour')}}" novalidate>
                         {{ csrf_field() }}
                         <input type="hidden" name="winterhour_id" value="{{$winterhour->id}}">
                         <div class="total">
                             <div class="part01">
                                 <div class="step_content">
+
+                                    @if (count($errors) > 0)
+                                        <div class="error_msg">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <div class="field_wrap groupname">
                                         <label>Groepsnaam</label>
                                         <input type="text" name="groupname" id="groupname" value="{{old('groupname', $winterhour->title)}}">
@@ -78,6 +91,17 @@
                                             <div class="container_date">
 
                                             </div>
+                                            <div class="inputs">
+                                                @if (count($errors) > 0)
+                                                    @foreach(old('date') as $date)
+                                                    <input type="text" name="date[]" value="{{$date}}" hidden>
+                                                    @endforeach
+                                                @else
+                                                    @foreach($winterhour->dates as $date)
+                                                    <input type="text" name="date[]" value="{{$date}}" hidden>
+                                                    @endforeach
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +116,8 @@
                                         <div class="add_participant clearfix template">
                                             <div class="search_functionality float">
                                                 <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
-                                                <input type="number" name="participant_id[]" class="id" hidden="">
+                                                <input type="text" name="participant_name[]" class="participant_name" hidden="" disabled="">
+                                                <input type="number" name="participant_id[]" class="id" hidden="" disabled="">
                                                 <div class="search_results">
                                                     <ul>
                                                         <li>Sarah Jehin</li>
@@ -100,7 +125,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                            <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
                                         @if (count($errors) > 0)
                                             @for($i = 0; $i < (count(old('participant_id'))-1); $i++)
@@ -120,7 +145,7 @@
                                             </div>
                                             @endfor
                                         @else
-                                            @for($i = 0; $i < (count($winterhour->participants)-1); $i++)
+                                            @for($i = 0; $i < count($winterhour->participants); $i++)
                                             <div class="add_participant clearfix">
                                                 <div class="search_functionality float">
                                                     <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off" readonly="" disabled="" value="{{$winterhour->participants[$i]->first_name}} {{$winterhour->participants[$i]->last_name}}">
@@ -140,6 +165,7 @@
                                         <div class="add_participant clearfix">
                                             <div class="search_functionality float">
                                                 <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
+                                                <input type="text" name="participant_name[]" class="participant_name" hidden="">
                                                 <input type="number" name="participant_id[]" class="id" hidden="">
                                                 <div class="search_results">
                                                     <ul>
@@ -183,7 +209,7 @@
                                                     @if(count($participant->dates) > 0)
                                                     <i class="fa fa-check"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
                                                     @else
-                                                    <i class="fa fa-times"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                     (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
                                                     @endif
                                                 </div>
                                             </div>
@@ -198,21 +224,28 @@
                                     @if($winterhour->status >= 2)
                                     <div class="descriptive_info">
                                         Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
-                                        Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. <br>
+                                        Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. Of versleep de deelnemers van datum.<br>
                                         @if($winterhour->status >= 3)
                                         Wanneer je tevreden bent over het schema, <a href="{{url('save_scheme/' . $winterhour->id)}}">accepteer</a> het dan.
                                         @endif
                                     </div>
                                     <div class="submit">
+                                        @if($winterhour->status == 2)
                                         <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
+                                        @elseif($winterhour->status == 3)
+                                        <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>
+                                        @endif
                                     </div>
                                     @if($scheme)
+                                    <div class="swap_message">
+                                        Wissel bericht.
+                                    </div>
                                     <div class="scheme clearfix">
-                                        @foreach($scheme as $date => $participants)
+                                        @foreach($scheme as $date => $info)
                                         <div class="date float">
-                                            <h3>{{$date}}</h3>
-                                            @foreach($participants as $participant)
-                                            <div class="participant">
+                                            <h3>{{date('d/m/Y', strtotime($date))}}</h3>
+                                            @foreach($info['participants'] as $participant)
+                                            <div class="participant dragdrop" user_id="{{$participant->id}}" date_id="{{$info['date_id']}}">
                                                 {{$participant->first_name}} {{$participant->last_name}}
                                             </div>
                                             @endforeach
@@ -247,7 +280,11 @@
         var winterhour_id = {{$winterhour->id}};
         //console.log(winterhour_id);
     </script>
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script
+              src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+              integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+              crossorigin="anonymous"></script>
+    <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>

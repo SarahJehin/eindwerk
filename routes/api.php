@@ -22,3 +22,4 @@ Route::get('/get_matching_users', 'ApiController@get_matching_users');
 Route::post('/update_activity_participant_status', 'ApiController@update_activity_participant_status');
 Route::post('/update_activity_visibility', 'ApiController@update_activity_visibility');
 Route::post('/update_profile', 'ApiController@update_profile');
+Route::post('/swap_places', 'ApiController@swap_places');

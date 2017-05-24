@@ -74,6 +74,86 @@ class ApiController extends Controller
         return 'success';
     }
 
+    //winterhour
+    //swap places for dates en participants
+    public function swap_places(Request $request) {
+
+        $user_id1 = intval($request->swap1['user_id']);
+        $date_id1 = intval($request->swap1['date_id']);
+
+        $user_id2 = intval($request->swap2['user_id']);
+        $date_id2 = intval($request->swap2['date_id']);
+
+        //check if one of the users won't be set as a duplicate participant
+        $user_1_already_plays = $this->check_if_user_plays_on_date($user_id1, $date_id2);
+        $user_2_already_plays = $this->check_if_user_plays_on_date($user_id2, $date_id1);
+
+        if($user_1_already_plays || $user_2_already_plays) {
+            //dd('Één van beide spelers speelt al op de wisseldag');
+            return response()->json(['status' => 'failed', 'message' => 'Één van beide spelers speelt al op de wisseldag.']);
+        }
+
+        //dd($user_1_already_plays, $user_2_already_plays);
+        //echo($user_id1 . ' ' . $date_id1 . ' ' . $user_id2 . ' ' . $date_id2);
+        //dd('sdsfd');
+
+        //check if they are both available on the other day
+        $user_1_is_available = $this->check_if_user_is_available($user_id1, $date_id2);
+        $user_2_is_available = $this->check_if_user_is_available($user_id2, $date_id1);
+        //dd($user_1_is_available, $user_2_is_available);
+
+        if(!$user_1_is_available || !$user_2_is_available) {
+            //dd('Één van beide spelers is niet beschikbaar op de wisseldag');
+            return response()->json(['status' => 'failed', 'message' => 'Één van beide spelers is niet beschikbaar op de wisseldag.']);
+        }
+
+        //if all checks were passed
+        //switch the entries in the date_user table
+        $this->switch_user($user_id1, $date_id1, $date_id2);
+        $this->switch_user($user_id2, $date_id2, $date_id1);
+        //dd(User::find($user_id1), User::find($user_id2));
+        //dd("doesn't work does it?");
+        return response()->json(['status' => 'success', 'message' => 'Spelers werden gewisseld.']);
+
+        //dd($request);
+        //json_decode($request);
+        //dd($request->swap1['user_id']);
+        //return response()->json(['blib' => $request->test]);
+        return response()->json([$request->swap1['date_id']]);
+        //return $request;
+    }
+
+    public function check_if_user_plays_on_date($user_id, $date_id) {
+        $user = User::find($user_id);
+        $user_plays_on_date = $user->dates->where('id', $date_id)->where('pivot.assigned', 1)->first();
+        if($user_plays_on_date) {
+            $user_plays_on_date = true;
+        }
+        else {
+            $user_plays_on_date = false;
+        }
+        return $user_plays_on_date;
+    }
+
+    public function check_if_user_is_available($user_id, $date_id) {
+        $user = User::find($user_id);
+        $user_is_available = $user->dates->where('id', $date_id)->where('pivot.available', 1)->first();
+        if($user_is_available) {
+            $user_is_available = true;
+        }
+        else {
+            $user_is_available = false;
+        }
+        return $user_is_available;
+    }
+
+    public function switch_user($user_id, $old_date, $new_date) {
+        $user = User::find($user_id);
+        $user->dates()->updateExistingPivot($old_date, ['assigned' => 0]);
+        $user->dates()->updateExistingPivot($new_date, ['assigned' => 1]);
+    }
+
+
     //admin
     //update paid status
     public function update_activity_participant_status(Request $request) {

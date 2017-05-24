@@ -40,10 +40,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('add_winterhour', 'WinterhourController@add_winterhour');
     Route::post('add_winterhour', 'WinterhourController@create_winterhour');
     Route::get('edit_winterhour/{id}', 'WinterhourController@edit_winterhour');
-    Route::post('edit_winterhour/{id}', 'WinterhourController@update_winterhour');
+    Route::post('edit_winterhour', 'WinterhourController@update_winterhour');
     Route::get('availabilities/{id}/{user_id?}', 'WinterhourController@edit_availabilities');
     Route::post('update_availability', 'WinterhourController@update_availability');
     Route::get('generate_scheme/{id}', 'WinterhourController@generate_scheme');
+    Route::get('save_scheme/{$id}', 'WinterhourController@save_scheme');
     Route::get('get_winterhour_dates', 'WinterhourController@get_winterhour_dates');
     Route::get('get_winterhour_status', 'WinterhourController@get_winterhour_status');
 
