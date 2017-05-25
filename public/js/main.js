@@ -3,6 +3,15 @@
 
     console.log("Welcome in the console of the TCS Dashboard!");
 
+    /*
+    //setup token for posts
+    $.ajaxSetup({
+        headers: {
+          'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+        }
+    });
+    */
+
     // LOGIN
     //login anims (code from: http://codepen.io/ehermanson/pen/KwKWEv)
     $('#login_form').find('input, textarea').on('keyup blur focus', function (e) {
@@ -33,6 +42,47 @@
         }
 
     });
+
+    //different background images
+    var images = ['total_img01.jpg', 'total_img03.jpg', 'total_img04.jpg'];
+    /*
+    var intervalClearer = setInterval(function(){
+        $('.login .container .background_holder').fadeTo(1000, 0.1, function() {
+            var random_nr = Math.floor(Math.random() * 3);
+            $(this).css('background-image', 'url(../images/site_images/' + images[random_nr] + ')');
+            $(this).css('background-position', '0px 0px');
+            $(this).css('background-size', 'cover');
+        }).fadeTo(1000, 1);
+    }, 6000);
+    */
+    var times = 0;
+    var intervalClearer = setInterval(function(){
+        var random_nr = Math.floor(Math.random() * 3);
+        if(isOdd(times)) {
+            //$('.background_holder2').css('background-image', 'url(../images/site_images/' + images[random_nr] + ')');
+            $('.background_holder2').fadeIn(1000, function() {
+                $('.background_holder1').css('background-image', 'url(../images/site_images/' + images[random_nr] + ')');
+            });
+        }
+        else {
+            $('.background_holder2').fadeOut(1000, function() {
+                $('.background_holder2').css('background-image', 'url(../images/site_images/' + images[random_nr] + ')');
+            });
+        }
+        times++;
+        /*
+        $('.login .container .background_holder').fadeTo(1000, 0.1, function() {
+            var random_nr = Math.floor(Math.random() * 3);
+            $(this).css('background-image', 'url(../images/site_images/' + images[random_nr] + ')');
+            $(this).css('background-position', '0px 0px');
+            $(this).css('background-size', 'cover');
+        }).fadeTo(1000, 1);
+        */
+    }, 6000);
+
+    function isOdd(number) {
+        return number % 2;
+    }
 
     //HAMBURGER nav opening
     $('.hamburger .hamburger_icon i').click(function() {

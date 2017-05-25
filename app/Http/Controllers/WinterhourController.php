@@ -20,12 +20,14 @@ class WinterhourController extends Controller
 
     		$scheme = null;
 	    	//if winterhour status is 3, the scheme is generated and should be passed to the view as well
-	    	if($winterhour_group->status == 3) {
+	    	if($winterhour_group->status > 3) {
 	    		$scheme = array();
 	    		foreach ($winterhour_group->dates as $date) {
 	    			$scheme[$date->date] = array();
+	    			$scheme[$date->date]['participants'] = array();
+	    			$scheme[$date->date]['date_id'] = $date->id;
 	    			foreach ($date->assigned_participants as $participant) {
-	    				array_push($scheme[$date->date], $participant);
+	    				array_push($scheme[$date->date]['participants'], $participant);
 	    			}
 	    		}
 	    	}
@@ -181,14 +183,15 @@ class WinterhourController extends Controller
     			$all_availabilities_ok = false;
     		}
     	}
-    	if($all_availabilities_ok && $winterhour->status != 3) {
+    	//if($all_availabilities_ok && $winterhour->status != 3) {
+    	if($all_availabilities_ok && $winterhour->status < 3) {
     		$winterhour->status = 2;
     		$winterhour->save();
     	}
 
     	$scheme = null;
     	//if winterhour status is 3, the scheme is generated and should be passed to the view as well
-    	if($winterhour->status == 3) {
+    	if($winterhour->status >= 3) {
     		$scheme = array();
     		foreach ($winterhour->dates as $date) {
     			$scheme[$date->date] = array();
@@ -200,8 +203,23 @@ class WinterhourController extends Controller
     		}
     	}
     	//dd($scheme);
+    	$participants = $winterhour->participants;
+    	$play_times = array();
+    	//dd($participants);
+    	foreach ($participants as $participant) {
+    		$total_play_dates = $participant->dates->where('pivot.assigned', 1)->count();
+    		if(isset($play_times[$total_play_dates])) {
+    			array_push($play_times[$total_play_dates], $participant);
+    		}
+    		else {
+    			$play_times[$total_play_dates] = array();
+    			array_push($play_times[$total_play_dates], $participant);
+    		}
+    		//dump($total_play_dates);
+    	}
+    	//dd($play_times);
 
-    	return view('winterhours/edit_winterhour', ['winterhour' => $winterhour, 'scheme' => $scheme]);
+    	return view('winterhours/edit_winterhour', ['winterhour' => $winterhour, 'scheme' => $scheme, 'play_times' => $play_times]);
     }
 
     public function update_winterhour(Request $request) {

@@ -1,4 +1,5 @@
 
+
 .login {
     height: 100%;
     @include smartphone {
@@ -7,11 +8,25 @@
     }
 
   .container {
-    height: 100%;
+      height: 100%;
+      position: relative;
+      .background_holder1, .background_holder2 {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-image: url('../images/site_images/total_img01.jpg');
+          background-size: cover;
+          //background-color: pink;
+      }
+      .background_holder2 {
+          display: none;
+      }
   }
 }
 
 .login_block {
+    position: absolute;
+    background-color: rgba($theme_color02, 0.85);
   width: 400px;
   //margin: 0 auto;
   //margin: 0 calc(50% - 200px);

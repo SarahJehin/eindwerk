@@ -28,7 +28,7 @@
                     </div>
                 @endif
                 
-
+                @if($winterhour->status < 4)
                 <div class="descriptive_info">
                     Geef hieronder je beschikbare datums door.<br>
                     Het schema kan pas gemaakt worden wanneer iedereen zijn beschikbaarheid heeft doorgegeven<br>
@@ -40,6 +40,11 @@
                     <input id="select_all" type="checkbox" name="select_all">
                     <label for="select_all">Alle data selecteren</label>
                 </div>
+                @else 
+                <div class="descriptive_info">
+                    Beschikbaarheid bekijken van <strong>{{$user->first_name}} {{$user->last_name}}</strong>.
+                </div>
+                @endif
                 <form method="post" action="{{url('update_availability')}}">
                     {{ csrf_field() }}
                     <input type="hidden" name="winterhour_id" value="{{$winterhour->id}}">
@@ -53,12 +58,20 @@
                                 <div class="date clearfix">
                                     <div class="date_date float">{{date('d/m/Y', strtotime($date->date))}}</div>
                                     @if(array_key_exists($date->id, $user_dates_array))
-                                        @if($user_dates_array[$date->id]->pivot->available == 1)
-                                        <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
-                                        <input class="float" type="checkbox" name="date[{{$date->id}}]" checked="">
+                                        @if($winterhour->status < 4)
+                                            @if($user_dates_array[$date->id]->pivot->available == 1)
+                                            <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
+                                            <input class="float" type="checkbox" name="date[{{$date->id}}]" checked="">
+                                            @else
+                                            <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
+                                            <input class="float" type="checkbox" name="date[{{$date->id}}]">
+                                            @endif
                                         @else
-                                        <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
-                                        <input class="float" type="checkbox" name="date[{{$date->id}}]">
+                                            @if($user_dates_array[$date->id]->pivot->available == 1)
+                                            <i class="fa fa-check"></i>
+                                            @else
+                                            <i></i>
+                                            @endif
                                         @endif
                                     @else
                                     <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
@@ -70,9 +83,11 @@
                         </div>
                         @endforeach
                     </div>
+                    @if($winterhour->status < 4)
                     <div class="submit_btn">
                         <input type="submit" value="Beschikbaarheid bewaren">
                     </div>
+                    @endif
                 </form>
             </div>
         </div>

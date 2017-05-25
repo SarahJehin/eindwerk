@@ -1,6 +1,4 @@
 
-
-
 .form_part {
   //width: 500px;
   overflow: hidden;
@@ -33,7 +31,12 @@
       margin: 0 auto;
     }
 
-
+    .category_poster {
+        .category_block, .poster_block {
+            width: 50%;
+        }
+    }
+      
     .categories {
         margin-bottom: 40px;
         
@@ -45,6 +48,9 @@
         position: relative;
         float: left;
         margin-right: 10px;
+          &:nth-child(n+4) {
+              margin-top: 25px;
+          }
 
         label {
             overflow: hidden;
@@ -79,7 +85,7 @@
 
     .poster {
       width: 100%;
-      height: 300px;
+      height: 400px;
         #poster {
             display: none;
         }
@@ -103,7 +109,7 @@
           left: 0;
           width: 100%;
           height: 100%;
-          line-height: 300px;
+          line-height: 400px;
         }
 
         &:hover {
@@ -113,7 +119,7 @@
           }
         }
 
-        &.with_poster {
+        &.poster_exists {
             span {
                 opacity: 0;
                 //-webkit-transition: opacity 0.2s; /* Safari */
@@ -131,6 +137,7 @@
         }
       }
     }
+      
 
     .title.description {
         margin-top: 30px;
@@ -225,7 +232,7 @@
                           margin: 0 auto;
                           tr {
                             td {
-                              padding: 5px;
+                              padding: 2px 5px;
                               cursor: default;
                               &.disabled {
                                 background-color: rgba(#d0dae2, 0.2);
@@ -629,6 +636,9 @@
     &:hover {
       color: $form_color;
     }
+      i {
+          position: absolute;
+      }
     & + span {
       display: inline-block;
     }
@@ -648,6 +658,90 @@
 .note-popover.popover {
     display: none;
 }
+
+//lightbox
+.upload_activity_poster_modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(#000, 0.6);
+
+        .content {
+            width: 50%;
+            margin: 30px auto;
+            background-color: #fff;
+            color: $form_font_color;
+            border-radius: 5px;
+
+            .header {
+                text-align: right;
+                i {
+                    margin: 15px;
+                    cursor: pointer;
+                    &:hover {
+                        color: #000;
+                    }
+                }
+            }
+
+            .body {
+                text-align: center;
+                .upload_poster {
+                    position: relative;
+                    width: 350px;
+                    margin: 0 auto;
+                    label {
+                        z-index: 5;
+                        border: 1px dashed $form_color;
+                        position: absolute;
+                        //top: 45%;
+                        width: 80%;
+                        height: 385px;
+                        top: 25px;
+                        line-height: 385px;
+                        left: calc(10% - 1px);
+                        padding: 2% 0;
+                        text-align: center;
+                        cursor: pointer;
+                        &:hover {
+                            //background-color: $theme_color01;
+                            //color: #fff;
+                            text-decoration: underline;
+                        }
+                        &.poster_exists {
+                            top: 0;
+                            width: calc(100% - 1px);
+                            left: 0;
+                            height: 20px;
+                            line-height: 20px;
+                            background-color: rgba(#fff, 0.95);
+                            display: none;
+                        }
+                    }
+
+                    &:hover {
+                        label.poster_exists {
+                            display: block;
+                            &:hover {
+                                background-color: $theme_color01;
+                                color: #fff;
+                            }
+                        }
+                    }
+                    
+                    .save_poster {
+                        width: 350px;
+                        margin-bottom: 25px;
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
 
 
 /* clearfix */

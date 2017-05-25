@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Nieuwe activiteit')
+@section('title', 'Nieuwe winteruur groep')
 
 @section('custom_css')
 <!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">-->
@@ -147,7 +147,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                            <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
                                     </div>
 

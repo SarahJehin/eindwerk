@@ -12,7 +12,6 @@
 
 @section('content')
 
-
     <div class="edit_winterhour">
 
         <div class="block">
@@ -30,7 +29,7 @@
                 </div>
                 <div class="form_part">
                     <div class="not_editable_message">
-                        <i class="fa fa-asterisk" aria-hidden="true"></i> Je kan dit winteruur niet meer aanpassen omdat het schema reeds gegenereerd is.
+                        <i class="fa fa-asterisk" aria-hidden="true"></i> Je kan dit winteruur niet meer aanpassen omdat het schema reeds geaccepteerd is.
                     </div>
                     <form id="add_winterhour" class="winterhour_form" method="post" enctype="multipart/form-data" action="{{url('edit_winterhour')}}" novalidate>
                         {{ csrf_field() }}
@@ -89,7 +88,7 @@
                                                 (bvb. tornooi, Kerstmis, Oudjaar, ...)
                                             </div>
                                             <div class="container_date">
-
+                                                <div class="disable_datepicker"></div>
                                             </div>
                                             <div class="inputs">
                                                 @if (count($errors) > 0)
@@ -164,7 +163,7 @@
                                         @endif
                                         <div class="add_participant clearfix">
                                             <div class="search_functionality float">
-                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off">
                                                 <input type="text" name="participant_name[]" class="participant_name" hidden="">
                                                 <input type="number" name="participant_id[]" class="id" hidden="">
                                                 <div class="search_results">
@@ -174,14 +173,14 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                            <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
                                     </div>
-
+                                    @if($winterhour->status < 4)
                                     <div>
                                         <input type="submit" value="Groep updaten">
                                     </div>
-
+                                    @endif
                                 </div>
                             </div>
                             <div class="part03">
@@ -206,10 +205,14 @@
                                                     {{$participant->first_name}} {{$participant->last_name}}
                                                 </div>
                                                 <div class="availability_ok float">
-                                                    @if(count($participant->dates) > 0)
-                                                    <i class="fa fa-check"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                    @if($winterhour->status < 4)
+                                                        @if(count($participant->dates) > 0)
+                                                        <i class="fa fa-check"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                        @else
+                                                         (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                        @endif
                                                     @else
-                                                     (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
+                                                        <a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Bekijken</a>
                                                     @endif
                                                 </div>
                                             </div>
@@ -221,47 +224,69 @@
                             </div>
                             <div class="part04">
                                 <div class="step_content scheme_generation">
+                                    @if (session('success_msg'))
+                                        <div class="success_msg">
+                                            {{ session('success_msg') }}
+                                        </div>
+                                    @endif
                                     @if($winterhour->status >= 2)
-                                    <div class="descriptive_info">
-                                        Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
-                                        Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. Of versleep de deelnemers van datum.<br>
-                                        @if($winterhour->status >= 3)
-                                        Wanneer je tevreden bent over het schema, <a href="{{url('save_scheme/' . $winterhour->id)}}">accepteer</a> het dan.
+                                        @if($winterhour->status < 4)
+                                        <div class="descriptive_info">
+                                            Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
+                                            Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. Of versleep de deelnemers van datum.<br>
+                                            @if($winterhour->status >= 3)
+                                            Wanneer je tevreden bent over het schema, <a class="link" href="{{url('save_scheme/' . $winterhour->id)}}">accepteer</a> het dan.
+                                            @endif
+                                        </div>
+                                        <div class="submit">
+                                            @if($winterhour->status == 2)
+                                            <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
+                                            @elseif($winterhour->status == 3)
+                                            <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>
+                                            @endif
+                                        </div>
                                         @endif
-                                    </div>
-                                    <div class="submit">
-                                        @if($winterhour->status == 2)
-                                        <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
-                                        @elseif($winterhour->status == 3)
-                                        <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>
-                                        @endif
-                                    </div>
-                                    @if($scheme)
-                                    <div class="swap_message">
-                                        Wissel bericht.
-                                    </div>
-                                    <div class="scheme clearfix">
-                                        @foreach($scheme as $date => $info)
-                                        <div class="date float">
-                                            <h3>{{date('d/m/Y', strtotime($date))}}</h3>
-                                            @foreach($info['participants'] as $participant)
-                                            <div class="participant dragdrop" user_id="{{$participant->id}}" date_id="{{$info['date_id']}}">
-                                                {{$participant->first_name}} {{$participant->last_name}}
+                                        @if($scheme)
+                                        <div class="swap_message">
+                                            Wissel bericht.
+                                        </div>
+                                        <div class="scheme clearfix">
+                                            @foreach($scheme as $date => $info)
+                                            <div class="date float">
+                                                <h3>{{date('d/m/Y', strtotime($date))}}</h3>
+                                                @foreach($info['participants'] as $participant)
+                                                <div class="participant dragdrop" user_id="{{$participant->id}}" date_id="{{$info['date_id']}}">
+                                                    {{$participant->first_name}} {{$participant->last_name}}
+                                                </div>
+                                                @endforeach
                                             </div>
                                             @endforeach
                                         </div>
-                                        @endforeach
-                                    </div>
-                                    <div class="accept_scheme">
-                                        <div class="descriptive_info">
-                                            Als je tevreden bent met het schema, klik dan op onderstaande knop om het zichtbaar te zetten voor anderen.
+                                        <div class="play_times">
+                                            @foreach($play_times as $times => $participants)
+                                            <div>
+                                                <span class="title">Spelen <span class="times">{{$times}}</span> keer: </span>
+                                                @foreach($participants as $participant)
+                                                <span>{{$participant->first_name}} {{$participant->last_name}}</span>
+                                                @if($participant != end($participants))
+                                                ,
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                            @endforeach
                                         </div>
-                                        <div class="submit">
-                                            <a href="{{url('save_scheme/' . $winterhour->id)}}">Schema accepteren</a>
-                                        </div>
-                                    </div>
-                                    @endif
-                                    @else
+                                            @if($winterhour->status < 4)
+                                            <div class="accept_scheme">
+                                                <div class="descriptive_info">
+                                                    Als je tevreden bent met het schema, klik dan op onderstaande knop om het zichtbaar te zetten voor anderen.
+                                                </div>
+                                                <div class="submit">
+                                                    <a href="{{url('save_scheme/' . $winterhour->id)}}">Schema accepteren</a>
+                                                </div>
+                                            </div>
+                                            @endif
+                                        @endif
+                                    @elseif($winterhour->status < 2)
                                     Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.
                                     @endif
                                 </div>

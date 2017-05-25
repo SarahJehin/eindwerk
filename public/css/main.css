@@ -160,15 +160,15 @@ nav {
 .success_msg {
   padding: 5px;
   border-radius: 5px;
-  background-color: #a2d8a6;
-  color: #1d6920;
+  border: 1px solid #14aa6f;
+  color: #14aa6f;
   margin-bottom: 20px; }
 
 .error_msg {
   padding: 5px;
   border-radius: 5px;
-  background-color: #d7b3b2;
-  color: #872619;
+  border: 1px solid #ce311c;
+  color: #ce311c;
   margin-bottom: 20px; }
 
 .warning_msg {
@@ -407,9 +407,20 @@ button.submit {
       background-size: 350%;
       background-position-y: 100%; } }
   .login .container {
-    height: 100%; }
+    height: 100%;
+    position: relative; }
+    .login .container .background_holder1, .login .container .background_holder2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: url("../images/site_images/total_img01.jpg");
+      background-size: cover; }
+    .login .container .background_holder2 {
+      display: none; }
 
 .login_block {
+  position: absolute;
+  background-color: rgba(36, 49, 60, 0.85);
   width: 400px;
   margin-top: 160px;
   margin-left: 50px;
@@ -779,6 +790,8 @@ button.submit {
     .total div[class^="part0"] .step_content {
       width: 93%;
       margin: 0 auto; }
+    .total div[class^="part0"] .category_poster .category_block, .total div[class^="part0"] .category_poster .poster_block {
+      width: 50%; }
     .total div[class^="part0"] .categories {
       margin-bottom: 40px; }
       .total div[class^="part0"] .categories .category {
@@ -789,6 +802,8 @@ button.submit {
         position: relative;
         float: left;
         margin-right: 10px; }
+        .total div[class^="part0"] .categories .category:nth-child(n+4) {
+          margin-top: 25px; }
         .total div[class^="part0"] .categories .category label {
           overflow: hidden;
           position: absolute;
@@ -811,7 +826,7 @@ button.submit {
             border: 6px solid #1abc9c; }
     .total div[class^="part0"] .poster {
       width: 100%;
-      height: 300px; }
+      height: 400px; }
       .total div[class^="part0"] .poster #poster {
         display: none; }
       .total div[class^="part0"] .poster label {
@@ -830,18 +845,18 @@ button.submit {
           left: 0;
           width: 100%;
           height: 100%;
-          line-height: 300px; }
+          line-height: 400px; }
         .total div[class^="part0"] .poster label:hover {
           cursor: pointer; }
           .total div[class^="part0"] .poster label:hover span {
             text-decoration: underline; }
-        .total div[class^="part0"] .poster label.with_poster span {
+        .total div[class^="part0"] .poster label.poster_exists span {
           opacity: 0;
           -webkit-transition: opacity 0.2s ease;
           -moz-transition: opacity 0.2s ease;
           -ms-transition: opacity 0.2s ease;
           transition: opacity 0.2s ease; }
-        .total div[class^="part0"] .poster label.with_poster:hover span {
+        .total div[class^="part0"] .poster label.poster_exists:hover span {
           opacity: 1;
           background-color: rgba(61, 75, 83, 0.9); }
     .total div[class^="part0"] .title.description {
@@ -906,7 +921,7 @@ button.submit {
             margin: 0 auto; }
             .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td,
             .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td {
-              padding: 5px;
+              padding: 2px 5px;
               cursor: default; }
               .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td.disabled,
               .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td.disabled {
@@ -1188,6 +1203,8 @@ button.submit {
   margin-right: 15px; }
   .visibility .checkbox:hover {
     color: #6b7d87; }
+  .visibility .checkbox i {
+    position: absolute; }
   .visibility .checkbox + span {
     display: inline-block; }
 .visibility input:checked + label .checkbox {
@@ -1198,6 +1215,66 @@ button.submit {
 
 .note-popover.popover {
   display: none; }
+
+.upload_activity_poster_modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); }
+  .upload_activity_poster_modal .content {
+    width: 50%;
+    margin: 30px auto;
+    background-color: #fff;
+    color: #9CAFB9;
+    border-radius: 5px; }
+    .upload_activity_poster_modal .content .header {
+      text-align: right; }
+      .upload_activity_poster_modal .content .header i {
+        margin: 15px;
+        cursor: pointer; }
+        .upload_activity_poster_modal .content .header i:hover {
+          color: #000; }
+    .upload_activity_poster_modal .content .body {
+      text-align: center; }
+      .upload_activity_poster_modal .content .body .upload_poster {
+        position: relative;
+        width: 350px;
+        margin: 0 auto; }
+        .upload_activity_poster_modal .content .body .upload_poster label {
+          z-index: 5;
+          border: 1px dashed #6b7d87;
+          position: absolute;
+          width: 80%;
+          height: 385px;
+          top: 25px;
+          line-height: 385px;
+          left: calc(10% - 1px);
+          padding: 2% 0;
+          text-align: center;
+          cursor: pointer; }
+          .upload_activity_poster_modal .content .body .upload_poster label:hover {
+            text-decoration: underline; }
+          .upload_activity_poster_modal .content .body .upload_poster label.poster_exists {
+            top: 0;
+            width: calc(100% - 1px);
+            left: 0;
+            height: 20px;
+            line-height: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: none; }
+        .upload_activity_poster_modal .content .body .upload_poster:hover label.poster_exists {
+          display: block; }
+          .upload_activity_poster_modal .content .body .upload_poster:hover label.poster_exists:hover {
+            background-color: #1abc9c;
+            color: #fff; }
+        .upload_activity_poster_modal .content .body .upload_poster .save_poster {
+          width: 350px;
+          margin-bottom: 25px;
+          display: none; }
 
 /* clearfix */
 .clearfix::before, .clearfix::after,
@@ -2093,9 +2170,11 @@ button.submit {
   margin-bottom: 25px;
   display: none; }
 .add_winterhour .not_editable_message, .edit_winterhour .not_editable_message {
+  display: none;
   width: 91%;
   padding: 3px 1%;
   margin: 0 auto;
+  margin-bottom: 5px;
   border: 1px solid orange;
   border-radius: 5px; }
   .add_winterhour .not_editable_message i, .edit_winterhour .not_editable_message i {
@@ -2128,9 +2207,16 @@ button.submit {
 .add_winterhour .form_part .date_and_time .date, .edit_winterhour .form_part .date_and_time .date {
   width: 40%; }
   .add_winterhour .form_part .date_and_time .date .container_date, .edit_winterhour .form_part .date_and_time .date .container_date {
+    position: relative;
     width: 215px;
     border: 1px solid #eee;
     padding: 15px 25px; }
+    .add_winterhour .form_part .date_and_time .date .container_date .disable_datepicker, .edit_winterhour .form_part .date_and_time .date .container_date .disable_datepicker {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: none;
+      cursor: not-allowed; }
     .add_winterhour .form_part .date_and_time .date .container_date table tr td, .edit_winterhour .form_part .date_and_time .date .container_date table tr td {
       padding: 5px;
       cursor: default; }
@@ -2265,7 +2351,7 @@ button.submit {
   .add_winterhour .form_part .scheme_generation .scheme .date .participant, .edit_winterhour .form_part .scheme_generation .scheme .date .participant {
     border: 1px solid transparent;
     margin-bottom: 2px; }
-    .add_winterhour .form_part .scheme_generation .scheme .date .participant:hover, .edit_winterhour .form_part .scheme_generation .scheme .date .participant:hover {
+    .add_winterhour .form_part .scheme_generation .scheme .date .participant.dragdrop:hover, .edit_winterhour .form_part .scheme_generation .scheme .date .participant.dragdrop:hover {
       cursor: move;
       border: 1px dashed #9CAFB9; }
     .add_winterhour .form_part .scheme_generation .scheme .date .participant.ui-state-hover, .edit_winterhour .form_part .scheme_generation .scheme .date .participant.ui-state-hover {
@@ -2275,18 +2361,23 @@ button.submit {
       background: rgba(26, 188, 156, 0.6);
       color: #fff;
       border: 1px dashed #1abc9c; }
+.add_winterhour .form_part .scheme_generation .play_times, .edit_winterhour .form_part .scheme_generation .play_times {
+  margin-top: 15px; }
+  .add_winterhour .form_part .scheme_generation .play_times .title, .edit_winterhour .form_part .scheme_generation .play_times .title {
+    font-weight: bold; }
+    .add_winterhour .form_part .scheme_generation .play_times .title .times, .edit_winterhour .form_part .scheme_generation .play_times .title .times {
+      color: #1abc9c; }
 .add_winterhour .form_part .scheme_generation .accept_scheme .descriptive_info, .edit_winterhour .form_part .scheme_generation .accept_scheme .descriptive_info {
   margin-top: 25px; }
+.add_winterhour .form_part .groupname input:disabled, .edit_winterhour .form_part .groupname input:disabled {
+  cursor: not-allowed; }
 
-.winterhours_overview .title h3 {
-  width: 50%;
-  margin-top: 0; }
-.winterhours_overview .title .add_winterhour {
-  width: 50%;
-  text-align: right;
-  line-height: 31px; }
+.winterhours_overview .add_winterhour {
+  width: 100%;
+  text-align: right; }
 .winterhours_overview .winterhour_group h3 {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  cursor: pointer; }
 .winterhours_overview .winterhour_group .day_time {
   font-size: 0.9em;
   font-weight: 300; }
@@ -2295,7 +2386,8 @@ button.submit {
 .winterhours_overview .winterhour_group .participants {
   font-size: 0.9em; }
   .winterhours_overview .winterhour_group .participants h4 {
-    margin-bottom: 0px; }
+    margin-bottom: 0px;
+    cursor: pointer; }
   .winterhours_overview .winterhour_group .participants .participants_block {
     display: none; }
   .winterhours_overview .winterhour_group .participants .participant .name {
@@ -2306,6 +2398,16 @@ button.submit {
     width: 30%; }
   .winterhours_overview .winterhour_group .participants .participant:hover {
     background-color: rgba(26, 188, 156, 0.1); }
+.winterhours_overview .winterhour_group .swap_message {
+  margin-top: 25px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  text-align: center;
+  display: none; }
+  .winterhours_overview .winterhour_group .swap_message.failed {
+    border: 1px solid #ce311c; }
+  .winterhours_overview .winterhour_group .swap_message.success {
+    border: 1px solid #14aa6f; }
 .winterhours_overview .winterhour_group .scheme .date {
   width: 22%;
   margin-right: 4%; }
@@ -2314,9 +2416,20 @@ button.submit {
   .winterhours_overview .winterhour_group .scheme .date h3 {
     border-bottom: 1px solid #1abc9c; }
   .winterhours_overview .winterhour_group .scheme .date .participant {
-    font-size: 0.9em; }
+    font-size: 0.9em;
+    border: 1px solid transparent; }
     .winterhours_overview .winterhour_group .scheme .date .participant.active {
       color: #1abc9c; }
+      .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
+        cursor: move;
+        border: 1px dashed #9CAFB9; }
+    .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-hover {
+      background: rgba(26, 188, 156, 0.1);
+      border: 1px dashed #9CAFB9; }
+    .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-active {
+      background: rgba(26, 188, 156, 0.6);
+      color: #fff;
+      border: 1px dashed #1abc9c; }
 
 .availabilities .back {
   margin-bottom: 25px; }
@@ -2335,6 +2448,9 @@ button.submit {
     margin-top: 0; }
   .availabilities .dates_overview .monthly_dates .dates .date .date_date {
     width: 55%; }
+  .availabilities .dates_overview .monthly_dates .dates .date i {
+    margin-left: 5px;
+    color: #1abc9c; }
 .availabilities .submit_btn {
   margin-top: 25px; }
 

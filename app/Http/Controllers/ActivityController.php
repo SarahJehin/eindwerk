@@ -295,43 +295,29 @@ class ActivityController extends Controller
             }
         }
 
-        /*
-        if (isset($request->poster)) {
+        //poster
+        $base64_encoded_image = $request->imagebase64;
+        //dd($base64_encoded_image);
+        $data = explode(';', $base64_encoded_image)[1];
+        $data = explode(',', $data)[1];
+        $activity_pictures_path = public_path() . '/images/activity_images/';
+        $name = strtolower($request->title);
+        //keep only letters, numbers and spaces
+        $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
+        //remove space at the beginning and end
+        $name = trim($name);
+        //convert all multispaces to space
+        $name = preg_replace ("/ +/", " ", $name);
+        //replace all spaces with underscores
+        $name = str_replace(' ', '_', $name);
+        $new_file_name = time() . $name . '.png';
 
-            //later on image will be resized with Intervention, while keeping the aspect ratio
-            $destinationPath = base_path() . '/public/images/project_pictures/' . $new_file_name;
-            $dimension = getimagesize($destinationPath);
-            $max_width = "500";
-            $max_height = "400";
-            if ($dimension[0] > $max_width) {
-                $save_percent = round(100 / $dimension[0] * $max_width) / 100;
-                $max_height = round($save_percent * $dimension[1]);
-                Image::make($destinationPath)
-                    ->resize($max_width, $max_height)->save($destinationPath);
-            }
-            if ($dimension[1] > $max_height) {
-                $save_percent = round(100 / $dimension[1] * $max_height) / 100;
-                $max_width = round($save_percent * $dimension[0]);
-                Image::make($destinationPath)
-                    ->resize($max_width, $max_height)->save($destinationPath);
-            }
+        //decode the data
+        $data = base64_decode($data);
+        //save the data
+        $total_path = $activity_pictures_path . $new_file_name;
+        file_put_contents($total_path, $data);
 
-            //resizing with default canvas size, while maintaining aspect ratio:
-            // create new image with transparent background color
-            $background = Image::canvas(200, 200);
-            // read image file and resize it to 200x200
-            // but keep aspect-ratio and do not size up,
-            // so smaller sizes don't stretch
-            $image = Image::make('foo.jpg')->resize(200, 200, function ($c) {
-                $c->aspectRatio();
-                $c->upsize();});
-            // insert resized image centered into background
-            $background->insert($image, 'center');
-            // save or do whatever you like
-            $background->save('bar.png');
-
-        }
-        */
 
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
@@ -389,6 +375,7 @@ class ActivityController extends Controller
     }
 
     public function update_activity(Request $request) {
+        
         $activity = Activity::find($request->activity_id);
 
         $min_participants = explode(",", $request->participants)[0];
@@ -464,6 +451,31 @@ class ActivityController extends Controller
                 }
             }
         }
+        //poster
+        $base64_encoded_image = $request->imagebase64;
+        if($base64_encoded_image) {
+            $data = explode(';', $base64_encoded_image)[1];
+            $data = explode(',', $data)[1];
+            $activity_pictures_path = public_path() . '/images/activity_images/';
+            $name = strtolower($request->title);
+            //keep only letters, numbers and spaces
+            $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
+            //remove space at the beginning and end
+            $name = trim($name);
+            //convert all multispaces to space
+            $name = preg_replace ("/ +/", " ", $name);
+            //replace all spaces with underscores
+            $name = str_replace(' ', '_', $name);
+            $new_file_name = time() . $name . '.png';
+
+            //decode the data
+            $data = base64_decode($data);
+            //save the data
+            $total_path = $activity_pictures_path . $new_file_name;
+            file_put_contents($total_path, $data);
+            $activity->poster = $new_file_name;
+        }
+        
         
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';

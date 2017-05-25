@@ -15,10 +15,20 @@
         $(".container_deadline").removeClass("front");
         $(".container_startdate").addClass("front");
 
+        //trigger click on deadline date
+        /*
+        var test = $('.container_startdate .datepicker-days table tr td.active');
+        test.addClass('active2');
+        test = test;
+        test.trigger("click");
+        test.trigger("click");
+        */
+        /*
         $('.container_startdate').datepicker('update');
         if(startdate) {
             $('.container_startdate').datepicker('setDate', startdate);
         }
+        */
 
     });
 
@@ -32,11 +42,20 @@
         $(".container_startdate").removeClass("front");
         $(".container_deadline").addClass("front");
 
+        /*
+        var test2 = $('.container_deadline .datepicker-days table tr td.active');
+        test2.addClass('active2');
+        test2 = test2;
+        test2.trigger("click");
+        test2.trigger("click");
+        */
+        /*
         $('.container_deadline').datepicker('update');
         if(deadline) {
             console.log('test');
             $('.container_deadline').datepicker('setDate', deadline);
         }
+        */
     });
 
     var next_prev = "";

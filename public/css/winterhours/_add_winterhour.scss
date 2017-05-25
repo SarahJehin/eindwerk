@@ -11,6 +11,7 @@
         width: 91%;
         padding: 3px 1%;
         margin: 0 auto;
+        margin-bottom: 5px;
         border: 1px solid orange;
         border-radius: 5px;
         i {
@@ -67,9 +68,18 @@
             .date {
                 width: 40%;
                 .container_date {
+                    position: relative;
                     width: 215px;
                     border: 1px solid #eee;
                     padding: 15px 25px;
+                    
+                    .disable_datepicker {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        display: none;
+                        cursor: not-allowed;
+                    }
 
                     table {
                         tr {
@@ -262,9 +272,11 @@
                     .participant {
                         border: 1px solid transparent;
                         margin-bottom: 2px;
-                        &:hover {
-                            cursor: move;
-                            border: 1px dashed $form_font_color;
+                        &.dragdrop {
+                            &:hover {
+                                cursor: move;
+                                border: 1px dashed $form_font_color;
+                            }
                         }
                         &.ui-state-hover {
                             background: rgba($theme_color01, 0.1);
@@ -278,10 +290,25 @@
                     }
                 }
             }
+            .play_times {
+                margin-top: 15px;
+                .title {
+                    font-weight: bold;
+                    .times {
+                        color: $theme_color01;
+                    }
+                }
+            }
             .accept_scheme {
                 .descriptive_info {
                     margin-top: 25px;
                 }
+            }
+        }
+        
+        .groupname input {
+            &:disabled {
+                cursor: not-allowed;
             }
         }
     }

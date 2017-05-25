@@ -217,8 +217,6 @@
     }
 
 //croppie
-
-
 var $uploadCrop;
 
 function readFile(input) {

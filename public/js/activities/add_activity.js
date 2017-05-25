@@ -103,6 +103,95 @@
         $(".poster label").addClass("with_poster");
     }
 
+    //poster upload with croppie
+    //croppie
+    var $uploadCrop;
+
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.upload-container').addClass('ready');
+                $uploadCrop.croppie('bind', {
+                    url: e.target.result
+                }).then(function(){
+                    console.log('jQuery bind complete');
+                });
+                
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            alert("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#upload-container').croppie({
+        viewport: {
+            width: 283,
+            height: 400,
+            type: 'square'
+        },
+        boundary: {width: 350, height: 450},
+        showZoomer: true
+    });
+
+    $('#upload').on('change', function () { 
+        readFile(this);
+        $('.upload_poster label').addClass('poster_exists');
+        $('.save_poster').show();
+    });
+    $('.save_poster').on('click', function (ev) {
+        $uploadCrop.croppie('result', {
+            type: 'canvas',
+            size: { width: 595, height: 842}
+        }).then(function (resp) {
+            //get the result (base64 encoded image) and put it in the hidden input
+            $('#imagebase64').val(resp);
+            $('.poster_input').val('poster_set');
+            console.log($('#imagebase64').val());
+            $('.poster_block img').attr('src', resp);
+            $('.poster_block img').show();
+            $('.poster label').addClass('poster_exists')
+            close_modal();
+            //$('#upload_profile_pic_form').submit();
+        });
+    });
+
+    var activity_poster_modal_active = false;
+    $('.poster label').click(function() {
+        $('.upload_activity_poster_modal').show();
+        activity_poster_modal_active = true;
+    });
+
+    $(window).click(function(event) {
+        //console.log(event.target);
+        if($(event.target).hasClass('upload_activity_poster_modal')) {
+            close_modal();
+        }
+    });
+
+    $('.upload_activity_poster_modal .fa-times').click(function() {
+        close_modal();
+    });
+
+    $( window ).on( "keydown", function( event ) {
+        //if esc key is pressed, close modal
+        if(event.which == 27) {
+            close_modal();
+        }
+    });
+
+    function close_modal() {
+        if(activity_poster_modal_active) {
+            $('.upload_activity_poster_modal').fadeOut(350, function() {
+                activity_poster_modal_active = false;
+            });
+        }
+    }
+
 
     //wysiwyg editor for description
     //initiate editor with custom toolbar

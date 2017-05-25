@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.css">
 @endsection
 
 @section('content')
@@ -46,27 +47,48 @@
                                             </ul>
                                         </div>
                                     @endif
-
-                                    <h3>Kies een categorie</h3>
-                                    <div class="categories">
-                                        @foreach($categories as $category)
-                                            <div class="category">
-                                                <input type="radio" name="category" id="cat{{$category->id}}" value="{{$category->id}}" <?php if($category->id == old('category')) {echo("checked");} ?>>
-                                                <label for="cat{{$category->id}}" title="{{$category->name}}">
-                                                    <img src="{{url('images/category_images/' . $category->image)}}" alt="{{$category->name}}">
-                                                </label>
+                                    <div class="category_poster clearfix">
+                                        <div class="category_block float">
+                                            <h3>Kies een categorie</h3>
+                                            <div class="categories">
+                                                @foreach($categories as $category)
+                                                    <div class="category">
+                                                        <input type="radio" name="category" id="cat{{$category->id}}" value="{{$category->id}}" <?php if($category->id == old('category')) {echo("checked");} ?>>
+                                                        <label for="cat{{$category->id}}" title="{{$category->name}}">
+                                                            <img src="{{url('images/category_images/' . $category->image)}}" alt="{{$category->name}}">
+                                                        </label>
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                        @endforeach
-                                    </div>
+                                        </div>
 
-                                    <h3>Upload poster</h3>
-                                    <div class="poster">
-                                        <input id="poster" type="file" name="poster" hidden>
-                                        <label for="poster">
-                                            <img class="uploaded_poster" src="" alt="poster">
-                                            <span>Upload hier je poster (jpeg/png)</span>
-                                        </label>
+                                        <div class="poster_block float">
+                                            
+                                            <h3>Upload poster</h3>
+                                            <div class="poster">
+                                                <label for="poster">
+                                                    <img class="uploaded_poster" src="" alt="poster">
+                                                    <span>Poster kiezen</span>
+                                                </label>
+                                                <input type="hidden" id="imagebase64" name="imagebase64">
+                                                <input class="poster_input" type="text" name="poster" hidden="">
+                                            </div>
+                                            <!--
+                                            <div class="upload_poster">
+                                                <label for="upload">Upload poster (min 600x850)</label>
+                                                <input id="upload" value="Choose a file" accept="image/*" type="file" hidden="">
+
+                                                <div class="upload-wrap">
+                                                    <div id="upload-container" class="croppie-container"></div>
+                                                </div>
+                                                <div class="save_poster">Poster bewaren</div>
+                                                <input type="hidden" id="imagebase64" name="imagebase64">
+                                                <img class="poster_img" src="">
+                                            </div>
+                                            -->
+                                        </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                             <div class="part02">
@@ -291,6 +313,23 @@
             </div>
         </div>
 
+        <div class="upload_activity_poster_modal">
+            <div class="content">
+                <div class="header"><i class="fa fa-times" aria-hidden="true"></i></div>
+                <div class="body">
+                    <div class="upload_poster">
+                        <label for="upload">Upload poster (min 600x850)</label>
+                        <input id="upload" value="Choose a file" accept="image/*" type="file" hidden="">
+
+                        <div class="upload-wrap">
+                            <div id="upload-container" class="croppie-container"></div>
+                        </div>
+                        <button class="save_poster submit">Poster bewaren</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
 
     </div>
 @endsection
@@ -307,6 +346,7 @@
     <script src="{{ asset('js/custom_google_maps.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c"
             async defer></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.js"></script>
     <script src="{{ asset('js/activities/add_activity.js') }}"></script>
     </script>
 @endsection

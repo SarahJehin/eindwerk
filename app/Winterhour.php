@@ -15,7 +15,7 @@ class Winterhour extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'day', 'time', 'vtv_nr', 'amount_of_courts', 'mixed_doubles', 'made_by', 'status',
+        'title', 'day', 'time', 'amount_of_courts', 'mixed_doubles', 'made_by', 'status',
     ];
     
     protected $dates = ['deleted_at'];

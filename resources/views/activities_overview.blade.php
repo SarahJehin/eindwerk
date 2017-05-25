@@ -14,7 +14,7 @@
             <div class="content">
 
                 @if (session('message'))
-                    <div>
+                    <div class="success_msg">
                         {{ session('message') }}
                     </div>
                 @endif

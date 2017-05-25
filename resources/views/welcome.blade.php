@@ -15,6 +15,8 @@
     </head>
     <body class="login">
         <div class="container">
+            <div class="background_holder1"></div>
+            <div class="background_holder2"></div>
 
             <div class="login_block">
                 <div class="login-heading">

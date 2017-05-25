@@ -1,19 +1,14 @@
 .winterhours_overview {
     
-    .title {
-        h3 {
-            width: 50%;
-            margin-top: 0;
-        }
-        .add_winterhour {
-            width: 50%;
-            text-align: right;
-            line-height: 31px;
-        }
+    
+    .add_winterhour {
+        width: 100%;
+        text-align: right;
     }
     .winterhour_group {
         h3 {
             margin-bottom: 0;
+            cursor: pointer;
         }
         .day_time {
             font-size: 0.9em;
@@ -26,6 +21,7 @@
             font-size: 0.9em;
             h4 {
                 margin-bottom: 0px;
+                cursor: pointer;
             }
             .participants_block {
                 display: none;
@@ -45,6 +41,19 @@
                 }
             }
         }
+        .swap_message {
+            margin-top: 25px;
+            padding: 2px 5px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+            &.failed {
+                border: 1px solid $error_color;
+            }
+            &.success {
+                border: 1px solid $success_color;
+            }
+        }
         
         .scheme {
             .date {
@@ -59,8 +68,25 @@
                 }
                 .participant {
                     font-size: 0.9em;
+                    border: 1px solid transparent;
                     &.active {
                         color: $theme_color01;
+                        &.dragdrop {
+                            &:hover {
+                                cursor: move;
+                                border: 1px dashed $form_font_color;
+                            }
+                        }
+                    }
+                    
+                    &.ui-state-hover {
+                        background: rgba($theme_color01, 0.1);
+                        border: 1px dashed $form_font_color;
+                    }
+                    &.ui-state-active {
+                        background: rgba($theme_color01, 0.6);
+                        color: #fff;
+                        border: 1px dashed $theme_color01;
                     }
                 }
             }
