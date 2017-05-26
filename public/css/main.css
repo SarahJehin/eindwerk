@@ -2454,6 +2454,31 @@ button.submit {
 .availabilities .submit_btn {
   margin-top: 25px; }
 
+.tags_block .tags .tag_type_block {
+  width: 30%;
+  margin-right: 5%; }
+  .tags_block .tags .tag_type_block:last-child {
+    margin-right: 0; }
+  .tags_block .tags .tag_type_block .tag label {
+    display: block;
+    width: 100%;
+    margin-bottom: 1px;
+    padding: 2px 5px;
+    border-radius: 4px; }
+    .tags_block .tags .tag_type_block .tag label i {
+      border: 1px solid #9CAFB9;
+      border-radius: 4px;
+      color: transparent;
+      background-color: #fff; }
+    .tags_block .tags .tag_type_block .tag label .name {
+      margin-left: 10px; }
+  .tags_block .tags .tag_type_block .tag input:checked + label {
+    background-color: #1abc9c;
+    color: #fff; }
+    .tags_block .tags .tag_type_block .tag input:checked + label i {
+      border-color: #fff;
+      color: #1abc9c; }
+
 .float {
   float: left; }
   @media (max-width: 768px) {

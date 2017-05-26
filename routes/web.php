@@ -64,3 +64,10 @@ Route::group(['middleware' => ['auth', 'youth_board']], function () {
     //member management
     Route::post('import_members', 'UserController@import_members');
 });
+
+Route::group(['middleware' => ['auth', 'trainer']], function () {
+    //exercises
+    Route::get('exercises_overview', 'ExerciseController@exercises_overview');
+    Route::get('add_exercise', 'ExerciseController@add_exercise');
+    Route::post('add_exercise', 'ExerciseController@create_exercise');
+});
