@@ -23,7 +23,7 @@
     });
     */
     
-    
+    /*
     //input anims
     $('#add_activity').find('input, textarea').on('keyup blur focus', function (e) {
         var $this = $(this),
@@ -52,7 +52,7 @@
         }
 
     });
-
+*/
     //if old values in inputs move title up
     $add_activity_inputs = $('#add_activity').find('input[type="text"], textarea');
     $add_activity_inputs.each(function() {

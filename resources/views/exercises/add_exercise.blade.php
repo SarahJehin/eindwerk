@@ -2,6 +2,9 @@
 @section('title', 'Nieuwe oefening')
 
 @section('custom_css')
+
+<link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -17,16 +20,40 @@
                 <div class="descriptive_info">
                     Hieronder kan je een oefening toevoegen.  Wanneer de hoofdtrainer de oefening geaccepteerd heeft, verschijnt hij bij op het overzicht en kunnen andere trainers hem bekijken.
                 </div>
-                <form class="form_with_input_anims" method="post" action="{{url('add_exercise')}}">
-                    <div class="field_wrap title">
-                        <label>Titel</label>
-                        <input type="text" name="title" id="title" value="{{old('title')}}">
+                <form class="form_with_input_anims" method="post" action="{{url('add_exercise')}}" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="title_and_description">
+                        <h3><label for="title">Titel</label></h3>
+                        <div class="field_wrap title">
+                            <input type="text" name="title" id="title" value="{{old('title')}}">
+                        </div>
+                        <h3><label for="summernote">Beschrijving</label></h3>
+                        <div class="descriptive_info">
+                            * Deel de beschrijving best op in verschillende stappen.
+                        </div>
+                        <div class="description">
+                            <div class="field_wrap">
+                                <textarea name="description" id="description" hidden="hidden">{{ old('description') }}</textarea>
+                                <div id="summernote" class="apply_bootstrap"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="description">
-                        hierin komt de beschrijving met summernote
-                    </div>
-                    <div class="images">
-                        hierin komen de afbeeldingen met croppie, -> hoe juist voor resultaat??? -> nog eens bekijken :p
+                    
+                    <div class="images_block">
+                        <h3>Afbeeldingen</h3>
+                        <div class="descriptive_info">
+                            Hieronder kan je afbeeldingen/foto's uploaden om de oefening te verduidelijken.<br>
+                            Upload best afbeeldingen met een 4:3 verhouding en een maximum grootte van 500kB.
+                        </div>
+                        <div class="images clearfix">
+
+                            <div class="labelholder float">
+                                <input id="images" type="file" name="image[]" multiple="">
+                                <label for="images">
+                                    <i class="fa fa-plus"></i>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="tags_block">
                         <h3>Tags</h3>
@@ -50,6 +77,9 @@
                             @endforeach
                         </div>
                     </div>
+                    <div class="submit">
+                        <input type="submit" name="" value="Oefening opslagen">
+                    </div>
                 </form>
             </div>
         </div>
@@ -58,5 +88,7 @@
     </div>
 @endsection
 @section('custom_js')
-    <!--<script src="{{ asset('js/winterhours/add_winterhour.js') }}"></script>-->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.js"></script>
+    <script src="{{ asset('js/exercises/add_exercise.js') }}"></script>-->
 @endsection

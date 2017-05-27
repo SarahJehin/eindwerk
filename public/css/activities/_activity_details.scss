@@ -261,6 +261,9 @@
                         & + span {
                           display: inline-block;
                         }
+                        i {
+                            position: absolute;
+                        }
                       }
 
                       input:checked + label .checkbox {

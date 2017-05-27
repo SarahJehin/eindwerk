@@ -1564,12 +1564,14 @@ button.submit {
           color: #6b7d87; }
         .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox + span {
           display: inline-block; }
+        .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox i {
+          position: absolute; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.battle_bunny {
         color: #395696; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.party_penguin {
         color: #e51853; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.clubdagen {
-        color: #d07821; }
+        color: #e8780a; }
     .activity_details .activity_info .sign_up .sign_up_info .sign_up_others {
       display: none;
       margin-bottom: 15px; }
@@ -1622,7 +1624,7 @@ button.submit {
     .activity_details .activity_info h4.party_penguin {
       color: #e51853; }
     .activity_details .activity_info h4.clubdagen {
-      color: #d07821; }
+      color: #e8780a; }
   .activity_details .activity_info i {
     width: 25px; }
   .activity_details #poster_modal .modal_footer {
@@ -2021,7 +2023,7 @@ button.submit {
       .members_overview .search .quick input {
         width: 75%; } }
   .members_overview .search .quick span {
-    padding: 6px 10px 5px;
+    padding: 3px 10px;
     border: 1px solid #1abc9c;
     color: #fff;
     background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
@@ -2454,6 +2456,43 @@ button.submit {
 .availabilities .submit_btn {
   margin-top: 25px; }
 
+.title_and_description #description {
+  display: none; }
+.title_and_description .note-editor {
+  border-color: #6b7d87; }
+  .title_and_description .note-editor.focus {
+    border-color: #1abc9c; }
+  .title_and_description .note-editor .note-editing-area {
+    min-height: 250px; }
+    .title_and_description .note-editor .note-editing-area .note-placeholder {
+      width: 100%;
+      height: 100%; }
+
+.images_block .images .image {
+  width: 20%;
+  margin-right: 5%;
+  overflow: hidden; }
+  .images_block .images .image img {
+    width: 100%; }
+.images_block .images .labelholder {
+  width: 20%; }
+  .images_block .images .labelholder label {
+    width: 100%;
+    display: block;
+    position: relative;
+    height: 100px;
+    border: 3px dashed #9CAFB9;
+    cursor: pointer; }
+    .images_block .images .labelholder label i {
+      color: rgba(156, 175, 185, 0.5);
+      position: absolute;
+      width: 100%;
+      font-size: 3em;
+      text-align: center;
+      top: 30%; }
+    .images_block .images .labelholder label:hover i {
+      color: #9CAFB9; }
+
 .tags_block .tags .tag_type_block {
   width: 30%;
   margin-right: 5%; }
@@ -2476,6 +2515,12 @@ button.submit {
     background-color: #1abc9c;
     color: #fff; }
     .tags_block .tags .tag_type_block .tag input:checked + label i {
+      border-color: #fff;
+      color: #1abc9c; }
+  .tags_block .tags .tag_type_block .tag:hover label {
+    background-color: #1abc9c;
+    color: #fff; }
+    .tags_block .tags .tag_type_block .tag:hover label i {
       border-color: #fff;
       color: #1abc9c; }
 
