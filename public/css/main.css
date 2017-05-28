@@ -2471,11 +2471,30 @@ button.submit {
 .images_block .images .image {
   width: 20%;
   margin-right: 5%;
-  overflow: hidden; }
+  margin-top: 15px;
+  border: 3px dashed #9CAFB9;
+  overflow: hidden;
+  position: relative; }
+  .images_block .images .image:nth-child(3n+3) {
+    margin-right: 0; }
+  .images_block .images .image.template {
+    display: none; }
   .images_block .images .image img {
     width: 100%; }
+  .images_block .images .image .delete {
+    position: absolute;
+    background-color: rgba(183, 57, 40, 0.85);
+    top: 5px;
+    right: 5px;
+    padding: 1px 7px 2px;
+    border-radius: 50%;
+    color: #fff; }
+    .images_block .images .image .delete:hover {
+      background-color: #b73928;
+      cursor: pointer; }
 .images_block .images .labelholder {
-  width: 20%; }
+  width: 20%;
+  margin-top: 15px; }
   .images_block .images .labelholder label {
     width: 100%;
     display: block;
@@ -2523,6 +2542,35 @@ button.submit {
     .tags_block .tags .tag_type_block .tag:hover label i {
       border-color: #fff;
       color: #1abc9c; }
+
+.exercises_overview .block {
+  width: 70%;
+  margin-left: 20%; }
+
+.filters_block {
+  width: 20%;
+  margin-right: 2%; }
+  .filters_block .tag_type_block h3 {
+    margin: 15px 0 0;
+    border-bottom: 1px solid #1abc9c; }
+
+.exercises_content {
+  width: 78%; }
+  .exercises_content .newest {
+    box-shadow: 0px 2px 5px rgba(156, 175, 185, 0.5); }
+    .exercises_content .newest .image {
+      width: 45%;
+      margin-right: 5%; }
+      .exercises_content .newest .image img {
+        width: 100%; }
+    .exercises_content .newest .info {
+      width: 45%; }
+      .exercises_content .newest .info h3 {
+        margin-top: 0; }
+      .exercises_content .newest .info .description {
+        font-size: 0.9em; }
+        .exercises_content .newest .info .description a {
+          display: block; }
 
 .float {
   float: left; }

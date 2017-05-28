@@ -20,6 +20,15 @@
                 <div class="descriptive_info">
                     Hieronder kan je een oefening toevoegen.  Wanneer de hoofdtrainer de oefening geaccepteerd heeft, verschijnt hij bij op het overzicht en kunnen andere trainers hem bekijken.
                 </div>
+                @if (count($errors) > 0)
+                    <div class="error_msg">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form class="form_with_input_anims" method="post" action="{{url('add_exercise')}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="title_and_description">
@@ -43,12 +52,18 @@
                         <h3>Afbeeldingen</h3>
                         <div class="descriptive_info">
                             Hieronder kan je afbeeldingen/foto's uploaden om de oefening te verduidelijken.<br>
-                            Upload best afbeeldingen met een 4:3 verhouding en een maximum grootte van 500kB.
+                            Upload best afbeeldingen met een 4:3 verhouding en een maximum grootte van 500kB.<br>
+                            Je kan maximaal 6 afbeeldingen uploaden.
                         </div>
                         <div class="images clearfix">
+                            <div class="template image float" identifier="">
+                                <img src="{{url('images/profile_pictures/sarah_jehin.jpg')}}">
+                                <div class="delete"><i class="fa fa-times"></i></div>
+                                <input type="hidden" name="name_and_size[]" value="" hidden="">
+                            </div>
 
-                            <div class="labelholder float">
-                                <input id="images" type="file" name="image[]" multiple="">
+                            <div class="labelholder float first">
+                                <input id="images" type="file" accept="image/*" name="image[]" multiple="" hidden="">
                                 <label for="images">
                                     <i class="fa fa-plus"></i>
                                 </label>
@@ -66,7 +81,7 @@
                                 <h4>{{ucfirst($tag_type)}}</h4>
                                 @foreach($tags as $tag)
                                 <div class="tag">
-                                    <input id="{{$tag->id}}" type="checkbox" name="tags[]" value="{{$tag->id}}" hidden>
+                                    <input id="{{$tag->id}}" type="checkbox" name="tags[]" value="{{$tag->id}}" hidden {{ (old('tags') ? (in_array($tag->id, old('tags')) ? "checked":"") : '') }}>
                                     <label for="{{$tag->id}}">
                                         <span class="checkbox"><i class="fa fa-check"></i></span>
                                         <span class="name">{{ucfirst($tag->name)}}</span>

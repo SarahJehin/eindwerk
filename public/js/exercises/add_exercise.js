@@ -76,45 +76,119 @@
         }
     });
     */
-    var previously_added_files = []
-    $('#images').on('change', function(e){
-        $.each(this.files, function(key, val) {
-            previously_added_files.push(val);
-        });
-        
-        if (this.files) {
-            var filesAmount = this.files.length;
+    var ids_amount = 0;
+    var uploaded_images = 0;
+    var handle_images = function(e){
 
-            for (i = 0; i < filesAmount; i++) {
-                var reader = new FileReader();
+        uploaded_images = $('.images .image').length-1 + this.files.length;
 
-                reader.onload = function(event) {
-                    var new_image_block = '<div class="image float"><img src=' + event.target.result + '></div>';
-                    console.log($(new_image_block));
-                    /*
-                    var image = $(new_image_block).find('img');
-                    console.log(image);
-                    image.attr('src', event.target.result);
-                    console.log(image);
-                    */
-                    console.log($(new_image_block))
-                    $(new_image_block).prependTo($('.images'));
-                    console.log($($.parseHTML('<img>')).attr('src', event.target.result));
-                    //$($.parseHTML('<img>')).attr('src', event.target.result).appendTo($('.images'));
-                    var image_width = parseInt($('.images .image').css('width'));
-                    console.log(image_width)
-                    var image_height = image_width/4*3;
-                    $('.images .image').css('height', image_height + 'px');
+        if(uploaded_images > 6) {
+            console.log(this);
+            //if in total more than 6 images were uploaded, throw error
+            var error_msg = 'Je mag maximum 6 afbeeldingen uploaden, alle afbeeldingen werden verwijderd';
+            $(this).val('');
+            //$('.images input').val('');
+            //$('.images .image').remove();
+            //console.log($('.images input').val());
+        }
+        else {
+            if (this.files) {
+                var filesAmount = this.files.length;
+                var files = this.files;
+
+                for (i = 0; i < filesAmount; i++) {
+                    (function(file) {
+                        //var file = this.files[i];
+                        console.log('out reader');
+                        console.log(file);
+                        //console.log(this.files[i]);
+                        var reader = new FileReader();
+
+                        reader.onload = function(event) {
+                            console.log('in reader');
+                            console.log(file);
+                            //console.log('base64: ' + reader.result);
+                            //var new_image_block = '<div class="image float" identifier=' + file.name + file.lastModified + '><img src=' + event.target.result + ' alt=' + file.name + '></div>';
+                            var new_image_block = $('.images .template').clone();
+                            new_image_block.removeClass('template');
+                            new_image_block.attr('identifier', file.name + file.size);
+                            new_image_block.find('img').attr('src', event.target.result).attr('alt', file.name);
+                            new_image_block.find('input').val(file.name + file.size);
+                            //console.log($(new_image_block));
+                            //var test = '<div>' + reader.result + '</div>';
+                            //$(test).appendTo($('.images'));
+                            /*
+                            var image = $(new_image_block).find('img');
+                            console.log(image);
+                            image.attr('src', event.target.result);
+                            console.log(image);
+                            */
+                            //console.log($(new_image_block))
+                            $(new_image_block).prependTo($('.images'));
+                            //console.log($($.parseHTML('<img>')).attr('src', event.target.result));
+                            //$($.parseHTML('<img>')).attr('src', event.target.result).appendTo($('.images'));
+                            var image_width = parseInt($('.images .image').css('width'));
+                            //console.log(image_width)
+                            var image_height = image_width/4*3;
+                            $('.images .image').css('height', image_height + 'px');
+                        }
+                        //console.log('name: ' + this.files[i].name);
+                        //console.log('size: ' + this.files[i].size);
+                        //console.log(reader.readAsDataURL(this.files[i]));
+                        //reader.readAsDataURL(this.files[i]);
+                        reader.readAsDataURL(file);
+                    })(files[i])
                 }
+            }
 
-                reader.readAsDataURL(this.files[i]);
+            //hide previous input so, files won't be overwritten
+            //clone input to add new files with different id
+            ids_amount++;
+            console.log(uploaded_images);
+            var new_label = $('.images .labelholder.first').clone();
+            new_label.removeClass('first');
+            new_label.find('input').attr('id', 'images' + ids_amount).val('');
+            new_label.find('label').attr('for', 'images' + ids_amount);
+            $('.images .labelholder').hide();
+            if(uploaded_images < 6) {
+                console.log('test');
+                new_label.appendTo($('.images'));
+                console.log($('.images .labelholder:last-child'));
+                $('.images .labelholder:last-child').show();
             }
         }
-        var formData = new FormData();
-        console.log(previously_added_files);
-        formData.append('images', previously_added_files); 
-        formData.append('test', "blieblabloe"); 
+        
+        
+    }
+
+    $('#images').on('change', handle_images);
+    for(var i = 1; i < 6; i++) {
+        $('.images').on('change', '#images' + i, handle_images);
+    }
+
+    //handle images delete
+    var deleted_images = [];
+    $('.images').on('click', '.image .delete', function() {
+        console.log('delete this image');
+        var image_block = $(this).parent();
+
+        image_block.remove();
+
+        uploaded_images = $('.images .image').length-1;
+        if(uploaded_images < 6) {
+            //check if an empty label already exists
+            if($('.images .labelholder:last-child input').val() != '') {
+                ids_amount++;
+                var new_label = $('.images .labelholder.first').clone();
+                new_label.removeClass('first');
+                new_label.find('input').attr('id', 'images' + ids_amount).val('');
+                new_label.find('label').attr('for', 'images' + ids_amount);
+                new_label.appendTo($('.images'));
+                $('.images .labelholder:last-child').show();
+            }
+        }
     });
+    
 
 
 })(window, window.document, window.jQuery);

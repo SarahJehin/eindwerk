@@ -22,14 +22,39 @@
         .image {
             width: 20%;
             margin-right: 5%;
+            margin-top: 15px;
             border: 3px dashed $form_font_color;
             overflow: hidden;
+            position: relative;
+            
+            &:nth-child(3n+3) {
+                margin-right: 0;
+            }
+            
+            &.template {
+                display: none;
+            }
+            
             img {
                 width: 100%;
+            }
+            .delete {
+                position: absolute;
+                background-color: rgba($delete_color, 0.85);
+                top: 5px;
+                right: 5px;
+                padding: 1px 7px 2px;
+                border-radius: 50%;
+                color: #fff;
+                &:hover {
+                    background-color: $delete_color;
+                    cursor: pointer;
+                }
             }
         }
         .labelholder {
             width: 20%;
+            margin-top: 15px;
             label {
                 width: 100%;
                 display: block;

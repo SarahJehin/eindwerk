@@ -1,0 +1,43 @@
+//eventjes probeerseltje :p
+.exercises_overview {
+    .block {
+        width: 70%;
+        margin-left: 20%;
+    }
+}
+
+.filters_block {
+    width: 20%;
+    margin-right: 2%;
+    .tag_type_block {
+        h3 {
+            margin: 15px 0 0;
+            border-bottom: 1px solid $theme_color01;
+        }
+    }
+}
+.exercises_content {
+    width: 78%;
+    .newest {
+        box-shadow: 0px 2px 5px rgba($form_font_color, 0.5);
+        .image {
+            width: 45%;
+            margin-right: 5%;
+            img {
+                width: 100%;
+            }
+        }
+        .info {
+            width: 45%;
+            h3 {
+                margin-top: 0;
+            }
+            .description {
+                font-size: 0.9em;
+                a {
+                    display: block;
+                }
+            }
+        }
+    }
+}
