@@ -30,7 +30,7 @@
     </script>
 </head>
 <body>
-    <div class="page_container">
+    <div class="page_container"  ng-app="dashboard_sportiva">
 
         <!--
         <label class="hamburger" for="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></label>
@@ -78,6 +78,11 @@
                 <li class="{{ (Request::is('members_overview') ? 'active' : '') }}">
                     <a class="{{ (Request::is('members_overview') ? 'active' : '') }}" href="{{url('members_overview')}}"><i class="fa fa-users" aria-hidden="true"></i><span class="menu_name">Leden</span></a>
                 </li>
+                @if(Auth::user()->isTrainer())
+                <li class="{{ (Request::is('exercises_overview') ? 'active' : '') }}">
+                    <a class="{{ (Request::is('exercises_overview') ? 'active' : '') }}" href="{{url('exercises_overview')}}"><i class="fa fa-bolt" aria-hidden="true"></i><span class="menu_name">Oefeningen</span></a>
+                </li>
+                @endif
             </ul>
 
 
@@ -94,6 +99,7 @@
 
     <!-- Scripts -->
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('custom_js')

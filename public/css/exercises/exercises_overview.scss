@@ -11,13 +11,89 @@
     margin-right: 2%;
     .tag_type_block {
         h3 {
-            margin: 15px 0 0;
+            margin: 15px 0 3px;
             border-bottom: 1px solid $theme_color01;
+        }
+        .tag {
+            label {
+                display: block;
+                width: 96%;
+                margin-bottom: 1px;
+                padding: 2px 2%;
+                border-radius: 4px;
+                
+                i {
+                    border: 1px solid $form_font_color;
+                    border-radius: 4px;
+                    color: transparent;
+                    background-color: #fff;
+                }
+                .name {
+                    margin-left: 10px;
+                }
+            }
+            input {
+                &:checked + label {
+                    background-color: $theme_color01;
+                    color: #fff;
+                    i {
+                        border-color: #fff;
+                        color: $theme_color01;
+                    }
+                }
+            }
+            &:hover {
+                label {
+                    background-color: $theme_color01;
+                    color: #fff;
+                    i {
+                        border-color: #fff;
+                        color: $theme_color01;
+                    }
+                }
+            }
         }
     }
 }
 .exercises_content {
     width: 78%;
+    
+    .exercises_to_approve {
+        padding: 5px;
+        border: 1px solid $delete_color;
+        border-radius: 5px;
+        .exclamation {
+            width: 5%;
+            i {
+                color: $delete_color;
+            }
+        }
+        .overview {
+            width: 95%;
+            
+            .exercise {
+                width: 96%;
+                padding: 3px 2%;
+                &.header {
+                    background-color: $theme_color01;
+                    color: #fff;
+                }
+                .title {
+                    width: 35%;
+                }
+                .author {
+                    width: 25%;
+                }
+                .created_at {
+                    width: 25%;
+                }
+                .view_details {
+                    width: 15%;
+                    text-align: right;
+                }
+            }
+        }
+    }
     .newest {
         box-shadow: 0px 2px 5px rgba($form_font_color, 0.5);
         .image {
@@ -36,6 +112,34 @@
                 font-size: 0.9em;
                 a {
                     display: block;
+                }
+            }
+        }
+    }
+    
+    .most_viewed, .all {
+        .exercises {
+            .exercise {
+                width: 22%;
+                margin-right: 4%;
+                background-color: pink;
+                position: relative;
+                .image {
+                    img {
+                        width: 100%;
+                    }
+                }
+                .views {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: $form_font_color;
+                    color: #fff;
+                    padding: 3px 5px;
+                    .amount {
+                        width: 40px;
+                        text-align: right;
+                    }
                 }
             }
         }

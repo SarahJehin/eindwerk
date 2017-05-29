@@ -32,6 +32,45 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     
+    public function isAdmin()
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->level == 11) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isYouthChairman()
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->level == 21) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isHeadtrainer()
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->level == 31) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function isTrainer()
+    {
+        foreach ($this->roles()->get() as $role) {
+            if (in_array($role->level, [30, 31, 32, 33, 34, 35, 36])) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     //return all the roles associated with this user
     public function roles()
@@ -163,6 +202,12 @@ class User extends Authenticatable
     public function dates() 
     {
         return $this->belongsToMany('App\Date')->withPivot('available', 'assigned');
+    }
+
+    //exercises
+    public function exercises()
+    {
+        return $this->hasMany('App\Exercise');
     }
     
 }

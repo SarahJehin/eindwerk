@@ -24,7 +24,7 @@ class Trainer
         //dd($trainer_roles_array);
         $user_has_trainer_role = Auth::user()->roles->whereIn('level', $trainer_roles_array);
         //dd($user_has_trainer_role);
-        if (Auth::user() && $user_has_trainer_role) {
+        if (Auth::user() && !$user_has_trainer_role->isEmpty()) {
             return $next($request);
         }
 

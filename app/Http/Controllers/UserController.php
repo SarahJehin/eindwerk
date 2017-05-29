@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use Auth;
 use Excel;
 use Hash;
@@ -27,18 +28,30 @@ class UserController extends Controller
     public function get_members_overview(Request $request) {
         $rankings = $this->rankings_array();
         $is_admin = false;
-        $user_roles = Auth::user()->roles->pluck('level')->toArray();
-        if (Auth::user() && $user_roles && min($user_roles) < 30) {
+        //$user_roles = Auth::user()->roles->pluck('level')->toArray();
+        /*
+        $user_has_admin_role = Auth::user()->roles->whereIn('level', [11])->first();
+        if (Auth::user() && $user_has_admin_role) {
             $is_admin = true;
         }
+        $is_youth_chairman = false;
+        $user_has_youth_chairman_role = Auth::user()->roles->whereIn('level', [21])->first();
+        if (Auth::user() && $user_has_youth_chairman_role) {
+            $is_youth_chairman = true;
+        }
+        $is_headtrainer = false;
+        $user_has_headtrainer_role = Auth::user()->roles->whereIn('level', [31])->first();
+        if (Auth::user() && $user_has_headtrainer_role) {
+            $is_headtrainer = true;
+        }*/
 
         if($request->has('searching')) {
             $search_results = $this->search_members($request);
-            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings, 'is_admin' => $is_admin])->with(['input' => Input::all()]);
+            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
         }
         else {
             $members = User::orderBy('last_name')->orderBy('first_name')->paginate(50);
-            return view('members/members_overview', ['members' => $members, 'rankings' => $rankings, 'is_admin' => $is_admin]);
+            return view('members/members_overview', ['members' => $members, 'rankings' => $rankings]);
         }
     }
 
@@ -146,6 +159,53 @@ class UserController extends Controller
         //dd($search_results);
         return $search_results;
     	//return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings, 'is_admin' => $is_admin])->with(['input' => Input::all()]);
+    }
+
+    public function get_allowed_update_roles(Request $request) {
+        $is_admin = Auth::user()->roles->whereIn('level', 11)->first();
+        $is_youth_chairman = Auth::user()->roles->whereIn('level', [21])->first();
+        $is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
+        //dd($is_admin);
+        $allowed_update_roles = null;
+
+        //if authenticated user is admin (main chairman), show all user roles
+        if($is_admin) {
+            $allowed_update_roles = Role::all();
+        }
+        elseif($is_youth_chairman || $is_headtrainer) {
+            $allowed_update_roles = Role::orderBy('level');
+            if($is_youth_chairman) {
+                $allowed_update_roles = $allowed_update_roles->orWhereIn('level', [20, 21, 22, 23, 24, 25]);
+            }
+            if($is_headtrainer) {
+                $allowed_update_roles = $allowed_update_roles->orWhereIn('level', [30, 31, 32, 33, 34, 35, 36]);
+            }
+            $allowed_update_roles = $allowed_update_roles->get();
+        }
+        //dd($allowed_update_roles);
+        return $allowed_update_roles;
+        
+    }
+
+    public function get_user_roles(Request $request) {
+        //return $request->member_id;
+        $member_roles = User::find($request->member_id)->roles->pluck('id');
+        //dd($member_roles);
+        return $member_roles;
+    }
+
+    public function update_user_role(Request $request) {
+        //return (string)$request->new_value;
+        $user = User::find($request->member_id);
+        //return $user;
+        if((string)$request->new_value == '1') {
+            $user->roles()->attach($request->role_id);
+            return $user->first_name . ' ' . $user->last_name . ' now has new role (' . $request->role_id . ')';
+        }
+        else {
+            $user->roles()->detach($request->role_id);
+            return $user->first_name . ' ' . $user->last_name . ' no longer has role role (' . $request->role_id . ')';
+        }
     }
 
     public function update_profile_pic(Request $request) {

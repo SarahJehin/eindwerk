@@ -1,0 +1,100 @@
+.exercise_details {
+    .block {
+        width: 60%;
+    }
+    h3 {
+        margin: 0;
+        margin-bottom: 5px;
+        margin-top: 15px;
+        border-bottom: 1px solid;
+        font-size: 1.4em;
+    }
+    .tags {
+        .tag {
+            font-size: 0.9em;
+            padding: 0px 4px;
+            //border: 1px solid rgba($form_font_color, 0.5);
+            border-radius: 5px;
+            background-color: rgba($form_font_color, 0.3);
+            margin-right: 8px;
+        }
+    }
+    .views {
+        float: right;
+        .amount {
+            width: 50px;
+            text-align: right;
+        }
+    }
+
+
+    .exercise {
+        margin-top: 35px;
+        .images_block {
+            width: 45%;
+            margin-right: 3%;
+            .main_image {
+                width: 98%;
+                padding: 1%;
+                margin-bottom: 10px;
+                border: 1px solid rgba($form_font_color, 0.3);
+                img {
+                    width: 100%;
+                }
+            }
+            .other_images {
+                .image {
+                    width: 30%;
+                    padding: 1%;
+                    border: 1px solid rgba($form_font_color, 0.3);
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .description_block {
+            width: 52%;
+            font-size: 0.92em;
+        }
+    }
+    
+    .approve_deny {
+        margin-top: 25px;
+        a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            text-align: center;
+            transition: background 0.3s ease;
+            padding: 10px 0;
+            font-size: 1.2em;
+        }
+        .deny {
+            width: 28%;
+            margin-right: 2%;
+            a {
+                background: -webkit-linear-gradient(-216deg, #dd553b 0%, #bc0505 50%, #dd553b 100%);
+                background-size: 200% 100%;
+                
+                &:hover {
+                    background-position: 100%;
+                }
+            }
+        }
+        .approve {
+            width: 70%;
+            a {
+                background: $theme_color01;
+                background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
+                background-size: 200% 100%;
+                &:hover {
+                    background-position: 100%;
+                }
+            }
+        }
+    }
+}
+
+

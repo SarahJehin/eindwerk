@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 @endsection
 @section('content')
-<div class="members_overview">
+<div class="members_overview" ng-controller="RolesController">
     <div class="block">
         <div class="heading">
             Ledenlijst
@@ -124,7 +124,7 @@
 		        		Ledenlijst downloaden
 		        	</a>
 	        	</div>
-	        	@if($is_admin)
+	        	@if(Auth::user()->isAdmin())
 	        	<div class="import_members link float">
 	        		<i class="fa fa-upload" aria-hidden="true"></i> Ledenlijst importeren
 	        	</div>
@@ -182,6 +182,11 @@
 	        					<span>{{$member->email}}</span>
 	        				</div>
 	        			</div>
+	        			@if(Auth::user()->isAdmin() || Auth::user()->isYouthChairman() || Auth::user()->isHeadtrainer())
+	        			<div class="roles link" ng-click="open_roles_modal($event, {{$member->id}}, '{{$member->first_name}} {{$member->last_name}}')">
+	        				Rollen beheren
+	        			</div>
+	        			@endif
         			</div>
         		</div>
         		@endforeach
@@ -235,6 +240,33 @@
             </div>
         </div>
     </div>
+
+    <div id="roles_modal" class="lightbox_modal light">
+        <div class="modal">
+            <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="modal_body">
+	            <div>
+	            	Rollen toewijzen aan <strong>@{{member_name}}</strong><br>
+	            </div>
+	            <div class="descriptive_info">
+	            	Rollen worden rechtstreeks opgeslagen bij het aan- of afvinken.
+	            </div>
+	            <div class="roles">
+	            	<div class="role" ng-repeat="role in allowed_update_roles">
+	            		<input id="@{{role.id}}" type="checkbox" name="role[]" value="@{{role.id}}" hidden ng-checked='check_if_role_is_assigned(role.id)'>
+                        <label for="@{{role.id}}" ng-click="update_user_role($event, role.id)">
+                            <span class="checkbox"><i class="fa fa-check"></i></span>
+                            <span class="name">@{{role.name}}</span>
+                        </label>
+	            	</div>
+	            </div>
+            </div>
+            <div class="modal_footer">
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @endsection
@@ -242,7 +274,12 @@
 <script type="text/javascript">
 	var errors = false;
 
-	errors = <?php if(session('error_messages')) {echo("true");} else {echo("false"); } ?>
+	errors = <?php if(session('error_messages')) {echo("true");} else {echo("false"); } ?>;
+	/*
+	var authenticated_user = '';
+	authenticated_user_id = {{Auth::user()->id}};
+	console.log(authenticated_user_id);
+	*/
 
 </script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 

@@ -242,4 +242,55 @@
             }
         }
     }
+    
+    #roles_modal {
+        
+        .modal_body {
+            width: 50%;
+            margin:  0 auto;
+        }
+        
+        .roles {
+            text-align: left;
+            .role {
+                label {
+                    display: block;
+                    width: 100%;
+                    margin-bottom: 1px;
+                    padding: 2px 5px;
+                    border-radius: 4px;
+                    
+                    i {
+                        border: 1px solid $form_font_color;
+                        border-radius: 4px;
+                        color: transparent;
+                        background-color: #fff;
+                    }
+                    .name {
+                        margin-left: 10px;
+                    }
+                }
+                input {
+                    &:checked + label {
+                        background-color: $theme_color01;
+                        color: #fff;
+                        i {
+                            border-color: #fff;
+                            color: $theme_color01;
+                        }
+                    }
+                }
+                &:hover {
+                    label {
+                        background-color: $theme_color01;
+                        color: #fff;
+                        i {
+                            border-color: #fff;
+                            color: $theme_color01;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

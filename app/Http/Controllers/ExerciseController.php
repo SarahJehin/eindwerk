@@ -7,6 +7,7 @@ use App\Exercise;
 use App\Tag;
 use App\Image;
 use Auth;
+use Session;
 
 class ExerciseController extends Controller
 {
@@ -14,13 +15,41 @@ class ExerciseController extends Controller
     	//dd('exercises_overview');
     	$exercises = Exercise::where('approved', 1)->get()->shuffle();
     	$tag_types = Tag::all()->groupBy('type');
-    	//dd($tag_types);
-    	//dd($exercises);
     	//extract the newest to show on top
     	$newest_exercise = Exercise::where('approved', 1)->orderBy('created_at', 'desc')->first();
     	//dd($newest_exercise->images);
     	//extract the 6 most viewed exercises to show in a 'Most Viewed' section
-    	return view('exercises/exercises_overview', ['exercises' => $exercises, 'newest_exercise' => $newest_exercise, 'tag_types' => $tag_types]);
+    	$most_viewed_exercises = Exercise::orderBy('views', 'desc')->limit(4)->get();
+    	//dd($most_viewed_exercises);
+
+    	$exercises_to_approve = Exercise::where('approved', 0)->get();
+    	return view('exercises/exercises_overview', ['exercises' => $exercises, 'newest_exercise' => $newest_exercise, 'most_viewed_exercises' => $most_viewed_exercises, 'tag_types' => $tag_types, 'exercises_to_approve' => $exercises_to_approve]);
+    }
+
+    public function exercise_details($id) {
+    	$exercise = Exercise::find($id);
+    	$is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
+    	//dd($exercise->tags);
+    	//handle exercise views
+    	$client_ip = \Request::ip();
+    	//Session::put('client_ip', $client_ip);
+    	//$test = Session::get('client_ip');
+    	session_start();
+    	//$_SESSION['client_ip'] = $client_ip;
+    	$session_set = $_SESSION['client_ip'];
+    	//dd($session_set);
+    	//if the session was not set yet, set it and add the views for this exercise
+    	if(!$session_set) {
+    		$_SESSION['client_ip'] = $client_ip;
+    		$exercise->views += 1;
+    		$exercise->save();
+    	}
+    	if($exercise->approved || $is_headtrainer) {
+    		return view('exercises/exercise_details', ['exercise' => $exercise]);
+    	}
+    	else {
+    		abort(404);
+    	}
     }
 
     public function add_exercise() {
@@ -95,5 +124,27 @@ class ExerciseController extends Controller
         }
         return redirect('exercises_overview')->with('success_msg', 'Je hebt de oefening toegevoegd.  Wanneer de hoofdtrainer hem geaccepteerd heeft, verschijnt hij bij op het overzicht.');
     	dd($request);
+    }
+
+    public function deny_exercise($id) {
+    	//only if authenticated user is headtrainer
+    	if(Auth::user()->isHeadtrainer()) {
+    		//update status to 10, which means denied
+    		$exercise = Exercise::find($id);
+    		$exercise->approved = 10;
+    		$exercise->save();
+    	}
+    	return redirect('exercises_overview');
+    }
+
+    public function approve_exercise($id) {
+    	//only if authenticated user is headtrainer
+    	if(Auth::user()->isHeadtrainer()) {
+    		//update status to 1, which means approved
+    		$exercise = Exercise::find($id);
+    		$exercise->approved = 1;
+    		$exercise->save();
+    	}
+    	return redirect('exercises_overview');
     }
 }

@@ -80,6 +80,7 @@
         </div>
         --}}
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
         <script src="{{url('/js/main.js')}}"></script>
     </body>
 </html>

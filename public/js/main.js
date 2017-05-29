@@ -3,15 +3,17 @@
 
     console.log("Welcome in the console of the TCS Dashboard!");
 
-    /*
+    //angular
+    var dashboard_sportiva = angular.module("dashboard_sportiva", []);
+
+    
     //setup token for posts
     $.ajaxSetup({
         headers: {
-          'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    */
-
+    
     // LOGIN
     //login anims (code from: http://codepen.io/ehermanson/pen/KwKWEv)
     $('#login_form').find('input, textarea').on('keyup blur focus', function (e) {

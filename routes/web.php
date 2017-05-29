@@ -34,6 +34,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
     Route::get('search_members', 'UserController@search_members');
     Route::post('update_profile_pic', 'UserController@update_profile_pic');
+    Route::get('get_allowed_update_roles', 'UserController@get_allowed_update_roles');
+    Route::get('get_user_roles', 'UserController@get_user_roles');
+    Route::post('update_user_role', 'UserController@update_user_role');
 
     //winterhours
     Route::get('winterhours_overview', 'WinterhourController@get_winterhours_overview');
@@ -70,4 +73,7 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('exercises_overview', 'ExerciseController@exercises_overview');
     Route::get('add_exercise', 'ExerciseController@add_exercise');
     Route::post('add_exercise', 'ExerciseController@create_exercise');
+    Route::get('exercise_details/{id}', 'ExerciseController@exercise_details');
+    Route::get('deny_exercise/{id}', 'ExerciseController@deny_exercise');
+    Route::get('approve_exercise/{id}', 'ExerciseController@approve_exercise');
 });
