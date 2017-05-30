@@ -44,11 +44,18 @@
             }
             .other_images {
                 .image {
-                    width: 30%;
+                    width: calc(30% - 1.58px);
                     padding: 1%;
                     border: 1px solid rgba($form_font_color, 0.3);
+                    margin-right: 2%;
+                    &:nth-child(3n+3) {
+                        margin-right: 0;
+                    }
                     img {
                         width: 100%;
+                    }
+                    &:hover {
+                        cursor: pointer;
                     }
                 }
             }

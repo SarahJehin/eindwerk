@@ -10,7 +10,14 @@
             ['fontsize', ['fontsize']],
             ['insert', ['link']],
             ['para', ['ul', 'ol']]
-      ]
+      ],
+      callbacks: {
+        onPaste: function (e) {
+            var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+            e.preventDefault();
+            document.execCommand('insertText', false, bufferText);
+        }
+      }
     });
     //for the dropdown menu's to work:
     $('.dropdown-toggle').dropdown()
@@ -81,12 +88,19 @@
     var handle_images = function(e){
 
         uploaded_images = $('.images .image').length-1 + this.files.length;
+        var file_input = this;
 
         if(uploaded_images > 6) {
             console.log(this);
             //if in total more than 6 images were uploaded, throw error
-            var error_msg = 'Je mag maximum 6 afbeeldingen uploaden, alle afbeeldingen werden verwijderd';
+            var error_msg = 'Afbeeldingen werden niet toegevoegd omdat er maar maximum 6 afbeeldingen mogen worden toegevoegd.';
             $(this).val('');
+            $('.images_block .error_msg').text(error_msg);
+            $('.images_block .error_msg').slideDown(200, function() {
+                setTimeout(function() {
+                    $('.images_block .error_msg').slideUp();
+                }, 3500);
+            });
             //$('.images input').val('');
             //$('.images .image').remove();
             //console.log($('.images input').val());
@@ -100,7 +114,19 @@
                     (function(file) {
                         //var file = this.files[i];
                         console.log('out reader');
-                        console.log(file);
+                        console.log(file.size);
+                        //if file size greater than 500kB, don't fullfill the upload
+                        if(file.size > 500000) {
+                            var error_msg = 'Afbeeldingen werden niet toegevoegd omdat er afbeeeldingen zijn die groter zijn dan 500kB.';
+                            $(file_input).val('');
+                            $('.images_block .error_msg').text(error_msg);
+                            $('.images_block .error_msg').slideDown(200, function() {
+                                setTimeout(function() {
+                                    $('.images_block .error_msg').slideUp();
+                                }, 3500);
+                            });
+                            return;
+                        }
                         //console.log(this.files[i]);
                         var reader = new FileReader();
 
@@ -114,15 +140,6 @@
                             new_image_block.attr('identifier', file.name + file.size);
                             new_image_block.find('img').attr('src', event.target.result).attr('alt', file.name);
                             new_image_block.find('input').val(file.name + file.size);
-                            //console.log($(new_image_block));
-                            //var test = '<div>' + reader.result + '</div>';
-                            //$(test).appendTo($('.images'));
-                            /*
-                            var image = $(new_image_block).find('img');
-                            console.log(image);
-                            image.attr('src', event.target.result);
-                            console.log(image);
-                            */
                             //console.log($(new_image_block))
                             $(new_image_block).prependTo($('.images'));
                             //console.log($($.parseHTML('<img>')).attr('src', event.target.result));

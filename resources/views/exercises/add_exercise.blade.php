@@ -55,6 +55,9 @@
                             Upload best afbeeldingen met een 4:3 verhouding en een maximum grootte van 500kB.<br>
                             Je kan maximaal 6 afbeeldingen uploaden.
                         </div>
+                        <div class="error_msg">
+                            Error...
+                        </div>
                         <div class="images clearfix">
                             <div class="template image float" identifier="">
                                 <img src="{{url('images/profile_pictures/sarah_jehin.jpg')}}">

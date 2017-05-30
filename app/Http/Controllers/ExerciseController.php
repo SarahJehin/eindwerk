@@ -12,15 +12,22 @@ use Session;
 class ExerciseController extends Controller
 {
     public function exercises_overview() {
+    	//dd(Request()->page);
     	//dd('exercises_overview');
-    	$exercises = Exercise::where('approved', 1)->get()->shuffle();
+    	//$exercises = Exercise::where('approved', 1)->get()->shuffle();
+    	$exercises = Exercise::where('approved', 1)->paginate(3);
     	$tag_types = Tag::all()->groupBy('type');
-    	//extract the newest to show on top
-    	$newest_exercise = Exercise::where('approved', 1)->orderBy('created_at', 'desc')->first();
-    	//dd($newest_exercise->images);
-    	//extract the 6 most viewed exercises to show in a 'Most Viewed' section
-    	$most_viewed_exercises = Exercise::orderBy('views', 'desc')->limit(4)->get();
-    	//dd($most_viewed_exercises);
+    	$newest_exercise = null;
+    	$most_viewed_exercises = null;
+    	if(Request()->page == 1 || Request()->page == null) {
+    		//extract the newest to show on top
+	    	$newest_exercise = Exercise::where('approved', 1)->orderBy('created_at', 'desc')->first();
+	    	//dd($newest_exercise->images);
+	    	//extract the 6 most viewed exercises to show in a 'Most Viewed' section
+	    	$most_viewed_exercises = Exercise::where('approved', 1)->orderBy('views', 'desc')->limit(4)->get();
+	    	//dd($most_viewed_exercises);
+    	}
+    	
 
     	$exercises_to_approve = Exercise::where('approved', 0)->get();
     	return view('exercises/exercises_overview', ['exercises' => $exercises, 'newest_exercise' => $newest_exercise, 'most_viewed_exercises' => $most_viewed_exercises, 'tag_types' => $tag_types, 'exercises_to_approve' => $exercises_to_approve]);
@@ -31,18 +38,29 @@ class ExerciseController extends Controller
     	$is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
     	//dd($exercise->tags);
     	//handle exercise views
-    	$client_ip = \Request::ip();
+    	//$client_ip = \Request::ip();
     	//Session::put('client_ip', $client_ip);
     	//$test = Session::get('client_ip');
     	session_start();
-    	//$_SESSION['client_ip'] = $client_ip;
-    	$session_set = $_SESSION['client_ip'];
-    	//dd($session_set);
-    	//if the session was not set yet, set it and add the views for this exercise
-    	if(!$session_set) {
-    		$_SESSION['client_ip'] = $client_ip;
+    	$client_viewed_exercises = array();
+
+    	if(isset($_SESSION['client_viewed_exercises']) && !empty($_SESSION['client_viewed_exercises'])) {
+    		//set array to the session array:
+    		$client_viewed_exercises = $_SESSION['client_viewed_exercises'];
+    		//check of this exercise id already exists in the array, if not add it and increment the views
+    		if(!in_array($id, $client_viewed_exercises)) {
+    			$exercise->views += 1;
+    			$exercise->save();
+    			array_push($client_viewed_exercises, $id);
+    			$_SESSION['client_viewed_exercises'] = $client_viewed_exercises;
+    		}
+    	}
+    	else {
+    		//if the session does not exist yet, the exercise hasn't been watched, zo add it to the array, set the session and increment the views
     		$exercise->views += 1;
     		$exercise->save();
+    		array_push($client_viewed_exercises, $id);
+    		$_SESSION['client_viewed_exercises'] = $client_viewed_exercises;
     	}
     	if($exercise->approved || $is_headtrainer) {
     		return view('exercises/exercise_details', ['exercise' => $exercise]);
@@ -50,6 +68,23 @@ class ExerciseController extends Controller
     	else {
     		abort(404);
     	}
+    }
+
+    public function get_filtered_exercises(Request $request) {
+    	//dd($request->tag_ids);
+    	$tag_ids = json_decode($request->tag_ids);
+    	
+		$filtered_exercises = Exercise::where('approved', 1)->with('images');
+		foreach ($tag_ids as $tag_id) {
+			$filtered_exercises = $filtered_exercises->whereHas('tags', function ($query) use ($tag_id) {
+				$query->where('tags.id', $tag_id);
+			});
+		}
+		//don't forget to paginate
+		$filtered_exercises = $filtered_exercises->paginate(1);
+		$pagination_html = (string)$filtered_exercises->links();
+		return ['filtered_exercises' => $filtered_exercises, 'pagination_html' => $pagination_html];
+		dd($filtered_exercises, $pagination_html);
     }
 
     public function add_exercise() {

@@ -434,7 +434,8 @@ button.submit {
   .login_block .error_msg {
     width: 80%;
     margin: 0 auto;
-    background-color: transparent; }
+    background-color: transparent;
+    color: #de9e96; }
     .login_block .error_msg .asterix {
       width: 5%; }
     .login_block .error_msg .error {
@@ -2498,6 +2499,8 @@ button.submit {
       width: 100%;
       height: 100%; }
 
+.images_block .error_msg {
+  display: none; }
 .images_block .images .image {
   width: 20%;
   margin-right: 5%;
@@ -2505,7 +2508,7 @@ button.submit {
   border: 3px dashed #9CAFB9;
   overflow: hidden;
   position: relative; }
-  .images_block .images .image:nth-child(3n+3) {
+  .images_block .images .image:nth-child(4n+4) {
     margin-right: 0; }
   .images_block .images .image.template {
     display: none; }
@@ -2614,7 +2617,8 @@ button.submit {
   .exercises_content .exercises_to_approve {
     padding: 5px;
     border: 1px solid #b73928;
-    border-radius: 5px; }
+    border-radius: 5px;
+    margin-bottom: 35px; }
     .exercises_content .exercises_to_approve .exclamation {
       width: 5%; }
       .exercises_content .exercises_to_approve .exclamation i {
@@ -2623,16 +2627,16 @@ button.submit {
       width: 95%; }
       .exercises_content .exercises_to_approve .overview .exercise {
         width: 96%;
-        padding: 3px 2%; }
+        padding: 3px 0; }
         .exercises_content .exercises_to_approve .overview .exercise.header {
           background-color: #1abc9c;
           color: #fff; }
         .exercises_content .exercises_to_approve .overview .exercise .title {
           width: 35%; }
         .exercises_content .exercises_to_approve .overview .exercise .author {
-          width: 25%; }
+          width: 30%; }
         .exercises_content .exercises_to_approve .overview .exercise .created_at {
-          width: 25%; }
+          width: 20%; }
         .exercises_content .exercises_to_approve .overview .exercise .view_details {
           width: 15%;
           text-align: right; }
@@ -2640,9 +2644,11 @@ button.submit {
     box-shadow: 0px 2px 5px rgba(156, 175, 185, 0.5); }
     .exercises_content .newest .image {
       width: 45%;
-      margin-right: 5%; }
+      margin-right: 5%;
+      overflow: hidden; }
       .exercises_content .newest .image img {
-        width: 100%; }
+        width: 100%;
+        display: block; }
     .exercises_content .newest .info {
       width: 45%; }
       .exercises_content .newest .info h3 {
@@ -2651,23 +2657,55 @@ button.submit {
         font-size: 0.9em; }
         .exercises_content .newest .info .description a {
           display: block; }
-  .exercises_content .most_viewed .exercises .exercise, .exercises_content .all .exercises .exercise {
-    width: 22%;
+  .exercises_content .most_viewed .exercises .exercise, .exercises_content .all .exercises .exercise, .exercises_content .filtered_exercises .exercises .exercise {
+    width: 21%;
     margin-right: 4%;
-    background-color: pink;
-    position: relative; }
-    .exercises_content .most_viewed .exercises .exercise .image img, .exercises_content .all .exercises .exercise .image img {
-      width: 100%; }
-    .exercises_content .most_viewed .exercises .exercise .views, .exercises_content .all .exercises .exercise .views {
+    position: relative;
+    box-shadow: 0px 0px 5px rgba(156, 175, 185, 0.3);
+    padding: 0.5%;
+    transition: box-shadow 0.3s; }
+    .exercises_content .most_viewed .exercises .exercise:nth-child(4n+4), .exercises_content .all .exercises .exercise:nth-child(4n+4), .exercises_content .filtered_exercises .exercises .exercise:nth-child(4n+4) {
+      margin-right: 0; }
+    .exercises_content .most_viewed .exercises .exercise .image, .exercises_content .all .exercises .exercise .image, .exercises_content .filtered_exercises .exercises .exercise .image {
+      overflow: hidden; }
+      .exercises_content .most_viewed .exercises .exercise .image img, .exercises_content .all .exercises .exercise .image img, .exercises_content .filtered_exercises .exercises .exercise .image img {
+        width: 100%;
+        filter: grayscale(50%);
+        transition: filter 0.3s; }
+    .exercises_content .most_viewed .exercises .exercise .views, .exercises_content .all .exercises .exercise .views, .exercises_content .filtered_exercises .exercises .exercise .views {
       position: absolute;
-      top: 0;
-      right: 0;
-      background-color: #9CAFB9;
-      color: #fff;
-      padding: 3px 5px; }
-      .exercises_content .most_viewed .exercises .exercise .views .amount, .exercises_content .all .exercises .exercise .views .amount {
-        width: 40px;
+      top: 3%;
+      right: 3%;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #9CAFB9;
+      border: 1px solid #9CAFB9;
+      border-radius: 25px;
+      padding: 0 5px;
+      font-size: 0.8em; }
+      .exercises_content .most_viewed .exercises .exercise .views .amount, .exercises_content .all .exercises .exercise .views .amount, .exercises_content .filtered_exercises .exercises .exercise .views .amount {
+        min-width: 30px;
         text-align: right; }
+    .exercises_content .most_viewed .exercises .exercise .title, .exercises_content .all .exercises .exercise .title, .exercises_content .filtered_exercises .exercises .exercise .title {
+      text-align: center; }
+    .exercises_content .most_viewed .exercises .exercise:hover, .exercises_content .all .exercises .exercise:hover, .exercises_content .filtered_exercises .exercises .exercise:hover {
+      box-shadow: 0px 0px 5px rgba(156, 175, 185, 0.3), 5px 5px 5px rgba(156, 175, 185, 0.15); }
+      .exercises_content .most_viewed .exercises .exercise:hover .image img, .exercises_content .all .exercises .exercise:hover .image img, .exercises_content .filtered_exercises .exercises .exercise:hover .image img {
+        filter: grayscale(0%); }
+
+.apply_bootstrap .pagination > li > div {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color: #337ab7;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd; }
+
+.pagination > li:last-child > div {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px; }
 
 .exercise_details .block {
   width: 60%; }
@@ -2701,11 +2739,16 @@ button.submit {
       .exercise_details .exercise .images_block .main_image img {
         width: 100%; }
     .exercise_details .exercise .images_block .other_images .image {
-      width: 30%;
+      width: calc(30% - 1.58px);
       padding: 1%;
-      border: 1px solid rgba(156, 175, 185, 0.3); }
+      border: 1px solid rgba(156, 175, 185, 0.3);
+      margin-right: 2%; }
+      .exercise_details .exercise .images_block .other_images .image:nth-child(3n+3) {
+        margin-right: 0; }
       .exercise_details .exercise .images_block .other_images .image img {
         width: 100%; }
+      .exercise_details .exercise .images_block .other_images .image:hover {
+        cursor: pointer; }
   .exercise_details .exercise .description_block {
     width: 52%;
     font-size: 0.92em; }

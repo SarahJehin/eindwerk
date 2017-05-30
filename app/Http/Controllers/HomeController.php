@@ -64,6 +64,9 @@ class HomeController extends Controller
             return view('home', ['user' => $user, 'total_adult_score' => $total_adult_score, 'total_youth_score' => $total_youth_score, 'badges' => $badges]);
         }
         else {
+            session_start();
+            //session_unset();
+            unset($_SESSION['client_viewed_exercises']);
             return view('welcome');
         }
         

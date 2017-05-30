@@ -44,7 +44,7 @@
         <nav>
             <div class="personal_details clearfix">
                 <div class="profile_pic float">
-                    <img src="{{url('images/profile_pictures/' . Auth::user()->image)}}">
+                    <img src="{{url('images/profile_pictures/' . Auth::user()->image)}}" alt="{{Auth::user()->first_name}} {{Auth::user()->last_name}}">
                 </div>
                 <div class="name_total float">
                     <div class="name"><a href="{{url('/')}}">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</a></div>

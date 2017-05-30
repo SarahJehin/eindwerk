@@ -76,4 +76,5 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('exercise_details/{id}', 'ExerciseController@exercise_details');
     Route::get('deny_exercise/{id}', 'ExerciseController@deny_exercise');
     Route::get('approve_exercise/{id}', 'ExerciseController@approve_exercise');
+    Route::get('get_filtered_exercises', 'ExerciseController@get_filtered_exercises');
 });

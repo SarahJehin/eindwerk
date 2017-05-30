@@ -43,12 +43,12 @@
                 <div class="exercise clearfix">
                     <div class="images_block float">
                         <div class="main_image">
-                            <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
+                            <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}" alt="{{$exercise->images[0]->title}}">
                         </div>
-                        <div class="other_images">
+                        <div class="other_images clearfix">
                             @foreach($exercise->images as $image)
-                            <div class="image">
-                                <img src="{{url('images/exercise_images/' . $image->path)}}">
+                            <div class="image float">
+                                <img src="{{url('images/exercise_images/' . $image->path)}}" alt="{{$image->title}}">
                             </div>
                             @endforeach
                         </div>
@@ -75,5 +75,5 @@
     </div>
 @endsection
 @section('custom_js')
-    <!--<script src="{{ asset('js/winterhours/add_winterhour.js') }}"></script>-->
+    <script src="{{ asset('js/exercises/exercise_details.js') }}"></script>
 @endsection

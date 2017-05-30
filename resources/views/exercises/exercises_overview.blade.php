@@ -2,12 +2,13 @@
 @section('title', 'Oefeningen overzicht')
 
 @section('custom_css')
+<link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
 @endsection
 
 @section('content')
 
 
-    <div class="exercises_overview">
+    <div class="exercises_overview" ng-controller="ExerciseController">
 
         <div class="block">
             <div class="heading">
@@ -15,14 +16,13 @@
             </div>
             <div class="content clearfix">
                 <div class="filters_block float">
-                    In deze block komen all filter mogelijkheden (tags, nieuwst/oudst, most viewed)
                     @foreach($tag_types as $tag_type => $tags)
                     <div class="tag_type_block">
                         <h3>{{ucfirst($tag_type)}}</h3>
                         @foreach($tags as $tag)
                         <div class="tag">
                             <input id="{{$tag->id}}" type="checkbox" name="tag[]" hidden="">
-                            <label for="{{$tag->id}}" ng-click="filter">
+                            <label for="{{$tag->id}}" ng-click="handle_filter($event, 1)">
                                 <span class="checkbox"><i class="fa fa-check"></i></span>
                                 <span class="name">{{ucfirst($tag->name)}}</span>
                             </label>
@@ -39,6 +39,7 @@
                         </div>
                         <div class="overview float">
                             <div>Er zijn nieuwe oefeningen toegevoegd:</div>
+                            <!--
                             <div class="exercise header clearfix">
                                 <div class="title float">
                                     Titel
@@ -50,16 +51,17 @@
                                     Toegevoegd op
                                 </div>
                             </div>
+                            -->
                             @foreach($exercises_to_approve as $exercise)
                             <div class="exercise clearfix">
                                 <div class="title float">
                                     <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">{{$exercise->name}}</a>
                                 </div>
                                 <div class="author float">
-                                    {{$exercise->user->first_name}} {{$exercise->user->last_name}}
+                                    door: {{$exercise->user->first_name}} {{$exercise->user->last_name}}
                                 </div>
                                 <div class="created_at float">
-                                    {{date('d/m/Y', strtotime($exercise->created_at))}}
+                                    op: {{date('d/m/Y', strtotime($exercise->created_at))}}
                                 </div>
                                 <div class="view_details float">
                                     <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">Bekijken</a>
@@ -89,12 +91,13 @@
                         </div>
                     </div>
                     @endif
+                    @if($most_viewed_exercises)
                     <div class="most_viewed">
                         <h3>Meest bekeken oefeningen</h3>
-                        <div class="exercises">
+                        <div class="exercises clearfix">
                             @foreach($most_viewed_exercises as $exercise)
-                            <div class="exercise">
-                                <a href="{{url('exercise_details/' . $exercise->id)}}">
+                            <div class="exercise float">
+                                <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">
                                     <div class="image">
                                         <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
                                     </div>
@@ -108,20 +111,46 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
                     <div class="all">
                         <h3>Overzicht</h3>
-                        <div class="exercises">
+                        <div class="exercises clearfix">
                             @foreach($exercises as $exercise)
-                            <div class="exercise">
-                                <a href="{{url('exercise_details/' . $exercise->id)}}">
+                            <div class="exercise float">
+                                <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">
                                     <div class="image">
                                         <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
+                                    </div>
+                                    <div class="views clearfix">
+                                        <div class="float"><i class="fa fa-eye"></i></div>
+                                        <div class="amount float">{{$exercise->views}}</div>
                                     </div>
                                     <div class="title">{{$exercise->name}}</div>
                                 </a>
                             </div>
                             @endforeach
                         </div>
+                    </div>
+                    <div class="filtered_exercises" ng-if="filtered">
+                        <h3>Gefilterde resultaten</h3>
+                        <div class="exercises clearfix">
+                            <div class="exercise float" ng-repeat="exercise in filtered_exercises">
+                                <a class="link" href="{{url('exercise_details')}}/@{{exercise.id}}">
+                                    <div class="image">
+                                        <img src="{{url('images/exercise_images')}}/@{{exercise.images[0].path}}" alt="@{{exercise.name}}">
+                                    </div>
+                                    <div class="views clearfix">
+                                        <div class="float"><i class="fa fa-eye"></i></div>
+                                        <div class="amount float">@{{exercise.views}}</div>
+                                    </div>
+                                    <div class="title">@{{exercise.name}}</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pagination_links apply_bootstrap">
+                        {{$exercises->links()}} 
                     </div>
                 </div>
             </div>
@@ -131,5 +160,5 @@
     </div>
 @endsection
 @section('custom_js')
-    <!--<script src="{{ asset('js/winterhours/add_winterhour.js') }}"></script>-->
+    <script src="{{ asset('js/exercises/exercises_overview.js') }}"></script>
 @endsection
