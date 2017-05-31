@@ -92,7 +92,9 @@ nav {
         transition: padding-left 0.25s; }
         nav ul li a i.fa {
           font-size: 1.5em;
-          margin-right: 15px; }
+          margin-right: 15px;
+          width: 30px;
+          text-align: center; }
         nav ul li a:hover, nav ul li a.active {
           background-color: #202c36;
           padding-left: 25px; }
@@ -690,6 +692,14 @@ button.submit {
       .past_activities .list .row .paid {
         display: none; } }
 
+.winterhours_block .winterhours .winterhour h4 {
+  margin: 0;
+  margin-top: 5px; }
+.winterhours_block .winterhours .winterhour .dates .date {
+  margin-right: 25px; }
+  .winterhours_block .winterhours .winterhour .dates .date h5 {
+    margin: 5px 0 1px; }
+
 #update_profile_pic_modal label {
   display: block;
   width: 400px;
@@ -793,6 +803,9 @@ button.submit {
       margin: 0 auto; }
     .total div[class^="part0"] .category_poster .category_block, .total div[class^="part0"] .category_poster .poster_block {
       width: 50%; }
+      @media (max-width: 768px) {
+        .total div[class^="part0"] .category_poster .category_block, .total div[class^="part0"] .category_poster .poster_block {
+          width: 100%; } }
     .total div[class^="part0"] .categories {
       margin-bottom: 40px; }
       .total div[class^="part0"] .categories .category {
@@ -805,6 +818,10 @@ button.submit {
         margin-right: 10px; }
         .total div[class^="part0"] .categories .category:nth-child(n+4) {
           margin-top: 25px; }
+        @media (max-width: 768px) {
+          .total div[class^="part0"] .categories .category {
+            width: 30%;
+            margin-right: 2%; } }
         .total div[class^="part0"] .categories .category label {
           overflow: hidden;
           position: absolute;
@@ -895,6 +912,9 @@ button.submit {
                 width: 100%; }
     .total div[class^="part0"] .date_time_info {
       width: 45%; }
+      @media (max-width: 768px) {
+        .total div[class^="part0"] .date_time_info {
+          width: 100%; } }
       .total div[class^="part0"] .date_time_info .date_info {
         float: left;
         margin-right: 50px;
@@ -1059,11 +1079,17 @@ button.submit {
           height: 100%;
       }
   }*/ }
+  @media (max-width: 768px) {
+    .location_info {
+      width: 100%; } }
   .location_info .location_type {
     margin-bottom: 10px; }
     .location_info .location_type div {
       float: left;
       width: 150px; }
+      @media (max-width: 768px) {
+        .location_info .location_type div {
+          width: 50%; } }
       .location_info .location_type div .radio {
         display: block;
         width: 25px;
@@ -1168,6 +1194,9 @@ button.submit {
     background-color: transparent;
     cursor: pointer;
     width: 90%; }
+    @media (max-width: 768px) {
+      .owner div {
+        font-size: 0.9em; } }
     .owner div i {
       float: right; }
   .owner ul {
@@ -1191,6 +1220,10 @@ button.submit {
 
 .extra_url {
   margin-top: 40px; }
+  @media (max-width: 768px) {
+    .extra_url label {
+      font-size: 0.9em;
+      left: 15px; } }
 
 .visibility .checkbox {
   display: inline-block;
@@ -1465,9 +1498,9 @@ button.submit {
   .activity_details .activity_info .sign_up {
     display: none; }
     .activity_details .activity_info .sign_up.active {
-      display: block; }
-      @media (max-width: 768px) {
-        .activity_details .activity_info .sign_up.active {
+      display: block;
+      /*
+      @include smartphone {
           display: -webkit-box;
           display: -moz-box;
           display: -ms-flexbox;
@@ -1479,11 +1512,14 @@ button.submit {
           -ms-flex-direction: column;
           flex-direction: column;
           /* optional */
-          -webkit-box-align: start;
-          -moz-box-align: start;
-          -ms-flex-align: start;
-          -webkit-align-items: flex-start;
-          align-items: flex-start; } }
+                  /*
+    -webkit-box-align: start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+}
+*/ }
     .activity_details .activity_info .sign_up .sign_up_list {
       width: 50%;
       margin-right: 5%; }
@@ -1492,11 +1528,13 @@ button.submit {
           width: 100%;
           margin: 0;
           margin-top: 25px;
+          /*
           -webkit-box-ordinal-group: 2;
           -moz-box-ordinal-group: 2;
           -ms-flex-order: 2;
           -webkit-order: 2;
-          order: 2; } }
+          order: 2;
+          */ } }
       .activity_details .activity_info .sign_up .sign_up_list .people {
         box-shadow: 5px 5px 5px rgba(119, 114, 114, 0.5); }
         .activity_details .activity_info .sign_up .sign_up_list .people .edit_button {
@@ -2576,16 +2614,78 @@ button.submit {
       border-color: #fff;
       color: #1abc9c; }
 
+.edit_exercise .btns {
+  margin-top: 15px; }
+  .edit_exercise .btns .delete {
+    width: 28%;
+    margin-right: 2%; }
+    .edit_exercise .btns .delete a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      text-align: center;
+      transition: background 0.3s ease;
+      padding: 10px 0;
+      font-size: 1.2em;
+      background: -webkit-linear-gradient(-216deg, #dd553b 0%, #bc0505 50%, #dd553b 100%);
+      background-size: 200% 100%; }
+      .edit_exercise .btns .delete a:hover {
+        background-position: 100%; }
+  .edit_exercise .btns .submit {
+    margin-top: 0;
+    width: 70%; }
+
 .exercises_overview .block {
   width: 70%;
   margin-left: 20%; }
+  @media (max-width: 768px) {
+    .exercises_overview .block {
+      width: 90%;
+      margin: 0 auto; } }
+  .exercises_overview .block .link {
+    text-align: right;
+    margin-bottom: 25px; }
+.exercises_overview .pagination_container {
+  text-align: center; }
+  @media (max-width: 768px) {
+    .exercises_overview .pagination_container .pagination li {
+      display: none; }
+      .exercises_overview .pagination_container .pagination li:first-child, .exercises_overview .pagination_container .pagination li.active, .exercises_overview .pagination_container .pagination li:last-child {
+        display: inline; } }
+  .exercises_overview .pagination_container .pagination li a, .exercises_overview .pagination_container .pagination li div {
+    color: #1abc9c; }
+    .exercises_overview .pagination_container .pagination li a:hover, .exercises_overview .pagination_container .pagination li div:hover {
+      background-color: #1abc9c;
+      color: #fff;
+      border-color: #1abc9c; }
+  .exercises_overview .pagination_container .pagination li.active span {
+    background-color: #1abc9c;
+    border-color: #1abc9c; }
 
 .filters_block {
   width: 20%;
   margin-right: 2%; }
+  @media (max-width: 768px) {
+    .filters_block {
+      position: absolute;
+      z-index: 5;
+      background-color: #fff;
+      width: 50%;
+      left: 0;
+      top: 45px;
+      box-shadow: 0px 0px 2px #9CAFB9;
+      padding: 5px;
+      /*
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+      */ } }
   .filters_block .tag_type_block h3 {
     margin: 15px 0 3px;
     border-bottom: 1px solid #1abc9c; }
+  .filters_block .tag_type_block:first-child h3 {
+    margin-top: 0; }
   .filters_block .tag_type_block .tag label {
     display: block;
     width: 96%;
@@ -2641,7 +2741,11 @@ button.submit {
           width: 15%;
           text-align: right; }
   .exercises_content .newest {
+    padding: 2%;
     box-shadow: 0px 2px 5px rgba(156, 175, 185, 0.5); }
+    @media (max-width: 768px) {
+      .exercises_content .newest {
+        display: none; } }
     .exercises_content .newest .image {
       width: 45%;
       margin-right: 5%;
@@ -2666,6 +2770,11 @@ button.submit {
     transition: box-shadow 0.3s; }
     .exercises_content .most_viewed .exercises .exercise:nth-child(4n+4), .exercises_content .all .exercises .exercise:nth-child(4n+4), .exercises_content .filtered_exercises .exercises .exercise:nth-child(4n+4) {
       margin-right: 0; }
+    @media (max-width: 768px) {
+      .exercises_content .most_viewed .exercises .exercise, .exercises_content .all .exercises .exercise, .exercises_content .filtered_exercises .exercises .exercise {
+        width: 100%;
+        margin: 0;
+        margin-top: 15px; } }
     .exercises_content .most_viewed .exercises .exercise .image, .exercises_content .all .exercises .exercise .image, .exercises_content .filtered_exercises .exercises .exercise .image {
       overflow: hidden; }
       .exercises_content .most_viewed .exercises .exercise .image img, .exercises_content .all .exercises .exercise .image img, .exercises_content .filtered_exercises .exercises .exercise .image img {
@@ -2691,6 +2800,9 @@ button.submit {
       box-shadow: 0px 0px 5px rgba(156, 175, 185, 0.3), 5px 5px 5px rgba(156, 175, 185, 0.15); }
       .exercises_content .most_viewed .exercises .exercise:hover .image img, .exercises_content .all .exercises .exercise:hover .image img, .exercises_content .filtered_exercises .exercises .exercise:hover .image img {
         filter: grayscale(0%); }
+  @media (max-width: 768px) {
+    .exercises_content .most_viewed {
+      display: none; } }
 
 .apply_bootstrap .pagination > li > div {
   position: relative;
@@ -2701,7 +2813,8 @@ button.submit {
   color: #337ab7;
   text-decoration: none;
   background-color: #fff;
-  border: 1px solid #ddd; }
+  border: 1px solid #ddd;
+  cursor: pointer; }
 
 .pagination > li:last-child > div {
   border-top-right-radius: 4px;
@@ -2709,6 +2822,11 @@ button.submit {
 
 .exercise_details .block {
   width: 60%; }
+  .exercise_details .block .edit_button {
+    position: absolute;
+    right: 3%; }
+  .exercise_details .block:hover .edit_button {
+    display: block; }
 .exercise_details h3 {
   margin: 0;
   margin-bottom: 5px;

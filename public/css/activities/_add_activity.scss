@@ -34,6 +34,9 @@
     .category_poster {
         .category_block, .poster_block {
             width: 50%;
+            @include smartphone {
+                width: 100%;
+            }
         }
     }
       
@@ -41,15 +44,20 @@
         margin-bottom: 40px;
         
       .category {
-        width: 100px;
-        height: 100px;
-        background-color: $form_color_radio;
-        border-radius: 50%;
-        position: relative;
-        float: left;
-        margin-right: 10px;
+          width: 100px;
+          height: 100px;
+          background-color: $form_color_radio;
+          border-radius: 50%;
+          position: relative;
+          float: left;
+          margin-right: 10px;
           &:nth-child(n+4) {
               margin-top: 25px;
+          }
+          
+          @include smartphone {
+              width: 30%;
+              margin-right: 2%;
           }
 
         label {
@@ -196,6 +204,9 @@
 
       .date_time_info {
           width: 45%;
+          @include smartphone {
+              width: 100%;
+          }
           .date_info {
               float: left;
               margin-right: 50px;
@@ -413,12 +424,19 @@
 .location_info {
     width: 55%;
     margin-bottom: 40px;
+    
+    @include smartphone {
+        width: 100%;
+    }
 
   .location_type {
       margin-bottom: 10px;
     div {
       float: left;
       width: 150px;
+        @include smartphone {
+            width: 50%;
+        }
 
       .radio {
         display: block;
@@ -588,6 +606,10 @@
     background-color: transparent;
     cursor: pointer;
     width: 90%;
+      
+      @include smartphone {
+          font-size: 0.9em;
+      }
     
     i {
       float: right;
@@ -620,6 +642,12 @@
 
 .extra_url {
   margin-top: 40px;
+    label {
+        @include smartphone {
+            font-size: 0.9em;
+            left: 15px;
+        }
+    }
 }
 
 .visibility {

@@ -73,6 +73,9 @@ Route::group(['middleware' => ['auth', 'trainer']], function () {
     Route::get('exercises_overview', 'ExerciseController@exercises_overview');
     Route::get('add_exercise', 'ExerciseController@add_exercise');
     Route::post('add_exercise', 'ExerciseController@create_exercise');
+    Route::get('edit_exercise/{id}', 'ExerciseController@edit_exercise');
+    Route::post('edit_exercise', 'ExerciseController@update_exercise');
+    Route::get('delete_exercise/{id}', 'ExerciseController@delete_exercise');
     Route::get('exercise_details/{id}', 'ExerciseController@exercise_details');
     Route::get('deny_exercise/{id}', 'ExerciseController@deny_exercise');
     Route::get('approve_exercise/{id}', 'ExerciseController@approve_exercise');

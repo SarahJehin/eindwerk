@@ -15,6 +15,9 @@
                 Oefeningen overzicht
             </div>
             <div class="content clearfix">
+
+                <div class="link"><a href="{{url('add_exercise')}}"><i class="fa fa-plus" aria-hidden="true"></i> Oefening toevoegen</a></div>
+
                 <div class="filters_block float">
                     @foreach($tag_types as $tag_type => $tags)
                     <div class="tag_type_block">
@@ -149,7 +152,7 @@
                         </div>
                     </div>
 
-                    <div class="pagination_links apply_bootstrap">
+                    <div class="pagination_container apply_bootstrap">
                         {{$exercises->links()}} 
                     </div>
                 </div>

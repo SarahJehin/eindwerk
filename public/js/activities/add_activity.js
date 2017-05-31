@@ -81,6 +81,14 @@
         }
     }
 
+    //make categories height same as width
+    var categories = $('.categories .category');
+    $.each(categories, function(key, value) {
+        var category_width = parseInt($(value).css('width'));
+        var category_height = category_width;
+        $(value).css('height', category_height + 'px');
+    });
+
     //poster upload
     $('#poster').on('change', function(e){
 

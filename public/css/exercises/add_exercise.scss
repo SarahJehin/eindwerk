@@ -131,3 +131,34 @@
         }
     }
 }
+
+//edit exercise
+.edit_exercise {
+    .btns {
+        margin-top: 15px;
+        .delete {
+            width: 28%;
+            margin-right: 2%;
+            a {
+                color: #fff;
+                text-decoration: none;
+                display: block;
+                width: 100%;
+                text-align: center;
+                transition: background 0.3s ease;
+                padding: 10px 0;
+                font-size: 1.2em;
+                background: -webkit-linear-gradient(-216deg, #dd553b 0%, #bc0505 50%, #dd553b 100%);
+                background-size: 200% 100%;
+                
+                &:hover {
+                    background-position: 100%;
+                }
+            }
+        }
+        .submit {
+            margin-top: 0;
+            width: 70%;
+        }
+    }
+}

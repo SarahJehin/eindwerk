@@ -133,6 +133,8 @@ nav {
           i.fa {
               font-size: 1.5em;
               margin-right: 15px;
+              width: 30px;
+              text-align: center;
           }
           
             &:hover, &.active {
@@ -290,6 +292,7 @@ nav {
         }
     }
 }
+
 
 .tabs {
     .tab {

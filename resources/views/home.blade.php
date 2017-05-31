@@ -139,16 +139,30 @@
                 @endif
             </div>
 
-            <div class="winter_hours">
+            <div class="winterhours_block">
                 <h3>Mijn winteruren</h3>
-            </div>
-
-
-            <p>Welkom op het dashboard van TC Sportiva!</p>
-            <p>Op deze persoonlijke pagina vind je een overzicht van activiteiten waarvoor je bent ingeschreven, je winteruurschema('s), ...</p>
-
-            <div class="current_score">
-                Je huidige score is {{$total_adult_score}}
+                <div class="descriptive_info">
+                    Hieronder vind je een overzicht van de eerst drievolgende speeldata per winteruurgroep.
+                </div>
+                <div class="winterhours">
+                    @foreach($winterhours as $winterhour)
+                    <div class="winterhour">
+                        <h4>{{$winterhour['title']}}</h4>
+                        <div class="dates clearfix">
+                            @foreach($winterhour['dates'] as $date)
+                            <div class="date float">
+                                <h5>{{date('d/m/Y', strtotime($date->date))}}</h5>
+                                @foreach($date->assigned_participants as $participant)
+                                <div class="participant">
+                                    {{$participant->first_name}} {{substr($participant->last_name, 0, 1)}}.
+                                </div>
+                                @endforeach
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
+use App\Winterhour;
 use DB;
 
 class HomeController extends Controller
@@ -61,7 +62,32 @@ class HomeController extends Controller
                 }
             }
 
-            return view('home', ['user' => $user, 'total_adult_score' => $total_adult_score, 'total_youth_score' => $total_youth_score, 'badges' => $badges]);
+            $winterhours = array();
+            //foreach winterhour get the first three playdates for me
+            foreach ($user->winterhours as $winterhour) {
+                //get the first 3 dates where the authenticated user plays
+                //$winterhours['title'] = $winterhour->title;
+                //$winterhours['dates'] = array();
+                
+
+                $amount_of_dates = 0;
+                $dates = array();
+                foreach ($winterhour->dates as $date) {
+                    $assigned_ids = $date->assigned_participants->pluck('id')->toArray();
+                    if(in_array(Auth::user()->id, $assigned_ids)) {
+                        array_push($dates, $date);
+                        $amount_of_dates++;
+                        if($amount_of_dates > 2) {
+                            array_push($winterhours, ['title' => $winterhour->title, 'dates' => $dates]);
+                            break;
+                        }
+                    }
+                }
+            }
+            //dd($winterhours);
+            //dd($user->winterhours);
+
+            return view('home', ['user' => $user, 'total_adult_score' => $total_adult_score, 'total_youth_score' => $total_youth_score, 'badges' => $badges, 'winterhours' => $winterhours]);
         }
         else {
             session_start();

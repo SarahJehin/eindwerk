@@ -1,6 +1,16 @@
 .exercise_details {
     .block {
         width: 60%;
+        
+        .edit_button {
+            position: absolute;
+            right: 3%;
+        }
+        &:hover {
+            .edit_button {
+                display: block;
+            }
+        }
     }
     h3 {
         margin: 0;

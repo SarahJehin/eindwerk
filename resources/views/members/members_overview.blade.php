@@ -146,7 +146,7 @@
         				<div class="name float link">{{$member->last_name}} {{$member->first_name}}</div>
         				<div class="date float">
         					@if(strtotime($member->birth_date))
-        					{{date('d-m-Y', strtotime($member->birth_date))}}
+        					{{date('d/m/Y', strtotime($member->birth_date))}}
         					@endif
         				</div>
         				<div class="singles float">{{$member->ranking_singles}}</div>
@@ -167,7 +167,7 @@
 	        				</div>
 	        				<div class="birth_date smartphone">
 	        					<i class="fa fa-birthday-cake" aria-hidden="true"></i>
-	        					<span>{{$member->birth_date}}</span>
+	        					<span>{{date('d/m/Y', strtotime($member->birth_date))}}</span>
 	        				</div>
 	        				<div class="gsm float small_no_float">
 	        					<i class="fa fa-mobile" aria-hidden="true"></i>

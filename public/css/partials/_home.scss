@@ -242,6 +242,25 @@
     }
 }
 
+.winterhours_block {
+    .winterhours {
+        .winterhour {
+            h4 {
+                margin: 0;
+                margin-top: 5px;
+            }
+            .dates {
+                .date {
+                    margin-right: 25px;
+                    h5 {
+                        margin: 5px 0 1px;
+                    }
+                }
+            }
+        }
+    }
+}
+
 #update_profile_pic_modal {
     
     label {

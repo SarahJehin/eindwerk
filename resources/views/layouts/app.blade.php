@@ -79,8 +79,8 @@
                     <a class="{{ (Request::is('members_overview') ? 'active' : '') }}" href="{{url('members_overview')}}"><i class="fa fa-users" aria-hidden="true"></i><span class="menu_name">Leden</span></a>
                 </li>
                 @if(Auth::user()->isTrainer())
-                <li class="{{ (Request::is('exercises_overview') ? 'active' : '') }}">
-                    <a class="{{ (Request::is('exercises_overview') ? 'active' : '') }}" href="{{url('exercises_overview')}}"><i class="fa fa-bolt" aria-hidden="true"></i><span class="menu_name">Oefeningen</span></a>
+                <li class="{{ (Request::is('exercises_overview') || Request::is('add_exercise') ? 'active' : '') }}">
+                    <a class="{{ (Request::is('exercises_overview') || Request::is('add_exercise') ? 'active' : '') }}" href="{{url('exercises_overview')}}"><i class="fa fa-bolt" aria-hidden="true"></i><span class="menu_name">Oefeningen</span></a>
                 </li>
                 @endif
             </ul>

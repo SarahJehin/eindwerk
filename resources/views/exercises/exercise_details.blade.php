@@ -16,8 +16,13 @@
                 {{$exercise->name}}
             </div>
             <div class="content">
+                @if(Auth::user()->is_headtrainer || Auth::user()->id == $exercise->made_by)
+                <div class="edit_button">
+                    <a href="{{url('edit_exercise/' . $exercise->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
+                </div>
+                @endif
                 <div class="back_link">
-                    <a class="link" href="{{url('exercises_overview')}}">Terug naar overzicht</a>
+                    <a class="link" href="{{URL::previous()}}">Terug naar overzicht</a>
                 </div>
                 <h3>{{$exercise->name}}</h3>
                 <div class="clearfix">

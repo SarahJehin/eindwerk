@@ -54,8 +54,8 @@
                     var pagination_string = response.data.pagination_html;
                     pagination_string = pagination_string.split('<a').join('<div').split('</a>').join('</div>');
                     console.log(pagination_string);
-                    $('.pagination_links').html(pagination_string);
-                    $('.pagination_links div').removeAttr('href');
+                    $('.pagination_container').html(pagination_string);
+                    $('.pagination_container div').removeAttr('href');
                     //$('.pagination_links a').attr('href', '#');
                     //$('.pagination_links div').attr('ng-click', 'handle_filter($event, 2)');
                     $('.newest').hide();
@@ -86,7 +86,7 @@
             
         }
 
-        $('.exercises_overview .block').on('click', '.pagination_links .pagination li div', function() {
+        $('.exercises_overview .block').on('click', '.pagination_container .pagination li div', function() {
             console.log('tezfqsvkjhcvqsdkfj');
             console.log($(this).text());
             var page_nr = $(this).text();

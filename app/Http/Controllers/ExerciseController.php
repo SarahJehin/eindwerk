@@ -161,6 +161,25 @@ class ExerciseController extends Controller
     	dd($request);
     }
 
+    public function edit_exercise($id) {
+    	$exercise = Exercise::find($id);
+		$tag_types = Tag::all()->groupBy('type');
+		//dd($exercise->tags->pluck('id')->toArray());
+    	return view('exercises/edit_exercise', ['exercise' => $exercise, 'tag_types' => $tag_types]);
+    }
+
+    public function delete_exercise($id) {
+    	$exercise = Exercise::find($id);
+
+    	//remove detach all tags
+    	$exercise->tags()->detach();
+
+    	//soft delete the exercise
+    	$exercise->delete();
+
+		return redirect('exercises_overview')->with('success_msg', 'De oefening werd verwijderd.');
+    }
+
     public function deny_exercise($id) {
     	//only if authenticated user is headtrainer
     	if(Auth::user()->isHeadtrainer()) {

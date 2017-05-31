@@ -10,11 +10,11 @@
 @section('content')
 
 
-    <div class="add_exercise">
+    <div class="edit_exercise">
 
         <div class="block">
             <div class="heading">
-                Nieuwe oefening
+                Oefening bewerken: {{$exercise->name}}
             </div>
             <div class="content">
                 <div class="descriptive_info">
@@ -29,12 +29,12 @@
                         </ul>
                     </div>
                 @endif
-                <form class="form_with_input_anims" method="post" action="{{url('add_exercise')}}" enctype="multipart/form-data">
+                <form class="form_with_input_anims" method="post" action="{{url('edit_exercise')}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="title_and_description">
                         <h3><label for="title">Titel</label></h3>
                         <div class="field_wrap title">
-                            <input type="text" name="title" id="title" value="{{old('title')}}">
+                            <input type="text" name="title" id="title" value="{{old('title', $exercise->name)}}">
                         </div>
                         <h3><label for="summernote">Beschrijving</label></h3>
                         <div class="descriptive_info">
@@ -42,7 +42,7 @@
                         </div>
                         <div class="description">
                             <div class="field_wrap">
-                                <textarea name="description" id="description" hidden="hidden">{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" hidden="hidden">{{ old('description', $exercise->description) }}</textarea>
                                 <div id="summernote" class="apply_bootstrap"></div>
                             </div>
                         </div>
@@ -64,6 +64,13 @@
                                 <div class="delete"><i class="fa fa-times"></i></div>
                                 <input type="hidden" name="name_and_size[]" value="" hidden="">
                             </div>
+                            @foreach($exercise->images as $image)
+                            <div class="image float" identifier="">
+                                <img src="{{url('images/exercise_images/' . $image->path)}}">
+                                <div class="delete"><i class="fa fa-times"></i></div>
+                                <input type="hidden" name="name_and_size[]" value="" hidden="">
+                            </div>
+                            @endforeach
 
                             <div class="labelholder float first">
                                 <input id="images" type="file" accept="image/*" name="image[]" multiple="" hidden="">
@@ -84,7 +91,7 @@
                                 <h4>{{ucfirst($tag_type)}}</h4>
                                 @foreach($tags as $tag)
                                 <div class="tag">
-                                    <input id="{{$tag->id}}" type="checkbox" name="tags[]" value="{{$tag->id}}" hidden {{ (old('tags') ? (in_array($tag->id, old('tags')) ? "checked":"") : '') }}>
+                                    <input id="{{$tag->id}}" type="checkbox" name="tags[]" value="{{$tag->id}}" hidden {{ (old('tags') ? (in_array($tag->id, old('tags')) ? "checked":"") : (in_array($tag->id, $exercise->tags->pluck('id')->toArray()) ? "checked" : "")) }}>
                                     <label for="{{$tag->id}}">
                                         <span class="checkbox"><i class="fa fa-check"></i></span>
                                         <span class="name">{{ucfirst($tag->name)}}</span>
@@ -95,8 +102,13 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="submit">
-                        <input type="submit" name="" value="Oefening opslagen">
+                    <div class="btns clearfix">
+                        <div class="delete float">
+                            <a href="{{url('delete_exercise/' . $exercise->id)}}">Oefening verwijderen</a>
+                        </div>
+                        <div class="submit float">
+                            <input type="submit" name="" value="Oefening updaten">
+                        </div>
                     </div>
                 </form>
             </div>
