@@ -77,6 +77,19 @@
         </div>
 
 
+        <div id="exercise_image_modal" class="lightbox_modal">
+            <div class="modal">
+                <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+                <div class="modal_body">
+                    <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}" alt="{{$exercise->name}}">
+                </div>
+                <div class="modal_footer">
+                    {{$exercise->name}}
+                </div>
+            </div>
+        </div>
+
+
     </div>
 @endsection
 @section('custom_js')

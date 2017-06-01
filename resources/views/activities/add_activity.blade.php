@@ -88,6 +88,15 @@
                                             -->
                                         </div>
                                     </div>
+
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float">
+                                            <!-- no previous button on the first step -->
+                                        </div>
+                                        <div class="next link" step="2">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                     
                                 </div>
                             </div>
@@ -119,118 +128,136 @@
 
                                     </div>
 
-                                </div>
-                            </div>
-                            <div class="part03">
-                                <div class="step_content clearfix">
-
-                                    @if ($errors->get('startdate') || $errors->get('deadline') || $errors->get('time'))
-                                        <div class="error_msg">
-                                            <ul>
-                                                @foreach ($errors->get('startdate') as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                                @foreach ($errors->get('deadline') as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                                @foreach ($errors->get('starttime') as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                                @foreach ($errors->get('endtime') as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                                @foreach ($errors->get('location') as $error)
-                                                    <li>Locatie op kaart is verplicht indien je 'Andere locatie' gekozen hebt.</li>
-                                                @endforeach
-                                                @if($errors->get('latitude') || $errors->get('longitude'))
-                                                    <li>Zorg ervoor dat er een marker op het kaartje staat.</li>
-                                                @endif
-                                            </ul>
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="1">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
                                         </div>
-                                    @endif
-
-                                    <div class="date_time_info float clearfix">
-                                        
-
-                                        <div class="date_info">
-                                            <h3>Datum</h3>
-                                            <div class="date_type clearfix">
-                                                <div class="startdate float">
-                                                    <span class="radio">
-                                                        <span class="bullet selected"></span>
-                                                    </span>
-                                                    <span class="label">Datum</span>
-                                                </div>
-                                                <div class="deadline float">
-                                                    <span class="radio">
-                                                        <span class="bullet"></span>
-                                                    </span>
-                                                    <span class="label">Deadline</span>
-                                                </div>
-                                            </div>
-                                            <div class="datepicker_box">
-                                                <div class="container_startdate front">
-
-                                                </div>
-
-                                                <div class="container_deadline">
-
-                                                </div>
-                                            </div>
-                                            
-
-                                            <input type="date" id="startdate" name="startdate" hidden value="{{old('startdate')}}">
-                                            <input type="date" id="deadline" name="deadline" hidden value="{{old('deadline')}}">
-
-                                        </div>
-
-                                        <div class="starttime">
-                                            <h3><label for="starttime">Start</label></h3>
-                                            <div class="field_wrap">
-                                                <input type="text" name="starttime" id="starttime" value="{{old('starttime', '14:00')}}">
-                                            </div>
-                                            
-                                        </div>
-
-                                        <div class="endtime">
-                                            <h3><label for="endtime">Eind</label></h3>
-                                            <div class="field_wrap">
-                                                <input type="text" name="endtime" id="endtime" value="{{old('endtime', '17:00')}}">
-                                            </div>
+                                        <div class="next link" step="3">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
                                         </div>
                                     </div>
 
-
-                                    <div class="location_info float">
-                                        <h3>Locatie</h3>
-                                        <div class="location_type">
-                                            <div class="loc_sportiva">
-                                                <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden <?php if(old('location_type') != 'else') { echo('checked'); } ?>>
-                                                <label for="loc_sportiva">
-                                                    <span class="radio">
-                                                        <span class="bullet <?php if(old('location_type') != 'else') { echo('selected'); } ?>"></span>
-                                                    </span>
-                                                    <span>Sportiva</span>
-                                                </label>
+                                </div>
+                            </div>
+                            <div class="part03">
+                                <div class="step_content">
+                                    <div class="clearfix">
+                                        @if ($errors->get('startdate') || $errors->get('deadline') || $errors->get('time'))
+                                            <div class="error_msg">
+                                                <ul>
+                                                    @foreach ($errors->get('startdate') as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                    @foreach ($errors->get('deadline') as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                    @foreach ($errors->get('starttime') as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                    @foreach ($errors->get('endtime') as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                    @foreach ($errors->get('location') as $error)
+                                                        <li>Locatie op kaart is verplicht indien je 'Andere locatie' gekozen hebt.</li>
+                                                    @endforeach
+                                                    @if($errors->get('latitude') || $errors->get('longitude'))
+                                                        <li>Zorg ervoor dat er een marker op het kaartje staat.</li>
+                                                    @endif
+                                                </ul>
                                             </div>
-                                            <div class="loc_else">
-                                                <input type="radio" id="loc_else" name="location_type" value="else" hidden <?php if(old('location_type') == 'else') { echo('checked'); } ?>>
-                                                <label for="loc_else">
-                                                    <span class="radio">
-                                                        <span class="bullet <?php if(old('location_type') == 'else') { echo('selected'); } ?>"></span>
-                                                    </span>
-                                                    <span>Andere locatie</span>
-                                                </label>
+                                        @endif
+
+                                        <div class="date_time_info float clearfix">
+                                            
+
+                                            <div class="date_info">
+                                                <h3>Datum</h3>
+                                                <div class="date_type clearfix">
+                                                    <div class="startdate float">
+                                                        <span class="radio">
+                                                            <span class="bullet selected"></span>
+                                                        </span>
+                                                        <span class="label">Datum</span>
+                                                    </div>
+                                                    <div class="deadline float">
+                                                        <span class="radio">
+                                                            <span class="bullet"></span>
+                                                        </span>
+                                                        <span class="label">Deadline</span>
+                                                    </div>
+                                                </div>
+                                                <div class="datepicker_box">
+                                                    <div class="container_startdate front">
+
+                                                    </div>
+
+                                                    <div class="container_deadline">
+
+                                                    </div>
+                                                </div>
+                                                
+
+                                                <input type="date" id="startdate" name="startdate" hidden value="{{old('startdate')}}">
+                                                <input type="date" id="deadline" name="deadline" hidden value="{{old('deadline')}}">
+
+                                            </div>
+
+                                            <div class="starttime">
+                                                <h3><label for="starttime">Start</label></h3>
+                                                <div class="field_wrap">
+                                                    <input type="text" name="starttime" id="starttime" value="{{old('starttime', '14:00')}}">
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="endtime">
+                                                <h3><label for="endtime">Eind</label></h3>
+                                                <div class="field_wrap">
+                                                    <input type="text" name="endtime" id="endtime" value="{{old('endtime', '17:00')}}">
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="google_maps">
-                                            <input id="place-input" class="controls" type="text" placeholder="Locatie zoeken ..." name="location">
-                                            <div id="map"></div>
-                                        </div>
-                                        <input id="latitude" name="latitude" type="text" value="{{old('latitude')}}" required hidden>
-                                        <input id="longitude" name="longitude" type="text" value="{{old('longitude')}}" required hidden>
 
+                                        <div class="location_info float">
+                                            <h3>Locatie</h3>
+                                            <div class="location_type">
+                                                <div class="loc_sportiva">
+                                                    <input type="radio" id="loc_sportiva" name="location_type" value="sportiva" hidden <?php if(old('location_type') != 'else') { echo('checked'); } ?>>
+                                                    <label for="loc_sportiva">
+                                                        <span class="radio">
+                                                            <span class="bullet <?php if(old('location_type') != 'else') { echo('selected'); } ?>"></span>
+                                                        </span>
+                                                        <span>Sportiva</span>
+                                                    </label>
+                                                </div>
+                                                <div class="loc_else">
+                                                    <input type="radio" id="loc_else" name="location_type" value="else" hidden <?php if(old('location_type') == 'else') { echo('checked'); } ?>>
+                                                    <label for="loc_else">
+                                                        <span class="radio">
+                                                            <span class="bullet <?php if(old('location_type') == 'else') { echo('selected'); } ?>"></span>
+                                                        </span>
+                                                        <span>Andere locatie</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="google_maps">
+                                                <input id="place-input" class="controls" type="text" placeholder="Locatie zoeken ..." name="location">
+                                                <div id="map"></div>
+                                            </div>
+                                            <input id="latitude" name="latitude" type="text" value="{{old('latitude')}}" required hidden>
+                                            <input id="longitude" name="longitude" type="text" value="{{old('longitude')}}" required hidden>
+
+                                        </div>
+                                    </div>
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="2">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
+                                        </div>
+                                        <div class="next link" step="4">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -304,6 +331,15 @@
                                         <button type="submit">
                                             Activiteit aanmaken
                                         </button>
+                                    </div>
+
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="3">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
+                                        </div>
+                                        <div class="next link">
+                                            <!-- no next button available -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>

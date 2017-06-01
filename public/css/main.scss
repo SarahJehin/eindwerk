@@ -445,6 +445,13 @@ nav {
   }
 }
 
+.previous_next {
+    margin-top: 20px;
+    .next {
+        float: right;
+    }
+}
+
 
 //forms general styling
 @import "partials/form_styling";

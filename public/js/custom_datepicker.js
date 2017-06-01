@@ -179,7 +179,23 @@
                 deadline_month_new--;
             }
         }
-
+    }
+    else {
+        //when on edit activity, and deadline = empty, make sure deadline month is set to the same as startmonth:
+        //deadlinemonth will default be current month:
+        startMonth = parseInt(startMonth);
+        var deadline_month_new = deadlineMonth;
+        while (startMonth != deadline_month_new) {
+            //console.log("startmonth : " + startMonth + " and deadlinemonth: " + deadline_month_new);
+            if(startMonth > deadline_month_new) {
+                $( ".container_deadline .datepicker-months tr th.next" ).trigger( "click" );
+                deadline_month_new++;
+            }
+            else if(startMonth < deadline_month_new) {
+                $( ".container_deadline .datepicker-months tr th.prev" ).trigger( "click" );
+                deadline_month_new--;
+            }
+        }
 
     }
 

@@ -135,7 +135,7 @@
     $(".timeline div[class^='step']").click(function () {
         //console.log($(this).attr("class"));
         previous_clicked_step = $('.timeline .reached').text();
-        console.log(previous_clicked_step);
+        //console.log(previous_clicked_step);
         $('div[class^="step"]').removeClass('reached');
         //get current step to display correct content
         var step = $(this).attr("class").replace("step", "");
@@ -151,6 +151,13 @@
 
         $('.filled_line').css('width', $filled_percentage + "%");
 
+    });
+
+    //next previous
+    $(".previous_next div").click(function() {
+        var step_clicked = $(this).attr('step');
+        //console.log(step_clicked);
+        $('.timeline .step' + step_clicked).trigger('click');
     });
 
     //LIGHTBOX

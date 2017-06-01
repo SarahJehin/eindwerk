@@ -33,6 +33,10 @@
                 padding-left: 1%;
                 width: 40%;
                 margin-right: 19%;
+                @include smartphone {
+                    width: 100%;
+                    margin-right: 0;
+                }
                 .day_select, .hour_select {
                     margin-bottom: 35px;
                     
@@ -67,11 +71,18 @@
             }
             .date {
                 width: 40%;
+                @include smartphone {
+                    width: 100%;
+                }
                 .container_date {
                     position: relative;
                     width: 215px;
                     border: 1px solid #eee;
                     padding: 15px 25px;
+                    
+                    @include smartphone {
+                        padding: 5px;
+                    }
                     
                     .disable_datepicker {
                         position: absolute;
@@ -262,6 +273,10 @@
                     font-size: 0.9em;
                     &:nth-child(4n+4) {
                         margin-right: 0;
+                    }
+                    @include smartphone {
+                        width: 30%;
+                        margin-right: 3%;
                     }
                     h3 {
                         margin-bottom: 5px;

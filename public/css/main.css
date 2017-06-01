@@ -311,6 +311,11 @@ nav {
       line-height: 30px;
       border: 0; }
 
+.previous_next {
+  margin-top: 20px; }
+  .previous_next .next {
+    float: right; }
+
 .field_wrap {
   position: relative;
   width: 100%;
@@ -1611,6 +1616,10 @@ button.submit {
         color: #e51853; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.clubdagen {
         color: #e8780a; }
+      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.tornooi {
+        color: #5abfcc; }
+      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.andere {
+        color: #751a8b; }
     .activity_details .activity_info .sign_up .sign_up_info .sign_up_others {
       display: none;
       margin-bottom: 15px; }
@@ -1664,6 +1673,10 @@ button.submit {
       color: #e51853; }
     .activity_details .activity_info h4.clubdagen {
       color: #e8780a; }
+    .activity_details .activity_info h4.tornooi {
+      color: #5abfcc; }
+    .activity_details .activity_info h4.andere {
+      color: #751a8b; }
   .activity_details .activity_info i {
     width: 25px; }
   .activity_details #poster_modal .modal_footer {
@@ -2258,6 +2271,10 @@ button.submit {
   padding-left: 1%;
   width: 40%;
   margin-right: 19%; }
+  @media (max-width: 768px) {
+    .add_winterhour .form_part .date_and_time .day_and_time, .edit_winterhour .form_part .date_and_time .day_and_time {
+      width: 100%;
+      margin-right: 0; } }
   .add_winterhour .form_part .date_and_time .day_and_time .day_select, .add_winterhour .form_part .date_and_time .day_and_time .hour_select, .edit_winterhour .form_part .date_and_time .day_and_time .day_select, .edit_winterhour .form_part .date_and_time .day_and_time .hour_select {
     margin-bottom: 35px; }
     .add_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-toggle, .add_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-toggle, .edit_winterhour .form_part .date_and_time .day_and_time .day_select .bootstrap-select .dropdown-toggle, .edit_winterhour .form_part .date_and_time .day_and_time .hour_select .bootstrap-select .dropdown-toggle {
@@ -2277,11 +2294,17 @@ button.submit {
           color: #fff; }
 .add_winterhour .form_part .date_and_time .date, .edit_winterhour .form_part .date_and_time .date {
   width: 40%; }
+  @media (max-width: 768px) {
+    .add_winterhour .form_part .date_and_time .date, .edit_winterhour .form_part .date_and_time .date {
+      width: 100%; } }
   .add_winterhour .form_part .date_and_time .date .container_date, .edit_winterhour .form_part .date_and_time .date .container_date {
     position: relative;
     width: 215px;
     border: 1px solid #eee;
     padding: 15px 25px; }
+    @media (max-width: 768px) {
+      .add_winterhour .form_part .date_and_time .date .container_date, .edit_winterhour .form_part .date_and_time .date .container_date {
+        padding: 5px; } }
     .add_winterhour .form_part .date_and_time .date .container_date .disable_datepicker, .edit_winterhour .form_part .date_and_time .date .container_date .disable_datepicker {
       position: absolute;
       width: 100%;
@@ -2415,6 +2438,10 @@ button.submit {
   font-size: 0.9em; }
   .add_winterhour .form_part .scheme_generation .scheme .date:nth-child(4n+4), .edit_winterhour .form_part .scheme_generation .scheme .date:nth-child(4n+4) {
     margin-right: 0; }
+  @media (max-width: 768px) {
+    .add_winterhour .form_part .scheme_generation .scheme .date, .edit_winterhour .form_part .scheme_generation .scheme .date {
+      width: 30%;
+      margin-right: 3%; } }
   .add_winterhour .form_part .scheme_generation .scheme .date h3, .edit_winterhour .form_part .scheme_generation .scheme .date h3 {
     margin-bottom: 5px;
     border-bottom: 1px solid #1abc9c;
@@ -2463,10 +2490,19 @@ button.submit {
     display: none; }
   .winterhours_overview .winterhour_group .participants .participant .name {
     width: 20%; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .participants .participant .name {
+        width: 55%; } }
   .winterhours_overview .winterhour_group .participants .participant .gsm {
     width: 20%; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .participants .participant .gsm {
+        width: 45%; } }
   .winterhours_overview .winterhour_group .participants .participant .email {
     width: 30%; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .participants .participant .email {
+        display: none; } }
   .winterhours_overview .winterhour_group .participants .participant:hover {
     background-color: rgba(26, 188, 156, 0.1); }
 .winterhours_overview .winterhour_group .swap_message {
@@ -2484,8 +2520,17 @@ button.submit {
   margin-right: 4%; }
   .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
     margin-right: 0; }
+  @media (max-width: 768px) {
+    .winterhours_overview .winterhour_group .scheme .date {
+      width: 30%;
+      margin-right: 3%;
+      font-size: 0.9em; } }
   .winterhours_overview .winterhour_group .scheme .date h3 {
-    border-bottom: 1px solid #1abc9c; }
+    border-bottom: 1px solid #1abc9c;
+    cursor: initial; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .scheme .date h3 .year {
+        display: none; } }
   .winterhours_overview .winterhour_group .scheme .date .participant {
     font-size: 0.9em;
     border: 1px solid transparent; }
@@ -2501,6 +2546,14 @@ button.submit {
       background: rgba(26, 188, 156, 0.6);
       color: #fff;
       border: 1px dashed #1abc9c; }
+    .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+      display: none; }
+      @media (max-width: 768px) {
+        .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+          display: inline; } }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .scheme .date .participant .last_name_desktop {
+        display: none; } }
 
 .availabilities .back {
   margin-bottom: 25px; }

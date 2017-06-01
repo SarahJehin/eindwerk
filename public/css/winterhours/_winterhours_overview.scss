@@ -29,12 +29,21 @@
             .participant {
                 .name {
                     width: 20%;
+                    @include smartphone {
+                        width: 55%;
+                    }
                 }
                 .gsm {
                     width: 20%;
+                    @include smartphone {
+                        width: 45%;
+                    }
                 }
                 .email {
                     width: 30%;
+                    @include smartphone {
+                        display: none;
+                    }
                 }
                 &:hover {
                     background-color: rgba($theme_color01, 0.1);
@@ -63,8 +72,21 @@
                 &:nth-child(4n+4) {
                     margin-right: 0;
                 }
+                
+                @include smartphone {
+                    width: 30%;
+                    margin-right: 3%;
+                    font-size: 0.9em;
+                }
+                
                 h3 {
                     border-bottom: 1px solid $theme_color01;
+                    cursor: initial;
+                    .year {
+                        @include smartphone {
+                            display: none;
+                        }
+                    }
                 }
                 .participant {
                     font-size: 0.9em;
@@ -87,6 +109,18 @@
                         background: rgba($theme_color01, 0.6);
                         color: #fff;
                         border: 1px dashed $theme_color01;
+                    }
+                    
+                    .last_name_smartphone {
+                        display: none;
+                        @include smartphone {
+                            display: inline;
+                        }
+                    }
+                    .last_name_desktop {
+                        @include smartphone {
+                            display: none;
+                        }
                     }
                 }
             }

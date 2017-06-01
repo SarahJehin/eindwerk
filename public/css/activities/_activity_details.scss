@@ -280,6 +280,12 @@
                           &.clubdagen {
                               color: $clubdagen;
                           }
+                          &.tornooi {
+                              color: $tournament;
+                          }
+                          &.andere {
+                              color: $other;
+                          }
                       }
                     
                 }
@@ -366,6 +372,12 @@
             }
             &.clubdagen {
                 color: $clubdagen;
+            }
+            &.tornooi {
+                color: $tournament;
+            }
+            &.andere {
+                color: $other;
             }
         }
         

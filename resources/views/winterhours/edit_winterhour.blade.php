@@ -103,6 +103,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float">
+
+                                        </div>
+                                        <div class="next link" step="2">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="part02">
@@ -181,6 +189,14 @@
                                         <input type="submit" value="Groep updaten">
                                     </div>
                                     @endif
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="1">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
+                                        </div>
+                                        <div class="next link" step="3">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="part03">
@@ -219,7 +235,14 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="2">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
+                                        </div>
+                                        <div class="next link" step="4">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="part04">
@@ -287,8 +310,16 @@
                                             @endif
                                         @endif
                                     @elseif($winterhour->status < 2)
-                                    Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.
+                                    <div>Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.</div>
                                     @endif
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="3">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
+                                        </div>
+                                        <div class="next link">
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

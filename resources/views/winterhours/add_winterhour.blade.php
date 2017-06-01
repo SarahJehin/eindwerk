@@ -94,6 +94,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float">
+
+                                        </div>
+                                        <div class="next link" step="2">
+                                            Volgende <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="part02">
@@ -158,6 +166,14 @@
                                         <input type="submit" value="Groep aanmaken">
                                     </div>
 
+                                    <div class="previous_next clearfix">
+                                        <div class="previous link float" step="1">
+                                            <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
+                                        </div>
+                                        <div class="next link">
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="part03">

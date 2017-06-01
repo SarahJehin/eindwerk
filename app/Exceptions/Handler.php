@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +45,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof TokenMismatchException){
+            // Catch it here and do what you want. For example...
+            //dd('test?');
+            return redirect()->back()->withInput()->with('session_expired', 'Je sessie was verlopen, log opnieuw in.');
+        }
         return parent::render($request, $exception);
     }
 

@@ -395,6 +395,8 @@ class UserController extends Controller
 						$user->ranking_doubles 	= $ranking_doubles;
 						$user->gsm 				= $gsm_nr;
 						$user->tel 				= $tel_nr;
+                        $user->birth_date       = $birth_date;
+                        $user->gender           = strtoupper($member->mv);
                         $user->updated_at       = date('Y-m-d H:i:s');
 					}
                     else {

@@ -28,6 +28,11 @@
                         <div class="error float">{{ $errors->all()[0] }}</div>
                     </div>
                 @endif
+                @if (session('session_expired'))
+                    <div class="error_msg">
+                        {{ session('session_expired') }}
+                    </div>
+                @endif
 
                 <div class="content">
                     <form id="login_form" method="post" action="{{ route('login') }}">
