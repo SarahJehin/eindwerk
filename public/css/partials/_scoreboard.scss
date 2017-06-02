@@ -339,6 +339,10 @@
             &:not(:first-child) {
                     border: 1px solid rgba($theme_color01, 0.25);
             }
+            &:last-child {
+                background-color: rgba($theme_color01, 0.5);
+                color: #fff;
+            }
             @include smartphone {
                 &:not(:first-child):not(:last-child) {
                     display: none;

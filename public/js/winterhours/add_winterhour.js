@@ -188,6 +188,94 @@
         return dateArray;
     }
 
+
+
+    //participants
+    var not_ids = [0];
+    $('.add_participants').on('keyup', '.search_select .bs-searchbox input', function(e) {
+        console.log("blieblabloe !!!!!!!");
+        if(e.which != 38 && e.which != 40 && e.which != 13) {
+            $.each($('.add_participants .add_participant input.id'), function(key, person) {
+                var value = $(person).val();
+                if(value) {
+                    not_ids.push(parseInt(value));
+                }
+            });
+
+            //$('.search_select select').empty();
+            //$('search_select select option').not('option:first').remove();
+            var searchstring    = $(this).val();
+            if(searchstring.length > 0) {
+                //get 5 first search results //add , not_ids: not_ids beneath
+                $.get( location.origin + "/api/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
+                    $('.search_select select').empty();
+                    $.each(data, function( key, result ) {
+                        var id = result["id"];
+                        var first_name = result["first_name"];
+                        var last_name = result["last_name"];
+                        var new_list_item = '<option value="' + id + '">' + first_name + ' ' + last_name + '</option>';
+                        $('.search_select select').append(new_list_item);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                    if(data.length < 1) {
+                        //$new_list_item = '<li>Geen leden gevonden</li>';
+                        //$('.search_results ul').append($new_list_item);
+                    }
+                }, "json" );
+            }
+            else {
+                $('.search_results ul').empty();
+            }
+            //console.log($('.search_select select option:selected').text());
+        }
+        
+
+    });
+    
+    $('.add_participants').on('DOMSubtreeModified', '.search_select .bootstrap-select .dropdown-toggle span.filter-option', function() {
+        console.log('do you reach this?');
+        //console.log($(this));
+        console.log($('.search_select .dropdown-toggle span.filter-option').text());
+        
+        var add_participant_block = $(this).parent().parent().parent().parent().parent();
+        var value = add_participant_block.find('.search_select .dropdown-toggle span.filter-option').text();
+        //$('.bootstrap-select .bs-searchbox input').val($('.bootstrap-select .dropdown-toggle span.filter-option').text());
+        if(value != 'default') {
+            console.log('now you are allowed to enter')
+            //get the select value
+            var participant_name = value;
+            var participant_id = add_participant_block.find('.search_select select').val();
+            console.log('participant name is ' +participant_name);
+            console.log('partivipant id is ' + participant_id);
+            console.log(participant_name + ' ' + participant_id);
+            //console.log($(this).parent().parent().parent().parent().parent());
+
+            
+            var input = add_participant_block.find('input.name');
+            var id_input = add_participant_block.find('input.id');
+            var name_input = add_participant_block.find('input.participant_name');
+            var delete_btn = add_participant_block.find('.delete');
+            //console.log(delete_btn);
+            input.val($(this).text());
+            input.attr('readonly', 'true');
+            input.attr('disabled', 'true');
+            input.show();
+            id_input.val($(this).attr('user_id'));
+            name_input.val($(this).text());
+            delete_btn.removeClass('not_working');
+
+            var new_input = $('.add_participants .template').clone();
+            new_input.removeClass('template');
+            new_input.find('input.id').removeAttr('disabled');
+            new_input.find('input.participant_name').removeAttr('disabled');
+            $('.add_participants').append(new_input);
+            $('.selectpicker').selectpicker();
+            
+        }
+        
+    });
+
+
     var not_ids = [0];
     //search participants for winterhour
     $('.add_participants').on('keyup', '.search_participants', function() {

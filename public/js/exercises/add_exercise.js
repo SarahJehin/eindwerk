@@ -141,7 +141,8 @@
                             new_image_block.find('img').attr('src', event.target.result).attr('alt', file.name);
                             new_image_block.find('input').val(file.name + file.size);
                             //console.log($(new_image_block))
-                            $(new_image_block).prependTo($('.images'));
+                            //$(new_image_block).prependTo($('.images'));
+                            $(new_image_block).insertBefore($('.images .template'));
                             //console.log($($.parseHTML('<img>')).attr('src', event.target.result));
                             //$($.parseHTML('<img>')).attr('src', event.target.result).appendTo($('.images'));
                             var image_width = parseInt($('.images .image').css('width'));

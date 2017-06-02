@@ -118,8 +118,29 @@
                                                 <input type="number" name="participant_id[]" class="id" hidden="" disabled="">
                                                 <div class="search_results">
                                                     <ul>
-                                                        <li>Sarah Jehin</li>
-                                                        <li>Glass Sorenson</li>
+                                                        <li></li>
+                                                        <li></li>
+                                                    </ul>
+                                                </div>
+                                                <!--
+                                                <div class="search_select apply_bootstrap">
+                                                    <select class="selectpicker" data-live-search="true" title="default">
+                                                    
+                                                    </select>
+                                                </div>
+                                                -->
+                                            </div>
+                                            <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                        </div>
+                                        <div class="add_participant clearfix">
+                                            <div class="search_functionality float">
+                                                <input type="text" class="search_participants name" name="participant[]" value="{{Auth::user()->first_name}} {{Auth::user()->last_name}}" readonly="" disabled="">
+                                                <input type="text" name="participant_name[]" class="participant_name" hidden="" value="{{Auth::user()->first_name}} {{Auth::user()->last_name}}">
+                                                <input type="number" name="participant_id[]" class="id" hidden="" value="{{Auth::user()->id}}">
+                                                <div class="search_results">
+                                                    <ul>
+                                                        <li></li>
+                                                        <li></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -134,8 +155,8 @@
                                                     <input type="number" name="participant_id[]" class="id" hidden="" value="{{old('participant_id')[$i]}}">
                                                     <div class="search_results">
                                                         <ul>
-                                                            <li>Sarah Jehin</li>
-                                                            <li>Glass Sorenson</li>
+                                                            <li></li>
+                                                            <li></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -154,6 +175,13 @@
                                                         <li>Glass Sorenson</li>
                                                     </ul>
                                                 </div>
+                                                <!--
+                                                <div class="search_select apply_bootstrap">
+                                                    <select class="selectpicker" data-live-search="true" title="default">
+                                                    
+                                                    </select>
+                                                </div>
+                                                -->
                                             </div>
                                             <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>

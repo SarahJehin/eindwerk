@@ -12,9 +12,9 @@
             </div>
             <div class="content">
 
-                <div class="link"><a href="{{url('add_activity')}}"><i class="fa fa-plus" aria-hidden="true"></i> Activiteit toevoegen</a></div>
+                <div class="add_activity_link clearfix"><a href="{{url('add_activity')}}" data-toggle="tooltip" data-placement="left" title="Activiteit toevoegen"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
 
-                <h3>Komende activiteiten</h3>
+                <h3 class="first">Komende activiteiten</h3>
 
                 <div class="list">
                     <div class="activity header clearfix">

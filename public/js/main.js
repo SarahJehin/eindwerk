@@ -13,6 +13,9 @@
           'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    //tooltips
+    $('[data-toggle="tooltip"]').tooltip();
     
     // LOGIN
     //login anims (code from: http://codepen.io/ehermanson/pen/KwKWEv)
@@ -192,6 +195,10 @@
         }
     }
 */
+
+    //console.log($('.page_container').height());
+    //set lightbox modal bg to full page height
+    $('.lightbox_modal').css('height', $('.page_container').height() + 'px');
 
 /*
     // ADD ACTIVITY

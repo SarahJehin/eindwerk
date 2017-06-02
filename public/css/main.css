@@ -238,7 +238,6 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 5;
   display: none; }
@@ -640,7 +639,7 @@ button.submit {
         .personal_info .data .badges .badge span {
           position: absolute;
           color: #fff;
-          top: 25%;
+          top: 16%;
           left: 30%; }
         .personal_info .data .badges .badge i.fa {
           font-size: 2.5em; }
@@ -1334,11 +1333,29 @@ button.submit {
 .slider_block::after {
   clear: both; }
 
+.activities_overview .content .links {
+  margin-right: 25px; }
+  .activities_overview .content .links div {
+    float: right; }
+    .activities_overview .content .links div a {
+      padding: 8px 14px;
+      background-color: rgba(26, 188, 156, 0.6);
+      border-radius: 50%;
+      color: #fff;
+      -webkit-transition: background-color 0.2s ease;
+      -moz-transition: background-color 0.2s ease;
+      -ms-transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease; }
+      .activities_overview .content .links div a:nth-child(1) {
+        padding: 8px 13px;
+        margin-right: 10px; }
+      .activities_overview .content .links div a:hover {
+        background-color: #1abc9c; }
 .activities_overview .content .edit_button {
   margin: 0;
   position: absolute;
   top: 40px;
-  padding: 25px;
+  padding-right: 25px;
   right: 40px; }
   @media (max-width: 768px) {
     .activities_overview .content .edit_button {
@@ -1683,6 +1700,20 @@ button.submit {
     text-align: center;
     font-style: italic; }
 
+.activities_list .add_activity_link a {
+  float: right;
+  padding: 8px 14px;
+  background-color: rgba(26, 188, 156, 0.6);
+  border-radius: 50%;
+  color: #fff;
+  -webkit-transition: background-color 0.2s ease;
+  -moz-transition: background-color 0.2s ease;
+  -ms-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease; }
+  .activities_list .add_activity_link a:hover {
+    background-color: #1abc9c; }
+.activities_list h3.first {
+  margin-top: -10px; }
 .activities_list .list .activity {
   border-bottom: 1px solid #9CAFB9;
   border-bottom: 1px solid rgba(26, 188, 156, 0.25);
@@ -2038,6 +2069,9 @@ button.submit {
     padding: 10px 5px; }
     .board .table-header-rotated td:not(:first-child) {
       border: 1px solid rgba(26, 188, 156, 0.25); }
+    .board .table-header-rotated td:last-child {
+      background-color: rgba(26, 188, 156, 0.5);
+      color: #fff; }
     @media (max-width: 768px) {
       .board .table-header-rotated td:not(:first-child):not(:last-child) {
         display: none; } }
@@ -2329,6 +2363,8 @@ button.submit {
   margin-bottom: 25px; }
   .add_winterhour .form_part .add_participants .add_participant.template, .edit_winterhour .form_part .add_participants .add_participant.template {
     display: none; }
+  .add_winterhour .form_part .add_participants .add_participant .search_select .bootstrap-select .dropdown-menu, .edit_winterhour .form_part .add_participants .add_participant .search_select .bootstrap-select .dropdown-menu {
+    display: block; }
   .add_winterhour .form_part .add_participants .add_participant .search_functionality, .edit_winterhour .form_part .add_participants .add_participant .search_functionality {
     width: 98%; }
     .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants, .edit_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants {
@@ -2470,90 +2506,101 @@ button.submit {
 .add_winterhour .form_part .groupname input:disabled, .edit_winterhour .form_part .groupname input:disabled {
   cursor: not-allowed; }
 
-.winterhours_overview .add_winterhour {
-  width: 100%;
-  text-align: right; }
-.winterhours_overview .winterhour_group h3 {
-  margin-bottom: 0;
-  cursor: pointer; }
-.winterhours_overview .winterhour_group .day_time {
-  font-size: 0.9em;
-  font-weight: 300; }
-  .winterhours_overview .winterhour_group .day_time a {
-    font-weight: 500; }
-.winterhours_overview .winterhour_group .participants {
-  font-size: 0.9em; }
-  .winterhours_overview .winterhour_group .participants h4 {
-    margin-bottom: 0px;
+.winterhours_overview .add_winterhour_link a {
+  float: right;
+  padding: 8px 14px;
+  background-color: rgba(26, 188, 156, 0.6);
+  border-radius: 50%;
+  color: #fff;
+  -webkit-transition: background-color 0.2s ease;
+  -moz-transition: background-color 0.2s ease;
+  -ms-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease; }
+  .winterhours_overview .add_winterhour_link a:hover {
+    background-color: #1abc9c; }
+.winterhours_overview .winterhour_group {
+  margin-bottom: 20px; }
+  .winterhours_overview .winterhour_group h3 {
+    margin: 0;
     cursor: pointer; }
-  .winterhours_overview .winterhour_group .participants .participants_block {
-    display: none; }
-  .winterhours_overview .winterhour_group .participants .participant .name {
-    width: 20%; }
-    @media (max-width: 768px) {
-      .winterhours_overview .winterhour_group .participants .participant .name {
-        width: 55%; } }
-  .winterhours_overview .winterhour_group .participants .participant .gsm {
-    width: 20%; }
-    @media (max-width: 768px) {
-      .winterhours_overview .winterhour_group .participants .participant .gsm {
-        width: 45%; } }
-  .winterhours_overview .winterhour_group .participants .participant .email {
-    width: 30%; }
-    @media (max-width: 768px) {
-      .winterhours_overview .winterhour_group .participants .participant .email {
-        display: none; } }
-  .winterhours_overview .winterhour_group .participants .participant:hover {
-    background-color: rgba(26, 188, 156, 0.1); }
-.winterhours_overview .winterhour_group .swap_message {
-  margin-top: 25px;
-  padding: 2px 5px;
-  border-radius: 5px;
-  text-align: center;
-  display: none; }
-  .winterhours_overview .winterhour_group .swap_message.failed {
-    border: 1px solid #ce311c; }
-  .winterhours_overview .winterhour_group .swap_message.success {
-    border: 1px solid #14aa6f; }
-.winterhours_overview .winterhour_group .scheme .date {
-  width: 22%;
-  margin-right: 4%; }
-  .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
-    margin-right: 0; }
-  @media (max-width: 768px) {
-    .winterhours_overview .winterhour_group .scheme .date {
-      width: 30%;
-      margin-right: 3%;
-      font-size: 0.9em; } }
-  .winterhours_overview .winterhour_group .scheme .date h3 {
-    border-bottom: 1px solid #1abc9c;
-    cursor: initial; }
-    @media (max-width: 768px) {
-      .winterhours_overview .winterhour_group .scheme .date h3 .year {
-        display: none; } }
-  .winterhours_overview .winterhour_group .scheme .date .participant {
+  .winterhours_overview .winterhour_group .day_time {
     font-size: 0.9em;
-    border: 1px solid transparent; }
-    .winterhours_overview .winterhour_group .scheme .date .participant.active {
-      color: #1abc9c; }
-      .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
-        cursor: move;
-        border: 1px dashed #9CAFB9; }
-    .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-hover {
-      background: rgba(26, 188, 156, 0.1);
-      border: 1px dashed #9CAFB9; }
-    .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-active {
-      background: rgba(26, 188, 156, 0.6);
-      color: #fff;
-      border: 1px dashed #1abc9c; }
-    .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+    font-weight: 300; }
+    .winterhours_overview .winterhour_group .day_time a {
+      font-weight: 500; }
+  .winterhours_overview .winterhour_group .participants {
+    font-size: 0.9em; }
+    .winterhours_overview .winterhour_group .participants h4 {
+      margin-bottom: 0px;
+      cursor: pointer; }
+    .winterhours_overview .winterhour_group .participants .participants_block {
       display: none; }
+    .winterhours_overview .winterhour_group .participants .participant .name {
+      width: 20%; }
       @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
-          display: inline; } }
+        .winterhours_overview .winterhour_group .participants .participant .name {
+          width: 55%; } }
+    .winterhours_overview .winterhour_group .participants .participant .gsm {
+      width: 20%; }
+      @media (max-width: 768px) {
+        .winterhours_overview .winterhour_group .participants .participant .gsm {
+          width: 45%; } }
+    .winterhours_overview .winterhour_group .participants .participant .email {
+      width: 30%; }
+      @media (max-width: 768px) {
+        .winterhours_overview .winterhour_group .participants .participant .email {
+          display: none; } }
+    .winterhours_overview .winterhour_group .participants .participant:hover {
+      background-color: rgba(26, 188, 156, 0.1); }
+  .winterhours_overview .winterhour_group .swap_message {
+    margin-top: 25px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    text-align: center;
+    display: none; }
+    .winterhours_overview .winterhour_group .swap_message.failed {
+      border: 1px solid #ce311c; }
+    .winterhours_overview .winterhour_group .swap_message.success {
+      border: 1px solid #14aa6f; }
+  .winterhours_overview .winterhour_group .scheme .date {
+    width: 22%;
+    margin-right: 4%; }
+    .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
+      margin-right: 0; }
     @media (max-width: 768px) {
-      .winterhours_overview .winterhour_group .scheme .date .participant .last_name_desktop {
-        display: none; } }
+      .winterhours_overview .winterhour_group .scheme .date {
+        width: 30%;
+        margin-right: 3%;
+        font-size: 0.9em; } }
+    .winterhours_overview .winterhour_group .scheme .date h3 {
+      border-bottom: 1px solid #1abc9c;
+      cursor: initial; }
+      @media (max-width: 768px) {
+        .winterhours_overview .winterhour_group .scheme .date h3 .year {
+          display: none; } }
+    .winterhours_overview .winterhour_group .scheme .date .participant {
+      font-size: 0.9em;
+      border: 1px solid transparent; }
+      .winterhours_overview .winterhour_group .scheme .date .participant.active {
+        color: #1abc9c; }
+        .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
+          cursor: move;
+          border: 1px dashed #9CAFB9; }
+      .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-hover {
+        background: rgba(26, 188, 156, 0.1);
+        border: 1px dashed #9CAFB9; }
+      .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-active {
+        background: rgba(26, 188, 156, 0.6);
+        color: #fff;
+        border: 1px dashed #1abc9c; }
+      .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+        display: none; }
+        @media (max-width: 768px) {
+          .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+            display: inline; } }
+      @media (max-width: 768px) {
+        .winterhours_overview .winterhour_group .scheme .date .participant .last_name_desktop {
+          display: none; } }
 
 .availabilities .back {
   margin-bottom: 25px; }
@@ -2696,9 +2743,20 @@ button.submit {
     .exercises_overview .block {
       width: 90%;
       margin: 0 auto; } }
-  .exercises_overview .block .link {
-    text-align: right;
+  .exercises_overview .block .add_exercise_link {
     margin-bottom: 25px; }
+    .exercises_overview .block .add_exercise_link a {
+      float: right;
+      padding: 8px 14px;
+      background-color: rgba(26, 188, 156, 0.6);
+      border-radius: 50%;
+      color: #fff;
+      -webkit-transition: background-color 0.2s ease;
+      -moz-transition: background-color 0.2s ease;
+      -ms-transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease; }
+      .exercises_overview .block .add_exercise_link a:hover {
+        background-color: #1abc9c; }
 .exercises_overview .pagination_container {
   text-align: center; }
   @media (max-width: 768px) {
@@ -2906,14 +2964,16 @@ button.submit {
       width: 98%;
       padding: 1%;
       margin-bottom: 10px;
-      border: 1px solid rgba(156, 175, 185, 0.3); }
+      border: 1px solid rgba(156, 175, 185, 0.3);
+      cursor: zoom-in; }
       .exercise_details .exercise .images_block .main_image img {
         width: 100%; }
     .exercise_details .exercise .images_block .other_images .image {
       width: calc(30% - 1.58px);
       padding: 1%;
       border: 1px solid rgba(156, 175, 185, 0.3);
-      margin-right: 2%; }
+      margin-right: 2%;
+      overflow: hidden; }
       .exercise_details .exercise .images_block .other_images .image:nth-child(3n+3) {
         margin-right: 0; }
       .exercise_details .exercise .images_block .other_images .image img {

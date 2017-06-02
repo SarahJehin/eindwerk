@@ -1,4 +1,22 @@
 .activities_list {
+    .add_activity_link {
+        a {
+            float: right;
+            padding: 8px 14px;
+            background-color: rgba($theme_color01, 0.6);
+            border-radius: 50%;
+            color: #fff;
+            @include transition(background-color 0.2s ease);
+            &:hover {
+                background-color: $theme_color01;
+            }
+        }
+    }
+    h3 {
+        &.first {
+            margin-top: -10px;
+        }
+    }
     .list {
         .activity {
             border-bottom: 1px solid $form_font_color;

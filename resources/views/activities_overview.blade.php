@@ -20,8 +20,14 @@
                 @endif
 
                 @if($is_admin)
-                <div class="edit_button">
-                    <a href="{{url('activities_list')}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
+                <div class="links clearfix">
+                    <div>
+                        <a href="{{url('activities_list')}}" data-toggle="tooltip" data-placement="left" title="Admin overzicht">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a href="{{url('add_activity')}}" data-toggle="tooltip" data-placement="left" title="Activiteit toevoegen">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
                 @endif
                 

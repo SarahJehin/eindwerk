@@ -10,7 +10,12 @@
             <div class="content">
 
                 
-                <div class="add_winterhour link float"><a href="{{url('add_winterhour')}}">+ Nieuwe groep</a></div>
+                <div class="add_winterhour_link clearfix">
+                    <a href="{{url('add_winterhour')}}" data-toggle="tooltip" data-placement="left" title="Nieuwe groep">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </div>
+
                 @if(!$winterhour_groups->isEmpty())
                     @foreach($winterhour_groups as $winterhour)
                     <div class="winterhour_group">

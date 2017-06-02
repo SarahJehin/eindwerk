@@ -11,6 +11,7 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,300i,400,400i,600" rel="stylesheet">
 
+        <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
         <link href="{{url('/css/main.css')}}" rel="stylesheet" type="text/css">
     </head>
     <body class="login">
@@ -57,6 +58,7 @@
 
         </div>
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
         <script src="{{url('/js/main.js')}}"></script>
     </body>

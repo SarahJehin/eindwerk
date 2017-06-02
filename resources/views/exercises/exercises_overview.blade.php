@@ -16,7 +16,11 @@
             </div>
             <div class="content clearfix">
 
-                <div class="link"><a href="{{url('add_exercise')}}"><i class="fa fa-plus" aria-hidden="true"></i> Oefening toevoegen</a></div>
+                <div class="add_exercise_link clearfix">
+                    <a href="{{url('add_exercise')}}" data-toggle="tooltip" data-placement="left" title="Oefening toevoegen">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </div>
 
                 <div class="filters_block float">
                     @foreach($tag_types as $tag_type => $tags)
@@ -83,10 +87,10 @@
                     @if($newest_exercise)
                     <div class="newest clearfix">
                         <div class="image float">
-                            <img src="{{url('images/exercise_images/' . $newest_exercise->images[0]->path)}}" alt="{{$newest_exercise->name}}">
+                            <a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}"><img src="{{url('images/exercise_images/' . $newest_exercise->images[0]->path)}}" alt="{{$newest_exercise->name}}"></a>
                         </div>
                         <div class="info float">
-                            <h3>{{$newest_exercise->name}}</h3>
+                            <h3><a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}">{{$newest_exercise->name}}</a></h3>
                             <div class="description">
                                 {!!str_limit($newest_exercise->description, 299)!!}
                                 <a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}">Lees meer</a>

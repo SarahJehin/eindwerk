@@ -118,14 +118,14 @@ class WinterhourController extends Controller
     }
 
     public function create_winterhour(Request $request) {
-    	//dd($request);
+    	dd($request);
     	//create basic winterhour + redirect to the edit winterhour view
     	$this->validate($request, [	'groupname'	=> 'required|string',
     								'day'		=> 'required|not_in:select_day',
     								'time'		=> 'required|not_in:select_hour|date_format:H:i',
     								'date'		=> 'required|array|between:6,45',
     								'date.*'	=> 'required|date',
-    								'participant_id'	=> 'required|array|between:4,20'
+    								'participant_id'	=> 'required|array|between:6,20'
     								]);
     	
 

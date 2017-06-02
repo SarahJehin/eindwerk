@@ -121,6 +121,18 @@
                 &.template {
                     display: none;
                 }
+                
+                .search_select {
+                    .bootstrap-select {
+                        .dropdown-toggle {
+                          //display: none;
+                        }
+                        .dropdown-menu {
+                          display: block;
+                        }
+                    }
+                }
+                
                 .search_functionality {
                     width: 98%;
                     

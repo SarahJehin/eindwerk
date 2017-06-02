@@ -48,6 +48,7 @@
                 padding: 1%;
                 margin-bottom: 10px;
                 border: 1px solid rgba($form_font_color, 0.3);
+                cursor: zoom-in;
                 img {
                     width: 100%;
                 }
@@ -58,6 +59,7 @@
                     padding: 1%;
                     border: 1px solid rgba($form_font_color, 0.3);
                     margin-right: 2%;
+                    overflow: hidden;
                     &:nth-child(3n+3) {
                         margin-right: 0;
                     }

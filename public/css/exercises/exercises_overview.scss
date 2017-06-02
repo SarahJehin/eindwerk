@@ -8,9 +8,19 @@
             margin: 0 auto;
         }
         
-        .link {
-            text-align: right;
+        .add_exercise_link {
             margin-bottom: 25px;
+            a {
+                float: right;
+                padding: 8px 14px;
+                background-color: rgba($theme_color01, 0.6);
+                border-radius: 50%;
+                color: #fff;
+                @include transition(background-color 0.2s ease);
+                &:hover {
+                    background-color: $theme_color01;
+                }
+            }
         }
     }
     

@@ -64,7 +64,7 @@
                             @if(count($badges) > 0)
                             <div class="clearfix">
                                 @foreach($badges as $badge)
-                                <div class="badge float" title="{{$badge['title']}}">
+                                <div class="badge float" data-toggle="tooltip" data-placement="bottom" title="{{$badge['title']}}">
                                     <span>{{$badge['amount_activities']}}</span>
                                     <i style="color: {{$badge['bg_color']}};" class="fa fa-certificate" aria-hidden="true"></i>
                                 </div>

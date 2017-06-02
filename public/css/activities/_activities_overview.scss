@@ -1,12 +1,33 @@
 .activities_overview {
     
     .content {
-    
+        
+        .links {
+            margin-right: 25px;
+            div {
+                float: right;
+                
+                a {
+                    padding: 8px 14px;
+                    background-color: rgba($theme_color01, 0.6);
+                    border-radius: 50%;
+                    color: #fff;
+                    @include transition(background-color 0.2s ease);
+                    &:nth-child(1) {
+                        padding: 8px 13px;
+                        margin-right: 10px;
+                    }
+                    &:hover {
+                        background-color: $theme_color01;
+                    }
+                }
+            }
+        }
         .edit_button {
             margin: 0;
             position: absolute;
             top: 40px;
-            padding: 25px;
+            padding-right: 25px;
             right: 40px;
             @include smartphone {
                 display: block;
