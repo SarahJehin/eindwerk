@@ -24,7 +24,7 @@
         }
     }
     
-    .pagination_container {
+    .pagination_container, .pagination_container_filter {
         text-align: center;
         .pagination {
 
@@ -54,6 +54,9 @@
                 }
             }
         }
+    }
+    .pagination_container_filter {
+        display: none;
     }
 }
 

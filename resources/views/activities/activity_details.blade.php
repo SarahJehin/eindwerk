@@ -110,8 +110,8 @@
                                         <img src="{{url('images/profile_pictures/' . $participant->image)}}" alt="{{$participant->first_name}} {{$participant->last_name}}">
                                         <figcaption>
                                             {{$participant->first_name}}
-                                            @if($participant->pivot->status == 2)
-                                            <i class="fa fa-check" aria-hidden="true" title="Betaald"></i>
+                                            @if($activity->price > 0 && Auth::user()->id == $participant->id && $participant->pivot->status == 2)
+                                            <i class="fa fa-check" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Betaald"></i>
                                             @endif
                                         </figcaption>
                                     </figure>

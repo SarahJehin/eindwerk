@@ -700,9 +700,13 @@ button.submit {
   margin: 0;
   margin-top: 5px; }
 .winterhours_block .winterhours .winterhour .dates .date {
-  margin-right: 25px; }
+  margin-right: 25px;
+  width: 100px; }
   .winterhours_block .winterhours .winterhour .dates .date h5 {
-    margin: 5px 0 1px; }
+    margin: 5px 0 1px;
+    border-bottom: 1px solid #1abc9c; }
+  .winterhours_block .winterhours .winterhour .dates .date .participant.active {
+    color: #1abc9c; }
 
 #update_profile_pic_modal label {
   display: block;
@@ -2757,22 +2761,24 @@ button.submit {
       transition: background-color 0.2s ease; }
       .exercises_overview .block .add_exercise_link a:hover {
         background-color: #1abc9c; }
-.exercises_overview .pagination_container {
+.exercises_overview .pagination_container, .exercises_overview .pagination_container_filter {
   text-align: center; }
   @media (max-width: 768px) {
-    .exercises_overview .pagination_container .pagination li {
+    .exercises_overview .pagination_container .pagination li, .exercises_overview .pagination_container_filter .pagination li {
       display: none; }
-      .exercises_overview .pagination_container .pagination li:first-child, .exercises_overview .pagination_container .pagination li.active, .exercises_overview .pagination_container .pagination li:last-child {
+      .exercises_overview .pagination_container .pagination li:first-child, .exercises_overview .pagination_container .pagination li.active, .exercises_overview .pagination_container .pagination li:last-child, .exercises_overview .pagination_container_filter .pagination li:first-child, .exercises_overview .pagination_container_filter .pagination li.active, .exercises_overview .pagination_container_filter .pagination li:last-child {
         display: inline; } }
-  .exercises_overview .pagination_container .pagination li a, .exercises_overview .pagination_container .pagination li div {
+  .exercises_overview .pagination_container .pagination li a, .exercises_overview .pagination_container .pagination li div, .exercises_overview .pagination_container_filter .pagination li a, .exercises_overview .pagination_container_filter .pagination li div {
     color: #1abc9c; }
-    .exercises_overview .pagination_container .pagination li a:hover, .exercises_overview .pagination_container .pagination li div:hover {
+    .exercises_overview .pagination_container .pagination li a:hover, .exercises_overview .pagination_container .pagination li div:hover, .exercises_overview .pagination_container_filter .pagination li a:hover, .exercises_overview .pagination_container_filter .pagination li div:hover {
       background-color: #1abc9c;
       color: #fff;
       border-color: #1abc9c; }
-  .exercises_overview .pagination_container .pagination li.active span {
+  .exercises_overview .pagination_container .pagination li.active span, .exercises_overview .pagination_container_filter .pagination li.active span {
     background-color: #1abc9c;
     border-color: #1abc9c; }
+.exercises_overview .pagination_container_filter {
+  display: none; }
 
 .filters_block {
   width: 20%;
@@ -2983,6 +2989,11 @@ button.submit {
   .exercise_details .exercise .description_block {
     width: 52%;
     font-size: 0.92em; }
+.exercise_details .video_block {
+  margin-top: 40px;
+  text-align: center; }
+  .exercise_details .video_block iframe {
+    width: 70%; }
 .exercise_details .approve_deny {
   margin-top: 25px; }
   .exercise_details .approve_deny a {

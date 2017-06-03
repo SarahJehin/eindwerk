@@ -73,6 +73,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="video_block">
+                        <h3><label for="video_url">Video URL</label></h3>
+                        <div class="descriptive_info">
+                            Hieronder kan je een YouTube of Vimeo url invoeren om de oefening te verduidelijken.
+                        </div>
+                        <div class="field_wrap video_url">
+                            <input type="text" name="video_url" id="video_url" value="{{old('video_url')}}">
+                        </div>
+                    </div>
                     <div class="tags_block">
                         <h3>Tags</h3>
                         <div class="descriptive_info">

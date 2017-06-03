@@ -198,7 +198,7 @@
 
     //console.log($('.page_container').height());
     //set lightbox modal bg to full page height
-    $('.lightbox_modal').css('height', $('.page_container').height() + 'px');
+    //$('.lightbox_modal').css('height', $('.page_container').height() + 'px');
 
 /*
     // ADD ACTIVITY

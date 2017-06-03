@@ -8,6 +8,7 @@ use App\Activity;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Excel;
+use DB;
 
 class ActivityController extends Controller
 {
@@ -78,6 +79,10 @@ class ActivityController extends Controller
             //if it's a free activity update status to '2', which means paid
             if($activity_is_free) {
                 $user->activities()->updateExistingPivot($request->activity_id, ['status' => 2]);
+                if($this->activity_has_enough_participants($activity->id)) {
+                    $activity->status = 1;
+                    $activity->save();
+                }
             }
         }
         if($request->sign_up_others == 'on') {
@@ -96,6 +101,10 @@ class ActivityController extends Controller
                 //if it's a free activity update status to '2', which means paid
                 if($activity_is_free) {
                     $user->activities()->updateExistingPivot($request->activity_id, ['status' => 2]);
+                    if($this->activity_has_enough_participants($activity->id)) {
+                        $activity->status = 1;
+                        $activity->save();
+                    }
                 }
             }
         }
@@ -107,6 +116,11 @@ class ActivityController extends Controller
         $user = User::find($request->user_id);
         //set status to 10 (signed out)
         $user->activities()->updateExistingPivot($request->activity_id, ['status' => 10]);
+        $activity = Activity::find($request->activity_id);
+        if(!$this->activity_has_enough_participants($activity->id)) {
+                    $activity->status = 0;
+                    $activity->save();
+        }
         if($request->user_id == Auth::user()->id) {
             return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Je bent uitgeschreven voor deze activiteit.');
         }
@@ -115,16 +129,49 @@ class ActivityController extends Controller
         }
     }
 
+    public function activity_has_enough_participants($activity_id) {
+        $activity = Activity::find($activity_id);
+        if(count($activity->paid_participants) >= $activity->min_participants) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     public function get_scoreboard() {
-        //all adult activities
+        //all adult activities that are visible and had enough participants
         $adult_activities = Activity::where('is_visible', 1)
+                                ->where('status', 1)
                                 ->where('start', '<', date('Y-m-d'))
                                 ->whereHas('category', function ($query) {
                                     $query->where('root', 'adult');
                                 })
                                 ->orderBy('start')
                                 ->get();
+        /*$test = Activity::where('is_visible', 1)->where('start', '<', date('Y-m-d'))->whereHas('category', function ($query) {
+                                    $query->where('root', 'adult');
+                                })->has('participants', '>', 'activities.min_participants')->get();*/
+                                /*
+        $test = Activity::where('is_visible', 1)->where('start', '<', date('Y-m-d'))->whereHas('category', function ($query) {
+                                    $query->where('root', 'adult');
+                                })->withCount('participants')->where('participants_count', '>', 'min_participants')->get();*/
+                                /*
+        $test = Activity::where('is_visible', 1)->where('start', '<', date('Y-m-d'))->whereHas('category', function ($query) {
+                                    $query->where('root', 'adult');
+                                })->with(array('participants' => function($query)
+{
+     $query->groupBy('activity_user.activity_id')
+    ->havingRaw('COUNT(DISTINCT activity_user.activity_id) > 2');
+}))->get();*/
+                                //$test = Activity::get()->groupBy('title');
+        $adult_activities_enough_participants = array();
+        foreach ($adult_activities as $act) {
+            if(count($act->participants) >= $act->min_participants) {
+                array_push($adult_activities_enough_participants, $act);
+            }
+        }
+        //dd($adult_activities_enough_participants);
         //all users who have participated in adult activities
         $adult_participants = User::has('adult_activities_past')
                                     ->with('adult_activities_past')
@@ -138,12 +185,19 @@ class ActivityController extends Controller
 
         //all youth activities
         $youth_activities = Activity::where('is_visible', 1)
+                                ->where('status', 1)
                                 ->where('start', '<', date('Y-m-d'))
                                 ->whereHas('category', function ($query) {
                                     $query->where('root', 'youth');
                                 })
                                 ->orderBy('start')
                                 ->get();
+        $youth_activities_enough_participants = array();
+        foreach ($youth_activities as $act) {
+            if(count($act->participants) >= $act->min_participants) {
+                array_push($youth_activities_enough_participants, $act);
+            }
+        }
         //all users who have participated in youth activities
         $youth_participants = User::has('youth_activities_past')
                                     ->with('youth_activities_past')
@@ -258,7 +312,7 @@ class ActivityController extends Controller
             'endtime'       => 'nullable|date_format:H:i|after:starttime',
             'deadline'      => $request->deadline != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
             //'location'      => 'required|string',
-            'helpers'       => 'required|integer|max:20',
+            //'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
             'owner'         => 'required',
             'extra_url'     => $request->extra_url != null ? 'url': '',
@@ -325,7 +379,12 @@ class ActivityController extends Controller
         $enddatetime = date('Y-m-d', strtotime($request->startdate));
         $enddatetime = $enddatetime . ' ' . $request->endtime  . ':00';
 
-        $deadlinedatetime = date('Y-m-d', strtotime($request->deadline)) . ' ' . '23:59:59';
+        if($request->deadline) {
+            $deadlinedatetime = date('Y-m-d', strtotime($request->deadline)) . ' ' . '23:59:59';
+        }
+        else {
+            $deadlinedatetime = null;
+        }
 
 
         $activity = new Activity([
@@ -341,11 +400,12 @@ class ActivityController extends Controller
             'longitude'     => $longitude,
             'min_participants'  => $min_participants,
             'max_participants'  => $max_participants,
-            'helpers'           => $request->helpers,
+            //'helpers'           => $request->helpers,
+            'helpers'           => 0,
             'price'             => $request->price,
             //'youth_adult'       => $youth_adult,
             'is_visible'        => $is_visible,
-            'status'            => 1,
+            'status'            => 0,
             'made_by_id'        => $made_by,
             'owner_id'          => $request->owner,
             'category_id'       => $request->category
@@ -414,7 +474,7 @@ class ActivityController extends Controller
             'starttime'     => 'required|date_format:H:i',
             'endtime'       => 'nullable|date_format:H:i|after:starttime',
             'deadline'      => $request->deadline != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
-            'helpers'       => 'required|integer|max:20',
+            //'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
             'owner'         => 'required',
             'extra_url'     => $request->extra_url != null ? 'url': '',
@@ -496,7 +556,7 @@ class ActivityController extends Controller
         $activity->longitude         = $longitude;
         $activity->min_participants  = $min_participants;
         $activity->max_participants  = $max_participants;
-        $activity->helpers           = $request->helpers;
+        //$activity->helpers           = $request->helpers;
         $activity->price             = $request->price;
         $activity->is_visible        = $is_visible;
         $activity->made_by_id        = $made_by;

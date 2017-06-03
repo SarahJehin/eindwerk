@@ -116,6 +116,7 @@ class User extends Authenticatable
 
     public function adult_activities_past() {
         return $this->belongsToMany('App\Activity')
+                    ->where('activities.status', 1)
                     ->orderBy('start')
                     ->where('start', '<', date('Y-m-d').' 00:00:00')
                     ->whereHas('category', function ($query) {
@@ -132,12 +133,13 @@ class User extends Authenticatable
 
     public function youth_activities_past() {
         return $this->belongsToMany('App\Activity')
-                                            ->orderBy('start')
-                                            ->where('start', '<', date('Y-m-d').' 00:00:00')
-                                            ->whereHas('category', function ($query) {
-                                                $query->where('root', 'youth');
-                                            })->withPivot('status')
-                                            ->wherePivot('status', 2);
+                    ->where('activities.status', 1)
+                    ->orderBy('start')
+                    ->where('start', '<', date('Y-m-d').' 00:00:00')
+                    ->whereHas('category', function ($query) {
+                        $query->where('root', 'youth');
+                    })->withPivot('status')
+                    ->wherePivot('status', 2);
     }
 
     public function total_score() {

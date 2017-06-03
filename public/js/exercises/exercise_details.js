@@ -17,9 +17,17 @@
     console.log(image_height);
     $('.other_images .image').css('height', image_height + 'px');
 
+    //set iframe height
+    var iframe_width = parseInt($('.video_block iframe').css('width'));
+    //console.log(iframe_width);
+    var ifram_height = iframe_width/17*10;
+    //console.log(ifram_height);
+    $('.video_block iframe').css('height', ifram_height + 'px');
+
     //enlarge image
     var lightbox = false;
     $('.exercise .main_image').click(function() {
+        $('#exercise_image_modal img').attr('src', $('.main_image img').attr('src'));
         $('#exercise_image_modal').fadeIn(350, function() {
             lightbox = true;
         });
@@ -46,5 +54,7 @@
             });
         }
     }
+    //set lightbox modal bg to full page height
+    $('.lightbox_modal').css('height', $('.page_container').height() + 'px');
 
 })(window, window.document, window.jQuery);

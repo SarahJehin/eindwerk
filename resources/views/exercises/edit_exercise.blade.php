@@ -17,6 +17,12 @@
                 Oefening bewerken: {{$exercise->name}}
             </div>
             <div class="content">
+
+                @if (session('success_msg'))
+                    <div class="success_msg">
+                        {{ session('success_msg') }}
+                    </div>
+                @endif
                 <div class="descriptive_info">
                     Hieronder kan je een oefening toevoegen.  Wanneer de hoofdtrainer de oefening geaccepteerd heeft, verschijnt hij bij op het overzicht en kunnen andere trainers hem bekijken.
                 </div>
@@ -31,6 +37,7 @@
                 @endif
                 <form class="form_with_input_anims" method="post" action="{{url('edit_exercise')}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
+                    <input type="text" name="exercise_id" value="{{$exercise->id}}" hidden="">
                     <div class="title_and_description">
                         <h3><label for="title">Titel</label></h3>
                         <div class="field_wrap title">
@@ -68,7 +75,7 @@
                             <div class="image float" identifier="">
                                 <img src="{{url('images/exercise_images/' . $image->path)}}">
                                 <div class="delete"><i class="fa fa-times"></i></div>
-                                <input type="hidden" name="name_and_size[]" value="" hidden="">
+                                <input type="hidden" name="existing_images[]" value="{{$image->id}}" hidden="">
                             </div>
                             @endforeach
 
@@ -78,6 +85,15 @@
                                     <i class="fa fa-plus"></i>
                                 </label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="video_block">
+                        <h3><label for="video_url">Video URL</label></h3>
+                        <div class="descriptive_info">
+                            Hieronder kan je een YouTube of Vimeo url invoeren om de oefening te verduidelijken.
+                        </div>
+                        <div class="field_wrap video_url">
+                            <input type="text" name="video_url" id="video_url" value="{{old('video_url', $exercise->video_url)}}">
                         </div>
                     </div>
                     <div class="tags_block">

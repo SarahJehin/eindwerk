@@ -21,7 +21,11 @@
                         <i class="fa fa-plus" aria-hidden="true"></i>
                     </a>
                 </div>
-
+                @if (session('success_msg'))
+                    <div class="success_msg">
+                        {{ session('success_msg') }}
+                    </div>
+                @endif
                 <div class="filters_block float">
                     @foreach($tag_types as $tag_type => $tags)
                     <div class="tag_type_block">
@@ -137,6 +141,9 @@
                             </div>
                             @endforeach
                         </div>
+                        <div class="pagination_container apply_bootstrap">
+                            {{$exercises->links()}} 
+                        </div>
                     </div>
                     <div class="filtered_exercises" ng-if="filtered">
                         <h3>Gefilterde resultaten</h3>
@@ -153,10 +160,13 @@
                                     <div class="title">@{{exercise.name}}</div>
                                 </a>
                             </div>
+                            <div class="no_exercises" ng-if="!filtered_exercises.length > 0">
+                                Er bestaan nog geen oefeningen voor deze tag of deze tag-combinatie...
+                            </div>
                         </div>
                     </div>
 
-                    <div class="pagination_container apply_bootstrap">
+                    <div class="pagination_container_filter apply_bootstrap">
                         {{$exercises->links()}} 
                     </div>
                 </div>

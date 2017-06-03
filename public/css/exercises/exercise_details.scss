@@ -78,6 +78,14 @@
         }
     }
     
+    .video_block {
+        margin-top: 40px;
+        text-align: center;
+        iframe {
+            width: 70%;
+        }
+    }
+    
     .approve_deny {
         margin-top: 25px;
         a {

@@ -279,11 +279,12 @@
                                         <div>Aantal deelnemers</div>
                                         <span class="min_participants"><?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[<?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('participants') == null){echo($activity->max_participants); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('participants') == null){echo($activity->max_participants); } else {echo(explode(',',old('participants'))[1]);} ?></span>
                                     </div>
-
+                                    <!--
                                     <div class="helpers slider_block">
                                         <div>Aantal helpers</div>
                                         <span class="min">0</span><input id="helpers_slider" name="helpers" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="<?php if(old('helpers') == null){echo($activity->helpers); } else {echo(old('helpers'));} ?>"/><span class="helpers_amount"><?php if(old('helpers') == null){echo($activity->helpers); } else {echo(old('helpers'));} ?></span>
                                     </div>
+                                    -->
 
                                     <div class="owner">
 

@@ -252,8 +252,15 @@
             .dates {
                 .date {
                     margin-right: 25px;
+                    width: 100px;
                     h5 {
                         margin: 5px 0 1px;
+                        border-bottom: 1px solid $theme_color01;
+                    }
+                    .participant {
+                        &.active {
+                            color: $theme_color01;
+                        }
                     }
                 }
             }

@@ -15,7 +15,7 @@ class Exercise extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'views', 'approved', 'made_by',
+        'name', 'description', 'video_url', 'views', 'approved', 'made_by',
     ];
     
     protected $dates = ['deleted_at'];

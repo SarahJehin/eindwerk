@@ -22,7 +22,7 @@
                 </div>
                 @endif
                 <div class="back_link">
-                    <a class="link" href="{{URL::previous()}}">Terug naar overzicht</a>
+                    <a class="link" href="{{url('exercises_overview')}}">Terug naar overzicht</a>
                 </div>
                 <h3>{{$exercise->name}}</h3>
                 <div class="clearfix">
@@ -62,6 +62,12 @@
                         {!!$exercise->description!!}
                     </div>
                 </div>
+
+                @if($exercise->video_url)
+                <div class="video_block">
+                    <iframe width="420" height="345" src="{{$exercise->video_url}}"></iframe>
+                </div>
+                @endif
 
                 @if($exercise->approved == 0)
                 <div class="approve_deny clearfix">

@@ -153,7 +153,7 @@
                             <div class="date float">
                                 <h5>{{date('d/m/Y', strtotime($date->date))}}</h5>
                                 @foreach($date->assigned_participants as $participant)
-                                <div class="participant">
+                                <div class="participant {{($participant->id == Auth::user()->id ? 'active' : '')}}">
                                     {{$participant->first_name}} {{substr($participant->last_name, 0, 1)}}.
                                 </div>
                                 @endforeach

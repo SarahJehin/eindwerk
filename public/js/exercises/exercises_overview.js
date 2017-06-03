@@ -32,6 +32,7 @@
                         $('.newest').show();
                         $('.most_viewed').show();
                         $('.all').show();
+                        $('.pagination_container_filter').hide();
                         $scope.filtered = false;
                     }
                 }
@@ -48,14 +49,15 @@
                     url: location.origin + '/get_filtered_exercises',
                     params: {tag_ids: JSON.stringify(checked_tag_ids), page: page}
                 }).then(function successCallback(response) {
-                    console.log(response);
+                    //console.log(response);
                     $scope.filtered_exercises = response.data.filtered_exercises.data;
-                    console.log($scope.filtered_exercises);
+                    //console.log($scope.filtered_exercises);
                     var pagination_string = response.data.pagination_html;
                     pagination_string = pagination_string.split('<a').join('<div').split('</a>').join('</div>');
-                    console.log(pagination_string);
-                    $('.pagination_container').html(pagination_string);
-                    $('.pagination_container div').removeAttr('href');
+                    //console.log(pagination_string);
+                    $('.pagination_container_filter').html(pagination_string);
+                    $('.pagination_container_filter div').removeAttr('href');
+                    $('.pagination_container_filter').show();
                     //$('.pagination_links a').attr('href', '#');
                     //$('.pagination_links div').attr('ng-click', 'handle_filter($event, 2)');
                     $('.newest').hide();
@@ -86,12 +88,39 @@
             
         }
 
-        $('.exercises_overview .block').on('click', '.pagination_container .pagination li div', function() {
-            console.log('tezfqsvkjhcvqsdkfj');
-            console.log($(this).text());
+        $('.exercises_overview .block').on('click', '.pagination_container_filter .pagination li div', function() {
+            //console.log('tezfqsvkjhcvqsdkfj');
+            //console.log($(this).text());
             var page_nr = $(this).text();
+            //check if there was a click on the next or previous button
+            if($(this).attr('rel') == 'prev') {
+                var current_page = findGetParameter('page');
+                if(current_page != 1) {
+                    page_nr = parseInt(current_page)-1;
+                }
+            }
+            else if($(this).attr('rel') == 'next') {
+                var current_page = findGetParameter('page');
+                if(current_page != $('.pagination_container_filter .pagination li').length) {
+                    page_nr = parseInt(current_page)+1;
+                }
+            }
+            //console.log('page going to: ' + page_nr);
             $scope.handle_filter(null, page_nr);
         });
+
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+            .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                tmp = item.split("=");
+                if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+            });
+            return result;
+        }
 
 
         //make sure newest image is in 4:3 format

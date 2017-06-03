@@ -99,16 +99,52 @@ class ExerciseController extends Controller
     							'description'	=> 'required|max:1000',
     							'tags'			=> 'required|array|min:1',
     							'image'			=> 'required|array|min:1',
-    							'image.*'		=>	'max:500'
+    							'image.*'		=> 'max:500',
+    							'video_url'		=> 'url'
     		]);
+
+    	//check whether it was a youtube or vimeo url
+    	if($request->video_url) {
+    		$media = '';
+    		$video_url = $request->video_url;
+    		if (strpos($video_url, 'youtu')) {
+			    $media = 'youtube';
+			    //make sure to use youtube instead of youtu
+			    $new_video_url = str_replace('youtu.be', 'youtube.com', $video_url);
+			    //dump($new_video_url);
+			    //replace watch by embed
+			    $new_video_url = str_replace('watch?v=', 'embed/', $new_video_url);
+			    //dump($new_video_url);
+			    if(strpos($new_video_url, "&")) {
+			    	//remove everything after '&'
+				    $new_video_url = substr($new_video_url, 0, strpos($new_video_url, "&"));
+				    dump($new_video_url);
+			    }
+			    
+			}
+			elseif(strpos($video_url, 'vimeo')){
+				//
+				$media = 'vimeo';
+				if(!strpos($video_url, 'player')) {
+					//replace url so it matches the embed link
+					$new_video_url = str_replace('vimeo.com', 'player.vimeo.com/video', $video_url);
+				}
+				if(strpos($new_video_url, "&")) {
+			    	//remove everything after '&'
+				    $new_video_url = substr($new_video_url, 0, strpos($new_video_url, "&"));
+			    }
+			}
+    	}
 
         $exercise = new Exercise([
             'name'         	=> $request->title,
             'description'  	=> $request->description,
+            'video_url'		=> $new_video_url,
             'views'			=> 0,
             'made_by'      	=> Auth::user()->id,
             'approved'		=> 0
         ]);
+
         $exercise->save();
 
         //tags
@@ -167,6 +203,83 @@ class ExerciseController extends Controller
 		//dd($exercise->tags->pluck('id')->toArray());
     	return view('exercises/edit_exercise', ['exercise' => $exercise, 'tag_types' => $tag_types]);
     }
+    public function update_exercise(Request $request) {
+	
+    	$this->validate($request, [
+    							'title'			=> 'required|string',
+    							'description'	=> 'required|max:1000',
+    							'tags'			=> 'required|array|min:1',
+    							'name_and_size'	=> 'required|array|min:1',
+    							'image.*'		=>	'max:500'
+    		]);
+
+    	$exercise = Exercise::find($request->exercise_id);
+
+    	$exercise->name = $request->title;
+    	$exercise->description = $request->description;
+    	$exercise->save();
+
+        //tags
+		//detach all tags and attach the updated ones
+		$exercise->tags()->detach();
+        foreach ($request->tags as $tag) {
+        	$exercise->tags()->attach($tag);
+        }
+        //images
+        $existing_images = $request->existing_images;
+        if(!$existing_images) {
+        	$existing_images = array();
+        }
+        foreach ($exercise->images as $image) {
+    		if(!in_array($image->id, $existing_images)) {
+    			//if an attached image is no longer in the existing images, delete it
+    			$image->delete();
+    			//dump($image);
+    		}
+    	}
+
+        if ($request->hasFile('image')) {
+    		$already_added_imgs = array();
+    		$allowed_extensions = ["jpeg", "png"];
+    		$order = 0;
+            foreach ($request->image as $image) {
+            	$img_name_and_size = $image->getClientOriginalName() . $image->getClientSize();
+            	//first check if the file is in the name and size array (which only contains not deleted images)
+            	if(in_array($img_name_and_size, $request->name_and_size)) {
+            		//also check if the image wasn't already uploaded
+            		if(!in_array($img_name_and_size, $already_added_imgs)) {
+            			//add image
+            			if (in_array($image->guessClientExtension(), $allowed_extensions)) {
+		                    //create new file name
+		                    $name = strtolower(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME));
+		                    //keep only letters, numbers and spaces
+		                    $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
+		                    //remove space at the beginning and end
+		                    $name = trim($name);
+		                    //convert all multispaces to space
+		                    $name = preg_replace ("/ +/", " ", $name);
+		                    //replace all spaces with underscores
+		                    $name = str_replace(' ', '_', $name);
+
+		                    $new_file_name = time() . $name . '.' . $image->getClientOriginalExtension();
+		                    //dump($new_file_name);
+		                    $image->move(base_path() . '/public/images/exercise_images/', $new_file_name);
+		                    array_push($already_added_imgs, $img_name_and_size);
+		                    $order++;
+		                    $image = new Image([
+					            'title'			=> $exercise->name . ' ' . $order,
+					            'path'			=> $new_file_name,
+					            'order'			=> $order,
+					            'exercise_id'	=> $exercise->id
+					        ]);
+					        $image->save();
+		                }
+            		}
+            	}
+            }
+        }
+        return redirect('edit_exercise/' . $exercise->id)->with('success_msg', 'Je hebt de oefening bijgewerkt.');
+    }
 
     public function delete_exercise($id) {
     	$exercise = Exercise::find($id);
@@ -187,6 +300,8 @@ class ExerciseController extends Controller
     		$exercise = Exercise::find($id);
     		$exercise->approved = 10;
     		$exercise->save();
+    		//soft delete the exercise
+    		$exercise->delete();
     	}
     	return redirect('exercises_overview');
     }
