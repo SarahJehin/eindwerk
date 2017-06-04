@@ -4,10 +4,11 @@
 @section('custom_css')
 <!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">-->
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 @endsection
 
 @section('content')
@@ -300,7 +301,7 @@
                                     -->
 
                                     <div class="owner">
-
+<!--
                                         <div class="select_toggler">
                                             <span class="select_title"><?php if(old('owner') == null){echo('Selecteer een verantwoordelijke'); } else {echo(old('owner_name'));} ?></span> <i class="fa fa-sort-desc" aria-hidden="true"></i>
                                         </div>
@@ -311,11 +312,24 @@
                                         </ul>
                                         <input name="owner_name" type="text" id="owner_name" value="{{old('owner_name')}}" hidden>
                                         <input name="owner" type="number" id="owner" value="{{old('owner')}}" hidden>
+-->                                     
+                                        <label for="owner">Verantwoordelijke</label>
+                                        <div class="apply_bootstrap">
+                                            <select name="owner" class="selectpicker" title="Selecteer een verantwoordelijke">
+                                                @foreach($owners as $owner)
+                                                    <option value="{{$owner->id}}" {{ (old("owner") == $owner->id ? "selected":"") }}>{{$owner->first_name}} {{$owner->last_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        
+
                                     </div>
 
-                                    <div class="field_wrap extra_url">
-                                        <label>URL (optioneel)</label>
-                                        <input type="text" name="extra_url" id="extra_url" value="{{old('extra_url')}}">
+                                    <div class="extra_url">
+                                        <label for="extra_url">URL (optioneel)</label>
+                                        <div class="field_wrap">
+                                            <input id="extra_url" type="text" name="extra_url" id="extra_url" value="{{old('extra_url')}}">
+                                        </div>
                                     </div>
 
                                     <div class="visibility">
@@ -371,19 +385,19 @@
     </div>
 @endsection
 @section('custom_js')
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+    <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
     <script src="{{ asset('js/custom_datepicker.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+    <!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>--> 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.js"></script>
     <script src="{{ asset('js/custom_google_maps.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c"
             async defer></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <script src="{{ asset('js/activities/add_activity.js') }}"></script>
     </script>
 @endsection

@@ -17,6 +17,9 @@
             <div class="content clearfix">
 
                 <div class="add_exercise_link clearfix">
+                    <div class="filter_btn float">
+                        <i class="fa fa-filter" aria-hidden="true"></i>
+                    </div>
                     <a href="{{url('add_exercise')}}" data-toggle="tooltip" data-placement="left" title="Oefening toevoegen">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                     </a>
@@ -27,6 +30,9 @@
                     </div>
                 @endif
                 <div class="filters_block float">
+                    <div class="close_btn">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </div>
                     @foreach($tag_types as $tag_type => $tags)
                     <div class="tag_type_block">
                         <h3>{{ucfirst($tag_type)}}</h3>
@@ -50,19 +56,6 @@
                         </div>
                         <div class="overview float">
                             <div>Er zijn nieuwe oefeningen toegevoegd:</div>
-                            <!--
-                            <div class="exercise header clearfix">
-                                <div class="title float">
-                                    Titel
-                                </div>
-                                <div class="author float">
-                                    Toegevoegd door
-                                </div>
-                                <div class="date">
-                                    Toegevoegd op
-                                </div>
-                            </div>
-                            -->
                             @foreach($exercises_to_approve as $exercise)
                             <div class="exercise clearfix">
                                 <div class="title float">
@@ -83,86 +76,91 @@
                     </div>
                     @endif
                     @if($exercises->isEmpty())
-                    <div>
+                    <div class="no_exercises">
                         Er bestaan nog geen oefeningen...<br>
                         Wees nu de eerste om een <a class="link" href="{{url('add_exercise')}}">oefening te uploaden</a>.
                     </div>
-                    @endif
-                    @if($newest_exercise)
-                    <div class="newest clearfix">
-                        <div class="image float">
-                            <a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}"><img src="{{url('images/exercise_images/' . $newest_exercise->images[0]->path)}}" alt="{{$newest_exercise->name}}"></a>
-                        </div>
-                        <div class="info float">
-                            <h3><a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}">{{$newest_exercise->name}}</a></h3>
-                            <div class="description">
-                                {!!str_limit($newest_exercise->description, 299)!!}
-                                <a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}">Lees meer</a>
+                    @else
+                        @if($newest_exercise)
+                        <div class="newest clearfix">
+                            <h3>NIEUW!</h3>
+                            <div class="image float">
+                                <a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}"><img src="{{url('images/exercise_images/' . $newest_exercise->images[0]->path)}}" alt="{{$newest_exercise->name}}"></a>
+                            </div>
+                            <div class="info float">
+                                <h3><a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}">{{$newest_exercise->name}}</a></h3>
+                                <div class="description">
+                                    {!!str_limit($newest_exercise->description, 299)!!}
+                                    <a class="link" href="{{url('exercise_details/' . $newest_exercise->id)}}">Lees meer</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    @endif
-                    @if($most_viewed_exercises)
-                    <div class="most_viewed">
-                        <h3>Meest bekeken oefeningen</h3>
-                        <div class="exercises clearfix">
-                            @foreach($most_viewed_exercises as $exercise)
-                            <div class="exercise float">
-                                <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">
-                                    <div class="image">
-                                        <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
-                                    </div>
-                                    <div class="views clearfix">
-                                        <div class="float"><i class="fa fa-eye"></i></div>
-                                        <div class="amount float">{{$exercise->views}}</div>
-                                    </div>
-                                    <div class="title">{{$exercise->name}}</div>
-                                </a>
+                        @endif
+                        @if($most_viewed_exercises)
+                        <div class="most_viewed">
+                            <h3>Meest bekeken oefeningen</h3>
+                            <div class="exercises clearfix">
+                                @foreach($most_viewed_exercises as $exercise)
+                                <div class="exercise float">
+                                    <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">
+                                        <div class="image">
+                                            <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
+                                        </div>
+                                        <div class="views clearfix">
+                                            <div class="float"><i class="fa fa-eye"></i></div>
+                                            <div class="amount float">{{$exercise->views}}</div>
+                                        </div>
+                                        <div class="title">{{$exercise->name}}</div>
+                                    </a>
+                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
-                    </div>
-                    @endif
-                    <div class="all">
-                        <h3>Overzicht</h3>
-                        <div class="exercises clearfix">
-                            @foreach($exercises as $exercise)
-                            <div class="exercise float">
-                                <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">
-                                    <div class="image">
-                                        <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
-                                    </div>
-                                    <div class="views clearfix">
-                                        <div class="float"><i class="fa fa-eye"></i></div>
-                                        <div class="amount float">{{$exercise->views}}</div>
-                                    </div>
-                                    <div class="title">{{$exercise->name}}</div>
-                                </a>
+                        @endif
+                        <div class="all">
+                            <h3>Overzicht</h3>
+                            <div class="exercises clearfix">
+                                @foreach($exercises as $exercise)
+                                <div class="exercise float">
+                                    <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">
+                                        <div class="image">
+                                            <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}">
+                                        </div>
+                                        <div class="views clearfix">
+                                            <div class="float"><i class="fa fa-eye"></i></div>
+                                            <div class="amount float">{{$exercise->views}}</div>
+                                        </div>
+                                        <div class="title">{{$exercise->name}}</div>
+                                    </a>
+                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
+                            <div class="pagination_container apply_bootstrap">
+                                {{$exercises->links()}} 
+                            </div>
                         </div>
-                        <div class="pagination_container apply_bootstrap">
-                            {{$exercises->links()}} 
-                        </div>
-                    </div>
+                    @endif
                     <div class="filtered_exercises" ng-if="filtered">
-                        <h3>Gefilterde resultaten</h3>
-                        <div class="exercises clearfix">
-                            <div class="exercise float" ng-repeat="exercise in filtered_exercises">
-                                <a class="link" href="{{url('exercise_details')}}/@{{exercise.id}}">
-                                    <div class="image">
-                                        <img src="{{url('images/exercise_images')}}/@{{exercise.images[0].path}}" alt="@{{exercise.name}}">
-                                    </div>
-                                    <div class="views clearfix">
-                                        <div class="float"><i class="fa fa-eye"></i></div>
-                                        <div class="amount float">@{{exercise.views}}</div>
-                                    </div>
-                                    <div class="title">@{{exercise.name}}</div>
-                                </a>
+                        <div ng-if="filtered_exercises.length > 0">
+                            <h3>Gefilterde resultaten</h3>
+                            <div class="exercises clearfix">
+                                <div class="exercise float" ng-repeat="exercise in filtered_exercises">
+                                    <a class="link" href="{{url('exercise_details')}}/@{{exercise.id}}">
+                                        <div class="image">
+                                            <img src="{{url('images/exercise_images')}}/@{{exercise.images[0].path}}" alt="@{{exercise.name}}">
+                                        </div>
+                                        <div class="views clearfix">
+                                            <div class="float"><i class="fa fa-eye"></i></div>
+                                            <div class="amount float">@{{exercise.views}}</div>
+                                        </div>
+                                        <div class="title">@{{exercise.name}}</div>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="no_exercises" ng-if="!filtered_exercises.length > 0">
-                                Er bestaan nog geen oefeningen voor deze tag of deze tag-combinatie...
-                            </div>
+                        </div>
+                        <div class="no_exercises" ng-if="!filtered_exercises.length > 0">
+                            Er bestaan nog geen oefeningen voor deze tag of deze tag-combinatie...<br>
+                            Wees nu de eerste om een <a class="link" href="{{url('add_exercise')}}">oefening aan te maken</a> voor deze tag.
                         </div>
                     </div>
 

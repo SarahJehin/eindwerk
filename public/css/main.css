@@ -140,10 +140,15 @@ nav {
   top: 50px;
   margin-bottom: 150px;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.6); }
+  @media (max-width: 1024px) {
+    .block {
+      width: 75%;
+      left: 95px; } }
   @media (max-width: 768px) {
     .block {
       top: 85px;
-      width: 90%; } }
+      width: 90%;
+      left: 0; } }
   .block .heading {
     background-color: #1abc9c;
     color: #fff;
@@ -791,6 +796,16 @@ button.submit {
 .form_part {
   overflow: hidden; }
 
+.add_activity .not_editable {
+  width: 91%;
+  padding: 3px 1%;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  border: 1px solid orange;
+  border-radius: 5px; }
+  .add_activity .not_editable i {
+    color: orange; }
+
 .total {
   width: 400%;
   position: relative;
@@ -866,6 +881,10 @@ button.submit {
           display: none;
           height: 100%;
           width: auto; }
+          @media (max-width: 768px) {
+            .total div[class^="part0"] .poster label img.uploaded_poster {
+              width: 100%;
+              height: auto; } }
         .total div[class^="part0"] .poster label span {
           position: absolute;
           left: 0;
@@ -1061,8 +1080,22 @@ button.submit {
   .starttime h3, .endtime h3 {
     margin-bottom: 5px; }
 
+@media (max-width: 768px) {
+  .starttime {
+    margin-top: 80px; } }
+@media (max-width: 400px) {
+  .starttime {
+    margin-top: 0;
+    margin-right: 10%; } }
+@media (max-width: 768px) {
+  .starttime .field_wrap {
+    margin-bottom: 15px; } }
+
 .endtime {
   margin-left: 10%; }
+  @media (max-width: 768px) {
+    .endtime {
+      margin-left: 0; } }
 
 .ui-timepicker-wrapper {
   width: 112px !important; }
@@ -1187,47 +1220,86 @@ button.submit {
   background-color: #1abc9c; }
 
 .owner {
+    /*
   position: relative;
   margin: 0 auto;
-  margin-bottom: 25px; }
-  .owner div {
-    font-size: 1.2em;
+  margin-bottom: 25px;
+
+  div {
+    font-size: 1.2em; //22px;
     font-family: inherit;
     display: block;
     height: 100%;
     padding: 10px 5%;
-    color: #6b7d87;
+    color: $form_color;
     border-radius: 0;
-    border: 1px solid #6b7d87;
+    //transition: border-color .25s ease, box-shadow .25s ease;
+    border: 1px solid $form_color;
     background-color: transparent;
     cursor: pointer;
-    width: 90%; }
-    @media (max-width: 768px) {
-      .owner div {
-        font-size: 0.9em; } }
-    .owner div i {
-      float: right; }
-  .owner ul {
+    width: 90%;
+      
+      @include smartphone {
+          font-size: 0.9em;
+      }
+    
+    i {
+      float: right;
+    }
+  }
+  ul {
     position: absolute;
     width: 100%;
-    background-color: #3d4b53;
+    background-color: $form_color_radio;
     margin: 0;
     padding: 0;
-    border: 1px solid #6b7d87;
+    border: 1px solid $form_color;
     list-style: none;
     display: none;
-    z-index: 2; }
-    .owner ul li {
-      padding: 5px 5%;
-      cursor: initial;
-      border-bottom: 1px solid #9CAFB9;
-      font-size: 1.2em; }
-      .owner ul li:hover {
-        background-color: #1abc9c;
-        color: #fff; }
+    z-index: 2;
+
+    li {
+        padding: 5px 5%;
+        cursor: initial;
+        border-bottom: 1px solid $form_font_color;
+        font-size: 1.2em;
+        &:hover {
+          background-color: $theme_color01;
+          //-webkit-border-radius: 10px;
+          color: #fff;
+        }
+    }
+  }
+    */ }
+  .owner .bootstrap-select {
+    width: 100% !important;
+    font-size: inherit !important; }
+    .owner .bootstrap-select .dropdown-toggle {
+      border: 1px solid #6b7d87;
+      border-radius: 0px; }
+      .owner .bootstrap-select .dropdown-toggle:hover, .owner .bootstrap-select .dropdown-toggle:focus {
+        background-color: transparent; }
+      .owner .bootstrap-select .dropdown-toggle.btn {
+        font-size: 1.2em;
+        color: #6b7d87; }
+        .owner .bootstrap-select .dropdown-toggle.btn.bs-placeholder {
+          color: rgba(156, 175, 185, 0.6);
+          font-size: 1em; }
+    .owner .bootstrap-select .dropdown-menu {
+      border-radius: 0px;
+      border-color: #6b7d87;
+      border-top: 0;
+      margin: 0;
+      font-size: 1em; }
+      .owner .bootstrap-select .dropdown-menu ul li a {
+        padding: 3px 15px;
+        color: #9CAFB9; }
+        .owner .bootstrap-select .dropdown-menu ul li a:hover {
+          background-color: #1abc9c;
+          color: #fff; }
 
 .extra_url {
-  margin-top: 40px; }
+  margin-top: 15px; }
   @media (max-width: 768px) {
     .extra_url label {
       font-size: 0.9em;
@@ -1339,6 +1411,9 @@ button.submit {
 
 .activities_overview .content .links {
   margin-right: 25px; }
+  @media (max-width: 768px) {
+    .activities_overview .content .links {
+      margin-right: 0; } }
   .activities_overview .content .links div {
     float: right; }
     .activities_overview .content .links div a {
@@ -2109,6 +2184,10 @@ button.submit {
     .members_overview .search .quick input::placeholder {
       color: #9CAFB9;
       font-style: italic; }
+    @media (max-width: 1024px) {
+      .members_overview .search .quick input {
+        width: calc(90% - 2px);
+        padding: 5px 1%; } }
     @media (max-width: 768px) {
       .members_overview .search .quick input {
         width: 75%; } }
@@ -2125,6 +2204,10 @@ button.submit {
     .members_overview .search .quick span:hover {
       background-position: 100%;
       cursor: pointer; }
+    @media (max-width: 1024px) {
+      .members_overview .search .quick span {
+        width: calc(2% - 2px);
+        padding: 3px 3%; } }
   .members_overview .search .open_advanced {
     margin-top: 5px;
     width: 150px; }
@@ -2568,7 +2651,8 @@ button.submit {
       border: 1px solid #14aa6f; }
   .winterhours_overview .winterhour_group .scheme .date {
     width: 22%;
-    margin-right: 4%; }
+    margin-right: 4%;
+    margin-top: 15px; }
     .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
       margin-right: 0; }
     @media (max-width: 768px) {
@@ -2743,24 +2827,37 @@ button.submit {
 .exercises_overview .block {
   width: 70%;
   margin-left: 20%; }
+  @media (max-width: 1024px) {
+    .exercises_overview .block {
+      width: 75%;
+      margin: 0 auto;
+      left: 95px; } }
   @media (max-width: 768px) {
     .exercises_overview .block {
       width: 90%;
-      margin: 0 auto; } }
+      margin: 0 auto;
+      left: 0; } }
   .exercises_overview .block .add_exercise_link {
     margin-bottom: 25px; }
-    .exercises_overview .block .add_exercise_link a {
-      float: right;
+    .exercises_overview .block .add_exercise_link div, .exercises_overview .block .add_exercise_link a {
       padding: 8px 14px;
       background-color: rgba(26, 188, 156, 0.6);
       border-radius: 50%;
       color: #fff;
+      cursor: pointer;
       -webkit-transition: background-color 0.2s ease;
       -moz-transition: background-color 0.2s ease;
       -ms-transition: background-color 0.2s ease;
       transition: background-color 0.2s ease; }
-      .exercises_overview .block .add_exercise_link a:hover {
+      .exercises_overview .block .add_exercise_link div:hover, .exercises_overview .block .add_exercise_link a:hover {
         background-color: #1abc9c; }
+    .exercises_overview .block .add_exercise_link div {
+      display: none; }
+      @media (max-width: 768px) {
+        .exercises_overview .block .add_exercise_link div {
+          display: block; } }
+    .exercises_overview .block .add_exercise_link a {
+      float: right; }
 .exercises_overview .pagination_container, .exercises_overview .pagination_container_filter {
   text-align: center; }
   @media (max-width: 768px) {
@@ -2793,15 +2890,28 @@ button.submit {
       top: 45px;
       box-shadow: 0px 0px 2px #9CAFB9;
       padding: 5px;
-      /*
       width: 0;
       padding: 0;
       overflow: hidden;
-      */ } }
+      -webkit-transition: width 0.2s ease;
+      -moz-transition: width 0.2s ease;
+      -ms-transition: width 0.2s ease;
+      transition: width 0.2s ease; }
+      .filters_block.active {
+        width: 50%;
+        padding: 5px; } }
+  .filters_block .close_btn {
+    display: none; }
+    @media (max-width: 768px) {
+      .filters_block .close_btn {
+        display: block;
+        text-align: right; }
+        .filters_block .close_btn:hover {
+          color: #1abc9c; } }
   .filters_block .tag_type_block h3 {
     margin: 15px 0 3px;
     border-bottom: 1px solid #1abc9c; }
-  .filters_block .tag_type_block:first-child h3 {
+  .filters_block .tag_type_block:nth-child(2) h3 {
     margin-top: 0; }
   .filters_block .tag_type_block .tag label {
     display: block;
@@ -2857,12 +2967,17 @@ button.submit {
         .exercises_content .exercises_to_approve .overview .exercise .view_details {
           width: 15%;
           text-align: right; }
+  .exercises_content .no_exercises {
+    text-align: center;
+    margin-top: 120px; }
   .exercises_content .newest {
     padding: 2%;
     box-shadow: 0px 2px 5px rgba(156, 175, 185, 0.5); }
     @media (max-width: 768px) {
       .exercises_content .newest {
         display: none; } }
+    .exercises_content .newest h3 {
+      margin-top: 5px; }
     .exercises_content .newest .image {
       width: 45%;
       margin-right: 5%;
@@ -2939,6 +3054,12 @@ button.submit {
 
 .exercise_details .block {
   width: 60%; }
+  @media (max-width: 1024px) {
+    .exercise_details .block {
+      width: 75%; } }
+  @media (max-width: 768px) {
+    .exercise_details .block {
+      width: 90%; } }
   .exercise_details .block .edit_button {
     position: absolute;
     right: 3%; }
@@ -2966,6 +3087,10 @@ button.submit {
   .exercise_details .exercise .images_block {
     width: 45%;
     margin-right: 3%; }
+    @media (max-width: 768px) {
+      .exercise_details .exercise .images_block {
+        width: 100%;
+        margin-right: 0; } }
     .exercise_details .exercise .images_block .main_image {
       width: 98%;
       padding: 1%;
@@ -2989,11 +3114,17 @@ button.submit {
   .exercise_details .exercise .description_block {
     width: 52%;
     font-size: 0.92em; }
+    @media (max-width: 768px) {
+      .exercise_details .exercise .description_block {
+        width: 100%; } }
 .exercise_details .video_block {
   margin-top: 40px;
   text-align: center; }
   .exercise_details .video_block iframe {
     width: 70%; }
+    @media (max-width: 768px) {
+      .exercise_details .video_block iframe {
+        width: 100%; } }
 .exercise_details .approve_deny {
   margin-top: 25px; }
   .exercise_details .approve_deny a {

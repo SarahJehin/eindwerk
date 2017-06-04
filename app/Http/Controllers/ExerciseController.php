@@ -15,7 +15,7 @@ class ExerciseController extends Controller
     	//dd(Request()->page);
     	//dd('exercises_overview');
     	//$exercises = Exercise::where('approved', 1)->get()->shuffle();
-    	$exercises = Exercise::where('approved', 1)->paginate(3);
+    	$exercises = Exercise::where('approved', 1)->paginate(4);
     	$tag_types = Tag::all()->groupBy('type');
     	$newest_exercise = null;
     	$most_viewed_exercises = null;
@@ -81,7 +81,7 @@ class ExerciseController extends Controller
 			});
 		}
 		//don't forget to paginate
-		$filtered_exercises = $filtered_exercises->paginate(1);
+		$filtered_exercises = $filtered_exercises->paginate(2);
 		$pagination_html = (string)$filtered_exercises->links();
 		return ['filtered_exercises' => $filtered_exercises, 'pagination_html' => $pagination_html];
 		dd($filtered_exercises, $pagination_html);

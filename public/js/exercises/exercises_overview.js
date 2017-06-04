@@ -136,6 +136,15 @@
             $(value).css('height', image_height + 'px');
         });
 
-    
+        
+        //filter click on smartphone
+        $('.filter_btn').click(function() {
+            $('.filters_block').addClass('active');
+        });
+
+        $('.filters_block').on('click', '.close_btn', function() {
+            $('.filters_block').removeClass('active');
+        });
+
 });
 })(window, window.document, window.jQuery);

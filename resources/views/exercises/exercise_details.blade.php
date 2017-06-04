@@ -46,7 +46,7 @@
                 
 
                 <div class="exercise clearfix">
-                    <div class="images_block float">
+                    <div class="images_block float small_no_float">
                         <div class="main_image">
                             <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}" alt="{{$exercise->images[0]->title}}">
                         </div>
@@ -58,7 +58,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="description_block float">
+                    <div class="description_block float small_no_float">
                         {!!$exercise->description!!}
                     </div>
                 </div>

@@ -79,7 +79,7 @@
                                 <tr>
                                     <td>{{$participant->last_name}} {{$participant->first_name}}</td>
                                     @foreach($adult_activities as $activity)
-                                    <td title="{{$activity->title}}">
+                                    <td data-toggle="tooltip" data-placement="left" data-container="body" title="{{$activity->title}}">
                                         <!-- has activities in the past for which he she has paid -->
                                         @if($participant->activities()->where('activities.id', $activity->id)->exists())
                                         {{1 + $participant->activities()->where('activities.id', $activity->id)->first()->pivot->extra_points}}
@@ -154,7 +154,7 @@
                                 <tr>
                                     <td>{{$participant->last_name}} {{$participant->first_name}}</td>
                                     @foreach($youth_activities as $activity)
-                                    <td title="{{$activity->title}}">
+                                    <td data-toggle="tooltip" data-placement="left" data-container="body" title="{{$activity->title}}">
                                         <!-- has activities in the past for which he she has paid -->
                                         @if($participant->activities()->where('activities.id', $activity->id)->exists())
                                         <!-- dat hieronder moet dan + de extra score gedaan worden -->

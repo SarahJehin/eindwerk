@@ -430,7 +430,9 @@ class ActivityController extends Controller
         $activity['owner_name'] = $owner->first_name . ' ' . $owner->last_name;
         $categories = Category::all();
         //onderstaande moet nog aangepast worden (waar rol = jeugdbestsuur)
-        $possible_owners = User::all();
+        $possible_owners = User::whereHas('roles', function ($query) {
+                                    $query->where('level', '<', 30);
+                                })->get();
         return view('activities/edit_activity', ['activity' => $activity, 'categories' => $categories, 'owners' => $possible_owners]);
     }
 

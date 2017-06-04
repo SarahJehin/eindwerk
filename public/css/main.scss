@@ -201,9 +201,15 @@ nav {
     margin-bottom: 150px;
     box-shadow: 10px 10px 15px rgba(#000, 0.6);
     
+    @include tablet {
+        width: 75%;
+        left: 95px;
+    }
+    
     @include smartphone {
         top: 85px;
         width: 90%;
+        left: 0;
     }
     
   .heading {

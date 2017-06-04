@@ -4,7 +4,19 @@
   overflow: hidden;
 }
 
-
+.add_activity {
+    .not_editable {
+        width: 91%;
+        padding: 3px 1%;
+        margin: 0 auto;
+        margin-bottom: 5px;
+        border: 1px solid orange;
+        border-radius: 5px;
+        i {
+            color: orange;
+        }
+    }
+}
 
 .total {
     //width: 2000px;
@@ -109,6 +121,10 @@
           display: none;
           height: 100%;
           width: auto;
+            @include smartphone {
+                width: 100%;
+                height: auto;
+            }
         }
 
         span {
@@ -402,8 +418,26 @@
     */
 }
 
+.starttime {
+    @include smartphone {
+        margin-top: 80px;
+    }
+    @include smartphone_small {
+        margin-top: 0;
+        margin-right: 10%;
+    }
+    .field_wrap {
+        @include smartphone {
+            margin-bottom: 15px;
+        }
+    }
+}
+
 .endtime {
     margin-left: 10%;
+    @include smartphone {
+        margin-left: 0;
+    }
 }
 
 .ui-timepicker-wrapper {
@@ -589,6 +623,7 @@
 
 
 .owner {
+    /*
   position: relative;
   margin: 0 auto;
   margin-bottom: 25px;
@@ -638,10 +673,49 @@
         }
     }
   }
+    */
+    .bootstrap-select {
+        width: 100% !important;
+        font-size: inherit !important;
+        .dropdown-toggle {
+            border: 1px solid $form_color;
+            border-radius: 0px;
+            &:hover, &:focus {
+                background-color: transparent;
+            }
+            &.btn {
+                font-size: 1.2em;
+                color: $form_color;
+                &.bs-placeholder {
+                    color: rgba($form_font_color, 0.60);
+                    font-size: 1em;
+                }
+            }
+        }
+        .dropdown-menu {
+            border-radius: 0px;
+            border-color: $form_color;
+            border-top: 0;
+            margin: 0;
+            font-size: 1em;
+            ul {
+                li {
+                    a {
+                        padding: 3px 15px;
+                        color: $form_font_color;
+                        &:hover {
+                            background-color: $theme_color01;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .extra_url {
-  margin-top: 40px;
+  margin-top: 15px;
     label {
         @include smartphone {
             font-size: 0.9em;

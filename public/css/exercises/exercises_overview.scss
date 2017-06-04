@@ -3,23 +3,38 @@
     .block {
         width: 70%;
         margin-left: 20%;
+        @include tablet {
+            width: 75%;
+            margin: 0 auto;
+            left: 95px;
+        }
         @include smartphone {
             width: 90%;
             margin: 0 auto;
+            left: 0;
         }
         
         .add_exercise_link {
             margin-bottom: 25px;
-            a {
-                float: right;
+            div, a {
                 padding: 8px 14px;
                 background-color: rgba($theme_color01, 0.6);
                 border-radius: 50%;
                 color: #fff;
+                cursor: pointer;
                 @include transition(background-color 0.2s ease);
                 &:hover {
                     background-color: $theme_color01;
                 }
+            }
+            div {
+                display: none;
+                @include smartphone {
+                    display: block;
+                }
+            }
+            a {
+                float: right;
             }
         }
     }
@@ -73,18 +88,31 @@
         box-shadow: 0px 0px 2px $form_font_color;
         padding: 5px;
         //to put it invisible when filters button is not clicked
-        /*
         width: 0;
         padding: 0;
         overflow: hidden;
-        */
+        @include transition(width 0.2s ease);
+        &.active {
+            width: 50%;
+            padding: 5px;
+        }
+    }
+    .close_btn {
+        display: none;
+        @include smartphone {
+            display: block;
+            text-align: right;
+            &:hover {
+                color: $theme_color01;
+            }
+        }
     }
     .tag_type_block {
         h3 {
             margin: 15px 0 3px;
             border-bottom: 1px solid $theme_color01;
         }
-        &:first-child {
+        &:nth-child(2) {
             h3 {
                 margin-top: 0;
             }
@@ -171,11 +199,19 @@
             }
         }
     }
+    
+    .no_exercises {
+        text-align: center;
+        margin-top: 120px;
+    }
     .newest {
         padding: 2%;
         box-shadow: 0px 2px 5px rgba($form_font_color, 0.5);
         @include smartphone {
             display: none;
+        }
+        h3 {
+            margin-top: 5px;
         }
         .image {
             width: 45%;

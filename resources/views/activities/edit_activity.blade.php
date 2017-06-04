@@ -3,10 +3,11 @@
 
 @section('custom_css')
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 @endsection
 
 @section('content')
@@ -31,6 +32,12 @@
                     <div class="success_msg">
                         {{ session('success_msg') }}
                     </div>
+                @endif
+                @if(date('Y-m-d', strtotime($activity->start)) < date('Y-m-d'))
+                <div class="not_editable">
+                    <i class="fa fa-asterisk" aria-hidden="true"></i>
+                    Je kan deze activiteit niet meer aanpassen omdat hij reeds voorbij is.
+                </div>
                 @endif
                 <div class="form_part">
                     <form id="edit_activity" method="post" enctype="multipart/form-data" action="{{url('update_activity')}}" novalidate>
@@ -287,7 +294,7 @@
                                     -->
 
                                     <div class="owner">
-
+                                        <!--
                                         <div class="select_toggler">
                                             <span class="select_title">{{old('owner_name', $activity->owner_name)}}</span> <i class="fa fa-sort-desc" aria-hidden="true"></i>
                                         </div>
@@ -298,11 +305,22 @@
                                         </ul>
                                         <input name="owner_name" type="text" id="owner_name" value="{{old('owner_name', $activity->owner_name)}}" hidden>
                                         <input name="owner" type="number" id="owner" value="{{old('owner', $activity->owner_id)}}" hidden>
+                                        -->
+                                        <label for="owner">Verantwoordelijke</label>
+                                        <div class="apply_bootstrap">
+                                            <select name="owner" class="selectpicker" title="Selecteer een verantwoordelijke">
+                                                @foreach($owners as $owner)
+                                                    <option value="{{$owner->id}}" {{ (old("owner") == $owner->id ? "selected" : ($activity->made_by_id == $owner->id ? "selected" : "")) }}>{{$owner->first_name}} {{$owner->last_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
 
-                                    <div class="field_wrap extra_url">
-                                        <label>URL (optioneel)</label>
-                                        <input type="text" name="extra_url" id="extra_url" value="{{old('extra_url', $activity->extra_url)}}">
+                                    <div class="extra_url">
+                                        <label for="extra_url">URL (optioneel)</label>
+                                        <div class="field_wrap">
+                                            <input id="extra_url" type="text" name="extra_url" id="extra_url" value="{{old('extra_url', $activity->extra_url)}}">
+                                        </div>
                                     </div>
 
                                     <div class="visibility">
@@ -314,13 +332,14 @@
                                             <span>Zichtbaar zetten</span>
                                         </label>
                                     </div>
-
+                                    @if(!date('Y-m-d', strtotime($activity->start)) < date('Y-m-d'))
                                     <div class="submit">
                                         <input id="edit_activity_id" type="number" name="activity_id" value="{{$activity->id}}" hidden="">
                                         <button type="submit">
                                             Activiteit bijwerken
                                         </button>
                                     </div>
+                                    @endif
                                     <div class="previous_next clearfix">
                                         <div class="previous link float" step="3">
                                             <i class="fa fa-angle-left" aria-hidden="true"></i> Vorige
@@ -371,5 +390,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c"
             async defer></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.4.0/croppie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <script src="{{ asset('js/activities/add_activity.js') }}"></script>
 @endsection

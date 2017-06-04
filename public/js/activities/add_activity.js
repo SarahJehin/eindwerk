@@ -304,6 +304,7 @@
         $(".helpers_amount").html($("#helpers_slider").val());
     });
 
+/*
     $show_owner_select = false;
     $(".select_toggler").click(function (event) {
         event.stopPropagation();
@@ -332,6 +333,8 @@
         $(".owner ul").hide();
         $show_owner_select = false;
     });
-
+*/
+    $('.selectpicker').selectpicker();
+    $('.dropdown-toggle').dropdown();
 
 })(window, window.document, window.jQuery);

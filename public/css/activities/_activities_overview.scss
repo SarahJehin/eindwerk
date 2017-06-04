@@ -4,6 +4,9 @@
         
         .links {
             margin-right: 25px;
+            @include smartphone {
+                margin-right: 0;
+            }
             div {
                 float: right;
                 

@@ -90,7 +90,7 @@
                     </div>
                     @foreach($user->activities_as_participant_coming as $activity)
                     <div class="row activity clearfix">
-                        <div class="date float">{{date('d/m/Y', strtotime($activity->start))}}</div>
+                        <div class="date float">{{date('d/m', strtotime($activity->start))}}<span class="year">{{date('/Y', strtotime($activity->start))}}</span></div>
                         <div class="title float"><a class="link" href="{{url('activity_details/' . $activity->id)}}">{{$activity->title}}</a></div>
                         <div class="paid float">
                             @if($activity->price > 0)
