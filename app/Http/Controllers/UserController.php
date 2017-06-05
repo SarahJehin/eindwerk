@@ -27,24 +27,6 @@ class UserController extends Controller
 
     public function get_members_overview(Request $request) {
         $rankings = $this->rankings_array();
-        $is_admin = false;
-        //$user_roles = Auth::user()->roles->pluck('level')->toArray();
-        /*
-        $user_has_admin_role = Auth::user()->roles->whereIn('level', [11])->first();
-        if (Auth::user() && $user_has_admin_role) {
-            $is_admin = true;
-        }
-        $is_youth_chairman = false;
-        $user_has_youth_chairman_role = Auth::user()->roles->whereIn('level', [21])->first();
-        if (Auth::user() && $user_has_youth_chairman_role) {
-            $is_youth_chairman = true;
-        }
-        $is_headtrainer = false;
-        $user_has_headtrainer_role = Auth::user()->roles->whereIn('level', [31])->first();
-        if (Auth::user() && $user_has_headtrainer_role) {
-            $is_headtrainer = true;
-        }*/
-
         if($request->has('searching')) {
             $search_results = $this->search_members($request);
             return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
@@ -53,6 +35,28 @@ class UserController extends Controller
             $members = User::orderBy('last_name')->orderBy('first_name')->paginate(50);
             return view('members/members_overview', ['members' => $members, 'rankings' => $rankings]);
         }
+    }
+
+    //search
+    public function get_matching_users(Request $request) {
+        $searchstring   = $request->searchstring;
+        $not_ids        = $request->not_ids;
+
+        //select birth_date as well, for when you have two users with the same name
+        $matching_users = User::select('id', 'first_name', 'last_name', 'birth_date')
+                                ->whereNotIn('id', $not_ids)
+                                ->where(function($query) use ($searchstring) {
+                                    $query->where('first_name', 'like', '%'.$searchstring.'%')
+                                            ->orWhere('last_name', 'like', '%'.$searchstring.'%')
+                                            ->orWhere(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), 'like', '%'.$searchstring.'%')
+                                            ->orWhere(DB::raw("CONCAT(`last_name`, ' ', `first_name`)"), 'like', '%'.$searchstring.'%');
+                                })
+                                ->orderBy('last_name')
+                                ->orderBy('first_name')
+                                ->limit(5)
+                                ->get();
+
+        return $matching_users;
     }
 
     public function download_members_as_excel() {
@@ -206,6 +210,31 @@ class UserController extends Controller
             $user->roles()->detach($request->role_id);
             return $user->first_name . ' ' . $user->last_name . ' no longer has role role (' . $request->role_id . ')';
         }
+    }
+
+    //update profile contactinfo (like mobile, phone and email)
+    public function update_profile(Request $request) {
+        //return $request->new_value;
+        //type can be: mobile/phone/email
+        $type = $request->type;
+        //this new value is already validated in javascript
+        $new_value = $request->new_value;
+        $user = User::find($request->user_id);
+        //dd($user);
+        switch ($type) {
+            case 'mobile':
+                $user->gsm = $new_value;
+                break;
+            case 'phone':
+                $user->tel = $new_value;
+                break;
+            case 'email':
+                $user->email = $new_value;
+                break;
+        }
+
+        $user->save();
+        return 'success';
     }
 
     public function update_profile_pic(Request $request) {

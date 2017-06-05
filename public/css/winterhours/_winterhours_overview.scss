@@ -27,6 +27,13 @@
                 font-weight: 500;
             }
         }
+        .details {
+            .descriptive_info {
+                @include smartphone {
+                    display: none;
+                }
+            }
+        }
         .participants {
             font-size: 0.9em;
             h4 {
@@ -82,6 +89,9 @@
                 
                 &:nth-child(4n+4) {
                     margin-right: 0;
+                    @include smartphone {
+                        margin-right: 3%;
+                    }
                 }
                 
                 @include smartphone {
@@ -108,6 +118,10 @@
                             &:hover {
                                 cursor: move;
                                 border: 1px dashed $form_font_color;
+                                @include smartphone {
+                                    cursor: default;
+                                    border: 1px solid transparent;
+                                }
                             }
                         }
                     }

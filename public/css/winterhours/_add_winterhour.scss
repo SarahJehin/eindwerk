@@ -294,6 +294,11 @@
                         margin-bottom: 5px;
                         border-bottom: 1px solid $theme_color01;
                         padding-bottom: 3px;
+                        .year {
+                            @include smartphone {
+                                display: none;
+                            }
+                        }
                     }
                     
                     .participant {
@@ -313,6 +318,17 @@
                             background: rgba($theme_color01, 0.6);
                             color: #fff;
                             border: 1px dashed $theme_color01;
+                        }
+                        .short_last_name {
+                            display: none;
+                            @include smartphone {
+                                display: inline;
+                            }
+                        }
+                        .long_last_name {
+                            @include smartphone {
+                                display: none;
+                            }
                         }
                     }
                 }

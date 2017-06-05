@@ -25,6 +25,7 @@
                             @if($winterhour->made_by == Auth::user()->id)
                             (<a class="link" href="{{url('edit_winterhour/' . $winterhour->id)}}">Beheren</a>)
                             @endif
+                            (<a class="link" href="{{url('download_scheme/' . $winterhour->id)}}">Downloaden als Excel</a>)
                         </div>
                         <div class="details open">
                             <div class="participants">

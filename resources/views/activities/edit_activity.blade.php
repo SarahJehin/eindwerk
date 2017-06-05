@@ -167,6 +167,7 @@
 
                                             <div class="date_info">
                                                 <h3>Datum</h3>
+                                                @if(!(date('Y-m-d', strtotime($activity->start)) < date('Y-m-d')))
                                                 <div class="date_type clearfix">
                                                     <div class="startdate float">
                                                         <span class="radio">
@@ -190,6 +191,16 @@
 
                                                     </div>
                                                 </div>
+                                                @else
+                                                <div class="datepicker_box">
+                                                    <div class="container_dates">
+                                                        
+                                                    </div>
+                                                    <div class="overlay">
+                                                        
+                                                    </div>
+                                                </div>
+                                                @endif
                                                 <input type="date" id="startdate" name="startdate" hidden value="{{old('startdate', date('Y-m-d', strtotime($activity->start)))}}">
                                                 <input type="date" id="deadline" name="deadline" hidden value="{{old('deadline', (strtotime($activity->deadline) ? date('Y-m-d', strtotime($activity->deadline)) : ''))}}">
 
@@ -332,7 +343,7 @@
                                             <span>Zichtbaar zetten</span>
                                         </label>
                                     </div>
-                                    @if(!date('Y-m-d', strtotime($activity->start)) < date('Y-m-d'))
+                                    @if(!(date('Y-m-d', strtotime($activity->start)) < date('Y-m-d')))
                                     <div class="submit">
                                         <input id="edit_activity_id" type="number" name="activity_id" value="{{$activity->id}}" hidden="">
                                         <button type="submit">

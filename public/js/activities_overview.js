@@ -13,11 +13,11 @@
      eventLimit: true, // allow "more" link when too many events
      timeFormat: 'H:mm',
      events: {
-         url: base_url + '/api/get_activities',
+         url: location.origin + '/get_activities',
              error: function() {
                  //will be executed because the api route doesn't exist yet
                  //alert("home.blade.php:52 cannot load json, are you sure " + base_url + '/api exists?');
-                 console.log("home.blade.php:52 cannot load json, are you sure " + base_url + '/api exists?');
+                 console.log("home.blade.php:52 cannot load json, are you sure " + location.origin + '/get_activities' + '/api exists?');
              }
          }
          

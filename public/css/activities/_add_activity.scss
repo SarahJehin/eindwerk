@@ -249,7 +249,8 @@
                   }
 
                   .container_startdate,
-                  .container_deadline {
+                  .container_deadline,
+                  .container_dates {
   
                       &.front {
                           z-index: 2;
@@ -302,6 +303,24 @@
                       tr td.active.highlighted.active.white_color {
                           color: #fff;
                       }
+                  }
+                  
+                  .container_dates {
+                      table tr td.active,
+                      tr td.active.highlighted,
+                      tr td.active.active,
+                      tr td.active.highlighted.active {
+                          background: $theme_gradient01;
+                          color: #fff;
+                          &:first-child {
+                              background: $theme_gradient03;
+                          }
+                      }
+                  }
+                  .overlay {
+                      width: 100%;
+                      height: 200px;
+                      margin-top: 50px;
                   }
 
               }

@@ -276,10 +276,10 @@
                                         <div class="scheme clearfix">
                                             @foreach($scheme as $date => $info)
                                             <div class="date float">
-                                                <h3>{{date('d/m/Y', strtotime($date))}}</h3>
+                                                <h3>{{date('d/m', strtotime($date))}}<span class="year">{{date('/Y', strtotime($date))}}</span></h3>
                                                 @foreach($info['participants'] as $participant)
                                                 <div class="participant dragdrop" user_id="{{$participant->id}}" date_id="{{$info['date_id']}}">
-                                                    {{$participant->first_name}} {{$participant->last_name}}
+                                                    {{$participant->first_name}} <span class="long_last_name">{{$participant->last_name}}</span><span class="short_last_name">{{substr($participant->last_name, 0, 1)}}.</span>
                                                 </div>
                                                 @endforeach
                                             </div>

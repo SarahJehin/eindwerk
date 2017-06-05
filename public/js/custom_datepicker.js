@@ -146,6 +146,8 @@
         startdate = ('0' + $startdate_arr[2]).slice(-2) + '/' + ('0' + $startdate_arr[1]).slice(-2) + '/' + $startdate_arr[0];
         startMonth = $startdate_arr[1];
         $('.container_startdate').datepicker('update', new Date($startdate_arr[0], $startdate_arr[1]-1, $startdate_arr[2]));
+
+
     }
     if($('input[name="deadline"]').val() != "") {
         $deadline = $('input[name="deadline"]').val();
@@ -196,8 +198,17 @@
                 deadline_month_new--;
             }
         }
-
     }
+
+    //if the activity is in the past show another datepicker
+    $('.container_dates').datepicker({
+        language: 'nl-BE',
+        multidateSeparator: ",",
+        maxViewMode: 0,
+        //toggleActive: true,
+    });
+    //startdate = ('0' + $startdate_arr[2]).slice(-2) + '/' + ('0' + $startdate_arr[1]).slice(-2) + '/' + $startdate_arr[0];
+    $('.container_dates').datepicker('setDates', ['03/04/2017', '08/04/2017']);
 
     function beforeShowDateFunction(date) {
         //check which is the current date type and whether the current date is startdate or deadline to return an appropriate classname

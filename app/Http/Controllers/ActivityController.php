@@ -31,6 +31,23 @@ class ActivityController extends Controller
         return view('activities_overview', ['activities' => $activities, 'is_admin' => $is_admin]);
     }
 
+    //return all activities, that are visible, to show on the calendar on the homepage
+    public function get_calendar_activities(Request $request) {
+        $calendar_activities = Activity::select('id', 'title', 'start', 'category_id', 'is_visible')->with(['category' => function($query) {
+            $query->select('id', 'color as backgroundColor');
+        }])->where('is_visible', 1)->get()->toArray();
+
+        $new_calendar_activities = array();
+        foreach($calendar_activities as $act) {
+            $act['backgroundColor'] = $act['category']['backgroundColor'];
+            $act['borderColor'] = $act['category']['backgroundColor'];
+            $act['url'] = url('/') . '/activity_details/' . $act['id'];
+            array_push($new_calendar_activities, $act);
+        }
+
+        return $new_calendar_activities;
+    }
+
     public function activity_details($id) {
         $activity = Activity::where('id', $id)->with('category')->first();
         $is_admin = false;
@@ -420,6 +437,9 @@ class ActivityController extends Controller
 
     public function edit_activity($id) {
         $activity = Activity::find($id);
+        if(!$activity) {
+            abort(404);
+        }
         if($activity->location == 'Sportiva (Industriepark 5, Hulshout)') {
             $activity['location_type'] = 'sportiva';
         }

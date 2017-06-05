@@ -25,7 +25,9 @@ Deelnemers {{$activity->title}}
                 @else
                 <div class="clearfix">
                     <div class="float link download"><a href="{{url('download_participants_as_excel/' . $activity->id)}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Downloaden</a></div>
+                    <!--
                     <div class="float print"><i class="fa fa-print" aria-hidden="true"></i> Afdrukken</div>
+                    -->
                     <div class="amount_participants">({{count($activity->participants)}}/{{$activity->max_participants}})</div>
                 </div>
                 
@@ -55,7 +57,7 @@ Deelnemers {{$activity->title}}
                             <div class="clearfix">
                                 <div class="float gsm small_no_float"><i class="fa fa-mobile" aria-hidden="true"></i> {{substr($participant->gsm, 0, 4) . ' ' . chunk_split(substr($participant->gsm, 4), 2, ' ')}}</div>
                                 <div class="float phone small_no_float"><i class="fa fa-phone" aria-hidden="true"></i> {{substr($participant->tel, 0, 3) . ' ' . chunk_split(substr($participant->tel, 3), 2, ' ')}}</div>
-                                <div class="float email small_no_float"><i class="fa fa-at" aria-hidden="true"></i> {{$participant->email}}</div>
+                                <div class="float email small_no_float"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{$participant->email}}</div>
                             </div>
                             <div class="signed_up_by">
                                 Ingeschreven door: {{$participant->pivot->signed_up_by_user->first_name}} {{$participant->pivot->signed_up_by_user->last_name}}

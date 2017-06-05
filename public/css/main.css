@@ -38,11 +38,26 @@ nav {
       height: calc(100% - 50px);
       width: 100%;
       transition: top 1s;
-      padding-top: 50px; }
+      padding-top: 50px;
+      overflow: hidden; }
+      nav.open {
+        top: 0; } }
+  @media (max-width: 400px) {
+    nav {
+      background-color: #24313c;
+      position: fixed;
+      top: -100%;
+      width: 100%;
+      z-index: 6;
+      transition: top 1s; }
       nav.open {
         top: 0; } }
   nav .personal_details {
     padding: 15px; }
+    @media (max-width: 768px) {
+      nav .personal_details {
+        width: 45%;
+        margin: 0 auto; } }
     nav .personal_details .profile_pic {
       width: 50px;
       height: 50px;
@@ -56,7 +71,6 @@ nav {
         border-radius: 50%; }
     nav .personal_details .name_total {
       color: #fff;
-      width: 110px;
       padding-top: 5px; }
       nav .personal_details .name_total .name a {
         color: inherit;
@@ -101,17 +115,30 @@ nav {
         @media (max-width: 768px) {
           nav ul li a {
             width: 40%;
-            margin: 0 auto; }
+            margin: 0 auto;
+            padding: 15px 32%; }
             nav ul li a:hover, nav ul li a.active {
-              padding-left: 15px; } }
+              padding-left: 32%; } }
+  nav .logo {
+    width: 100%;
+    position: absolute;
+    bottom: 15px;
+    text-align: center; }
+    @media (max-width: 768px) {
+      nav .logo {
+        display: none; } }
+    nav .logo img {
+      width: 25%; }
 
 #hamburger {
   display: none; }
 
+#hamburger:checked + nav {
+  top: 0; }
+
 .hamburger {
   font-size: 1em;
   width: 100%;
-  text-align: center;
   color: #fff;
   background-color: rgba(36, 49, 60, 0.9);
   position: fixed;
@@ -125,6 +152,16 @@ nav {
   @media (max-width: 768px) {
     .hamburger {
       display: block; } }
+  .hamburger .logo {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 40px; }
+    .hamburger .logo img {
+      width: 100%; }
+  .hamburger .hamburger_icon {
+    width: 50px;
+    margin: 0 auto; }
   .hamburger i {
     padding: 5px 8px;
     margin-top: 25px;
@@ -149,6 +186,11 @@ nav {
       top: 85px;
       width: 90%;
       left: 0; } }
+  @media (max-width: 400px) {
+    .block {
+      width: 100%;
+      margin: 0px auto;
+      margin-bottom: 50px; } }
   .block .heading {
     background-color: #1abc9c;
     color: #fff;
@@ -962,17 +1004,21 @@ button.submit {
             width: 100%;
             height: 100%; }
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate.front,
-          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline.front {
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline.front,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates.front {
             z-index: 2; }
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table,
-          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table {
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates table {
             margin: 0 auto; }
             .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td,
-            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td {
+            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td,
+            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates table tr td {
               padding: 2px 5px;
               cursor: default; }
               .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td.disabled,
-              .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td.disabled {
+              .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline table tr td.disabled,
+              .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates table tr td.disabled {
                 background-color: rgba(208, 218, 226, 0.2); }
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate table tr td.active:active,
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_startdate tr td.active.highlighted:active,
@@ -998,6 +1044,21 @@ button.submit {
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.active.white_color,
           .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_deadline tr td.active.highlighted.active.white_color {
             color: #fff; }
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates table tr td.active,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates tr td.active.highlighted,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates tr td.active.active,
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates tr td.active.highlighted.active {
+            background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
+            color: #fff; }
+            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates table tr td.active:first-child,
+            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates tr td.active.highlighted:first-child,
+            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates tr td.active.active:first-child,
+            .total div[class^="part0"] .date_time_info .date_info .datepicker_box .container_dates tr td.active.highlighted.active:first-child {
+              background: linear-gradient(-216deg, #ff9f23 0%, #dd5128 100%); }
+          .total div[class^="part0"] .date_time_info .date_info .datepicker_box .overlay {
+            width: 100%;
+            height: 200px;
+            margin-top: 50px; }
         .total div[class^="part0"] .date_time_info .date_info .date_type {
           margin-bottom: 10px; }
           .total div[class^="part0"] .date_time_info .date_info .date_type .radio {
@@ -1859,6 +1920,8 @@ button.submit {
       .activities_list .list .activity .delete {
         display: none; } }
 
+.activity_participants .amount_participants {
+  float: right; }
 .activity_participants .list .participant_block {
   border-bottom: 1px solid #9CAFB9;
   border-bottom: 1px solid rgba(26, 188, 156, 0.25);
@@ -2569,6 +2632,9 @@ button.submit {
     margin-bottom: 5px;
     border-bottom: 1px solid #1abc9c;
     padding-bottom: 3px; }
+    @media (max-width: 768px) {
+      .add_winterhour .form_part .scheme_generation .scheme .date h3 .year, .edit_winterhour .form_part .scheme_generation .scheme .date h3 .year {
+        display: none; } }
   .add_winterhour .form_part .scheme_generation .scheme .date .participant, .edit_winterhour .form_part .scheme_generation .scheme .date .participant {
     border: 1px solid transparent;
     margin-bottom: 2px; }
@@ -2582,6 +2648,14 @@ button.submit {
       background: rgba(26, 188, 156, 0.6);
       color: #fff;
       border: 1px dashed #1abc9c; }
+    .add_winterhour .form_part .scheme_generation .scheme .date .participant .short_last_name, .edit_winterhour .form_part .scheme_generation .scheme .date .participant .short_last_name {
+      display: none; }
+      @media (max-width: 768px) {
+        .add_winterhour .form_part .scheme_generation .scheme .date .participant .short_last_name, .edit_winterhour .form_part .scheme_generation .scheme .date .participant .short_last_name {
+          display: inline; } }
+    @media (max-width: 768px) {
+      .add_winterhour .form_part .scheme_generation .scheme .date .participant .long_last_name, .edit_winterhour .form_part .scheme_generation .scheme .date .participant .long_last_name {
+        display: none; } }
 .add_winterhour .form_part .scheme_generation .play_times, .edit_winterhour .form_part .scheme_generation .play_times {
   margin-top: 15px; }
   .add_winterhour .form_part .scheme_generation .play_times .title, .edit_winterhour .form_part .scheme_generation .play_times .title {
@@ -2615,6 +2689,9 @@ button.submit {
     font-weight: 300; }
     .winterhours_overview .winterhour_group .day_time a {
       font-weight: 500; }
+  @media (max-width: 768px) {
+    .winterhours_overview .winterhour_group .details .descriptive_info {
+      display: none; } }
   .winterhours_overview .winterhour_group .participants {
     font-size: 0.9em; }
     .winterhours_overview .winterhour_group .participants h4 {
@@ -2655,6 +2732,9 @@ button.submit {
     margin-top: 15px; }
     .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
       margin-right: 0; }
+      @media (max-width: 768px) {
+        .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
+          margin-right: 3%; } }
     @media (max-width: 768px) {
       .winterhours_overview .winterhour_group .scheme .date {
         width: 30%;
@@ -2674,6 +2754,10 @@ button.submit {
         .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
           cursor: move;
           border: 1px dashed #9CAFB9; }
+          @media (max-width: 768px) {
+            .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
+              cursor: default;
+              border: 1px solid transparent; } }
       .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-hover {
         background: rgba(26, 188, 156, 0.1);
         border: 1px dashed #9CAFB9; }
@@ -2701,12 +2785,22 @@ button.submit {
   border-right: 1px solid rgba(26, 188, 156, 0.25);
   height: 170px;
   margin-top: 25px; }
+  @media (max-width: 768px) {
+    .availabilities .dates_overview .monthly_dates {
+      width: 30%;
+      margin-right: 3%; } }
   .availabilities .dates_overview .monthly_dates:nth-child(4n+4) {
     margin-right: 0; }
+    @media (max-width: 768px) {
+      .availabilities .dates_overview .monthly_dates:nth-child(4n+4) {
+        margin-right: 3%; } }
   .availabilities .dates_overview .monthly_dates h4 {
     margin-top: 0; }
   .availabilities .dates_overview .monthly_dates .dates .date .date_date {
     width: 55%; }
+    @media (max-width: 768px) {
+      .availabilities .dates_overview .monthly_dates .dates .date .date_date .year {
+        display: none; } }
   .availabilities .dates_overview .monthly_dates .dates .date i {
     margin-left: 5px;
     color: #1abc9c; }
@@ -2837,6 +2931,11 @@ button.submit {
       width: 90%;
       margin: 0 auto;
       left: 0; } }
+  @media (max-width: 400px) {
+    .exercises_overview .block {
+      width: 100%;
+      margin: 0px auto;
+      margin-bottom: 50px; } }
   .exercises_overview .block .add_exercise_link {
     margin-bottom: 25px; }
     .exercises_overview .block .add_exercise_link div, .exercises_overview .block .add_exercise_link a {
@@ -2941,6 +3040,9 @@ button.submit {
 
 .exercises_content {
   width: 78%; }
+  @media (max-width: 768px) {
+    .exercises_content {
+      width: 100%; } }
   .exercises_content .exercises_to_approve {
     padding: 5px;
     border: 1px solid #b73928;
@@ -3009,6 +3111,10 @@ button.submit {
         margin-top: 15px; } }
     .exercises_content .most_viewed .exercises .exercise .image, .exercises_content .all .exercises .exercise .image, .exercises_content .filtered_exercises .exercises .exercise .image {
       overflow: hidden; }
+      @media (max-width: 768px) {
+        .exercises_content .most_viewed .exercises .exercise .image, .exercises_content .all .exercises .exercise .image, .exercises_content .filtered_exercises .exercises .exercise .image {
+          width: 95%;
+          padding: 2.5%; } }
       .exercises_content .most_viewed .exercises .exercise .image img, .exercises_content .all .exercises .exercise .image img, .exercises_content .filtered_exercises .exercises .exercise .image img {
         width: 100%;
         filter: grayscale(50%);
@@ -3028,6 +3134,9 @@ button.submit {
         text-align: right; }
     .exercises_content .most_viewed .exercises .exercise .title, .exercises_content .all .exercises .exercise .title, .exercises_content .filtered_exercises .exercises .exercise .title {
       text-align: center; }
+      @media (max-width: 768px) {
+        .exercises_content .most_viewed .exercises .exercise .title, .exercises_content .all .exercises .exercise .title, .exercises_content .filtered_exercises .exercises .exercise .title {
+          padding: 5px; } }
     .exercises_content .most_viewed .exercises .exercise:hover, .exercises_content .all .exercises .exercise:hover, .exercises_content .filtered_exercises .exercises .exercise:hover {
       box-shadow: 0px 0px 5px rgba(156, 175, 185, 0.3), 5px 5px 5px rgba(156, 175, 185, 0.15); }
       .exercises_content .most_viewed .exercises .exercise:hover .image img, .exercises_content .all .exercises .exercise:hover .image img, .exercises_content .filtered_exercises .exercises .exercise:hover .image img {
@@ -3175,44 +3284,6 @@ button.submit {
     .smartphone {
       display: block; } }
 
-@media screen and (max-width: 375px) {
-  nav {
-    background-color: #24313c;
-    position: fixed;
-    top: -100%;
-    width: 100%;
-    z-index: 2;
-    transition: top 1s; }
-    nav.open {
-      top: 0; }
-    nav .profile_pic {
-      width: 50px;
-      height: 50px; }
-    nav ul li a {
-      padding: 15px 32%;
-      width: 35%; }
-
-  .hamburger {
-    display: block; }
-
-  #hamburger:checked + nav {
-    top: 0; }
-
-  body {
-    background-image: none; }
-
-  .block {
-    width: 100%;
-    margin: 0px auto;
-    margin-bottom: 50px; }
-    .block .heading {
-      background-color: #1abc9c;
-      color: #fff;
-      text-align: center;
-      padding: 10px; }
-    .block .content {
-      padding: 40px;
-      padding-bottom: 25px; } }
 @media print {
   nav {
     display: none; }

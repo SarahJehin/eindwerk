@@ -207,7 +207,7 @@
             var searchstring    = $(this).val();
             if(searchstring.length > 0) {
                 //get 5 first search results //add , not_ids: not_ids beneath
-                $.get( location.origin + "/api/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
+                $.get( location.origin + "/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
                     $('.search_select select').empty();
                     $.each(data, function( key, result ) {
                         var id = result["id"];
@@ -294,7 +294,7 @@
         console.log(not_ids);
         if(searchstring.length > 1) {
             //get 5 first search results //add , not_ids: not_ids beneath
-            $.get( location.origin + "/api/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
+            $.get( location.origin + "/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
                 //console.log(data[0]['first_name']);
                 $('.search_results ul').empty();
                 $.each(data, function( key, result ) {

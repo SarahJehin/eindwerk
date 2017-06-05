@@ -23,6 +23,11 @@
     <link href="{{url('/css/main.css')}}" rel="stylesheet" type="text/css">
     @yield('custom_css')
 
+    <!-- favicon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/site_images/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/site_images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('images/site_images/favicon-96x96.png') }}">
+
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -39,6 +44,9 @@
         -->
 
         <div class="hamburger">
+            <div class="logo">
+                <a href="{{url('/')}}"><img src="{{url('images/site_images/logo_colored_dark_bg.png')}}" alt="Logo TCS"></a>
+            </div>
             <div class="hamburger_icon"><i class="fa fa-bars" aria-hidden="true"></i></div>
         </div>
 
@@ -86,6 +94,9 @@
                 @endif
             </ul>
 
+            <div class="logo">
+                <a href="{{url('/')}}"><img src="{{url('images/site_images/logo_colored_dark_bg.png')}}" alt="Logo TCS"></a>
+            </div>
 
         </nav>
 

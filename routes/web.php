@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
     //users
     //activities
     Route::get('activities_overview', 'ActivityController@activities_overview');
+    Route::get('get_activities', 'ActivityController@get_calendar_activities');
     Route::get('activity_details/{id}', 'ActivityController@activity_details');
     Route::post('sign_up_for_activity', 'ActivityController@sign_up_for_activity');
     Route::post('sign_out_for_activity', 'ActivityController@sign_out_for_activity');
@@ -31,12 +32,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('scoreboard', 'ActivityController@get_scoreboard');
     //members
     Route::get('members_overview', 'UserController@get_members_overview');
+    Route::get('get_matching_users', 'UserController@get_matching_users');
     Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
     Route::get('search_members', 'UserController@search_members');
     Route::post('update_profile_pic', 'UserController@update_profile_pic');
     Route::get('get_allowed_update_roles', 'UserController@get_allowed_update_roles');
     Route::get('get_user_roles', 'UserController@get_user_roles');
     Route::post('update_user_role', 'UserController@update_user_role');
+    Route::post('update_profile', 'UserController@update_profile');
 
     //winterhours
     Route::get('winterhours_overview', 'WinterhourController@get_winterhours_overview');
@@ -50,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('save_scheme/{id}', 'WinterhourController@save_scheme');
     Route::get('get_winterhour_dates', 'WinterhourController@get_winterhour_dates');
     Route::get('get_winterhour_status', 'WinterhourController@get_winterhour_status');
+    Route::get('download_scheme/{id}', 'WinterhourController@download_scheme');
 
 });
 

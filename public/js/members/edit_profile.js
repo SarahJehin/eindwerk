@@ -32,7 +32,7 @@
         var valid_format = /^\d{10}$/.test(gsm_new_value);   // true
         if(valid_format) {
             //send post request to server to update gsm number
-            $.post( location.origin + "/api/update_profile", { type: 'mobile', user_id: user_id, new_value: gsm_new_value }, function( data ) {
+            $.post( location.origin + "/update_profile", { type: 'mobile', user_id: user_id, new_value: gsm_new_value }, function( data ) {
                 //console.log(data);
             });
         }
@@ -93,7 +93,7 @@
         var valid_format = /^\d{9}$/.test(tel_new_value);
         if(valid_format) {
             //send post request to server to update tel number
-            $.post( location.origin + "/api/update_profile", { type: 'phone', user_id: user_id, new_value: tel_new_value }, function( data ) {
+            $.post( location.origin + "/update_profile", { type: 'phone', user_id: user_id, new_value: tel_new_value }, function( data ) {
                 //console.log(data);
             });
         }
@@ -155,7 +155,7 @@
         console.log(valid_format);
         if(valid_format) {
             //send post request to server to update email
-            $.post( location.origin + "/api/update_profile", { type: 'email', user_id: user_id, new_value: email_new_value }, function( data ) {
+            $.post( location.origin + "/update_profile", { type: 'email', user_id: user_id, new_value: email_new_value }, function( data ) {
                 //console.log(data);
             });
             email_old_value = $(this).parent().find('input').val();
@@ -273,7 +273,7 @@ $('.profile_pic .edit_button').click(function() {
 
 
 $(window).click(function(event) {
-    console.log(event.target);
+    //console.log(event.target);
     if($(event.target).hasClass('edit_profile_pic_modal')) {
         close_profile_pic_modal();
     }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+    /*
     //return all activities, that are visible, to show on the calendar on the homepage
     public function get_calendar_activities(Request $request) {
         $calendar_activities = Activity::select('id', 'title', 'start', 'category_id', 'is_visible')->with(['category' => function($query) {
@@ -26,7 +27,9 @@ class ApiController extends Controller
 
         return $new_calendar_activities;
     }
+    */
 
+    /*
     //return the 5 first users who match the search results
     public function get_matching_users(Request $request) {
         $searchstring   = $request->searchstring;
@@ -48,7 +51,8 @@ class ApiController extends Controller
 
         return $matching_users;
     }
-
+    */
+/*
     //update profile contactinfo (like mobile, phone and email)
     public function update_profile(Request $request) {
         //return $request->new_value;
@@ -73,6 +77,7 @@ class ApiController extends Controller
         $user->save();
         return 'success';
     }
+    */
 
     //winterhour
     //swap places for dates en participants

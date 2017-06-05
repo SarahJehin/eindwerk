@@ -1,4 +1,9 @@
 .activity_participants {
+    
+    .amount_participants {
+        float: right;
+    }
+    
     .list {
         .participant_block {
             border-bottom: 1px solid $form_font_color;

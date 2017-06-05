@@ -13,6 +13,11 @@
             margin: 0 auto;
             left: 0;
         }
+        @include smartphone_small {
+            width: 100%;
+            margin: 0px auto;
+            margin-bottom: 50px;
+        }
         
         .add_exercise_link {
             margin-bottom: 25px;
@@ -160,6 +165,9 @@
 }
 .exercises_content {
     width: 78%;
+    @include smartphone {
+        width: 100%;
+    }
     
     .exercises_to_approve {
         padding: 5px;
@@ -259,6 +267,10 @@
                 
                 .image {
                     overflow: hidden;
+                    @include smartphone {
+                        width: 95%;
+                        padding: 2.5%;
+                    }
                     img {
                         width: 100%;
                         filter: grayscale(50%);
@@ -282,6 +294,9 @@
                 }
                 .title {
                     text-align: center;
+                    @include smartphone {
+                        padding: 5px;
+                    }
                 }
                 &:hover {
                     box-shadow: 0px 0px 5px rgba($form_font_color, 0.3), 5px 5px 5px rgba($form_font_color, 0.15);

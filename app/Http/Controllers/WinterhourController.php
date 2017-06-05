@@ -7,6 +7,7 @@ use App\Winterhour;
 use App\Date;
 use App\User;
 use Auth;
+use Excel;
 
 class WinterhourController extends Controller
 {
@@ -40,6 +41,76 @@ class WinterhourController extends Controller
     	//dd('test');
     	//dd($winterhour_groups);
     	return view('winterhours/winterhours_overview', ['winterhour_groups' => $winterhour_groups]);
+    }
+
+    public function download_scheme($id) {
+        $winterhour = Winterhour::find($id);
+
+        return Excel::create('Schema winteruur ' . $winterhour->title, function($excel) use ($winterhour) {
+            $excel->sheet('Winteruur', function($sheet) use ($winterhour) {
+                $new_row = 1;
+                for($i = 0; $i < count($winterhour->dates); $i++) {
+                    $date = date('d/m/Y', strtotime($winterhour->dates[$i]->date));
+                    if($i == 0) {
+                        $date_nr = 0;
+                    }
+                    if ($i % 4 == 0 && $i != 0) {
+                        $new_row = $new_row + (4 * $winterhour->amount_of_courts) + 2;
+                        $date_nr = 0;
+                    }
+                    $col = $date_nr * 2 + 1;
+                    $col_letter = $this->num_to_alphabet($col);
+                    $title_cell = $col_letter . $new_row;
+                    $sheet->cell($title_cell, function($cell) use($date) {
+                        $cell->setValue($date);
+                        $cell->setBackground('#1abc9c');
+                        $cell->setFontColor('#ffffff');
+                        $cell->setAlignment('center');
+                    });
+                    
+                    for($j = 0; $j < count($winterhour->dates[$i]->assigned_participants); $j++) {
+                        $participant = $winterhour->dates[$i]->assigned_participants[$j]->first_name . ' ' . $winterhour->dates[$i]->assigned_participants[$j]->last_name;
+                        $participant_row = $new_row + $j + 1;
+                        $participant_cell = $col_letter . $participant_row;
+                        $sheet->cell($participant_cell, function($cell) use($participant) {
+                            $cell->setValue($participant);
+                        });
+                    }
+                    $date_nr++;
+                }
+            });
+        })->download('xlsx');
+
+    }
+
+    public function num_to_alphabet($num) {
+        $num_alpha = [1     =>  'A',
+                      2     =>  'B',
+                      3     =>  'C',
+                      4     =>  'D',
+                      5     =>  'E',
+                      6     =>  'F',
+                      7     =>  'G',
+                      8     =>  'H',
+                      9     =>  'I',
+                      10    =>  'J',
+                      11    =>  'K',
+                      12    =>  'L',
+                      13    =>  'M',
+                      14    =>  'N',
+                      15    =>  'O',
+                      16    =>  'P',
+                      17    =>  'Q',
+                      18    =>  'R',
+                      19    =>  'S',
+                      20    =>  'T',
+                      21    =>  'U',
+                      22    =>  'V',
+                      23    =>  'W',
+                      24    =>  'X',
+                      25    =>  'Y',
+                      26    =>  'Z'];
+        return $num_alpha[$num];
     }
 
     public function edit_availabilities($id, $user_id = null) {
@@ -118,7 +189,7 @@ class WinterhourController extends Controller
     }
 
     public function create_winterhour(Request $request) {
-    	dd($request);
+    	//dd($request);
     	//create basic winterhour + redirect to the edit winterhour view
     	$this->validate($request, [	'groupname'	=> 'required|string',
     								'day'		=> 'required|not_in:select_day',

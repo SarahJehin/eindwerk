@@ -81,7 +81,7 @@
         console.log(not_ids);
         if(searchstring.length > 1) {
             //get 5 first search results
-            $.get( location.origin + "/api/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
+            $.get( location.origin + "/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
                 //console.log(data);
                 //console.log(data[0]['first_name']);
                 $('.search_results ul').empty();

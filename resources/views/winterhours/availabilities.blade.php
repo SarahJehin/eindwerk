@@ -56,7 +56,7 @@
                             <div class="dates">
                                 @foreach($month as $date)
                                 <div class="date clearfix">
-                                    <div class="date_date float">{{date('d/m/Y', strtotime($date->date))}}</div>
+                                    <div class="date_date float">{{date('d/m', strtotime($date->date))}}<span class="year">{{date('/Y', strtotime($date->date))}}</span></div>
                                     @if(array_key_exists($date->id, $user_dates_array))
                                         @if($winterhour->status < 4)
                                             @if($user_dates_array[$date->id]->pivot->available == 1)
