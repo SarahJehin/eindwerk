@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
-    //
-
     public function get_authenticated_user() {
         if (Auth::check()) {
             return Auth::user();
@@ -22,14 +20,14 @@ class UserController extends Controller
         else {
             return null;
         }
-        
     }
 
     public function get_members_overview(Request $request) {
         $rankings = $this->rankings_array();
         if($request->has('searching')) {
             $search_results = $this->search_members($request);
-            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
+            //return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()])
+            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings]);
         }
         else {
             $members = User::orderBy('last_name')->orderBy('first_name')->paginate(50);
@@ -60,12 +58,25 @@ class UserController extends Controller
     }
 
     public function download_members_as_excel() {
-    	$members = User::select('last_name as Achternaam', 'first_name as Voornaam', 'birth_date as Geboortedatum', 'gsm as GSM', 'ranking_singles as Enkel', 'ranking_doubles as Dubbel')->orderBy('last_name')->orderBy('first_name')->get()->toArray();
-    	//dd($members);
+    	$members = User::select('last_name as Naam', 'first_name as Voornaam', 'birth_date as Geboortedatum', 'gender as M/V', 'gsm as GSMnr', 'tel as Telefoonnr', 'ranking_singles as E ' . date('Y'), 'ranking_singles as E', 'ranking_doubles as D')->orderBy('last_name')->orderBy('first_name')->get()->toArray();
+
+        foreach ($members as $key => $member) {
+            $member['E'] = substr($member['E'], strpos($member['E'], "(") + 1);
+            $members[$key]['E'] = rtrim($member['E'], ')');
+            $member['D'] = substr($member['D'], strpos($member['D'], "(") + 1);
+            $members[$key]['D'] = rtrim($member['D'], ')');
+            $members[$key]['Geboortedatum'] = date('d/m/Y', strtotime($member['Geboortedatum']));
+
+            $members[$key]['GSMnr'] = substr($member['GSMnr'], 0, 4) . ' ' . chunk_split(substr($member['GSMnr'], 4), 2, ' ');
+            $members[$key]['Telefoonnr'] = substr($member['Telefoonnr'], 0, 3) . ' ' . chunk_split(substr($member['Telefoonnr'], 3), 2, ' ');
+        }
     	//export members as Excel file
         return Excel::create('Ledenlijst_' . date('Y'), function($excel) use ($members) {
             $excel->sheet('mySheet', function($sheet) use ($members) {
                 $sheet->fromArray($members);
+                $sheet->cells('A1:L1', function($cells) {
+                         $cells->setBackground('#dddddd'); 
+                });
             });
         })->download('xlsx');
     }
@@ -293,7 +304,9 @@ class UserController extends Controller
                 $e_year = $this->get_singles_property($sheet1[0]);
                 //some default fields that are not coming from the Excel
                 $email      = null;
-				$image = 'default.jpg';
+				$image = 'male_avatar.png';
+                $male_avatar = 'male_avatar.png';
+                $female_avatar = 'female_avatar.png';
 				$password	= Hash::make('sportiva');
 				foreach ($sheet1 as $key => $member) {
                     //array to hold only errors for this user
@@ -310,22 +323,24 @@ class UserController extends Controller
 					$first_name = ucfirst(mb_strtolower($member->voornaam));
 					$last_name 	= $this->get_clean_last_name($member->naam);
 					if($member->gsmnr) {
-						$gsm_nr 	= '0' . str_replace(' ', '', (string)$member->gsmnr);
+                        $gsm_nr     = (int)$gsm_nr;
+						$gsm_nr 	= '0' . str_replace('.', '', str_replace(' ', '', (string)$member->gsmnr));
 					}
 					else {
 						$gsm_nr = null;
 					}
 					if($member->telefoonnr) {
-						$tel_nr 	= '0' . str_replace(' ', '', (string)$member->telefoonnr);
+                        $tel_nr     = (int)$tel_nr;
+                        $tel_nr     = '0' . str_replace('.', '', str_replace(' ', '', (string)$member->telefoonnr));
 					}
 					else {
 						$tel_nr = null;
 					}
-                    if(strtotime($member->datum)) {
+                    if(strtotime($member->geboortedatum)) {
                         //echo('valid date <br>');
-                        $birth_date = date('Y-m-d', strtotime($member->datum));
+                        $birth_date = date('Y-m-d', strtotime($member->geboortedatum));
                     }
-                    elseif(!$member->datum) {
+                    elseif(!$member->geboortedatum) {
                         //echo('no date: ' . $last_name);
                         $birth_date = null;
                         array_push($warning_users, $last_name . ' ' .$first_name);
@@ -333,7 +348,7 @@ class UserController extends Controller
                     else {
 
                         //echo('invalid birth date <br>');
-                        $birth_date = $this->format_date($member->datum);
+                        $birth_date = $this->format_date($member->geboortedatum);
                         //if the date still is not valid, add to errors
                         if(!$this->validate_date($birth_date)) {
                             $err_msg = 'Incorrecte datums: zorg ervoor dat alle datums in de Excel file in datumformaat staan.';
@@ -360,6 +375,12 @@ class UserController extends Controller
                         }
                         */
                     }
+                    elseif($gender == 'M') {
+                        $image = $male_avatar;
+                    }
+                    elseif($gender == 'V') {
+                        $image = $female_avatar;
+                    }
                     
 					if(strtoupper($member->{$e_year}) == 'NG') {
 						$ranking_singles = 'NG (5)';
@@ -370,14 +391,6 @@ class UserController extends Controller
                         }
 						else {
                             $ranking_singles = null;
-                            /*
-                            $err_msg = 'De enkelklassement-kolom (E) moet een cijfer bevatten (5, 10, 15, ..., 115).';
-                            $user_errors = true;
-                            array_push($errs, $err_msg);
-                            if((!in_array($err_msg, $error_messages))) {
-                                array_push($error_messages, $err_msg);
-                            }
-                            */
                         }
 					}
                     if(is_numeric($member->d)) {
@@ -385,14 +398,6 @@ class UserController extends Controller
                     }
                     else {
                         $ranking_doubles = null;
-                        /*
-                        $err_msg = 'De dubbelklassement-kolom (D) moet een cijfer bevatten (5, 10, 15, ..., 115).';
-                        $user_errors = true;
-                        array_push($errs, $err_msg);
-                        if((!in_array($err_msg, $error_messages))) {
-                            array_push($error_messages, $err_msg);
-                        }
-                        */
                     }
 					$level		= $this->get_level_by_birth_date($birth_date);
                     //echo($last_name . ' ' . $first_name);
@@ -458,9 +463,6 @@ class UserController extends Controller
                 }
 			}
 		}
-        //dd($warning_users);
-        //dd('stop right here!');
-		//dd('test');
         //dd($error_messages);
         if (!empty($error_messages)) {
             //dd('redirect back with errors', $error_messages);

@@ -2,6 +2,7 @@
     
     
     .add_winterhour_link {
+        margin-bottom: 5px;
         a {
             float: right;
             padding: 8px 14px;
@@ -14,11 +15,27 @@
             }
         }
     }
-    .winterhour_group {
+    .intro {
+        text-align: center;
         margin-bottom: 20px;
-        h3 {
+        font-size: 0.9em;
+    }
+    .winterhour_group {
+        //margin-bottom: 20px;
+        //padding-bottom: 20px;
+        //border-bottom: 1px solid $theme_color01;
+        &> h3 {
             margin: 0;
             cursor: pointer;
+            background-color: $theme_color01;
+            color: #fff;
+            padding: 5px;
+            
+        }
+        &:nth-child(odd) {
+            &> h3 {
+                background-color: rgba($theme_color01, 0.75);
+            }
         }
         .day_time {
             font-size: 0.9em;
@@ -26,8 +43,21 @@
             a {
                 font-weight: 500;
             }
+            .delete {
+                color: rgba($delete_color, 0.75);
+                text-decoration: underline;
+                cursor: pointer;
+                &:hover {
+                    color: $delete_color;
+                }
+            }
         }
         .details {
+            margin-bottom: 40px;
+            display: none;
+            &.open {
+                display: block;
+            }
             .descriptive_info {
                 @include smartphone {
                     display: none;
@@ -36,9 +66,13 @@
         }
         .participants {
             font-size: 0.9em;
+            margin-bottom: 5px;
             h4 {
                 margin-bottom: 0px;
                 cursor: pointer;
+                &:hover {
+                    color: $theme_color01;
+                }
             }
             .participants_block {
                 display: none;
@@ -67,17 +101,21 @@
                 }
             }
         }
-        .swap_message {
-            margin-top: 25px;
-            padding: 2px 5px;
-            border-radius: 5px;
-            text-align: center;
-            display: none;
-            &.failed {
-                border: 1px solid $error_color;
-            }
-            &.success {
-                border: 1px solid $success_color;
+        .swap_message_wrapper {
+            //margin-top: 25px;
+            height: 25px;
+        
+            .swap_message {
+                padding: 2px 5px;
+                border-radius: 5px;
+                text-align: center;
+                display: none;
+                &.failed {
+                    border: 1px solid $error_color;
+                }
+                &.success {
+                    border: 1px solid $success_color;
+                }
             }
         }
         
@@ -151,4 +189,8 @@
             }
         }
     }
+}
+#delete_winterhour_modal {
+    position: fixed;
+    height: 100%;
 }

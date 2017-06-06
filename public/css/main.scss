@@ -56,6 +56,13 @@ nav {
         
         &.open {
             top: 0;
+            position: absolute;
+            height: 100%;
+            
+            & + .page_content {
+                height: 100vh;
+                overflow: hidden;
+            }
         }
     }
     @include smartphone_small {

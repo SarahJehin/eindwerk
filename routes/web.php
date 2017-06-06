@@ -47,13 +47,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('add_winterhour', 'WinterhourController@create_winterhour');
     Route::get('edit_winterhour/{id}', 'WinterhourController@edit_winterhour');
     Route::post('edit_winterhour', 'WinterhourController@update_winterhour');
+    Route::post('delete_winterhour', 'WinterhourController@delete_winterhour');
     Route::get('availabilities/{id}/{user_id?}', 'WinterhourController@edit_availabilities');
     Route::post('update_availability', 'WinterhourController@update_availability');
     Route::get('generate_scheme/{id}', 'WinterhourController@generate_scheme');
+    Route::get('get_scheme/{id}', 'WinterhourController@get_scheme');
     Route::get('save_scheme/{id}', 'WinterhourController@save_scheme');
     Route::get('get_winterhour_dates', 'WinterhourController@get_winterhour_dates');
     Route::get('get_winterhour_status', 'WinterhourController@get_winterhour_status');
     Route::get('download_scheme/{id}', 'WinterhourController@download_scheme');
+    Route::post('swap_places', 'WinterhourController@swap_places');
 
 });
 
@@ -63,6 +66,8 @@ Route::group(['middleware' => ['auth', 'youth_board']], function () {
     Route::post('add_activity', 'ActivityController@create_activity');
     Route::get('edit_activity/{id}', 'ActivityController@edit_activity');
     Route::post('update_activity', 'ActivityController@update_activity');
+    Route::post('update_activity_participant_status', 'ActivityController@update_activity_participant_status');
+    Route::post('update_activity_visibility', 'ActivityController@update_activity_visibility');
     Route::post('delete_activity', 'ActivityController@delete_activity');
     Route::get('activities_list', 'ActivityController@get_activities_list');
     Route::get('activity_participants/{id}', 'ActivityController@get_activity_participants');

@@ -41,7 +41,12 @@ nav {
       padding-top: 50px;
       overflow: hidden; }
       nav.open {
-        top: 0; } }
+        top: 0;
+        position: absolute;
+        height: 100%; }
+        nav.open + .page_content {
+          height: 100vh;
+          overflow: hidden; } }
   @media (max-width: 400px) {
     nav {
       background-color: #24313c;
@@ -2594,7 +2599,7 @@ button.submit {
     color: #fff; }
     .add_winterhour .form_part .availabilities .participants .participant:hover .link, .add_winterhour .form_part .availabilities .participants .participant.opened .link, .edit_winterhour .form_part .availabilities .participants .participant:hover .link, .edit_winterhour .form_part .availabilities .participants .participant.opened .link {
       color: #fff; }
-.add_winterhour .form_part .scheme_generation .submit a, .edit_winterhour .form_part .scheme_generation .submit a {
+.add_winterhour .form_part .scheme_generation .submit a, .add_winterhour .form_part .scheme_generation .submit div, .edit_winterhour .form_part .scheme_generation .submit a, .edit_winterhour .form_part .scheme_generation .submit div {
   width: calc(100% - 20px);
   background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
   background-size: 200% 100%;
@@ -2605,9 +2610,15 @@ button.submit {
   color: #fff;
   text-decoration: none;
   font-size: 1.2em; }
-  .add_winterhour .form_part .scheme_generation .submit a:hover, .edit_winterhour .form_part .scheme_generation .submit a:hover {
+  .add_winterhour .form_part .scheme_generation .submit a:hover, .add_winterhour .form_part .scheme_generation .submit div:hover, .edit_winterhour .form_part .scheme_generation .submit a:hover, .edit_winterhour .form_part .scheme_generation .submit div:hover {
     cursor: pointer;
     background-position: 100%; }
+.add_winterhour .form_part .scheme_generation .loader, .edit_winterhour .form_part .scheme_generation .loader {
+  display: none;
+  overflow: hidden; }
+  .add_winterhour .form_part .scheme_generation .loader img, .edit_winterhour .form_part .scheme_generation .loader img {
+    width: 100%;
+    margin-top: -15%; }
 .add_winterhour .form_part .scheme_generation .swap_message, .edit_winterhour .form_part .scheme_generation .swap_message {
   margin-top: 25px;
   padding: 2px 5px;
@@ -2667,112 +2678,140 @@ button.submit {
 .add_winterhour .form_part .groupname input:disabled, .edit_winterhour .form_part .groupname input:disabled {
   cursor: not-allowed; }
 
-.winterhours_overview .add_winterhour_link a {
-  float: right;
-  padding: 8px 14px;
-  background-color: rgba(26, 188, 156, 0.6);
-  border-radius: 50%;
+.winterhours_overview .add_winterhour_link {
+  margin-bottom: 5px; }
+  .winterhours_overview .add_winterhour_link a {
+    float: right;
+    padding: 8px 14px;
+    background-color: rgba(26, 188, 156, 0.6);
+    border-radius: 50%;
+    color: #fff;
+    -webkit-transition: background-color 0.2s ease;
+    -moz-transition: background-color 0.2s ease;
+    -ms-transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease; }
+    .winterhours_overview .add_winterhour_link a:hover {
+      background-color: #1abc9c; }
+.winterhours_overview .intro {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 0.9em; }
+.winterhours_overview .winterhour_group > h3 {
+  margin: 0;
+  cursor: pointer;
+  background-color: #1abc9c;
   color: #fff;
-  -webkit-transition: background-color 0.2s ease;
-  -moz-transition: background-color 0.2s ease;
-  -ms-transition: background-color 0.2s ease;
-  transition: background-color 0.2s ease; }
-  .winterhours_overview .add_winterhour_link a:hover {
-    background-color: #1abc9c; }
-.winterhours_overview .winterhour_group {
-  margin-bottom: 20px; }
-  .winterhours_overview .winterhour_group h3 {
-    margin: 0;
+  padding: 5px; }
+.winterhours_overview .winterhour_group:nth-child(odd) > h3 {
+  background-color: rgba(26, 188, 156, 0.75); }
+.winterhours_overview .winterhour_group .day_time {
+  font-size: 0.9em;
+  font-weight: 300; }
+  .winterhours_overview .winterhour_group .day_time a {
+    font-weight: 500; }
+  .winterhours_overview .winterhour_group .day_time .delete {
+    color: rgba(183, 57, 40, 0.75);
+    text-decoration: underline;
     cursor: pointer; }
-  .winterhours_overview .winterhour_group .day_time {
-    font-size: 0.9em;
-    font-weight: 300; }
-    .winterhours_overview .winterhour_group .day_time a {
-      font-weight: 500; }
+    .winterhours_overview .winterhour_group .day_time .delete:hover {
+      color: #b73928; }
+.winterhours_overview .winterhour_group .details {
+  margin-bottom: 40px;
+  display: none; }
+  .winterhours_overview .winterhour_group .details.open {
+    display: block; }
   @media (max-width: 768px) {
     .winterhours_overview .winterhour_group .details .descriptive_info {
       display: none; } }
-  .winterhours_overview .winterhour_group .participants {
-    font-size: 0.9em; }
-    .winterhours_overview .winterhour_group .participants h4 {
-      margin-bottom: 0px;
-      cursor: pointer; }
-    .winterhours_overview .winterhour_group .participants .participants_block {
-      display: none; }
-    .winterhours_overview .winterhour_group .participants .participant .name {
-      width: 20%; }
-      @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .participants .participant .name {
-          width: 55%; } }
-    .winterhours_overview .winterhour_group .participants .participant .gsm {
-      width: 20%; }
-      @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .participants .participant .gsm {
-          width: 45%; } }
-    .winterhours_overview .winterhour_group .participants .participant .email {
-      width: 30%; }
-      @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .participants .participant .email {
-          display: none; } }
-    .winterhours_overview .winterhour_group .participants .participant:hover {
-      background-color: rgba(26, 188, 156, 0.1); }
-  .winterhours_overview .winterhour_group .swap_message {
-    margin-top: 25px;
+.winterhours_overview .winterhour_group .participants {
+  font-size: 0.9em;
+  margin-bottom: 5px; }
+  .winterhours_overview .winterhour_group .participants h4 {
+    margin-bottom: 0px;
+    cursor: pointer; }
+    .winterhours_overview .winterhour_group .participants h4:hover {
+      color: #1abc9c; }
+  .winterhours_overview .winterhour_group .participants .participants_block {
+    display: none; }
+  .winterhours_overview .winterhour_group .participants .participant .name {
+    width: 20%; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .participants .participant .name {
+        width: 55%; } }
+  .winterhours_overview .winterhour_group .participants .participant .gsm {
+    width: 20%; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .participants .participant .gsm {
+        width: 45%; } }
+  .winterhours_overview .winterhour_group .participants .participant .email {
+    width: 30%; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .participants .participant .email {
+        display: none; } }
+  .winterhours_overview .winterhour_group .participants .participant:hover {
+    background-color: rgba(26, 188, 156, 0.1); }
+.winterhours_overview .winterhour_group .swap_message_wrapper {
+  height: 25px; }
+  .winterhours_overview .winterhour_group .swap_message_wrapper .swap_message {
     padding: 2px 5px;
     border-radius: 5px;
     text-align: center;
     display: none; }
-    .winterhours_overview .winterhour_group .swap_message.failed {
+    .winterhours_overview .winterhour_group .swap_message_wrapper .swap_message.failed {
       border: 1px solid #ce311c; }
-    .winterhours_overview .winterhour_group .swap_message.success {
+    .winterhours_overview .winterhour_group .swap_message_wrapper .swap_message.success {
       border: 1px solid #14aa6f; }
-  .winterhours_overview .winterhour_group .scheme .date {
-    width: 22%;
-    margin-right: 4%;
-    margin-top: 15px; }
-    .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
-      margin-right: 0; }
-      @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
-          margin-right: 3%; } }
+.winterhours_overview .winterhour_group .scheme .date {
+  width: 22%;
+  margin-right: 4%;
+  margin-top: 15px; }
+  .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
+    margin-right: 0; }
     @media (max-width: 768px) {
-      .winterhours_overview .winterhour_group .scheme .date {
-        width: 30%;
-        margin-right: 3%;
-        font-size: 0.9em; } }
-    .winterhours_overview .winterhour_group .scheme .date h3 {
-      border-bottom: 1px solid #1abc9c;
-      cursor: initial; }
-      @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .scheme .date h3 .year {
-          display: none; } }
-    .winterhours_overview .winterhour_group .scheme .date .participant {
-      font-size: 0.9em;
-      border: 1px solid transparent; }
-      .winterhours_overview .winterhour_group .scheme .date .participant.active {
-        color: #1abc9c; }
-        .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
-          cursor: move;
-          border: 1px dashed #9CAFB9; }
-          @media (max-width: 768px) {
-            .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
-              cursor: default;
-              border: 1px solid transparent; } }
-      .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-hover {
-        background: rgba(26, 188, 156, 0.1);
+      .winterhours_overview .winterhour_group .scheme .date:nth-child(4n+4) {
+        margin-right: 3%; } }
+  @media (max-width: 768px) {
+    .winterhours_overview .winterhour_group .scheme .date {
+      width: 30%;
+      margin-right: 3%;
+      font-size: 0.9em; } }
+  .winterhours_overview .winterhour_group .scheme .date h3 {
+    border-bottom: 1px solid #1abc9c;
+    cursor: initial; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .scheme .date h3 .year {
+        display: none; } }
+  .winterhours_overview .winterhour_group .scheme .date .participant {
+    font-size: 0.9em;
+    border: 1px solid transparent; }
+    .winterhours_overview .winterhour_group .scheme .date .participant.active {
+      color: #1abc9c; }
+      .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
+        cursor: move;
         border: 1px dashed #9CAFB9; }
-      .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-active {
-        background: rgba(26, 188, 156, 0.6);
-        color: #fff;
-        border: 1px dashed #1abc9c; }
-      .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
-        display: none; }
         @media (max-width: 768px) {
-          .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
-            display: inline; } }
+          .winterhours_overview .winterhour_group .scheme .date .participant.active.dragdrop:hover {
+            cursor: default;
+            border: 1px solid transparent; } }
+    .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-hover {
+      background: rgba(26, 188, 156, 0.1);
+      border: 1px dashed #9CAFB9; }
+    .winterhours_overview .winterhour_group .scheme .date .participant.ui-state-active {
+      background: rgba(26, 188, 156, 0.6);
+      color: #fff;
+      border: 1px dashed #1abc9c; }
+    .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+      display: none; }
       @media (max-width: 768px) {
-        .winterhours_overview .winterhour_group .scheme .date .participant .last_name_desktop {
-          display: none; } }
+        .winterhours_overview .winterhour_group .scheme .date .participant .last_name_smartphone {
+          display: inline; } }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .scheme .date .participant .last_name_desktop {
+        display: none; } }
+
+#delete_winterhour_modal {
+  position: fixed;
+  height: 100%; }
 
 .availabilities .back {
   margin-bottom: 25px; }

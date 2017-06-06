@@ -47,7 +47,7 @@
     	if(!$($(this).parent().find('input[type="checkbox"]:checked')).length) {
     		is_visible = 1;
     	}
-    	$.post( location.origin + "/api/update_activity_visibility", { activity_id: activity_id, is_visible: is_visible }, function( data ) {
+    	$.post( location.origin + "/update_activity_visibility", { activity_id: activity_id, is_visible: is_visible }, function( data ) {
 			//console.log(data);
 		});
     });
@@ -60,7 +60,7 @@
 		var is_checked 	= !($(this).attr('is_checked') == 'true');
 		$(this).attr('is_checked', is_checked);
 		//post request to change paid status
-		$.post( location.origin + "/api/update_activity_participant_status", { activity_id: activity_id, user_id: user_id, is_checked: is_checked }, function( data ) {
+		$.post( location.origin + "/update_activity_participant_status", { activity_id: activity_id, user_id: user_id, is_checked: is_checked }, function( data ) {
 			//console.log(data);
 		});
 	});

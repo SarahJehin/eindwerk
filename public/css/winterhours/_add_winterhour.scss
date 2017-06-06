@@ -248,7 +248,7 @@
         }
         
         .scheme_generation {
-            .submit a {
+            .submit a, .submit div {
                 width: calc(100% - 20px);
                 background: linear-gradient(-216deg, #00ffa7 0%, #009688 50%, #00ffa7 100%);
                 background-size: 200% 100%;
@@ -263,6 +263,14 @@
                 &:hover {
                   cursor: pointer;
                   background-position: 100%;
+                }
+            }
+            .loader {
+                display: none;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    margin-top: -15%;
                 }
             }
             .swap_message {

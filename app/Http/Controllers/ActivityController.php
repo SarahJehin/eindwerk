@@ -146,16 +146,6 @@ class ActivityController extends Controller
         }
     }
 
-    public function activity_has_enough_participants($activity_id) {
-        $activity = Activity::find($activity_id);
-        if(count($activity->paid_participants) >= $activity->min_participants) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     public function get_scoreboard() {
         //all adult activities that are visible and had enough participants
         $adult_activities = Activity::where('is_visible', 1)
@@ -403,7 +393,6 @@ class ActivityController extends Controller
             $deadlinedatetime = null;
         }
 
-
         $activity = new Activity([
             'title'         => $request->title,
             'description'   => $request->description,
@@ -428,8 +417,6 @@ class ActivityController extends Controller
             'category_id'       => $request->category
         ]);
 
-        //dd($activity);
-
         $activity->save();
 
         return redirect('activities_overview')->with('message', 'Activiteit succesvol toegevoegd');
@@ -449,7 +436,7 @@ class ActivityController extends Controller
         $owner = User::find($activity->owner_id);
         $activity['owner_name'] = $owner->first_name . ' ' . $owner->last_name;
         $categories = Category::all();
-        //onderstaande moet nog aangepast worden (waar rol = jeugdbestsuur)
+
         $possible_owners = User::whereHas('roles', function ($query) {
                                     $query->where('level', '<', 30);
                                 })->get();
@@ -585,11 +572,49 @@ class ActivityController extends Controller
         $activity->owner_id          = $request->owner;
         $activity->category_id       = $request->category;
 
-        //dd($activity);
-
         $activity->save();
 
         return redirect('edit_activity/' . $activity->id)->with('success_msg', 'De activiteit werd geüpdatet.');
+    }
+
+    //update paid status
+    public function update_activity_participant_status(Request $request) {
+        //dd($request);
+        $user = User::find($request->user_id);
+        $activity = Activity::find($request->activity_id);
+        $is_checked = false;
+        $is_checked = ($request->is_checked == 'true');
+        if($is_checked) {
+            $user->activities()->updateExistingPivot($request->activity_id, ['status' => 2]);
+            if($this->activity_has_enough_participants($activity->id)) {
+                $activity->status = 1;
+                $activity->save();
+            }
+        }
+        else {
+            $user->activities()->updateExistingPivot($request->activity_id, ['status' => 1]);
+            if(!$this->activity_has_enough_participants($activity->id)) {
+                $activity->status = 0;
+                $activity->save();
+            }
+        }
+        return $user->activities->where('id', $request->activity_id)->first()->pivot->status;
+    }
+    public function activity_has_enough_participants($activity_id) {
+        $activity = Activity::find($activity_id);
+        if(count($activity->paid_participants) >= $activity->min_participants) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public function update_activity_visibility(Request $request) {
+        $activity = Activity::find($request->activity_id);
+        $activity->is_visible = $request->is_visible;
+        $activity->save();
+        return "success";
     }
 
     public function delete_activity(Request $request) {

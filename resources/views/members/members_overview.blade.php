@@ -179,7 +179,7 @@
 	        				</div>
 	        				<div class="email float small_no_float">
 	        					<i class="fa fa-envelope-o" aria-hidden="true"></i>
-	        					<span>{{$member->email}}</span>
+	        					<span><a href="mailto:{{$member->email}}">{{$member->email}}</a></span>
 	        				</div>
 	        			</div>
 	        			@if(Auth::user()->isAdmin() || Auth::user()->isYouthChairman() || Auth::user()->isHeadtrainer())

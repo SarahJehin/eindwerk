@@ -48,7 +48,7 @@ class CategoriesTableSeeder extends Seeder
         $category_row4 =
             array(
                 'name'       => 'Tennisactiviteit',
-                'color'      => '#008300',
+                'color'      => '#e8780a',
                 'image'      => 'adult_tennisactiviteit.png',
                 'root'       => 'adult',
                 'created_at' => \Carbon\Carbon::now(),
@@ -56,6 +56,7 @@ class CategoriesTableSeeder extends Seeder
             );
         DB::table('categories')->insert($category_row4);
 
+        /*
         $category_row5 =
             array(
                 'name'       => 'Clubdagen',
@@ -66,6 +67,7 @@ class CategoriesTableSeeder extends Seeder
                 'updated_at' => \Carbon\Carbon::now(),
             );
         DB::table('categories')->insert($category_row5);
+        */
 
         $category_row6 =
             array(

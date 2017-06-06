@@ -1,5 +1,9 @@
 (function ( window, document, $, undefined ) {
 
+    angular.module("dashboard_sportiva").controller("WinterhourController", function ($scope, $http) {
+
+        $scope.scheme_exists = false;
+
     //add method on Date object
     //return the date that is 'days' from the date on which the method is called
     Date.prototype.addDays = function(days) {
@@ -137,6 +141,7 @@
             //get all selected dates and pass them to the input
             $('.inputs').empty();
             var dates = $('.container_date').datepicker('getDates');
+            //console.log(dates);
             for(var i = 0; i < dates.length; i++) {
                 var formatted_date = dates[i].getFullYear() + '-' + ('0' + (dates[i].getMonth()+1)).slice(-2) + '-' + ('0' + dates[i].getDate()).slice(-2);
                 $('.inputs').append('<input type="text" name="date[]" value="' + formatted_date + '" hidden>');
@@ -154,6 +159,23 @@
             var new_date = splitted_date[2] + '/' + splitted_date[1] + '/' + splitted_date[0];
             new_dates.push(new_date);
         }
+        //get weekday of first day
+        var active_weekday = new Date($($('.inputs input')[0]).val()).getDay();
+        var days = [0, 1, 2, 3, 4, 5, 6];
+        console.log(active_weekday);
+        //set the weekdays disabled
+        var disabled_dates = [];
+        for(var day in days) {
+            if(day != active_weekday) {
+                disabled_dates.push(day);
+            }
+        }
+        //check if the dates are in the right order, otherwise reverse the array
+        if(parseInt(new_dates[0].substr(new_dates[0].length - 4)) < parseInt(new_dates[new_dates.length-1].substr(new_dates[new_dates.length-1].length - 4))) {
+            new_dates.reverse();
+        }
+        //disable all the other days
+        $('.container_date').datepicker('setDaysOfWeekDisabled', disabled_dates);
         $('.container_date').datepicker('setDates', new_dates);
     }
 
@@ -325,6 +347,7 @@
         input.val($(this).text());
         input.attr('readonly', 'true');
         input.attr('disabled', 'true');
+        //id_input.attr('name', 'participant_id[]');
         id_input.val($(this).attr('user_id'));
         name_input.val($(this).text());
         delete_btn.removeClass('not_working');
@@ -382,6 +405,35 @@
     
 
     //edit winterhour extra's //only if winterhour id is defined // alles hieronder zou eigenlijk in apart script moeten staan
+
+
+    //generate scheme with api request instead of direct link, to show anim
+    $('.generate_scheme').click(function() {
+        //show loading icon
+        $('.loader').show();
+        //hide the previous scheme
+        $('.scheme').hide();
+        $('.play_times').hide();
+        //console.log('what happens??');
+        //api generate scheme
+        
+        $.get(location.origin +  "/generate_scheme/" + winterhour_id, function( data ) {
+            //console.log(data);
+            $.get(location.origin +  "/get_scheme/" + winterhour_id, function( data ) {
+                $('.loader').hide();
+                $scope.scheme = data.scheme;
+                $scope.play_times = data.play_times;
+                $scope.scheme_exists = true;
+                $scope.$apply();
+                make_drag_and_droppable();
+                $('.scheme').show();
+                $('.play_times').show();
+            });
+        });
+        
+    });
+
+
     if(typeof winterhour_id !== 'undefined') {
         //get winterhour status
         $.get(location.origin +  "/get_winterhour_status", { winterhour_id: winterhour_id }, function( data ) {
@@ -401,16 +453,27 @@
 
                 $('.scheme .participant').removeClass('dragdrop');
             }
+            if(status > 2) {
+                 $.get(location.origin +  "/get_scheme/" + winterhour_id, function( data ) {
+                    $scope.scheme = data.scheme;
+                    $scope.play_times = data.play_times;
+                    $scope.scheme_exists = true;
+                    $scope.$apply();
+                    make_drag_and_droppable();
+                });
+            }
             if(status != 4) {
                 //only if the scheme is not accepted yet, drag and drop is allowed
                 make_drag_and_droppable();
             }
         });
+        /*
         //set days of weeks disabled according to selected weekday by triggering a change in the weekday (since all dates will be set to active, get real active dates afterwards)
         $('.day_select select').trigger( "change" );
         //get the dates from the current winterhour to set them as active for the datepicker
         $.get(location.origin +  "/get_winterhour_dates", { winterhour_id: winterhour_id }, function( data ) {
             //console.log(data);
+            console.log('is this what is causing the trouble??');
             var dates = [];
             $.each( data, function( key, value ) {
                 var date = value.date;
@@ -424,6 +487,7 @@
             //console.log(dates);
             $('.container_date').datepicker('setDates', dates);
         });
+        */
 
         //check if a certain step is given
         var step = findGetParameter('step');
@@ -432,8 +496,6 @@
             //trigger click on this step
             $('.timeline .step' + step).trigger('click');
         }
-
-        //just a test :)
 
         function make_drag_and_droppable() {
             jQuery.fn.swap = function(b){ 
@@ -446,7 +508,6 @@
                 t.parentNode.removeChild(t); 
                 return this; 
             };
-
 
             $( ".dragdrop" ).draggable({ revert: true, helper: "clone", cursor: "move" });
 
@@ -470,7 +531,7 @@
 
                     //check if participants can be swapped
                     
-                    $.post(location.origin +  "/api/swap_places", swapdata, function( data ) {
+                    $.post(location.origin +  "/swap_places", swapdata, function( data ) {
                         console.log( data );
                         $('.swap_message').removeClass('success failed');
                         $('.swap_message').addClass(data.status);
@@ -494,22 +555,6 @@
             });
         }
         
-
-        console.log(location.origin +  "/api/swap_places");
-        /*
-        $.post(location.origin +  "/api/swap_places", { test: 'test' }, function( data ) {
-          console.log( data );
-        }, "json");
-        */
-        /*
-        var swapdata = { swap1 : {user_id : 167, date_id : 25}, swap2 : {user_id : 3, date_id : 6} };
-        console.log("werk ik nog?)");
-        $.post(location.origin +  "/api/swap_places", swapdata, function( data ) {
-          console.log( data.status + ' bericht: ' + data.message );
-          $('.swap_message').addClass(data.status);
-          $('.swap_message').text(data.message);
-        }, "json");
-        */
         
     }
 
@@ -526,5 +571,7 @@
         });
         return result;
     }
+
+    });
 
 })(window, window.document, window.jQuery);

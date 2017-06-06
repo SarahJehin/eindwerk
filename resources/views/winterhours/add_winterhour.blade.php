@@ -11,7 +11,7 @@
 @section('content')
 
 
-    <div class="add_winterhour">
+    <div class="add_winterhour" ng-controller="WinterhourController">
 
         <div class="block">
             <div class="heading">
@@ -147,7 +147,7 @@
                                             <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
                                         @if (count($errors) > 0)
-                                            @for($i = 0; $i < (count(old('participant_id'))-1); $i++)
+                                            @for($i = 1; $i < (count(old('participant_id'))-1); $i++)
                                             <div class="add_participant clearfix">
                                                 <div class="search_functionality float">
                                                     <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off" readonly="" disabled="" value="{{old('participant_name')[$i]}}">

@@ -79,6 +79,7 @@ class ApiController extends Controller
     }
     */
 
+    /*
     //winterhour
     //swap places for dates en participants
     public function swap_places(Request $request) {
@@ -100,7 +101,6 @@ class ApiController extends Controller
 
         //dd($user_1_already_plays, $user_2_already_plays);
         //echo($user_id1 . ' ' . $date_id1 . ' ' . $user_id2 . ' ' . $date_id2);
-        //dd('sdsfd');
 
         //check if they are both available on the other day
         $user_1_is_available = $this->check_if_user_is_available($user_id1, $date_id2);
@@ -157,8 +157,9 @@ class ApiController extends Controller
         $user->dates()->updateExistingPivot($old_date, ['assigned' => 0]);
         $user->dates()->updateExistingPivot($new_date, ['assigned' => 1]);
     }
+    */
 
-
+    /*
     //admin
     //update paid status
     public function update_activity_participant_status(Request $request) {
@@ -192,7 +193,8 @@ class ApiController extends Controller
             return false;
         }
     }
-
+    */
+    /*
     public function update_activity_visibility(Request $request) {
         //
         $activity = Activity::find($request->activity_id);
@@ -200,5 +202,6 @@ class ApiController extends Controller
         $activity->save();
         return "success";
     }
+    */
 
 }

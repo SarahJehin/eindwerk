@@ -24,6 +24,43 @@
         }
     });
 
+    var lightbox = false;
+    $('.day_time .delete').click(function() {
+        $winterhour_id_to_delete = $(this).attr('winterhour_id');
+        $title = $($(this).parent().parent().parent().find('h3')[0]).text();
+        $title = $title.trim();
+        console.log($winterhour_id_to_delete, $title);
+        $('#delete_winterhour_modal input[name="winterhour_id"]').val($winterhour_id_to_delete);
+        $('#delete_winterhour_modal .winterhour_name').text($title);
+        $('#delete_winterhour_modal').fadeIn(350, function() {
+            lightbox = true;
+        });
+    });
+
+
+    $('.lightbox_modal .modal').click(function(event) {
+        event.stopPropagation();
+    });
+    $(window).click(function() {
+        close_lightbox_modal();
+    });
+    $('.lightbox_modal .modal .fa-times').click(function() {
+        close_lightbox_modal();
+    });
+    $( window ).on( "keydown", function( event ) {
+        //if esc key is pressed, close modal
+        if(event.which == 27) {
+            close_lightbox_modal();
+        }
+    });
+    function close_lightbox_modal() {
+        if(lightbox) {
+            $('.lightbox_modal').fadeOut(350, function() {
+                lightbox = false;
+            });
+        }
+    }
+
 
     //drag 'n drop for switches
     jQuery.fn.swap = function(b){ 
@@ -59,8 +96,8 @@
             console.log(swapdata);
 
             //check if participants can be swapped
-            
-            $.post(location.origin +  "/api/swap_places", swapdata, function( data ) {
+            console.log(location.origin +  "/swap_places");
+            $.post(location.origin +  "/swap_places", swapdata, function( data ) {
                 console.log( data );
                 $('.swap_message').removeClass('success failed');
                 $('.swap_message').addClass(data.status);

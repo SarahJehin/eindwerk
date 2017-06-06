@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('email')->unique()->nullable();
             $table->string('vtv_nr')->unique();
+            $table->date('member_since')->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('gsm')->nullable();
@@ -28,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('image')->nullable();
             $table->integer('level_id')->unsigned()->nullable();
             $table->foreign('level_id')->references('id')->on('levels');
+            $table->string('tmp_password')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->softDeletes();

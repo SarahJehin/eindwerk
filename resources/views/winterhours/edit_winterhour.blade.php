@@ -12,7 +12,7 @@
 
 @section('content')
 
-    <div class="edit_winterhour">
+    <div class="edit_winterhour" ng-controller="WinterhourController">
 
         <div class="block">
             <div class="heading">
@@ -61,13 +61,13 @@
                                             <div class="day_select apply_bootstrap">
                                                 <select class="selectpicker" data-size="10" id="day" name="day">
                                                     <option value="select_day">Selecteer dag</option>
-                                                    <option value="maandag" {{ (old("day") == 'maandag' ? "selected":($winterhour->day == 'maandag' ? "selected" : "")) }}>Maandag</option>
-                                                    <option value="dinsdag" {{ (old("day") == 'dinsdag' ? "selected":($winterhour->day == 'dinsdag' ? "selected" : "")) }}>Dinsdag</option>
-                                                    <option value="woensdag" {{ (old("day") == 'woensdag' ? "selected":($winterhour->day == 'woensdag' ? "selected" : "")) }}>Woensdag</option>
-                                                    <option value="donderdag" {{ (old("day") == 'donderdag' ? "selected":($winterhour->day == 'donderdag' ? "selected" : "")) }}>Donderdag</option>
-                                                    <option value="vrijdag" {{ (old("day") == 'vrijdag' ? "selected":($winterhour->day == 'vrijdag' ? "selected" : "")) }}>Vrijdag</option>
-                                                    <option value="zaterdag" {{ (old("day") == 'zaterdag' ? "selected":($winterhour->day == 'zaterdag' ? "selected" : "")) }}>Zaterdag</option>
-                                                    <option value="zondag" {{ (old("day") == 'zondag' ? "selected":($winterhour->day == 'zondag' ? "selected" : "")) }}>Zondag</option>
+                                                    <option value="maandag" {{ (old('day') ? (old("day") == 'maandag' ? "selected": "") : ($winterhour->day == 'maandag' ? "selected" : "")) }}>Maandag</option>
+                                                    <option value="dinsdag" {{ (old('day') ? (old("day") == 'dinsdag' ? "selected": "") : ($winterhour->day == 'dinsdag' ? "selected" : "")) }}>Dinsdag</option>
+                                                    <option value="woensdag" {{ (old('day') ? (old("day") == 'woensdag' ? "selected": "") : ($winterhour->day == 'woensdag' ? "selected" : "")) }}>Woensdag</option>
+                                                    <option value="donderdag" {{ (old('day') ? (old("day") == 'donderdag' ? "selected": "") : ($winterhour->day == 'donderdag' ? "selected" : "")) }}>Donderdag</option>
+                                                    <option value="vrijdag" {{ (old('day') ? (old("day") == 'vrijdag' ? "selected": "") : ($winterhour->day == 'vrijdag' ? "selected" : "")) }}>Vrijdag</option>
+                                                    <option value="zaterdag" {{ (old('day') ? (old("day") == 'zaterdag' ? "selected": "") : ($winterhour->day == 'zaterdag' ? "selected" : "")) }}>Zaterdag</option>
+                                                    <option value="zondag" {{ (old('day') ? (old("day") == 'zondag' ? "selected": "") : ($winterhour->day == 'zondag' ? "selected" : "")) }}>Zondag</option>
                                                 </select>
                                             </div>
                                             <div class="descriptive_info">
@@ -91,13 +91,13 @@
                                                 <div class="disable_datepicker"></div>
                                             </div>
                                             <div class="inputs">
-                                                @if (count($errors) > 0)
+                                                @if(count(old('date')))
                                                     @foreach(old('date') as $date)
                                                     <input type="text" name="date[]" value="{{$date}}" hidden>
                                                     @endforeach
                                                 @else
-                                                    @foreach($winterhour->dates as $date)
-                                                    <input type="text" name="date[]" value="{{$date}}" hidden>
+                                                    @foreach($winterhour->dates->reverse() as $date)
+                                                    <input type="text" name="date[]" value="{{$date->date}}" hidden>
                                                     @endforeach
                                                 @endif
                                             </div>
@@ -148,7 +148,9 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+                                                @if($winterhour->participants[$i]->id != Auth::user()->id)
                                                 <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                                @endif
                                             </div>
                                             @endfor
                                         @else
@@ -165,7 +167,9 @@
                                                         </ul>
                                                     </div>
                                                 </div>
+                                                @if($winterhour->participants[$i]->id != Auth::user()->id)
                                                 <span class="float delete" title="Verwijderen"><i class="fa fa-times"></i></span>
+                                                @endif
                                             </div>
                                             @endfor
                                         @endif
@@ -222,7 +226,7 @@
                                                 </div>
                                                 <div class="availability_ok float">
                                                     @if($winterhour->status < 4)
-                                                        @if(count($participant->dates) > 0)
+                                                        @if(count($participant->dates->where('winterhour_id', $winterhour->id)) > 0)
                                                         <i class="fa fa-check"></i> (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
                                                         @else
                                                          (<a class="link" href="{{url('availabilities/' . $winterhour->id . '/' . $participant->id)}}">Aanpassen</a>)
@@ -263,12 +267,19 @@
                                         </div>
                                         <div class="submit">
                                             @if($winterhour->status == 2)
-                                            <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>
+                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>-->
+                                            <div class="generate_scheme">Schema genereren</div>
                                             @elseif($winterhour->status == 3)
-                                            <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>
+                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>-->
+                                            <div class="generate_scheme">Schema opnieuw genereren</div>
                                             @endif
+                                            
                                         </div>
                                         @endif
+                                        <div class="loader">
+                                            <img src="{{url('images/site_images/loader01.gif')}}">
+                                        </div>
+                                        <!--
                                         @if($scheme)
                                         <div class="swap_message">
                                             Wissel bericht.
@@ -309,6 +320,31 @@
                                             </div>
                                             @endif
                                         @endif
+                                        -->
+                                        <div ng-if="scheme_exists">
+                                            <div class="swap_message">
+                                                Wissel bericht.
+                                            </div>
+                                            <div class="scheme clearfix">
+                                                <div class="date float" ng-repeat="(date, info) in scheme">
+                                                    <h3>@{{date | date : "dd/MM"}}<span class="year">@{{date | date : "/y"}}</span></h3>
+                                                    <div class="participant dragdrop" user_id="@{{participant.id}}" date_id="@{{info['date_id']}}" ng-repeat="participant in info.participants">
+                                                        @{{participant.first_name}} <span class="long_last_name">@{{participant.last_name}}</span><span class="short_last_name">@{{participant.last_name | limitTo : 1}}.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="play_times">
+                                                <div ng-repeat="(times, participants) in play_times">
+                                                    <span class="title">Spelen <span class="times">@{{times}}</span> keer: </span>
+                                                    <span ng-repeat="participant in participants">@{{participant.first_name}} @{{participant.last_name}}<span ng-if="!$last">, </span></span>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+
                                     @elseif($winterhour->status < 2)
                                     <div>Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.</div>
                                     @endif
