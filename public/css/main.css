@@ -2304,6 +2304,10 @@ button.submit {
     margin-right: 25px; }
   .members_overview .links .import_members {
     text-decoration: underline; }
+.members_overview .no_results {
+  text-align: center; }
+  .members_overview .no_results h2 {
+    color: #1abc9c; }
 .members_overview .list .member_block {
   border-bottom: 1px solid rgba(26, 188, 156, 0.25); }
   .members_overview .list .member_block .row {
@@ -2311,8 +2315,13 @@ button.submit {
     .members_overview .list .member_block .row.header {
       background-color: #1abc9c;
       color: #fff; }
+    .members_overview .list .member_block .row .vtv_nr {
+      width: 10%; }
+      @media (max-width: 768px) {
+        .members_overview .list .member_block .row .vtv_nr {
+          display: none; } }
     .members_overview .list .member_block .row .name {
-      width: 50%; }
+      width: 40%; }
       @media (max-width: 768px) {
         .members_overview .list .member_block .row .name {
           width: 100%; } }
@@ -2527,7 +2536,7 @@ button.submit {
       width: calc(100% - 21px);
       padding: 5px 10px;
       border: 0;
-      border-bottom: 1px solid #6b7d87;
+      border: 1px solid #6b7d87;
       color: #6b7d87; }
       .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:hover, .add_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:focus, .edit_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:hover, .edit_winterhour .form_part .add_participants .add_participant .search_functionality input.search_participants:focus {
         border-color: #1abc9c; }

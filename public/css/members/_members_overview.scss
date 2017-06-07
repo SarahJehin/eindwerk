@@ -93,7 +93,12 @@
         }
     }
     
-    
+    .no_results {
+        text-align: center;
+        h2 {
+            color: $theme_color01;
+        }
+    }
     .list {
         .member_block {
             border-bottom: 1px solid rgba($theme_color01, 0.25);
@@ -103,8 +108,14 @@
                     background-color: $theme_color01;
                     color: #fff;
                 }
+                .vtv_nr {
+                    width: 10%;
+                    @include smartphone {
+                        display: none;
+                    }
+                }
                 .name {
-                    width: 50%;
+                    width: 40%;
                     @include smartphone {
                         width: 100%;
                     }
@@ -155,7 +166,7 @@
                     @include smartphone {
                         width: 100%;
                         margin-top: 0;
-                        
+
                         span {
                             font-size: 0.9em;
                             &:first-child {
@@ -164,7 +175,7 @@
                             }
                         }
                     }
-                    
+
                     .gsm, .tel {
                         width: 25%;
                         @include smartphone {
@@ -177,7 +188,7 @@
                             width: 100%;
                         }
                     }
-                    
+
                     @include smartphone {
                         i {
                             width: 20px;

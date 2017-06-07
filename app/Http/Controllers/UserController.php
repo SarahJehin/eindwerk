@@ -26,8 +26,8 @@ class UserController extends Controller
         $rankings = $this->rankings_array();
         if($request->has('searching')) {
             $search_results = $this->search_members($request);
-            //return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()])
-            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings]);
+            return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
+            //return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings]);
         }
         else {
             $members = User::orderBy('last_name')->orderBy('first_name')->paginate(50);

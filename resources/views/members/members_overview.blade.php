@@ -36,10 +36,7 @@
         			<input type="text" name="searching" value="true" hidden="">
 	        		<div class="quick">
 	        			<div class="clearfix">
-	        				<input class="float" type="text" name="name" placeholder="Wie wil je zoeken?"
-	        				@if(isset($input['name']))
-	        				value="{{$input['name']}}"
-	        				@endif>
+	        				<input class="float" type="text" name="name" placeholder="Wie wil je zoeken?">
 	        				<span class="searchbutton float"><i class="fa fa-search" aria-hidden="true"></i></span>
 	        			</div>
 	        		</div>
@@ -53,13 +50,7 @@
 		        				<select class="selectpicker" data-size="10" id="from_ranking" name="from_ranking">
 		        					<option value="from">Van</option>
 		        					@foreach($rankings as $ranking)
-			        				<option value="{{$ranking}}"
-			        				@if(isset($input))
-				        				@if($input['from_ranking'] == $ranking)
-				        				selected=""
-				        				@endif
-			        				@endif
-			        				>{{$ranking}}</option>
+			        				<option value="{{$ranking}}">{{$ranking}}</option>
 			        				@endforeach
 		        				</select>
 	        				
@@ -68,13 +59,7 @@
 		        				<select class="selectpicker" data-size="10" id="to_ranking" name="to_ranking">
 		        					<option value="to">Tot</option>
 		        					@foreach($rankings as $ranking)
-			        				<option value="{{$ranking}}"
-			        				@if(isset($input))
-				        				@if($input['to_ranking'] == $ranking)
-				        				selected=""
-				        				@endif
-			        				@endif
-			        				>{{$ranking}}</option>
+			        				<option value="{{$ranking}}">{{$ranking}}</option>
 			        				@endforeach
 		        				</select>
 		        			</div>
@@ -87,11 +72,13 @@
 		        					<option value="from">Van</option>
 		        					@for($i = (date('Y')-80); $i < date('Y'); $i++)
 			        				<option value="{{$i}}"
+			        				{{--
 			        				@if(isset($input))
 				        				@if($input['from_birth_year'] == $i)
 				        				selected=""
 				        				@endif
 			        				@endif
+			        				--}}
 			        				>{{$i}}</option>
 			        				@endfor
 		        				</select>
@@ -100,11 +87,13 @@
 		        					<option value="to">Tot</option>
 		        					@for($i = (date('Y')-80); $i < date('Y'); $i++)
 			        				<option value="{{$i}}"
+			        				{{--
 			        				@if(isset($input))
 				        				@if($input['to_birth_year'] == $i)
 				        				selected=""
 				        				@endif
 			        				@endif
+			        				--}}
 			        				>{{$i}}</option>
 			        				@endfor
 		        				</select>
@@ -131,18 +120,99 @@
 	        	@endif
         	</div>
         	
+
         	<div class="list">
+        		@if(isset($input['name']))
+        		<h4>
+        			Resultaten voor "<strong>{{$input['name']}}</strong>"
+        			@if($input['from_ranking'] != 'from' || $input['to_ranking'] != 'to')
+	        		( Klassement: 
+		        		@if($input['from_ranking'] != 'from')
+		        		{{$input['from_ranking']}}
+		        		@else
+		        		NG
+		        		@endif
+		        		 - 
+		        		@if($input['to_ranking'] != 'to')
+		        		{{$input['to_ranking']}}
+		        		@else
+		        		A Internationaal
+		        		@endif
+		        	)
+	        		@endif
+	        		&nbsp;
+	        		@if($input['from_birth_year'] != 'from' || $input['to_birth_year'] != 'to')
+	        		( Geboortejaar: 
+		        		@if($input['from_birth_year'] != 'from')
+		        		{{$input['from_birth_year']}}
+		        		@else
+		        		{{(date('Y')-80)}}
+		        		@endif
+		        		 - 
+		        		@if($input['to_birth_year'] != 'to')
+		        		{{$input['to_birth_year']}}
+		        		@else
+		        		{{date('Y')}}
+		        		@endif
+		        	)
+		        	@endif
+        		</h4>
+        		@endif
         		<div class="member_block">
         			<div class="row header clearfix">
+        				<div class="vtv_nr float">VTV-nr</div>
         				<div class="name float">Naam</div>
         				<div class="date float">Geboortedatum</div>
         				<div class="singles float">Enkel</div>
         				<div class="doubles float">Dubbel</div>
         			</div>
         		</div>
+        		@if($members->isEmpty())
+	        	<div class="no_results">
+	        		<h2>Geen resultaten ...</h2>
+	        		Er werden geen leden gevonden 
+	        		@if($input['name'])
+	        		voor "<strong>{{$input['name']}}</strong>"
+	        		@endif
+	        		@if($input['from_ranking'] != 'from' || $input['to_ranking'] != 'to')
+	        		met ranking tussen
+		        		@if($input['from_ranking'] != 'from')
+		        		{{$input['from_ranking']}}
+		        		@else
+		        		NG
+		        		@endif
+		        		en
+		        		@if($input['to_ranking'] != 'to')
+		        		{{$input['to_ranking']}}
+		        		@else
+		        		A Internationaal
+		        		@endif
+
+		        		@if($input['from_birth_year'] != 'from' || $input['to_birth_year'] != 'to')
+		        		en
+		        		@endif
+	        		@endif
+	        		@if($input['from_birth_year'] != 'from' || $input['to_birth_year'] != 'to')
+	        		met geboortejaar tussen
+		        		@if($input['from_birth_year'] != 'from')
+		        		{{$input['from_birth_year']}}
+		        		@else
+		        		{{(date('Y')-80)}}
+		        		@endif
+		        		en
+		        		@if($input['to_birth_year'] != 'to')
+		        		{{$input['to_birth_year']}}
+		        		@else
+		        		{{date('Y')}}
+		        		@endif
+		        	@endif
+		        	<div><a class="link" href="{{url('members_overview')}}">Toon volledige lijst</a></div>
+	        	</div>
+	        	@else
         		@foreach($members as $member)
         		<div class="member_block">
         			<div class="row clearfix">
+        				<div class="vtv_nr float link">{{$member->vtv_nr}}</div>
         				<div class="name float link">{{$member->last_name}} {{$member->first_name}}</div>
         				<div class="date float">
         					@if(strtotime($member->birth_date))
@@ -157,31 +227,32 @@
 	        				<img src="{{url('images/profile_pictures/' . $member->image)}}" alt="{{$member->first_name}} {{$member->last_name}}">
 	        			</div>
 	        			<div class="contact_info float clearfix">
-	        				<div class="rs clearfix smartphone">
-	        					<span class="float">S</span>
-	        					<span class="float">{{$member->ranking_singles}}</span>
-	        				</div>
-	        				<div class="rd clearfix smartphone">
-	        					<span class="float">D</span>
-	        					<span class="float">{{$member->ranking_doubles}}</span>
-	        				</div>
-	        				<div class="birth_date smartphone">
-	        					<i class="fa fa-birthday-cake" aria-hidden="true"></i>
-	        					<span>{{date('d/m/Y', strtotime($member->birth_date))}}</span>
-	        				</div>
-	        				<div class="gsm float small_no_float">
-	        					<i class="fa fa-mobile" aria-hidden="true"></i>
-	        					<span>{{substr($member->gsm, 0, 4) . ' ' . chunk_split(substr($member->gsm, 4), 2, ' ')}}</span>
-	        				</div>
-	        				<div class="tel float small_no_float">
-	        					<i class="fa fa-phone" aria-hidden="true"></i>
-	        					<span>{{substr($member->tel, 0, 3) . ' ' . chunk_split(substr($member->tel, 3), 2, ' ')}}</span>
-	        				</div>
-	        				<div class="email float small_no_float">
-	        					<i class="fa fa-envelope-o" aria-hidden="true"></i>
-	        					<span><a href="mailto:{{$member->email}}">{{$member->email}}</a></span>
-	        				</div>
-	        			</div>
+		        			<div class="rs clearfix smartphone">
+		        				<span class="float">S</span>
+		        				<span class="float">{{$member->ranking_singles}}</span>
+		        			</div>
+		        			<div class="rd clearfix smartphone">
+		        				<span class="float">D</span>
+		        				<span class="float">{{$member->ranking_doubles}}</span>
+		        			</div>
+		        			<div class="birth_date smartphone">
+		        				<i class="fa fa-birthday-cake" aria-hidden="true"></i>
+		        				<span>{{date('d/m/Y', strtotime($member->birth_date))}}</span>
+		        			</div>
+		        			<div class="gsm float small_no_float">
+		        				<i class="fa fa-mobile" aria-hidden="true"></i>
+		        				<span>{{substr($member->gsm, 0, 4) . ' ' . chunk_split(substr($member->gsm, 4), 2, ' ')}}</span>
+		        			</div>
+		        			<div class="tel float small_no_float">
+		        				<i class="fa fa-phone" aria-hidden="true"></i>
+		        				<span>{{substr($member->tel, 0, 3) . ' ' . chunk_split(substr($member->tel, 3), 2, ' ')}}</span>
+		        			</div>
+		        			<div class="email float small_no_float">
+		        				<i class="fa fa-envelope-o" aria-hidden="true"></i>
+		        				<span><a href="mailto:{{$member->email}}">{{$member->email}}</a></span>
+		        			</div>
+		        		</div>
+	        			
 	        			@if(Auth::user()->isAdmin() || Auth::user()->isYouthChairman() || Auth::user()->isHeadtrainer())
 	        			<div class="roles link" ng-click="open_roles_modal($event, {{$member->id}}, '{{$member->first_name}} {{$member->last_name}}')">
 	        				Rollen beheren
@@ -190,6 +261,7 @@
         			</div>
         		</div>
         		@endforeach
+        		@endif
         	</div>
         	<div class="pagination_container apply_bootstrap">
         		{{ $members->links() }}

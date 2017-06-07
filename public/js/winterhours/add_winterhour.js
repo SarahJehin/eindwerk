@@ -347,7 +347,7 @@
         input.val($(this).text());
         input.attr('readonly', 'true');
         input.attr('disabled', 'true');
-        //id_input.attr('name', 'participant_id[]');
+        id_input.attr('name', 'participant_id[]');
         id_input.val($(this).attr('user_id'));
         name_input.val($(this).text());
         delete_btn.removeClass('not_working');
@@ -439,6 +439,7 @@
         $.get(location.origin +  "/get_winterhour_status", { winterhour_id: winterhour_id }, function( data ) {
             console.log(data);
             var status = data;
+            $scope.winterhour_status = status;
             //if the status is 4, show message + disable all inputs
             if(status == 4) {
                 $('.not_editable_message').show();
@@ -488,14 +489,6 @@
             $('.container_date').datepicker('setDates', dates);
         });
         */
-
-        //check if a certain step is given
-        var step = findGetParameter('step');
-        if(typeof step !== 'undefined') {
-            //console.log('step is: ' + step);
-            //trigger click on this step
-            $('.timeline .step' + step).trigger('click');
-        }
 
         function make_drag_and_droppable() {
             jQuery.fn.swap = function(b){ 
@@ -558,6 +551,13 @@
         
     }
 
+    //check if a certain step is given
+    var step = findGetParameter('step');
+    if(typeof step !== 'undefined') {
+        //console.log('step is: ' + step);
+        //trigger click on this step
+        $('.timeline .step' + step).trigger('click');
+    }
 
     function findGetParameter(parameterName) {
         var result = null,

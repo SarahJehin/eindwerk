@@ -68,8 +68,10 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
     
 });
 
-    $('.member_block .name').click(function() {
-        //
+    $('.member_block .vtv_nr').click(open_member_details);
+    $('.member_block .name').click(open_member_details);
+
+    function open_member_details() {
         var member_block = $(this).parent().parent();
         member_block.find('.details').slideToggle( 250);
         if(member_block.hasClass('opened')) {
@@ -78,7 +80,7 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
         else {
             member_block.addClass('opened');
         }
-    });
+    }
 
     $('.open_advanced ').click(function() {
         $('.search .advanced').slideToggle( 250);

@@ -8,6 +8,7 @@ use App\Date;
 use App\User;
 use Auth;
 use Excel;
+use Validator;
 
 class WinterhourController extends Controller
 {
@@ -152,12 +153,7 @@ class WinterhourController extends Controller
     		if($value == 'on') {
     			$available = 1;
     		}
-    		//echo($available);
     		//check whether the logged in user has this date in the pivot table
-    		/*
-    		$user_has_date = $user->whereHas('dates', function ($query) use ($key) {
-			    $query->where('dates.id', $key);
-			})->first();*/
 			$user_has_date = $user->dates->where('id', $key)->first();
 			//dump($user_has_date);
 			
@@ -266,13 +262,29 @@ class WinterhourController extends Controller
     public function create_winterhour(Request $request) {
     	//dd($request);
     	//create basic winterhour + redirect to the edit winterhour view
-    	$this->validate($request, [	'groupname'	=> 'required|string',
+    	$validator = Validator::make($request->all(), [	'groupname'	=> 'required|string',
     								'day'		=> 'required|not_in:select_day',
     								'time'		=> 'required|not_in:select_hour|date_format:H:i',
     								'date'		=> $request->deadline != null ? 'required|array|between:6,45' : '',
     								'date.*'	=> 'required|date',
     								'participant_id'	=> 'required|array|between:6,20'
     								]);
+
+        if ($validator->fails()) {
+            //check on which step validation failed
+            if(count($validator->errors()) == 1) {
+                if(array_key_exists('participant_id', $validator->errors()->toArray())) {
+                    //if the validation failed on participants, redirect to step 2
+                    return redirect('add_winterhour?step=2')
+                        ->withErrors($validator)
+                        ->withInput();
+                        
+                }
+            }
+            return redirect('add_winterhour')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
     	
 
     	$made_by = Auth::user()->id;
@@ -407,13 +419,30 @@ class WinterhourController extends Controller
     public function update_winterhour(Request $request) {
     	//dd($request);
     	$winterhour = Winterhour::find($request->winterhour_id);
-    	$this->validate($request, [	'groupname'	=> 'required|string',
-    								'day'		=> 'required|not_in:select_day',
-    								'time'		=> 'required|not_in:select_hour|date_format:H:i',
-    								'date'		=> 'required|array|between:6,45',
-    								'date.*'	=> 'required|date',
-    								'participant_id'	=> 'required|array|between:6,20'
-    								]);
+
+        $validator = Validator::make($request->all(), [ 'groupname' => 'required|string',
+                                    'day'       => 'required|not_in:select_day',
+                                    'time'      => 'required|not_in:select_hour|date_format:H:i',
+                                    'date'      => $request->deadline != null ? 'required|array|between:6,45' : '',
+                                    'date.*'    => 'required|date',
+                                    'participant_id'    => 'required|array|between:6,20'
+                                    ]);
+
+        if ($validator->fails()) {
+            //check on which step validation failed
+            if(count($validator->errors()) == 1) {
+                if(array_key_exists('participant_id', $validator->errors()->toArray())) {
+                    //if the validation failed on participants, redirect to step 2
+                    return redirect('edit_winterhour/' . $winterhour->id . '?step=2')
+                        ->withErrors($validator)
+                        ->withInput();
+                        
+                }
+            }
+            return redirect('edit_winterhour/' . $winterhour->id)
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
     	$winterhour->title 	= $request->groupname;
     	$winterhour->day 	= $request->day;

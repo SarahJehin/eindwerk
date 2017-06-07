@@ -35,11 +35,23 @@
                                 <div class="step_content">
                                     @if (count($errors) > 0)
                                         <div class="error_msg">
+                                            Niet alle velden werden correct ingevuld. Controleer de errors in elke stap.
+                                            @if($errors->get('groupname') || $errors->get('day') || $errors->get('date') || $errors->get('time'))
                                             <ul>
-                                                @foreach ($errors->all() as $error)
+                                                @foreach($errors->get('groupname') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach($errors->get('day') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach($errors->get('date') as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                                @foreach($errors->get('time') as $error)
                                                     <li>{{ $error }}</li>
                                                 @endforeach
                                             </ul>
+                                            @endif
                                         </div>
                                     @endif
                                     <div class="field_wrap groupname">
@@ -106,6 +118,17 @@
                             </div>
                             <div class="part02">
                                 <div class="step_content">
+
+                                    @if(count($errors->get('participant_id')) > 0)
+                                    <div class="error_msg">
+                                        <ul>
+                                            @foreach ($errors->get('participant_id') as $error)
+                                            <li>{{ ucfirst($error) }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    @endif
+
                                     <div class="descriptive_info">
                                         Hieronder kan je alle groepsleden toevoegen.  Enkel personen die lid (winter- of zomerlid) zijn bij Sportiva kunnen toegevoegd worden.
                                     </div>
@@ -113,9 +136,9 @@
                                     <div class="add_participants">
                                         <div class="add_participant clearfix template">
                                             <div class="search_functionality float">
-                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="Zoek een lid om toe te voegen" autocomplete="off">
                                                 <input type="text" name="participant_name[]" class="participant_name" hidden="" disabled="">
-                                                <input type="number" name="participant_id[]" class="id" hidden="" disabled="">
+                                                <input type="number" name="" class="id" hidden="" disabled="">
                                                 <div class="search_results">
                                                     <ul>
                                                         <li></li>
@@ -147,10 +170,10 @@
                                             <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
                                         @if (count($errors) > 0)
-                                            @for($i = 1; $i < (count(old('participant_id'))-1); $i++)
+                                            @for($i = 1; $i < count(old('participant_id')); $i++)
                                             <div class="add_participant clearfix">
                                                 <div class="search_functionality float">
-                                                    <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off" readonly="" disabled="" value="{{old('participant_name')[$i]}}">
+                                                    <input type="text" class="search_participants name" name="participant[]" placeholder="Zoek een lid om toe te voegen" autocomplete="off" readonly="" disabled="" value="{{old('participant_name')[$i]}}">
                                                     <input type="text" name="participant_name[]" class="participant_name" hidden="" value="{{old('participant_name')[$i]}}">
                                                     <input type="number" name="participant_id[]" class="id" hidden="" value="{{old('participant_id')[$i]}}">
                                                     <div class="search_results">
@@ -166,9 +189,9 @@
                                         @endif
                                         <div class="add_participant clearfix">
                                             <div class="search_functionality float">
-                                                <input type="text" class="search_participants name" name="participant[]" placeholder="+ Persoon toevoegen" autocomplete="off">
+                                                <input type="text" class="search_participants name" name="participant[]" placeholder="Zoek een lid om toe te voegen" autocomplete="off">
                                                 <input type="text" name="participant_name[]" class="participant_name" hidden="">
-                                                <input type="number" name="participant_id[]" class="id" hidden="">
+                                                <input type="number" name="" class="id" hidden="">
                                                 <div class="search_results">
                                                     <ul>
                                                         <li>Sarah Jehin</li>
