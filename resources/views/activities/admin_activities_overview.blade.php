@@ -25,6 +25,7 @@
                         <div class="edit float"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                         <div class="delete float"><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
+                    @if(!$activities->isEmpty())
                     @foreach($activities as $activity)
                     <div class="activity clearfix">
                         <div class="is_visible float">
@@ -38,6 +39,11 @@
                         <div class="delete link float" activity_id="{{$activity->id}}""><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
                     @endforeach
+                    @else
+                    <div>
+                        Er zijn geen komende activiteiten. <a class="link" href="{{url('add_activity')}}">Maak er nu één aan</a>.
+                    </div>
+                    @endif
                 </div>
 
                 <h3>Voorbije activiteiten</h3>

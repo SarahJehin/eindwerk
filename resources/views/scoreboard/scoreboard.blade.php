@@ -63,6 +63,7 @@
                     </div>
                     @endif
 
+                    @if(!$adult_participants->isEmpty())
                     <div class="board">
                         <table class="table table-header-rotated">
                             <thead>
@@ -94,6 +95,11 @@
                             </tbody>
                         </table>
                     </div>
+                    @else
+                    <div class="descriptive_info">
+                        Het scorebord is nog niet beschikbaar omdat er nog geen activiteiten voorbij zijn waaraan personen hebben deelgenomen.
+                    </div>
+                    @endif
                 </div>
 
                 <div class="scoreboard youth">
@@ -138,6 +144,7 @@
                     </div>
                     @endif
 
+                    @if(!$youth_participants->isEmpty())
                     <div class="board">
                         <table class="table table-header-rotated">
                             <thead>
@@ -170,6 +177,11 @@
                             </tbody>
                         </table>
                     </div>
+                    @else
+                    <div class="descriptive_info">
+                        Het scorebord is nog niet beschikbaar omdat er nog geen jeugdactiviteiten voorbij zijn waaraan personen hebben deelgenomen.
+                    </div>
+                    @endif
                 </div>
 
             </div>

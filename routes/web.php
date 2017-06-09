@@ -34,12 +34,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('members_overview', 'UserController@get_members_overview');
     Route::get('get_matching_users', 'UserController@get_matching_users');
     Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
+    Route::get('download_members_example', 'UserController@download_members_example');
     Route::get('search_members', 'UserController@search_members');
     Route::post('update_profile_pic', 'UserController@update_profile_pic');
     Route::get('get_allowed_update_roles', 'UserController@get_allowed_update_roles');
     Route::get('get_user_roles', 'UserController@get_user_roles');
     Route::post('update_user_role', 'UserController@update_user_role');
     Route::post('update_profile', 'UserController@update_profile');
+    Route::post('update_pwd', 'UserController@update_pwd');
 
     //winterhours
     Route::get('winterhours_overview', 'WinterhourController@get_winterhours_overview');

@@ -284,6 +284,7 @@
                                         </div>
                                     @endif
                                     @if($winterhour->status >= 2)
+                                    <!--
                                         @if($winterhour->status < 4)
                                         <div class="descriptive_info">
                                             Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
@@ -294,15 +295,32 @@
                                         </div>
                                         <div class="submit">
                                             @if($winterhour->status == 2)
-                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>-->
+                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>--><!--
                                             <div class="generate_scheme">Schema genereren</div>
                                             @elseif($winterhour->status == 3)
-                                            <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>
+                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>--><!--
                                             <div class="generate_scheme">Schema opnieuw genereren</div>
                                             @endif
                                             
                                         </div>
                                         @endif
+                                        -->
+                                        <div ng-if="(winterhour_status < 4)">
+                                            <div class="descriptive_info">
+                                                Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
+                                                Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. Of versleep de deelnemers van datum.<br>
+                                                <span ng-if="(winterhour_status == 3)">
+                                                    Wanneer je tevreden bent over het schema, <a class="link" href="{{url('save_scheme/' . $winterhour->id)}}">accepteer</a> het dan.
+                                                </span>
+                                            </div>
+                                            <div class="submit">
+                                                <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>-->
+                                                <div ng-if="(winterhour_status == 2)" class="generate_scheme">Schema genereren</div>
+                                                <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>-->
+                                                <div ng-if="(winterhour_status == 3)" class="generate_scheme">Schema opnieuw genereren</div>
+                                            </div>
+                                        </div>
+
                                         <div class="loader">
                                             <img src="{{url('images/site_images/loader01.gif')}}">
                                         </div>

@@ -682,6 +682,8 @@ button.submit {
         @media (max-width: 768px) {
           .personal_info .data .contact_info .value {
             width: 200px; } }
+      .personal_info .data .contact_info .update_pwd {
+        text-align-last: center; }
     .personal_info .data .badges {
       width: 30%; }
       .personal_info .data .badges h3 {
@@ -843,6 +845,36 @@ button.submit {
         width: 350px;
         margin-top: 0;
         margin-bottom: 15px; }
+
+#update_pwd_modal.lightbox_modal {
+  height: 100%; }
+#update_pwd_modal #update_pwd_form {
+  width: 400px;
+  margin: 0 auto; }
+  #update_pwd_modal #update_pwd_form div {
+    margin-bottom: 5px; }
+    #update_pwd_modal #update_pwd_form div label {
+      width: 210px;
+      margin-right: 5px;
+      display: block;
+      text-align-last: right; }
+    #update_pwd_modal #update_pwd_form div input {
+      font-size: 1em;
+      font-family: inherit;
+      display: block;
+      height: 100%;
+      padding: 2px 5px;
+      color: #24313c;
+      border-radius: 0;
+      transition: border-color .25s ease, box-shadow .25s ease;
+      border: 1px solid #6b7d87;
+      background-color: transparent; }
+      #update_pwd_modal #update_pwd_form div input:focus {
+        outline: 0;
+        border-color: #1abc9c; }
+  #update_pwd_modal #update_pwd_form input[type="submit"] {
+    margin-top: 10px;
+    margin-bottom: 20px; }
 
 .form_part {
   overflow: hidden; }
@@ -1780,7 +1812,7 @@ button.submit {
         color: #395696; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.party_penguin {
         color: #e51853; }
-      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.clubdagen {
+      .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.tennisactiviteit {
         color: #e8780a; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for input:checked + label .checkbox.tornooi {
         color: #5abfcc; }
@@ -1837,7 +1869,7 @@ button.submit {
       color: #395696; }
     .activity_details .activity_info h4.party_penguin {
       color: #e51853; }
-    .activity_details .activity_info h4.clubdagen {
+    .activity_details .activity_info h4.tennisactiviteit {
       color: #e8780a; }
     .activity_details .activity_info h4.tornooi {
       color: #5abfcc; }
@@ -1990,6 +2022,10 @@ button.submit {
     .activity_participants .list .participant_block .link:hover, .activity_participants .list .participant_block .link a:hover {
       text-decoration: underline;
       color: #fff; }
+
+.scoreboard .descriptive_info {
+  font-size: 0.9em;
+  margin-top: 25px; }
 
 .podium {
   margin: 50px 0; }
@@ -2384,6 +2420,9 @@ button.submit {
       @media (max-width: 768px) {
         .members_overview .list .member_block .details .contact_info i {
           width: 20px; } }
+    .members_overview .list .member_block .details .temp_pwd {
+      float: right;
+      font-size: 0.9em; }
   .members_overview .list .member_block:hover .row, .members_overview .list .member_block.opened .row {
     background-color: rgba(26, 188, 156, 0.5);
     color: #fff; }
@@ -2405,21 +2444,23 @@ button.submit {
   .members_overview .pagination_container .pagination li.active span {
     background-color: #1abc9c;
     border-color: #1abc9c; }
-.members_overview #import_members_modal .error_msg {
-  text-align: left;
-  margin: 0 15px 15px;
-  font-size: 0.9em; }
-.members_overview #import_members_modal .descriptive_info {
-  margin: 0 15px 15px; }
-.members_overview #import_members_modal label {
-  border: 1px solid #1abc9c;
-  display: block;
-  padding: 5px;
-  margin-bottom: 15px;
-  cursor: pointer; }
-  .members_overview #import_members_modal label:hover {
-    background-color: #1abc9c;
-    color: #fff; }
+.members_overview #import_members_modal {
+  height: 100%; }
+  .members_overview #import_members_modal .error_msg {
+    text-align: left;
+    margin: 0 15px 15px;
+    font-size: 0.9em; }
+  .members_overview #import_members_modal .descriptive_info {
+    margin: 0 15px 15px; }
+  .members_overview #import_members_modal label {
+    border: 1px solid #1abc9c;
+    display: block;
+    padding: 5px;
+    margin-bottom: 15px;
+    cursor: pointer; }
+    .members_overview #import_members_modal label:hover {
+      background-color: #1abc9c;
+      color: #fff; }
 .members_overview #roles_modal .modal_body {
   width: 50%;
   margin: 0 auto; }

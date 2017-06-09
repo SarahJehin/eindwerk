@@ -145,6 +145,9 @@
                     width: 200px;
                 }
             }
+            .update_pwd {
+                text-align-last: center;
+            }
         }
         
         .badges {
@@ -377,6 +380,46 @@
                 margin-top: 0;
                 margin-bottom: 15px;
             }
+        }
+    }
+}
+
+#update_pwd_modal {
+    &.lightbox_modal {
+        height: 100%;
+    }
+    #update_pwd_form {
+        width: 400px;
+        margin: 0 auto;
+        div {
+            margin-bottom: 5px;
+            label {
+                width: 210px;
+                margin-right: 5px;
+                display: block;
+                text-align-last: right;
+            }
+            input {
+                font-size: 1em;
+                font-family: inherit;
+                display: block;
+                height: 100%;
+                padding: 2px 5px;
+                color: $theme_color02;
+                border-radius: 0;
+                transition: border-color .25s ease, box-shadow .25s ease;
+                border: 1px solid $form_color;
+                background-color: transparent;
+                &:focus {
+                outline:0;
+                border-color: $theme_color01;
+              }
+            }
+        }
+        
+        input[type="submit"] {
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
     }
 }

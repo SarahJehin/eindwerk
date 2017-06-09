@@ -12,26 +12,30 @@ use DB;
 
 class ActivityController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    //normal users
+    //return view (calendar with activities)
     public function activities_overview() {
-        $activities = Activity::all();
-
         $is_admin = false;
         $user_roles = Auth::user()->roles->pluck('level')->toArray();
         if (Auth::user() && $user_roles && min($user_roles) < 30) {
             $is_admin = true;
         }
 
-        return view('activities_overview', ['activities' => $activities, 'is_admin' => $is_admin]);
+        return view('activities_overview', ['is_admin' => $is_admin]);
     }
 
-    //return all activities, that are visible, to show on the calendar on the homepage
+    /**
+     *
+     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     *
+     * @param       [request]   with start and end date
+     * @return      [array]     visible activities
+     *
+     */
     public function get_calendar_activities(Request $request) {
         $calendar_activities = Activity::select('id', 'title', 'start', 'category_id', 'is_visible')->with(['category' => function($query) {
             $query->select('id', 'color as backgroundColor');
@@ -48,6 +52,7 @@ class ActivityController extends Controller
         return $new_calendar_activities;
     }
 
+    //return view with activity details
     public function activity_details($id) {
         $activity = Activity::where('id', $id)->with('category')->first();
         $is_admin = false;
@@ -66,26 +71,18 @@ class ActivityController extends Controller
         if (Auth::user() && $user_roles && min($user_roles) < 30) {
             $is_admin = true;
         }
-        //dd($activity->participants);
-        
-        /*
-        if ($activity->participants->contains(Auth::user()->id)) {
-            $user_signed_up = true;
-        }
-        */
-        //dd($activity->participants->where('id', 1)->first()->pivot->status);
 
-        //dd($activity->participants[0]->pivot->status);
         return view('activities/activity_details', ['activity' => $activity, 'user_signed_up' => $user_signed_up, 'is_admin' => $is_admin]);
     }
 
+    //handle subscribing to an activity of the authenticated user or other users
     public function sign_up_for_activity(Request $request) {
         $activity = Activity::find($request->activity_id);
         $activity_is_free = !intval($activity->price);
-        //dd($request);
+
+        //check if authenticated user wants to sign up him/herself
         if($request->sign_up_me == 'on') {
             $user = User::find(Auth::user()->id);
-            
             //check if the record already exists, if yes, update, if not create
             if($activity->users->contains(Auth::user()->id)) {
                 $user->activities()->updateExistingPivot($request->activity_id, ['status' => 1]);
@@ -102,6 +99,7 @@ class ActivityController extends Controller
                 }
             }
         }
+        //check if authenticated user is signing up others for this activity
         if($request->sign_up_others == 'on') {
             $participants = $request->participant;
             array_shift($participants);
@@ -129,6 +127,7 @@ class ActivityController extends Controller
         return redirect('activity_details/' . $request->activity_id)->with('success_msg', 'Dankjewel voor je inschrijving!');
     }
 
+    //handle sign out of activity
     public function sign_out_for_activity(Request $request) {
         $user = User::find($request->user_id);
         //set status to 10 (signed out)
@@ -146,8 +145,9 @@ class ActivityController extends Controller
         }
     }
 
+    //return scoreboard view
     public function get_scoreboard() {
-        //all adult activities that are visible and had enough participants
+        //all adult activities that are visible and had enough participants (status = 1)
         $adult_activities = Activity::where('is_visible', 1)
                                 ->where('status', 1)
                                 ->where('start', '<', date('Y-m-d'))
@@ -156,29 +156,7 @@ class ActivityController extends Controller
                                 })
                                 ->orderBy('start')
                                 ->get();
-        /*$test = Activity::where('is_visible', 1)->where('start', '<', date('Y-m-d'))->whereHas('category', function ($query) {
-                                    $query->where('root', 'adult');
-                                })->has('participants', '>', 'activities.min_participants')->get();*/
-                                /*
-        $test = Activity::where('is_visible', 1)->where('start', '<', date('Y-m-d'))->whereHas('category', function ($query) {
-                                    $query->where('root', 'adult');
-                                })->withCount('participants')->where('participants_count', '>', 'min_participants')->get();*/
-                                /*
-        $test = Activity::where('is_visible', 1)->where('start', '<', date('Y-m-d'))->whereHas('category', function ($query) {
-                                    $query->where('root', 'adult');
-                                })->with(array('participants' => function($query)
-{
-     $query->groupBy('activity_user.activity_id')
-    ->havingRaw('COUNT(DISTINCT activity_user.activity_id) > 2');
-}))->get();*/
-                                //$test = Activity::get()->groupBy('title');
-        $adult_activities_enough_participants = array();
-        foreach ($adult_activities as $act) {
-            if(count($act->participants) >= $act->min_participants) {
-                array_push($adult_activities_enough_participants, $act);
-            }
-        }
-        //dd($adult_activities_enough_participants);
+
         //all users who have participated in adult activities
         $adult_participants = User::has('adult_activities_past')
                                     ->with('adult_activities_past')
@@ -186,11 +164,14 @@ class ActivityController extends Controller
                                     ->orderBy('first_name')
                                     ->get();
         //top 3 for adults
-        //$adult_top_3 = $this->get_top_3('adult');
-        $adult_top_3 = $this->get_top_3_from_collection($adult_participants, 'adult');
-        //dd($adult_top_3);
+        if(!$adult_participants->isEmpty()) {
+            $adult_top_3 = $this->get_top_3_from_collection($adult_participants, 'adult');
+        }
+        else {
+            $adult_top_3 = null;
+        }
 
-        //all youth activities
+        //all youth activities that are visible and had enough participants (status = 1)
         $youth_activities = Activity::where('is_visible', 1)
                                 ->where('status', 1)
                                 ->where('start', '<', date('Y-m-d'))
@@ -199,12 +180,7 @@ class ActivityController extends Controller
                                 })
                                 ->orderBy('start')
                                 ->get();
-        $youth_activities_enough_participants = array();
-        foreach ($youth_activities as $act) {
-            if(count($act->participants) >= $act->min_participants) {
-                array_push($youth_activities_enough_participants, $act);
-            }
-        }
+
         //all users who have participated in youth activities
         $youth_participants = User::has('youth_activities_past')
                                     ->with('youth_activities_past')
@@ -212,8 +188,13 @@ class ActivityController extends Controller
                                     ->orderBy('first_name')
                                     ->get();
         //top 3 of youth
-        $youth_top_3 = $this->get_top_3_from_collection($youth_participants, 'youth');
-
+        if(!$youth_participants->isEmpty()) {
+            $youth_top_3 = $this->get_top_3_from_collection($youth_participants, 'youth');
+        }
+        else {
+            $youth_top_3 = null;
+        }
+        
         return view('scoreboard/scoreboard', [  'adult_activities'      => $adult_activities,
                                                 'adult_participants'    => $adult_participants,
                                                 'adult_top_3'           => $adult_top_3,
@@ -223,6 +204,15 @@ class ActivityController extends Controller
                                                 ]);
     }
 
+    /**
+     *
+     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     *
+     * @param       [array]     users where the top 3 will be generated from
+     * @param       [string]    youth or adult
+     * @return      [array]     top 3 users for certain category (adult or youth)
+     *
+     */
     public function get_top_3_from_collection($users_collection, $youth_adult) {
         $array_to_sort = array();
         foreach ($users_collection as $user) {
@@ -246,6 +236,7 @@ class ActivityController extends Controller
             $sort['last_name'][$k] = $v['last_name'];
             $sort['first_name'][$k] = $v['first_name'];
         }
+
         //first sort by score descending, then by last name ascending, then by first name ascending
         array_multisort($sort['score'], SORT_DESC, $sort['last_name'], SORT_ASC, $sort['first_name'], SORT_ASC, $array_to_sort);
         //get first 3 results
@@ -262,23 +253,18 @@ class ActivityController extends Controller
         return $top3;
     }
 
-
     /* ************************ ADMIN FUNCTIONS ********************** */
 
-
-
-
-    //admins
+    //return the add_activity view
     public function add_activity() {
         $categories = Category::all();
-        //dd($categories);
-        //onderstaande moet nog aangepast worden (waar rol = jeugdbestsuur)
         $possible_owners = User::whereHas('roles', function ($query) {
                                     $query->where('level', '<', 30);
                                 })->get();
         return view('activities/add_activity', ['categories' => $categories, 'owners' => $possible_owners]);
     }
 
+    //create the activity
     public function create_activity(Request $request) {
 
         $min_participants = explode(",", $request->participants)[0];
@@ -338,34 +324,12 @@ class ActivityController extends Controller
         
         $this->validate($request, $rules);
 
-
-        $allowed_extensions = ["jpeg", "png"];
-        if ($request->hasFile('poster')) {
-            if ($request->poster->isValid()) {
-                if (in_array($request->poster->guessClientExtension(), $allowed_extensions)) {
-                    //create new file name
-                    $name = strtolower($request->title);
-                    //keep only letters, numbers and spaces
-                    $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
-                    //remove space at the beginning and end
-                    $name = trim($name);
-                    //convert all multispaces to space
-                    $name = preg_replace ("/ +/", " ", $name);
-                    //replace all spaces with underscores
-                    $name = str_replace(' ', '_', $name);
-
-                    $new_file_name = time() . $name . '.' . $request->poster->getClientOriginalExtension();
-                    //echo($new_file_name);
-                    $request->poster->move(base_path() . '/public/images/activity_images/', $new_file_name);
-                }
-            }
-        }
-
         //poster
+        //get the data from the base64 encoded string
         $base64_encoded_image = $request->imagebase64;
-        //dd($base64_encoded_image);
         $data = explode(';', $base64_encoded_image)[1];
         $data = explode(',', $data)[1];
+
         $activity_pictures_path = public_path() . '/images/activity_images/';
         $name = strtolower($request->title);
         //keep only letters, numbers and spaces
@@ -384,10 +348,8 @@ class ActivityController extends Controller
         $total_path = $activity_pictures_path . $new_file_name;
         file_put_contents($total_path, $data);
 
-
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
-        //echo($startdatetime);
         $enddatetime = date('Y-m-d', strtotime($request->startdate));
         $enddatetime = $enddatetime . ' ' . $request->endtime  . ':00';
 
@@ -411,10 +373,8 @@ class ActivityController extends Controller
             'longitude'     => $longitude,
             'min_participants'  => $min_participants,
             'max_participants'  => $max_participants,
-            //'helpers'           => $request->helpers,
             'helpers'           => 0,
             'price'             => $request->price,
-            //'youth_adult'       => $youth_adult,
             'is_visible'        => $is_visible,
             'status'            => 0,
             'made_by_id'        => $made_by,
@@ -427,6 +387,7 @@ class ActivityController extends Controller
         return redirect('activities_overview')->with('message', 'Activiteit succesvol toegevoegd');
     }
 
+    //return the edit_activity view
     public function edit_activity($id) {
         $activity = Activity::find($id);
         if(!$activity) {
@@ -448,8 +409,8 @@ class ActivityController extends Controller
         return view('activities/edit_activity', ['activity' => $activity, 'categories' => $categories, 'owners' => $possible_owners]);
     }
 
+    //update the activity
     public function update_activity(Request $request) {
-        
         $activity = Activity::find($request->activity_id);
 
         $min_participants = explode(",", $request->participants)[0];
@@ -494,7 +455,6 @@ class ActivityController extends Controller
             'starttime'     => 'required|date_format:H:i',
             'endtime'       => 'nullable|date_format:H:i|after:starttime',
             'deadline'      => $request->deadline != null ? 'date|before:' . $formatted_day_after . '|after:today': '',
-            //'helpers'       => 'required|integer|max:20',
             'price'         => 'required|integer|max:20',
             'owner'         => 'required',
             'extra_url'     => $request->extra_url != null ? 'url': '',
@@ -508,29 +468,6 @@ class ActivityController extends Controller
         
         $this->validate($request, $rules);
 
-        $allowed_extensions = ["jpeg", "png"];
-        if ($request->hasFile('poster')) {
-            if ($request->poster->isValid()) {
-                if (in_array($request->poster->guessClientExtension(), $allowed_extensions)) {
-                    //create new file name
-                    $name = strtolower($request->title);
-                    //keep only letters, numbers and spaces
-                    $name = preg_replace("/[^A-Za-z0-9 ]/", "", $name);
-                    //remove space at the beginning and end
-                    $name = trim($name);
-                    //convert all multispaces to space
-                    $name = preg_replace ("/ +/", " ", $name);
-                    //replace all spaces with underscores
-                    $name = str_replace(' ', '_', $name);
-
-                    $new_file_name = time() . $name . '.' . $request->poster->getClientOriginalExtension();
-                    //echo($new_file_name);
-                    $request->poster->move(base_path() . '/public/images/activity_images/', $new_file_name);
-
-                    $activity->poster = $new_file_name;
-                }
-            }
-        }
         //poster
         $base64_encoded_image = $request->imagebase64;
         if($base64_encoded_image) {
@@ -556,10 +493,8 @@ class ActivityController extends Controller
             $activity->poster = $new_file_name;
         }
         
-        
         $startdatetime = date('Y-m-d', strtotime($request->startdate));
         $startdatetime = $startdatetime . ' ' . $request->starttime  . ':00';
-        //echo($startdatetime);
         $enddatetime = date('Y-m-d', strtotime($request->startdate));
         $enddatetime = $enddatetime . ' ' . $request->endtime  . ':00';
 
@@ -576,7 +511,6 @@ class ActivityController extends Controller
         $activity->longitude         = $longitude;
         $activity->min_participants  = $min_participants;
         $activity->max_participants  = $max_participants;
-        //$activity->helpers           = $request->helpers;
         $activity->price             = $request->price;
         $activity->is_visible        = $is_visible;
         $activity->made_by_id        = $made_by;
@@ -590,7 +524,6 @@ class ActivityController extends Controller
 
     //update paid status
     public function update_activity_participant_status(Request $request) {
-        //dd($request);
         $user = User::find($request->user_id);
         $activity = Activity::find($request->activity_id);
         $is_checked = false;
@@ -611,6 +544,7 @@ class ActivityController extends Controller
         }
         return $user->activities->where('id', $request->activity_id)->first()->pivot->status;
     }
+
     public function activity_has_enough_participants($activity_id) {
         $activity = Activity::find($activity_id);
         if(count($activity->paid_participants) >= $activity->min_participants) {
@@ -638,6 +572,7 @@ class ActivityController extends Controller
         return redirect('activities_list')->with('success_msg', 'De activiteit werd verwijderd');
     }
 
+    //get activities list view for admins
     public function get_activities_list() {
         $activities = Activity::select('id', 'title', 'start', 'max_participants', 'is_visible')
                                 ->with('participants')
@@ -650,11 +585,11 @@ class ActivityController extends Controller
                                 ->where('start', '<', date('Y-m-d').' 00:00:00')
                                 ->orderBy('start', 'desc')
                                 ->get();
-        //dd($activities);
         
         return view('activities/admin_activities_overview', ['activities' => $activities, 'past_activities' => $past_activities]);
     }
 
+    //get activity_participants view
     public function get_activity_participants($id) {
         $activity = Activity::find($id);
         
@@ -665,10 +600,17 @@ class ActivityController extends Controller
                                                             ->orderBy('first_name')
                                                             ->first();
         }
-        //dd($activity->participants[0]->pivot->signed_up_by_user);
         return view('activities/activity_participants_overview', ['activity' => $activity]);
     }
 
+    /**
+     *
+     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     *
+     * @param       [integer]   id of the activity of which you want to download the participants
+     * @return      [Excel]     an Excel file with all the participants
+     *
+     */
     public function download_participants_as_excel($activity_id) {
         $activity = Activity::where('id', $activity_id)->with(array('participants'=>function($query){
             $query->select('users.id','first_name', 'last_name', 'activity_user.status as betaald');
@@ -691,7 +633,7 @@ class ActivityController extends Controller
         }
         //export participants as Excel file
         return Excel::create('deelnemers_' . $activity->title, function($excel) use ($participants_array) {
-            $excel->sheet('mySheet', function($sheet) use ($participants_array) {
+            $excel->sheet('deelnemers', function($sheet) use ($participants_array) {
                 $sheet->fromArray($participants_array);
             });
         })->download('xlsx');

@@ -17,6 +17,11 @@
                     {{ session('success_msg') }}
                 </div>
             @endif
+            @if (session('error_msg'))
+                <div class="error_msg">
+                    {{ session('error_msg') }}
+                </div>
+            @endif
             @if (session('warning_users'))
                 <div class="warning_msg">
                     <strong>Opmerking:</strong> <br>
@@ -253,11 +258,19 @@
 		        			</div>
 		        		</div>
 	        			
-	        			@if(Auth::user()->isAdmin() || Auth::user()->isYouthChairman() || Auth::user()->isHeadtrainer())
-	        			<div class="roles link" ng-click="open_roles_modal($event, {{$member->id}}, '{{$member->first_name}} {{$member->last_name}}')">
-	        				Rollen beheren
+	        			<div class="clearfix">
+	        				@if(Auth::user()->isAdmin() || Auth::user()->isYouthChairman() || Auth::user()->isHeadtrainer())
+		        			<div class="roles link float" ng-click="open_roles_modal($event, {{$member->id}}, '{{$member->first_name}} {{$member->last_name}}')">
+		        				Rollen beheren
+		        			</div>
+		        			@endif
+		        			@if(Auth::user()->isAdmin() && $member->tmp_password)
+		        			<div class="temp_pwd float">
+		        				(Voorlopig wachtwoord: {{$member->tmp_password}})
+		        			</div>
+		        			@endif
 	        			</div>
-	        			@endif
+	        			
         			</div>
         		</div>
         		@endforeach
@@ -281,6 +294,7 @@
 	            	<p>Hieronder kan je de ledenlijst importeren.</p>
 	            	<p>Gebruikers waarvan er geen VTV-nr beschikbaar is krijgen een willekeurig nummer toegewezen om te kunnen inloggen op de applicatie.</p>
 	            	<p>Het importeren kan even duren.</p>
+	            	<p>(<a class="link" href="{{url('download_members_example')}}">Voorbeeld Excel downloaden</a>)</p>
 	            </div>
             	@if(session('error_messages'))
             	<div class="error_msg">

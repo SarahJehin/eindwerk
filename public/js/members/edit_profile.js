@@ -218,6 +218,12 @@
     //modal
     var lightbox = false;
 
+    $('.update_pwd').click(function() {
+        $('#update_pwd_modal').fadeIn(350, function() {
+            lightbox = true;
+        });
+    });
+
     $('.lightbox_modal .modal').click(function(event) {
         event.stopPropagation();
     });

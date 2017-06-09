@@ -408,7 +408,8 @@
 
     $scope.error_msg_exists = false;
     //generate scheme with api request instead of direct link, to show anim
-    $('.generate_scheme').click(function() {
+    //$('.generate_scheme').click(function() {
+    $('.scheme_generation').on('click', '.generate_scheme', function() {
         //show loading icon
         $('.loader').show();
         //hide the previous scheme
@@ -425,15 +426,22 @@
                     $scope.scheme = data.scheme;
                     $scope.play_times = data.play_times;
                     $scope.scheme_exists = true;
-                    $scope.$apply();
+                    //get new winterhour status
+                    $.get(location.origin +  "/get_winterhour_status", { winterhour_id: winterhour_id }, function( data ) {
+                        $scope.winterhour_status = data;
+                        $scope.$apply();
+                    });
                     make_drag_and_droppable();
                     $('.scheme').show();
                     $('.play_times').show();
                 });
             }
             else {
+                console.log(data);
                 $('.loader').hide();
-                $scope.error_msg = 'Het schema kon niet gegenereerd worden omdat er één of meerdere data zijn waarop er niet voldoende deelnemers beschikbaar zijn.  Probeer opnieuw nadat je de beschikbaarheden geüpdatet hebt.';
+                var date = new Date(data[1]);
+                date = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
+                $scope.error_msg = 'Het schema kon niet gegenereerd worden omdat er één of meerdere data zijn waarop er niet voldoende deelnemers beschikbaar zijn.  Probeer opnieuw nadat je de beschikbaarheden geüpdatet hebt. Probleemdatum: ' + date;
                 $scope.error_msg_exists = true;
                 console.log($scope.error_msg);
                 $scope.$apply();
@@ -450,6 +458,7 @@
             console.log(data);
             var status = data;
             $scope.winterhour_status = status;
+            $scope.$apply();
             //if the status is 4, show message + disable all inputs
             if(status == 4) {
                 $('.not_editable_message').show();

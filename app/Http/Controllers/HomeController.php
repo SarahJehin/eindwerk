@@ -10,20 +10,10 @@ use DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //return login blade when not logged in, and home when logged in
     public function index()
     {
+        //check if authenticated
         if (Auth::check()) {
             $user = User::find(Auth::user()->id);
             //get current ranking on scoreboard
@@ -41,7 +31,6 @@ class HomeController extends Controller
             }
 
             $badges = array();
-            //badges
             //adult
             $total_adult_activities = count($user->adult_activities_past);
             if($total_adult_activities >= 5) {
@@ -64,7 +53,7 @@ class HomeController extends Controller
 
             $winterhours = array();
             //foreach winterhour get the first three playdates for me
-            foreach ($user->winterhours as $winterhour) {
+            foreach ($user->winterhours->where('status', 4) as $winterhour) {
                 //get the first 3 dates where the authenticated user plays
                 //$winterhours['title'] = $winterhour->title;
                 //$winterhours['dates'] = array();

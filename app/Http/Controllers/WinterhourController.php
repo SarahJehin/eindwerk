@@ -112,6 +112,8 @@ class WinterhourController extends Controller
     public function edit_availabilities($id, $user_id = null) {
     	$winterhour = Winterhour::find($id);
     	$is_author = (Auth::user()->id == $winterhour->made_by);
+
+        $min_available_days = floor(((count($winterhour->dates) * $winterhour->amount_of_courts * 4) / count($winterhour->participants)) + 2);
     	//dd($is_author);
 
     	if($user_id) {
@@ -141,7 +143,7 @@ class WinterhourController extends Controller
 
     	//dd($user_dates_array);
     	//dd($test);
-    	return view('winterhours/availabilities', ['winterhour' => $winterhour, 'dates_by_month' => $dates_by_month, 'user_dates_array' => $user_dates_array, 'user' => $user]);
+    	return view('winterhours/availabilities', ['winterhour' => $winterhour, 'dates_by_month' => $dates_by_month, 'user_dates_array' => $user_dates_array, 'user' => $user, 'min_available_days' => $min_available_days]);
     }
 
     public function update_availability(Request $request) {
@@ -156,7 +158,7 @@ class WinterhourController extends Controller
                 $available_days++;
             }
         }
-        $min_available_days = ((count($winterhour->dates) * $winterhour->amount_of_courts * 4) / count($winterhour->participants)) + 2;
+        $min_available_days = floor(((count($winterhour->dates) * $winterhour->amount_of_courts * 4) / count($winterhour->participants)) + 2);
 
         $validator->after(function ($validator) use ($available_days, $min_available_days) {
             if ($available_days < $min_available_days) {
@@ -166,7 +168,7 @@ class WinterhourController extends Controller
         if ($validator->fails()) {
             return redirect('availabilities/' . $request->winterhour_id . '/' .$request->user_id)
                         ->withErrors($validator)
-                        ->withInput();
+                        ->withInput($request->all());
         }
 
 
@@ -190,6 +192,16 @@ class WinterhourController extends Controller
 				$user->dates()->attach($key, ['available' => $available, 'assigned' => 0]);
 			}
     	}
+
+        //if availabilities were updated, clear scheme again
+        foreach ($winterhour->dates as $date) {
+            //when scheme is regenerated, first set all assigned back to 0
+            foreach ($date->users as $participant) {
+                $participant->dates()->updateExistingPivot($date->id, ['assigned' => 0]);
+            }
+        }
+        $winterhour->status = 2;
+        $winterhour->save();
     	if($user->id != Auth::user()->id) {
     		//$redirect_path = 'availabilities/' . $winterhour_id . '/' . $user->id;
             $redirect_path = 'edit_winterhour/' . $winterhour_id . '?step=3';
@@ -552,6 +564,8 @@ class WinterhourController extends Controller
     	$winterhour = Winterhour::find($id);
         //return json_encode($winterhour->id);
 
+        $failed_date = 0;
+
         try {
             //total spots = total amounts of spots when someone can play = amount_of_courts * 4 (4 players per court) * dates;
             $total_spots = $winterhour->amount_of_courts * 4 * count($winterhour->dates);
@@ -617,6 +631,7 @@ class WinterhourController extends Controller
                     $participant = $this->get_random_participant($ordered_participants_ids, $exclude_ids, $date->id, $participant_with_amount_of_turns, $amount_of_turns, $extra_turn, $last_date);
                     if($participant == null) {
                         $scheme_successfully_generated = false;
+                        $failed_date = $date->date;
                         break 2;
                     }
                     //push id from above participant to the exclude ids list
@@ -671,7 +686,7 @@ class WinterhourController extends Controller
             $winterhour->status = 2;
             $winterhour->save();
             //return json_encode('failed');
-            return "failed";
+            return ["failed", $failed_date];
             dd('failed');
         }
 

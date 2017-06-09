@@ -36,6 +36,15 @@ class UserController extends Controller
     }
 
     //search
+    /**
+     *
+     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     *
+     * @param       [array]     users where the top 3 will be generated from
+     * @param       [string]    youth or adult
+     * @return      [array]     top 3 users for certain category (adult or youth)
+     *
+     */
     public function get_matching_users(Request $request) {
         $searchstring   = $request->searchstring;
         $not_ids        = $request->not_ids;
@@ -58,7 +67,7 @@ class UserController extends Controller
     }
 
     public function download_members_as_excel() {
-    	$members = User::select('last_name as Naam', 'first_name as Voornaam', 'birth_date as Geboortedatum', 'gender as M/V', 'gsm as GSMnr', 'tel as Telefoonnr', 'ranking_singles as E ' . date('Y'), 'ranking_singles as E', 'ranking_doubles as D')->orderBy('last_name')->orderBy('first_name')->get()->toArray();
+    	$members = User::select('last_name as Naam', 'first_name as Voornaam', 'vtv_nr as VTV', 'birth_date as Geboortedatum', 'gender as M/V', 'member_since as Lid sinds', 'gsm as GSMnr', 'tel as Telefoonnr', 'ranking_singles as E ' . date('Y'), 'ranking_singles as E', 'ranking_doubles as D')->orderBy('last_name')->orderBy('first_name')->get()->toArray();
 
         foreach ($members as $key => $member) {
             $member['E'] = substr($member['E'], strpos($member['E'], "(") + 1);
@@ -66,6 +75,7 @@ class UserController extends Controller
             $member['D'] = substr($member['D'], strpos($member['D'], "(") + 1);
             $members[$key]['D'] = rtrim($member['D'], ')');
             $members[$key]['Geboortedatum'] = date('d/m/Y', strtotime($member['Geboortedatum']));
+            $members[$key]['Lid sinds'] = date('Y', strtotime($member['Lid sinds']));
 
             $members[$key]['GSMnr'] = substr($member['GSMnr'], 0, 4) . ' ' . chunk_split(substr($member['GSMnr'], 4), 2, ' ');
             $members[$key]['Telefoonnr'] = substr($member['Telefoonnr'], 0, 3) . ' ' . chunk_split(substr($member['Telefoonnr'], 3), 2, ' ');
@@ -274,8 +284,55 @@ class UserController extends Controller
         dd($data);
     }
 
+    public function update_pwd(Request $request) {
+        
+        $return_with_errors = false;
+        $errors = [];
+        //first check if old pwd was correct
+        if(!(Hash::check($request->old_pwd, Auth::user()->password))) {
+            $return_with_errors = true;
+            $errors['old_pwd'] = "Oude wachtwoord is incorrect.";
+        }
+        if(strlen($request->new_pwd) < 6) {
+            $return_with_errors = true;
+            $errors['new_pwd_length'] = "Het nieuwe wachtwoord moet minstens uit 6 karakters bestaan";
+        }
+        if($request->new_pwd != $request->new_pwd_check) {
+            $return_with_errors = true;
+            $errors['new_pwd'] = "Het nieuwe wachtwoord moet tweemaal hetzelfde ingegeven worden.";
+        }
+        if($return_with_errors) {
+            return redirect('/')->with('error_msg', $errors);
+        }
+        else {
+            Auth::user()->password = Hash::make($request->new_pwd);
+            Auth::user()->tmp_password = null;
+            Auth::user()->save();
+            return redirect('/')->with('success_msg', 'Je hebt je wachtwoord succesvol geüpdatet.');
+        }
+    }
+
     //admin
+    public function download_members_example() {
+        //
+        return Excel::create('Ledenlijst_voorbeeld', function($excel) {
+            $excel->sheet('Voorbeeld', function($sheet) {
+                $sheet->row(1, array(
+                     'Naam', 'Voornaam', 'VTV', 'Geboortedatum', 'M/V', 'Lid sinds', 'GSMnr', 'Telefoonnr', 'E ' . date('Y'), 'E', 'D'
+                ));
+                $sheet->row(1, function($row) {
+                    $row->setBackground('#dddddd');
+                });
+                $sheet->row(2, array(
+                     'Janssens', 'Jan', '0568497', '28/07/1958', 'M', '2003', '0477 15 48 59', '016 22 54 58', 'C+30/4', '10', '10'
+                ));
+
+            });
+        })->download('xlsx');
+    }
+
     public function import_members(Request $request) {
+        //ini_set('max_execution_time', 60);
 
         //init an empty array which will hold all of the import errors
         /*
@@ -300,14 +357,24 @@ class UserController extends Controller
 			})->get();
 			if(!empty($data) && $data->count()){
 				$sheet1 = $data[0];
-
-                $e_year = $this->get_singles_property($sheet1[0]);
+                try {
+                    $e_year = $this->get_singles_property($sheet1[0]);
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error_msg', 'Dit is geen geldige ledenlijst. Download het voorbeeld voor het goede formaat.');
+                }
                 //some default fields that are not coming from the Excel
                 $email      = null;
-				$image = 'male_avatar.png';
+				$image      = 'male_avatar.png';
                 $male_avatar = 'male_avatar.png';
                 $female_avatar = 'female_avatar.png';
-				$password	= Hash::make('sportiva');
+				//$password	= Hash::make('sportiva');
+                $password_array = [];
+                for($i = 0; $i < 20; $i++) {
+                    $random_pwd = $this->get_random_password();
+                    array_push($password_array, [$random_pwd, Hash::make($random_pwd)]);
+                }
+                //dd($password_array);
+
 				foreach ($sheet1 as $key => $member) {
                     //array to hold only errors for this user
                     $user_errors = false;
@@ -320,18 +387,26 @@ class UserController extends Controller
                         //generate random nr
                         $vtv_nr = $this->get_unique_vtv_nr();
                     }
-					$first_name = ucfirst(mb_strtolower($member->voornaam));
+                    if($member->lid_sinds) {
+                        $member_since = (int)$member->lid_sinds;
+                    }
+                    else {
+                        $member_since = null;
+                    }
+					$first_name = $this->get_clean_first_name($member->voornaam);
 					$last_name 	= $this->get_clean_last_name($member->naam);
 					if($member->gsmnr) {
+                        $gsm_nr     = str_replace('.', '', str_replace(' ', '', (string)$member->gsmnr));
                         $gsm_nr     = (int)$gsm_nr;
-						$gsm_nr 	= '0' . str_replace('.', '', str_replace(' ', '', (string)$member->gsmnr));
+						$gsm_nr 	= '0' . str_replace('.', '', str_replace(' ', '', (string)$gsm_nr));
 					}
 					else {
 						$gsm_nr = null;
 					}
 					if($member->telefoonnr) {
+                        $tel_nr     = str_replace('.', '', str_replace(' ', '', (string)$member->telefoonnr));
                         $tel_nr     = (int)$tel_nr;
-                        $tel_nr     = '0' . str_replace('.', '', str_replace(' ', '', (string)$member->telefoonnr));
+                        $tel_nr     = '0' . str_replace('.', '', str_replace(' ', '', (string)$tel_nr));
 					}
 					else {
 						$tel_nr = null;
@@ -382,7 +457,7 @@ class UserController extends Controller
                         $image = $female_avatar;
                     }
                     
-					if(strtoupper($member->{$e_year}) == 'NG') {
+					if(strpos(strtoupper($member->{$e_year}), 'NG')) {
 						$ranking_singles = 'NG (5)';
 					}
 					else {
@@ -400,6 +475,11 @@ class UserController extends Controller
                         $ranking_doubles = null;
                     }
 					$level		= $this->get_level_by_birth_date($birth_date);
+
+                    $random_pwd_nr = rand(0, 19);
+                    $temp_password = $password_array[$random_pwd_nr][0];
+                    $password = $password_array[$random_pwd_nr][1];
+
                     //echo($last_name . ' ' . $first_name);
 					//echo($member->naam . ' ' . $member->voornaam . ' (' .$vtv_nr . '):  ' . $ranking_singles . $ranking_doubles . '<br>');
 					//check if a user with this vtv nr already exists, if not instantiate a new one
@@ -417,6 +497,7 @@ class UserController extends Controller
 					     'ranking_doubles'	=> $ranking_doubles,
 					     'image'		=> $image,
 					     'level_id'		=> $level,
+                         'tmp_password' => $temp_password,
 					     'password'		=> $password]
 					);
 
@@ -425,12 +506,24 @@ class UserController extends Controller
 						//echo('user, already exists, only some attributes will be updated <br>');
                         $user->first_name       = $first_name;
                         $user->last_name        = $last_name;
-						$user->ranking_singles 	= $ranking_singles;
-						$user->ranking_doubles 	= $ranking_doubles;
-						$user->gsm 				= $gsm_nr;
-						$user->tel 				= $tel_nr;
-                        $user->birth_date       = $birth_date;
-                        $user->gender           = strtoupper($member->mv);
+                        if($ranking_singles != null) {
+                            $user->ranking_singles  = $ranking_singles;
+                        }
+                        if($ranking_doubles != null) {
+                            $user->ranking_doubles  = $ranking_doubles;
+                        }
+                        if($gsm_nr != null) {
+                            $user->gsm              = $gsm_nr;
+                        }
+                        if($tel_nr != null) {
+                            $user->tel              = $tel_nr;
+                        }
+                        if($birth_date != null) {
+                            $user->birth_date       = $birth_date;
+                        }
+                        if($member->mv != null) {
+                            $user->gender           = strtoupper($member->mv);
+                        }
                         $user->updated_at       = date('Y-m-d H:i:s');
 					}
                     else {
@@ -443,11 +536,12 @@ class UserController extends Controller
                     else {
                         array_push($problem_users, $user->last_name . ' ' . $user->first_name);
                     }
-                    
-					//dump($user);
+                    //dump($user);
 				}
                 //all where updated at is more than a minute ago
+
                 $users_to_delete = User::select('id', 'updated_at', 'last_name')->where('updated_at', '<', (date('Y-m-d H:') . (date('i')-1) . ':00'))->get();
+                //dd($users_to_delete);
                 //dump($users_to_delete);
                 foreach ($users_to_delete as $user) {
                     //dump($user);
@@ -463,7 +557,6 @@ class UserController extends Controller
                 }
 			}
 		}
-        //dd($error_messages);
         if (!empty($error_messages)) {
             //dd('redirect back with errors', $error_messages);
             //return back with errors
@@ -489,15 +582,39 @@ class UserController extends Controller
         }
     }
 
+    public function get_clean_first_name($member_first_name) {
+        $first_name = mb_strtolower($member_first_name);
+        $first_name_pieces = explode(' ', $first_name);
+        $first_name = array();
+        foreach($first_name_pieces as $piece) {
+            array_push($first_name, ucfirst($piece));
+        }
+        $first_name = implode(' ', $first_name);
+        $first_name_pieces = explode('-', $first_name);
+        $first_name = array();
+        foreach($first_name_pieces as $piece) {
+            array_push($first_name, ucfirst($piece));
+        }
+        $first_name = implode('-', $first_name);
+        return $first_name;
+    }
 
     public function get_clean_last_name($member_last_name) {
         $last_name = mb_strtolower($member_last_name);
         $last_name_pieces = explode(' ', $last_name);
+        //$last_name_pieces = preg_split("/[\s,-]+/", $last_name);
         $last_name = array();
         foreach($last_name_pieces as $piece) {
             array_push($last_name, ucfirst($piece));
         }
         $last_name = implode(' ', $last_name);
+        $last_name_pieces = explode('-', $last_name);
+        //$last_name_pieces = preg_split("/[\s,-]+/", $last_name);
+        $last_name = array();
+        foreach($last_name_pieces as $piece) {
+            array_push($last_name, ucfirst($piece));
+        }
+        $last_name = implode('-', $last_name);
         return $last_name;
     }
 
@@ -533,7 +650,7 @@ class UserController extends Controller
         elseif($member->{$next_year}) {
             $e_year = $next_year;
         }
-        echo($e_year);
+        //echo($e_year);
         return $e_year;
     }
 
@@ -588,6 +705,17 @@ class UserController extends Controller
     	}
     	
     	return $level;
+    }
+
+    public function get_random_password() {
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $password = array();
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alphaLength);
+            $password[] = $alphabet[$n];
+        }
+        return implode($password); //turn the array into a string
     }
 
     public function rankings_array() {

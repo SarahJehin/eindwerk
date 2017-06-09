@@ -10,6 +10,20 @@
             Welkom {{Auth::user()->first_name}}
         </div>
         <div class="content">
+
+            @if (session('success_msg'))
+                <div class="success_msg">
+                    {{ session('success_msg') }}
+                </div>
+            @endif
+            @if (session('error_msg'))
+                <div class="error_msg">
+                    @foreach(session('error_msg') as $error)
+                    <div>{{$error}}</div>
+                    @endforeach
+                </div>
+            @endif
+
             <div class="personal_info clearfix">
                 <div class="edit_button">
                     <a href="{{url('edit_profile')}}"><i class="fa fa-pencil" aria-hidden="true"></i> Bewerken</a>
@@ -57,6 +71,9 @@
                                 <div class="value float"><input type="text" name="new_tel" value="{{Auth::user()->email}}"></div>
                                 <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
                                 <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
+                            </div>
+                            <div class="update_pwd link">
+                                Wachtwoord updaten
                             </div>
                         </div>
                         <div class="badges float">
@@ -192,7 +209,35 @@
                 </form>
             </div>
         </div>
-        
+    </div>
+
+
+    <div id="update_pwd_modal" class="lightbox_modal light">
+        <div class="modal">
+            <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+            <div class="modal_body">
+                <form id="update_pwd_form" method="post" action="{{url('update_pwd')}}" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="clearfix">
+                        <label class="float" for="old_pwd">Oude paswoord:</label>
+                        <input class="float" id="old_pwd" name="old_pwd">
+                    </div>
+                    
+                    <div class="clearfix">
+                        <label class="float" for="new_pwd">Nieuwe paswoord:</label>
+                        <input class="float" id="new_pwd" name="new_pwd">
+                    </div>
+                    
+                    <div class="clearfix">
+                        <label class="float" for="new_pwd_check">Bevestiging nieuwe paswoord:</label>
+                        <input class="float" id="new_pwd_check" name="new_pwd_check">
+                    </div>
+                    
+                    <input type="submit" value="Paswoord updaten">
+                </form>
+                
+            </div>
+        </div>
     </div>
     
 </div>

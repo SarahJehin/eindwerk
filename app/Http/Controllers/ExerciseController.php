@@ -12,10 +12,8 @@ use Validator;
 
 class ExerciseController extends Controller
 {
+    //return exercises_overview view (with newest, most viewed and all)
     public function exercises_overview() {
-    	//dd(Request()->page);
-    	//dd('exercises_overview');
-    	//$exercises = Exercise::where('approved', 1)->get()->shuffle();
     	$exercises = Exercise::where('approved', 1)->paginate(4);
     	$tag_types = Tag::all()->groupBy('type');
     	$newest_exercise = null;
@@ -23,23 +21,22 @@ class ExerciseController extends Controller
     	if(Request()->page == 1 || Request()->page == null) {
     		//extract the newest to show on top
 	    	$newest_exercise = Exercise::where('approved', 1)->orderBy('created_at', 'desc')->first();
-	    	//dd($newest_exercise->images);
 	    	//extract the 6 most viewed exercises to show in a 'Most Viewed' section
 	    	$most_viewed_exercises = Exercise::where('approved', 1)->orderBy('views', 'desc')->limit(4)->get();
-	    	//dd($most_viewed_exercises);
     	}
-    	
 
     	$exercises_to_approve = Exercise::where('approved', 0)->get();
     	return view('exercises/exercises_overview', ['exercises' => $exercises, 'newest_exercise' => $newest_exercise, 'most_viewed_exercises' => $most_viewed_exercises, 'tag_types' => $tag_types, 'exercises_to_approve' => $exercises_to_approve]);
     }
 
+    //return the exercise_details view
     public function exercise_details($id) {
     	$exercise = Exercise::find($id);
     	$is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
     	session_start();
     	$client_viewed_exercises = array();
 
+        //exercises already viewed during this session are stored in a session
     	if(isset($_SESSION['client_viewed_exercises']) && !empty($_SESSION['client_viewed_exercises'])) {
     		//set array to the session array:
     		$client_viewed_exercises = $_SESSION['client_viewed_exercises'];
@@ -66,8 +63,15 @@ class ExerciseController extends Controller
     	}
     }
 
+    /**
+     *
+     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     *
+     * @param       [request]   contains the checked tags
+     * @return      [array]     exercises that are tagged with the checked tags, pagination html
+     *
+     */
     public function get_filtered_exercises(Request $request) {
-    	//dd($request->tag_ids);
     	$tag_ids = json_decode($request->tag_ids);
     	
 		$filtered_exercises = Exercise::where('approved', 1)->with('images');
@@ -76,20 +80,19 @@ class ExerciseController extends Controller
 				$query->where('tags.id', $tag_id);
 			});
 		}
-		//don't forget to paginate
 		$filtered_exercises = $filtered_exercises->paginate(2);
 		$pagination_html = (string)$filtered_exercises->links();
 		return ['filtered_exercises' => $filtered_exercises, 'pagination_html' => $pagination_html];
-		dd($filtered_exercises, $pagination_html);
     }
 
+    //return the add_exercise view
     public function add_exercise() {
 		$tag_types = Tag::all()->groupBy('type');
     	return view('exercises/add_exercise', ['tag_types' => $tag_types]);
     }
 
+    //create the exercise
     public function create_exercise(Request $request) {
-
     	$validator = Validator::make($request->all(), [
     							'title'			=> 'required|string',
     							'description'	=> 'required|max:1000',
@@ -119,7 +122,6 @@ class ExerciseController extends Controller
                         ->withInput();
         }
 
-
     	//check whether it was a youtube or vimeo url
     	if($request->video_url) {
     		$media = '';
@@ -128,7 +130,6 @@ class ExerciseController extends Controller
 			    $media = 'youtube';
 			    //make sure to use youtube instead of youtu
 			    $new_video_url = str_replace('youtu.be', 'youtube.com', $video_url);
-			    //dump($new_video_url);
 			    //replace watch by embed
 			    $new_video_url = str_replace('watch?v=', 'embed/', $new_video_url);
 			    //dump($new_video_url);
@@ -140,7 +141,6 @@ class ExerciseController extends Controller
 			    
 			}
 			elseif(strpos($video_url, 'vimeo')){
-				//
 				$media = 'vimeo';
 				if(!strpos($video_url, 'player')) {
 					//replace url so it matches the embed link
@@ -194,7 +194,6 @@ class ExerciseController extends Controller
 		                    $name = str_replace(' ', '_', $name);
 
 		                    $new_file_name = time() . $name . '.' . $image->getClientOriginalExtension();
-		                    //dump($new_file_name);
 		                    $image->move(base_path() . '/public/images/exercise_images/', $new_file_name);
 		                    array_push($already_added_imgs, $img_name_and_size);
 		                    $order++;
@@ -211,17 +210,17 @@ class ExerciseController extends Controller
             }
         }
         return redirect('exercises_overview')->with('success_msg', 'Je hebt de oefening toegevoegd.  Wanneer de hoofdtrainer hem geaccepteerd heeft, verschijnt hij bij op het overzicht.');
-    	dd($request);
     }
 
+    //return edit_exercise view
     public function edit_exercise($id) {
     	$exercise = Exercise::find($id);
 		$tag_types = Tag::all()->groupBy('type');
-		//dd($exercise->tags->pluck('id')->toArray());
     	return view('exercises/edit_exercise', ['exercise' => $exercise, 'tag_types' => $tag_types]);
     }
+
+    //update the exercise
     public function update_exercise(Request $request) {
-	
     	$this->validate($request, [
     							'title'			=> 'required|string',
     							'description'	=> 'required|max:1000',
@@ -231,7 +230,6 @@ class ExerciseController extends Controller
     		]);
 
     	$exercise = Exercise::find($request->exercise_id);
-
     	$exercise->name = $request->title;
     	$exercise->description = $request->description;
     	$exercise->save();
@@ -251,7 +249,6 @@ class ExerciseController extends Controller
     		if(!in_array($image->id, $existing_images)) {
     			//if an attached image is no longer in the existing images, delete it
     			$image->delete();
-    			//dump($image);
     		}
     	}
 
@@ -279,7 +276,6 @@ class ExerciseController extends Controller
 		                    $name = str_replace(' ', '_', $name);
 
 		                    $new_file_name = time() . $name . '.' . $image->getClientOriginalExtension();
-		                    //dump($new_file_name);
 		                    $image->move(base_path() . '/public/images/exercise_images/', $new_file_name);
 		                    array_push($already_added_imgs, $img_name_and_size);
 		                    $order++;
@@ -298,18 +294,18 @@ class ExerciseController extends Controller
         return redirect('edit_exercise/' . $exercise->id)->with('success_msg', 'Je hebt de oefening bijgewerkt.');
     }
 
+    //delete the passed exercise
     public function delete_exercise($id) {
     	$exercise = Exercise::find($id);
-
     	//remove detach all tags
     	$exercise->tags()->detach();
-
     	//soft delete the exercise
     	$exercise->delete();
 
 		return redirect('exercises_overview')->with('success_msg', 'De oefening werd verwijderd.');
     }
 
+    //deny (disapprove) the passed exercise
     public function deny_exercise($id) {
     	//only if authenticated user is headtrainer
     	if(Auth::user()->isHeadtrainer()) {
@@ -323,6 +319,7 @@ class ExerciseController extends Controller
     	return redirect('exercises_overview');
     }
 
+    //approve the passed exercise
     public function approve_exercise($id) {
     	//only if authenticated user is headtrainer
     	if(Auth::user()->isHeadtrainer()) {

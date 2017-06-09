@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
             );
         DB::table('users')->insert($user_row);
         
-
+        $my_id = DB::table('users')->where('last_name', '=', 'Jehin')->select('id')->first()->id;
         $role_user = array(
             'user_id' => DB::table('users')
                     ->where('last_name', '=', 'Jehin')
@@ -45,9 +45,14 @@ class UsersTableSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
         );
         DB::table('role_user')->insert($role_user);
+        DB::table('role_user')->insert(['user_id' => $my_id, 'role_id' => 2]);
+        DB::table('role_user')->insert(['user_id' => $my_id, 'role_id' => 6]);
+        DB::table('role_user')->insert(['user_id' => $my_id, 'role_id' => 10]);
+        DB::table('role_user')->insert(['user_id' => $my_id, 'role_id' => 15]);
 
 
         //some extra users
+        /*
         $user_row2 =
             array(
                 'first_name'    => 'Glass',
@@ -81,7 +86,7 @@ class UsersTableSeeder extends Seeder
             'updated_at' => \Carbon\Carbon::now(),
         );
         DB::table('role_user')->insert($role_user2);
-
+        */
 
         $user_row3 =
             array(
@@ -187,6 +192,7 @@ class UsersTableSeeder extends Seeder
 
 
         //regular users
+        /*
         $user_row6 =
             array(
                 'first_name'    => 'Shawn',
@@ -228,6 +234,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => \Carbon\Carbon::now(),
             );
         DB::table('users')->insert($user_row7);
+        */
 
     }
 }

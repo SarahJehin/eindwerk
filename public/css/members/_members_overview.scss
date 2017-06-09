@@ -195,6 +195,10 @@
                         }
                     }
                 }
+                .temp_pwd {
+                    float: right;
+                    font-size: 0.9em;
+                }
             }
             
             &:hover, &.opened {
@@ -242,6 +246,7 @@
     }
     
     #import_members_modal {
+        height: 100%;
         .error_msg {
             text-align: left;
             margin: 0 15px 15px;
