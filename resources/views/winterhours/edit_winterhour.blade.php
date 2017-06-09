@@ -27,6 +27,12 @@
                     <div class="step3">3</div>
                     <div class="step4">4</div>
                 </div>
+
+                @if (session('success_msg'))
+                    <div class="success_msg">
+                        {{ session('success_msg') }}
+                    </div>
+                @endif
                 <div class="form_part">
                     <div class="not_editable_message">
                         <i class="fa fa-asterisk" aria-hidden="true"></i> Je kan dit winteruur niet meer aanpassen omdat het schema reeds geaccepteerd is.
@@ -291,7 +297,7 @@
                                             <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>-->
                                             <div class="generate_scheme">Schema genereren</div>
                                             @elseif($winterhour->status == 3)
-                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>-->
+                                            <a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>
                                             <div class="generate_scheme">Schema opnieuw genereren</div>
                                             @endif
                                             
@@ -362,7 +368,8 @@
                                                     
                                                 </div>
                                             </div>
-                                            <div class="accept_scheme" ng-if="(winterhour_status < 4)">
+
+                                            <div class="accept_scheme" ng-if="(winterhour_status < 4 && winterhour_status > 2)">
                                                 <div class="descriptive_info">
                                                     Als je tevreden bent met het schema, klik dan op onderstaande knop om het zichtbaar te zetten voor anderen.
                                                 </div>
@@ -370,6 +377,10 @@
                                                     <a href="{{url('save_scheme/' . $winterhour->id)}}">Schema accepteren</a>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="error_msg" ng-if="error_msg_exists">
+                                            @{{error_msg}}
                                         </div>
                                         
 

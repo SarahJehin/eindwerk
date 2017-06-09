@@ -283,6 +283,11 @@ class ActivityController extends Controller
 
         $min_participants = explode(",", $request->participants)[0];
         $max_participants = explode(",", $request->participants)[1];
+        //if max participants is greater than 30, it is actually infinity, but it will be stored in the db as integer
+        //so store it as 1000, so no restrictions will pop up on subscribing due to max participants reached
+        if($max_participants > 30) {
+            $max_participants = 1000;
+        }
 
         if($request->is_visible == "on") {
             $is_visible = 1;
@@ -449,6 +454,12 @@ class ActivityController extends Controller
 
         $min_participants = explode(",", $request->participants)[0];
         $max_participants = explode(",", $request->participants)[1];
+
+        //if max participants is greater than 30, it is actually infinity, but it will be stored in the db as integer
+        //so store it as 1000, so no restrictions will pop up on subscribing due to max participants reached
+        if($max_participants > 30) {
+            $max_participants = 1000;
+        }
 
         if($request->is_visible == "on") {
             $is_visible = 1;

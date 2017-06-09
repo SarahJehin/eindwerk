@@ -289,6 +289,9 @@
         value = value.split(",");
         var min = value[0];
         var max = value[1]
+        if(max > 30) {
+            max = '&infin;';
+        }
         //console.log("min is " + min + " and max: " + max);
         $(".min_participants").html(min);
         $(".max_participants").html(max);

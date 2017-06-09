@@ -59,6 +59,7 @@
                 display: block;
             }
             .descriptive_info {
+                font-size: 0.9em;
                 @include smartphone {
                     display: none;
                 }

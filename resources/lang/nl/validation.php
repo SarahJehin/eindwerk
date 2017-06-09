@@ -156,6 +156,7 @@ return [
         'time'                  => 'Tijd',
         'title'                 => 'Titel',
         'username'              => 'Gebruikersnaam',
+        'video_url'             => 'Video URL',
         'year'                  => 'Jaar',
     ],
 ];

@@ -406,7 +406,7 @@
 
     //edit winterhour extra's //only if winterhour id is defined // alles hieronder zou eigenlijk in apart script moeten staan
 
-
+    $scope.error_msg_exists = false;
     //generate scheme with api request instead of direct link, to show anim
     $('.generate_scheme').click(function() {
         //show loading icon
@@ -418,17 +418,27 @@
         //api generate scheme
         
         $.get(location.origin +  "/generate_scheme/" + winterhour_id, function( data ) {
-            //console.log(data);
-            $.get(location.origin +  "/get_scheme/" + winterhour_id, function( data ) {
+            console.log(data);
+            if(data == "success") {
+                $.get(location.origin +  "/get_scheme/" + winterhour_id, function( data ) {
+                    $('.loader').hide();
+                    $scope.scheme = data.scheme;
+                    $scope.play_times = data.play_times;
+                    $scope.scheme_exists = true;
+                    $scope.$apply();
+                    make_drag_and_droppable();
+                    $('.scheme').show();
+                    $('.play_times').show();
+                });
+            }
+            else {
                 $('.loader').hide();
-                $scope.scheme = data.scheme;
-                $scope.play_times = data.play_times;
-                $scope.scheme_exists = true;
+                $scope.error_msg = 'Het schema kon niet gegenereerd worden omdat er één of meerdere data zijn waarop er niet voldoende deelnemers beschikbaar zijn.  Probeer opnieuw nadat je de beschikbaarheden geüpdatet hebt.';
+                $scope.error_msg_exists = true;
+                console.log($scope.error_msg);
                 $scope.$apply();
-                make_drag_and_droppable();
-                $('.scheme').show();
-                $('.play_times').show();
-            });
+            }
+            
         });
         
     });

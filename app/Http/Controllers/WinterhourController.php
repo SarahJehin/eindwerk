@@ -146,6 +146,30 @@ class WinterhourController extends Controller
 
     public function update_availability(Request $request) {
     	//dd($request);
+        $winterhour = Winterhour::find($request->winterhour_id);
+
+        $validator = Validator::make($request->all(), []);
+
+        $available_days = 0;
+        foreach ($request->date as $date) {
+            if($date == 'on') {
+                $available_days++;
+            }
+        }
+        $min_available_days = ((count($winterhour->dates) * $winterhour->amount_of_courts * 4) / count($winterhour->participants)) + 2;
+
+        $validator->after(function ($validator) use ($available_days, $min_available_days) {
+            if ($available_days < $min_available_days) {
+                $validator->errors()->add('date', 'Je moet minstens ' . $min_available_days . ' dagen beschikbaar zijn.');
+            }
+        });
+        if ($validator->fails()) {
+            return redirect('availabilities/' . $request->winterhour_id . '/' .$request->user_id)
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+
     	$winterhour_id = $request->winterhour_id;
     	$user = User::where('id', $request->user_id)->first();
     	foreach ($request->date as $key => $value) {
@@ -496,7 +520,7 @@ class WinterhourController extends Controller
     		}
     	}
     	//dd('stop right here');
-    	return redirect('edit_winterhour/' . $winterhour->id);
+    	return redirect('edit_winterhour/' . $winterhour->id)->with('success_msg', 'Winteruurgroep werd geüpdatet');
     }
 
     public function delete_winterhour(Request $request) {
@@ -523,7 +547,7 @@ class WinterhourController extends Controller
     	return $winterhour_status;
     }
 
-    public function generate_scheme($id) {
+    public function generate_scheme($id, $times = 0) {
     	//this function will generate a random scheme considering each participant's availability
     	$winterhour = Winterhour::find($id);
         //return json_encode($winterhour->id);
@@ -564,6 +588,8 @@ class WinterhourController extends Controller
             $amount_of_dates = count($winterhour->dates);
             $date_iterator = 0;
 
+            $scheme_successfully_generated = true;
+
             //foreach date get 4 participants (per court) (taking availabilties into account)
             foreach ($winterhour->dates as $date) {
                 //when scheme is regenerated, first set all assigned back to 0
@@ -576,7 +602,7 @@ class WinterhourController extends Controller
                 if($date_iterator >= $amount_of_dates) {
                     $last_date = true;
                 }
-                //dump($date);
+                //dump($date->date);
                 //exclude array which will hold all of the already assigned participants
                 $exclude_ids = array();
                 //echo('test');
@@ -589,8 +615,14 @@ class WinterhourController extends Controller
                     //**dump($exclude_ids);
                     //for the amount of spots get random participant (that is not yet in the exclude ids)
                     $participant = $this->get_random_participant($ordered_participants_ids, $exclude_ids, $date->id, $participant_with_amount_of_turns, $amount_of_turns, $extra_turn, $last_date);
+                    if($participant == null) {
+                        $scheme_successfully_generated = false;
+                        break 2;
+                    }
                     //push id from above participant to the exclude ids list
                     array_push($exclude_ids, $participant->id);
+                    //echo('<br>tell me now the new excluded ids:');
+                    //dump($exclude_ids);
                     //array_push($date_participants[$date->id], $participant->first_name . ' ' . substr($participant->last_name, 0, 1) . ' (' . $participant->id . ')');
                     array_push($date_participants[$date->id], $participant->id);
                     //add 1 to the amount of turns of the assigned participant
@@ -615,8 +647,36 @@ class WinterhourController extends Controller
         } catch (\Exception $e) {
             //dump($e);
         }
+//dd('test');
+        //dump($scheme_successfully_generated);
+        if($scheme_successfully_generated) {
+            //return json_encode('success');
+            return "success";
+            dd('success');
+            return redirect('edit_winterhour/' . $winterhour->id . '?step=4');
+        }
+        elseif($times < 4) {
+            //dump('TIMES: ' . $times);
+            $times++;
+            return $this->generate_scheme($winterhour->id, $times);
+        }
+        else {
+            //clean scheme and return failed
+            foreach ($winterhour->dates as $date) {
+                //set all assigned back to 0
+                foreach ($date->users as $user) {
+                    $user->dates()->updateExistingPivot($date->id, ['assigned' => 0]);
+                }
+            }
+            $winterhour->status = 2;
+            $winterhour->save();
+            //return json_encode('failed');
+            return "failed";
+            dd('failed');
+        }
 
-        return json_encode('success');
+        //echo("you get here?");
+        //return json_encode('success');
     	
     	//dd($winterhour);
 		//dd("scheme generated, redirect back to edit winterhour and display the scheme");
@@ -693,6 +753,8 @@ class WinterhourController extends Controller
     	$available_ids = array_values(array_diff($haystack_ids, $exclude_ids));
     	//echo('<br> Available ids <br>');
     	//dump($available_ids);
+        $check_play_times = true;
+        $already_added_ids = $exclude_ids;
 
     	//first check if there are available priority id's, if not get random
     	$priority_ids = $this->get_priority_participants($participant_turns);
@@ -718,14 +780,12 @@ class WinterhourController extends Controller
     	else {
     		//random
     		$random_nr = rand(0,(count($available_ids)-1));
-	    	//echo('<br> Random nummer: ' . $random_nr . '<br>');
+	    	//echo('<br> Random nummer00: ' . $random_nr . '<br>');
 	    	$participant = User::find($available_ids[$random_nr]);
 	    	//check if this user is available, otherwise get another random participant
 	    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
     	}
 
-    	
-    	//dd($available->pivot->available);
     	if($available) {
     		//echo('available <br>');
     	}
@@ -735,7 +795,7 @@ class WinterhourController extends Controller
 
     	//if it is the last date, the participant is allowed to exceed his max turns by one
     	if($last_date) {
-    		if($participant_turns[$participant->id] < ($amount_of_turns+1)) {
+    		if($participant_turns[$participant->id] < ($amount_of_turns+2)) {
 		    	//then everything is ok
 		    	//**echo('<br> Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
 		    }
@@ -749,7 +809,6 @@ class WinterhourController extends Controller
 		    else {
 		    	//if the id is in the array with one more turn and is still smaller then ok, else not ok (-> not available)
 		    	if(in_array($participant->id, $extra_turn) && $participant_turns[$participant->id] < ($amount_of_turns+1)) {
-		    		//ok
 		    		//**echo('<br>Extra_Turn_Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
 		    	}
 		    	else {
@@ -769,6 +828,8 @@ class WinterhourController extends Controller
     		array_push($exclude_ids, $participant->id);
     		$available_ids = array_values(array_diff($haystack_ids, $exclude_ids));
     		//echo('<br> Available ids <br>');
+            //echo('<br>exclude');
+            //dump($exclude_ids);
     		//dump($available_ids);
 	    	$random_nr = rand(0,(count($available_ids)-1));
 	    	//echo('<br> Random nummer: ' . $random_nr . '<br>');
@@ -776,36 +837,78 @@ class WinterhourController extends Controller
                 $participant = User::find($available_ids[$random_nr]);
             } catch (\Exception $e) {
                 //dump($e);
+                $winterhour = Winterhour::find(Date::find($date_id)->winterhour_id);
+                $i = 0;
+                //echo('you here matee?');
+                //dump($winterhour->participants);
+                foreach($winterhour->participants as $p) {
+                    //echo('in participant ');
+                    $p_available = $p->dates->where('id', $date_id)->where('pivot.available', 1)->where('pivot.assigned', 0)->first();
+                    //dump($p_available);
+                    if($p_available) {
+                        //echo("user has date and is available");
+                        //dump($p->id);
+                        //dump($exclude_ids);
+                        if(in_array($p->id, $already_added_ids)) {
+                            //echo('already exists, so go on again');
+                            $p_available = false;
+                        }
+                    }
+                    
+                    //echo('<br>i: ' . $i . '<br>');
+                    if($p_available) {
+                        $participant = $p;
+                        $check_play_times = false;
+                        //dump("******************************" . $check_play_times);
+                        //dd($participant);
+                        break;
+                    }
+                    if($i == (count($winterhour->participants)-1)) {
+                        return null;
+                    }
+                    $i++;
+                }
             }
 	    	//check if this user is available, otherwise get another random participant
 	    	$available = $participant->dates->where('id', $date_id)->where('pivot.available', 1)->first();
 	    	//echo($participant->first_name);
+            if($available) {
+                //echo(' is available');
+            }
+            else {
+                //echo(' is not available');
+            }
 
-	    	//check whether this person doesn't exceed his max turns
-	    	if($participant_turns[$participant->id] < $amount_of_turns) {
-	    		//then everything is ok
-	    		//echo('<br> Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
-	    	}
-	    	else {
-	    		//if the id is in the array with one more turn and is still smaller then ok, else not ok (-> not available)
-	    		if(in_array($participant->id, $extra_turn) && $participant_turns[$participant->id] < ($amount_of_turns+1)) {
-	    			//ok
-	    			//echo('<br>Extra_Turn_Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
-	    		}
-	    		else {
-	    			//if this participant has reached his max amount of participations, set available to false and find another participant
-	    			//echo('<br> Participants had too many turns<br>');
-	    			$available = false;
-	    		}
-	    	}
+            if($check_play_times) {
+                //check whether this person doesn't exceed his max turns
+                if($participant_turns[$participant->id] < $amount_of_turns) {
+                    //then everything is ok
+                    //echo('<br> Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
+                }
+                else {
+                    //if the id is in the array with one more turn and is still smaller then ok, else not ok (-> not available)
+                    if(in_array($participant->id, $extra_turn) && $participant_turns[$participant->id] < ($amount_of_turns+1)) {
+                        //ok
+                        //echo('<br>Extra_Turn_Participant now has ' . $participant_turns[$participant->id] . ' turns<br>');
+                    }
+                    else {
+                        //if this participant has reached his max amount of participations, set available to false and find another participant
+                        //echo('<br> Participants had too many turns<br>');
+                        $available = false;
+                    }
+                }
+            }
+	    	
 	    	//echo('a is' . $a);
 	    	//extra check (didn't this person play last week) --> optional
 
+            //because of this it will eventually proceed without checking the availabilities
     		$a++;
     		if($a > 12) {
     			break;
     		}
     	}
+        //dump('PARTICIPANT: ' . $participant);
     	return $participant;
     	//dd($participant->first_name);
     }

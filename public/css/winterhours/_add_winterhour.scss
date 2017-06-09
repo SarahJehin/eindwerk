@@ -1,4 +1,9 @@
 .add_winterhour, .edit_winterhour {
+    
+    .success_msg {
+        width: 92%;
+        margin: 0 auto;
+    }
 
     .step_not_reachable {
         text-align: center;
@@ -355,6 +360,9 @@
                 .descriptive_info {
                     margin-top: 25px;
                 }
+            }
+            .error_msg {
+                margin-top: 15px;
             }
         }
         

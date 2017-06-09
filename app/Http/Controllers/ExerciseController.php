@@ -8,6 +8,7 @@ use App\Tag;
 use App\Image;
 use Auth;
 use Session;
+use Validator;
 
 class ExerciseController extends Controller
 {
@@ -36,11 +37,6 @@ class ExerciseController extends Controller
     public function exercise_details($id) {
     	$exercise = Exercise::find($id);
     	$is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
-    	//dd($exercise->tags);
-    	//handle exercise views
-    	//$client_ip = \Request::ip();
-    	//Session::put('client_ip', $client_ip);
-    	//$test = Session::get('client_ip');
     	session_start();
     	$client_viewed_exercises = array();
 
@@ -94,14 +90,35 @@ class ExerciseController extends Controller
 
     public function create_exercise(Request $request) {
 
-    	$this->validate($request, [
+    	$validator = Validator::make($request->all(), [
     							'title'			=> 'required|string',
     							'description'	=> 'required|max:1000',
     							'tags'			=> 'required|array|min:1',
     							'image'			=> 'required|array|min:1',
     							'image.*'		=> 'max:500',
-    							'video_url'		=> 'url'
+    							'video_url'		=> $request->deadline != null ? 'url' : '',
     		]);
+
+        $valid_url = true;
+        if($request->video_url) {
+            //if a video url was passed, check if it was a youtube or vimeo url, else it is not valid
+            $valid_url = false;
+            if (strpos($request->video_url, 'youtu') || strpos($request->video_url, 'vimeo')) {
+                $valid_url = true;
+            }
+        }
+
+        $validator->after(function ($validator) use ($valid_url) {
+            if (!$valid_url) {
+                $validator->errors()->add('video_url', 'Je kan alleen een YouTube of Vimeo url ingeven.');
+            }
+        });
+        if ($validator->fails()) {
+            return redirect('add_exercise')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
 
     	//check whether it was a youtube or vimeo url
     	if($request->video_url) {

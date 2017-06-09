@@ -1,7 +1,13 @@
 (function ( window, document, $, undefined ) {
 
     //gsm
-    var gsm_old_value;
+    var gsm_old_value = $('.gsm input').val();
+    var gsm_new_value;
+    
+    $('.gsm input').focus(function() {
+        $(this).parent().parent().find('.save_button').show();
+    });
+
     $('.gsm .edit_button').click(function() {
         var gsm_input = $(this).parent().find('.value input');
         gsm_old_value = gsm_input.val();
@@ -9,11 +15,16 @@
         $(this).parent().find('.save_button').show();
     });
 
-    $('.gsm input').keyup(function() {
-        var gsm_new_value = $(this).val();
+    $('.gsm input').keyup(function(e) {
+        gsm_new_value = $(this).val();
+        if (gsm_new_value.startsWith("+32")) {
+           gsm_new_value = gsm_new_value.replace('+32', '0');
+        }
+        else if(gsm_new_value.startsWith("0032")) {
+            gsm_new_value = gsm_new_value.replace('0032', '0');
+        }
         gsm_new_value = gsm_new_value.replace(/\s/g,'');
         var valid_format = /^\d{10}$/.test(gsm_new_value);
-        //console.log(valid_format);
         if(valid_format) {
             $(this).removeClass('not_valid');
             $(this).addClass('valid');
@@ -22,22 +33,34 @@
             $(this).removeClass('valid');
             $(this).addClass('not_valid');
         }
+        if (e.keyCode == 13) {
+            $(this).blur();
+        }
     });
 
     $('.gsm .save_button').click(function() {
-        var gsm_new_value = $(this).parent().find('input').val();
+        var gsm_input = $(this).parent().find('input');
+        //var gsm_new_value = $(this).parent().find('input').val();
+
         //replace all spaces
         gsm_new_value = gsm_new_value.replace(/\s/g,'');
+        console.log(gsm_new_value);
         //check whether it is a correct mobile number format
         var valid_format = /^\d{10}$/.test(gsm_new_value);   // true
+        console.log(valid_format);
         if(valid_format) {
             //send post request to server to update gsm number
             $.post( location.origin + "/update_profile", { type: 'mobile', user_id: user_id, new_value: gsm_new_value }, function( data ) {
                 //console.log(data);
+                gsm_new_value = gsm_new_value.replace(/(\d{4})(\d{2})(\d{2})(\d{2})/, "$1 $2 $3 $4");
+                gsm_old_value = gsm_new_value;
+                gsm_input.val(gsm_old_value);
             });
         }
+        else {
+            $(this).parent().find('input').val(gsm_old_value);
+        }
         
-        gsm_old_value = $(this).parent().find('input').val();
         $(this).parent().find('.save_button').hide();
         //console.log('save');
 
@@ -45,23 +68,20 @@
         $(this).parent().find('input').removeClass('valid');
     });
 
-    $('.gsm .value').focusout(function() {
-        //
-        var gsm_input = $(this).find('input');
-        var gsm_save_btn = $(this).parent().find('.save_button');
-        setTimeout(function() {
-            //console.log('focusout');
-            gsm_input.val(gsm_old_value).attr('disabled', 'true').attr('readonly', 'true');
-            gsm_save_btn.hide();
-        }, 200);
-
-        $(this).find('input').removeClass('not_valid');
-        $(this).find('input').removeClass('valid');
-        
+    $('.gsm .value input').focusout(function() {
+        if(!gsm_new_value) {
+            gsm_new_value = $(this).val();
+        }
+        $('.gsm .save_button').trigger('click');
     });
 
     //tel
-    var tel_old_value;
+    var tel_old_value = $('.tel input').val();
+    var tel_new_value;
+    $('.tel input').focus(function() {
+        $(this).parent().parent().find('.save_button').show();
+    });
+
     $('.tel .edit_button').click(function() {
         var tel_input = $(this).parent().find('.value input');
         tel_old_value = tel_input.val();
@@ -69,8 +89,14 @@
         $(this).parent().find('.save_button').show();
     });
 
-    $('.tel input').keyup(function() {
-        var tel_new_value = $(this).val();
+    $('.tel input').keyup(function(e) {
+        tel_new_value = $(this).val();
+        if (tel_new_value.startsWith("+32")) {
+           tel_new_value = tel_new_value.replace('+32', '0');
+        }
+        else if(tel_new_value.startsWith("0032")) {
+            tel_new_value = tel_new_value.replace('0032', '0');
+        }
         tel_new_value = tel_new_value.replace(/\s/g,'');
         var valid_format = /^\d{9}$/.test(tel_new_value);
         //console.log(valid_format);
@@ -82,11 +108,14 @@
             $(this).removeClass('valid');
             $(this).addClass('not_valid');
         }
+        if (e.keyCode == 13) {
+            $(this).blur();
+        }
     });
 
-
     $('.tel .save_button').click(function() {
-        var tel_new_value = $(this).parent().find('input').val();
+        var tel_input = $(this).parent().find('input');
+        //var tel_new_value = $(this).parent().find('input').val();
         //replace all spaces
         tel_new_value = tel_new_value.replace(/\s/g,'');
         //check whether it is a correct mobile number format
@@ -95,9 +124,14 @@
             //send post request to server to update tel number
             $.post( location.origin + "/update_profile", { type: 'phone', user_id: user_id, new_value: tel_new_value }, function( data ) {
                 //console.log(data);
+                tel_new_value = tel_new_value.replace(/(\d{3})(\d{2})(\d{2})(\d{2})/, "$1 $2 $3 $4");
+                tel_old_value = tel_new_value;
+                tel_input.val(tel_old_value);
             });
         }
-        tel_old_value = $(this).parent().find('input').val();
+        else {
+            $(this).parent().find('input').val(tel_old_value);
+        }
         $(this).parent().find('.save_button').hide();
         //console.log('save');
 
@@ -105,23 +139,20 @@
         $(this).parent().find('input').removeClass('valid');
     });
 
-    $('.tel .value').focusout(function() {
-        //
-        var tel_input = $(this).find('input');
-        var tel_save_btn = $(this).parent().find('.save_button');
-        setTimeout(function() {
-            //console.log('focusout');
-            tel_input.val(tel_old_value).attr('disabled', 'true').attr('readonly', 'true');
-            tel_save_btn.hide();
-        }, 200);
-
-        $(this).find('input').removeClass('not_valid');
-        $(this).find('input').removeClass('valid');
-        
+    $('.tel input').focusout(function() {
+        if(!tel_new_value) {
+            tel_new_value = $(this).val();
+        }
+        $('.tel .save_button').trigger('click');
     });
 
     //email
-    var email_old_value;
+    var email_old_value = $('.email input').val();
+    var email_new_value;
+    $('.email input').focus(function() {
+        $(this).parent().parent().find('.save_button').show();
+    });
+
     $('.email .edit_button').click(function() {
         var email_input = $(this).parent().find('.value input');
         email_old_value = email_input.val();
@@ -129,7 +160,7 @@
         $(this).parent().find('.save_button').show();
     });
 
-    $('.email input').keyup(function() {
+    $('.email input').keyup(function(e) {
         var email_new_value = $(this).val();
         var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var valid_format = email_regex.test(email_new_value);   // true
@@ -142,9 +173,13 @@
             $(this).removeClass('valid');
             $(this).addClass('not_valid');
         }
+        if (e.keyCode == 13) {
+            $(this).blur();
+        }
     });
 
     $('.email .save_button').click(function() {
+        var email_input = $(this).parent().find('input');
         var email_new_value = $(this).parent().find('input').val();
         //console.log(email_new_value);
         //replace all spaces
@@ -152,36 +187,31 @@
         //check whether it is a correct email format
         var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var valid_format = email_regex.test(email_new_value);   // true
-        console.log(valid_format);
+        //console.log(valid_format);
         if(valid_format) {
             //send post request to server to update email
             $.post( location.origin + "/update_profile", { type: 'email', user_id: user_id, new_value: email_new_value }, function( data ) {
                 //console.log(data);
+                email_old_value = email_new_value;
+                email_input.val(email_old_value);
             });
-            email_old_value = $(this).parent().find('input').val();
-            $(this).parent().find('.save_button').hide();
+            //email_old_value = $(this).parent().find('input').val();
+            //$(this).parent().find('.save_button').hide();
             //console.log('save');
         }
         else {
-            //console.log('not valid');
+            $(this).parent().find('input').val(email_old_value);
         }
+
+        $(this).parent().find('.save_button').hide();
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
         
     });
 
-    $('.email .value').focusout(function() {
-        //
-        var email_input = $(this).find('input');
-        var email_save_btn = $(this).parent().find('.save_button');
-        setTimeout(function() {
-            //console.log('focusout');
-            email_input.val(email_old_value).attr('disabled', 'true').attr('readonly', 'true');
-            email_save_btn.hide();
-        }, 200);
-        
-        $(this).find('input').removeClass('not_valid');
-        $(this).find('input').removeClass('valid');
+    $('.email input').focusout(function() {
+        //email_new_value = 
+        $('.email .save_button').trigger('click');
     });
 
 
@@ -265,7 +295,7 @@ $('.upload-result').on('click', function (ev) {
 
 
 var profile_pic_modal_active = false;
-$('.profile_pic .edit_button').click(function() {
+$('.profile_pic').click(function() {
     //$('.lightbox_modal').show();
     $('.edit_profile_pic_modal').show();
     profile_pic_modal_active = true;

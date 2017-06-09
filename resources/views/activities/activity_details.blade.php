@@ -31,7 +31,6 @@
                     @endif
                 </div>
                 
-
                 @if (session('success_msg'))
                     <div class="success_msg">
                         {{ session('success_msg') }}
@@ -52,7 +51,7 @@
                                 <h4 class="{{str_replace(' ', '_', strtolower($activity->category->name))}}">Algemene info:</h4>
                                 <div>
                                     <i class="fa fa-user" aria-hidden="true"></i>
-                                    {{$activity->min_participants}} - {{$activity->max_participants}} deelnemers
+                                    {{$activity->min_participants}} - {{($activity->max_participants > 30 ? "onbeperkt aantal" : $activity->max_participants)}} deelnemers
                                 </div>
                                 <div class="date">
                                     <i class="fa fa-calendar" aria-hidden="true"></i>

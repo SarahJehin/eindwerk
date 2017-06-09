@@ -76,7 +76,11 @@ nav {
         border-radius: 50%; }
     nav .personal_details .name_total {
       color: #fff;
+      width: 110px;
       padding-top: 5px; }
+      @media (max-width: 768px) {
+        nav .personal_details .name_total {
+          width: auto; } }
       nav .personal_details .name_total .name a {
         color: inherit;
         text-decoration: none; }
@@ -2447,6 +2451,9 @@ button.submit {
       border-color: #fff;
       color: #1abc9c; }
 
+.add_winterhour .success_msg, .edit_winterhour .success_msg {
+  width: 92%;
+  margin: 0 auto; }
 .add_winterhour .step_not_reachable, .edit_winterhour .step_not_reachable {
   text-align: center;
   margin-bottom: 25px;
@@ -2684,6 +2691,8 @@ button.submit {
       color: #1abc9c; }
 .add_winterhour .form_part .scheme_generation .accept_scheme .descriptive_info, .edit_winterhour .form_part .scheme_generation .accept_scheme .descriptive_info {
   margin-top: 25px; }
+.add_winterhour .form_part .scheme_generation .error_msg, .edit_winterhour .form_part .scheme_generation .error_msg {
+  margin-top: 15px; }
 .add_winterhour .form_part .groupname input:disabled, .edit_winterhour .form_part .groupname input:disabled {
   cursor: not-allowed; }
 
@@ -2729,9 +2738,11 @@ button.submit {
   display: none; }
   .winterhours_overview .winterhour_group .details.open {
     display: block; }
-  @media (max-width: 768px) {
-    .winterhours_overview .winterhour_group .details .descriptive_info {
-      display: none; } }
+  .winterhours_overview .winterhour_group .details .descriptive_info {
+    font-size: 0.9em; }
+    @media (max-width: 768px) {
+      .winterhours_overview .winterhour_group .details .descriptive_info {
+        display: none; } }
 .winterhours_overview .winterhour_group .participants {
   font-size: 0.9em;
   margin-bottom: 5px; }

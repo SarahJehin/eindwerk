@@ -40,21 +40,21 @@
                             <div class="gsm clearfix">
                                 <div class="title float">GSM</div>
                                 <div class="colon float">:</div>
-                                <div class="value float"><input type="text" name="new_gsm" value="{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}" readonly="" disabled=""></div>
+                                <div class="value float"><input type="text" name="new_gsm" value="{{substr(Auth::user()->gsm, 0, 4) . ' ' . chunk_split(substr(Auth::user()->gsm, 4), 2, ' ')}}"></div>
                                 <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
                                 <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
                             </div>
                             <div class="tel clearfix">
                                 <div class="title float">Tel.</div>
                                 <div class="colon float">:</div>
-                                <div class="value float"><input type="text" name="new_tel" value="{{substr(Auth::user()->tel, 0, 3) . ' ' . chunk_split(substr(Auth::user()->tel, 3), 2, ' ')}}" readonly="" disabled=""></div>
+                                <div class="value float"><input type="text" name="new_tel" value="{{substr(Auth::user()->tel, 0, 3) . ' ' . chunk_split(substr(Auth::user()->tel, 3), 2, ' ')}}"></div>
                                 <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
                                 <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
                             </div>
                             <div class="email clearfix">
                                 <div class="title float">E-mail</div>
                                 <div class="colon float">:</div>
-                                <div class="value float"><input type="text" name="new_tel" value="{{Auth::user()->email}}" readonly="" disabled=""></div>
+                                <div class="value float"><input type="text" name="new_tel" value="{{Auth::user()->email}}"></div>
                                 <div class="edit_button"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
                                 <div class="save_button"><i class="fa fa-floppy-o" aria-hidden="true"></i></div>
                             </div>
@@ -141,6 +141,7 @@
 
             <div class="winterhours_block">
                 <h3>Mijn winteruren</h3>
+                @if(count($winterhours) > 0)
                 <div class="descriptive_info">
                     Hieronder vind je een overzicht van de eerst drievolgende speeldata per winteruurgroep.
                 </div>
@@ -163,6 +164,11 @@
                     </div>
                     @endforeach
                 </div>
+                @else
+                <div class="descriptive_info">
+                    Je heb nog geen winteruurgroepen. <a class="link" href="{{url('add_winterhour')}}">Maak er nu één aan</a>.
+                </div>
+                @endif
             </div>
         </div>
     </div>

@@ -22,8 +22,8 @@
                     </div>
                 @endif
                 <div class="intro descriptive_info">
-                    Hieronder vind je een overzicht met alle winteruren waaraan jij deelneemt.<br>
-                    Door op de titel te klikken kan je de groep openen of sluiten.
+                    Hieronder vind je een overzicht van alle winteruren waaraan jij deelneemt.<br>
+                    Door op de groepsnaam te klikken kan je de groep openen of sluiten.
                 </div>
 
                 @if(!$winterhour_groups->isEmpty())
@@ -41,7 +41,9 @@
                                 <span class="delete" winterhour_id="{{$winterhour->id}}">Verwijderen</span>
                                 )
                                 @endif
+                                @if($winterhour->status > 3)
                                 (<a class="link" href="{{url('download_scheme/' . $winterhour->id)}}">Downloaden als Excel</a>)
+                                @endif
                             </div>
                             <div class="participants">
                                 <h4>Deelnemers <i class="fa fa-angle-right" aria-hidden="true"></i></h4>

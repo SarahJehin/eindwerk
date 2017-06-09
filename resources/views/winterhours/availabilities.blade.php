@@ -15,10 +15,13 @@
                 {{$winterhour->title}}
             </div>
             <div class="content">
-
-                @if($user->id != Auth::user()->id)
+                @if($winterhour->made_by == Auth::user()->id)
                 <div class="back link">
                     <a href="{{url('edit_winterhour/' . $winterhour->id . '?step=3')}}">Terug naar overzicht</a>
+                </div>
+                @else
+                <div class="back link">
+                    <a href="{{url('winterhours_overview')}}">Terug naar overzicht</a>
                 </div>
                 @endif
 
@@ -32,10 +35,18 @@
                 <div class="descriptive_info">
                     Geef hieronder je beschikbare datums door.<br>
                     Het schema kan pas gemaakt worden wanneer iedereen zijn beschikbaarheid heeft doorgegeven<br>
+                    Vink minstens 12 dagen aan waarop je beschikbaar bent.<br>
                     @if($user->id != Auth::user()->id)
                     Beschikbaarheid aanpassen voor <strong>{{$user->first_name}} {{$user->last_name}}</strong>
                     @endif
                 </div>
+
+                @if(count($errors) > 0)
+                    <div class="error_msg">
+                        {{$errors->get('date')[0]}}
+                    </div>
+                @endif
+
                 <div class="select_all">
                     <input id="select_all" type="checkbox" name="select_all">
                     <label for="select_all">Alle data selecteren</label>
@@ -62,6 +73,9 @@
                                             @if($user_dates_array[$date->id]->pivot->available == 1)
                                             <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
                                             <input class="float" type="checkbox" name="date[{{$date->id}}]" checked="">
+                                            @elseif(old('date'))
+                                            <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
+                                            <input class="float" type="checkbox" name="date[{{$date->id}}]" {{(old('date')[$date->id] == 'on' ? 'checked=""' : '')}}>
                                             @else
                                             <input class="float" type="hidden" name="date[{{$date->id}}]" value="0">
                                             <input class="float" type="checkbox" name="date[{{$date->id}}]">

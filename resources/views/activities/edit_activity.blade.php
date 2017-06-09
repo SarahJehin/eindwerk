@@ -56,7 +56,6 @@
                                             @foreach ($errors->get('poster') as $error)
                                                 <li>{{ $error }}</li>@endforeach
                                             </ul>
-                                            <?php dump($errors->all()); ?>
                                         </div>
                                     @endif
                                     <div class="category_poster clearfix">
@@ -295,7 +294,13 @@
 
                                     <div class="participants slider_block">
                                         <div>Aantal deelnemers</div>
-                                        <span class="min_participants"><?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="30" data-slider-step="1" data-slider-value="[<?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('participants') == null){echo($activity->max_participants); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('participants') == null){echo($activity->max_participants); } else {echo(explode(',',old('participants'))[1]);} ?></span>
+                                        <!--
+                                        <span class="min_participants"><?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="31" data-slider-step="1" data-slider-value="[<?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('participants') == null){echo($activity->max_participants); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('participants') == null){echo($activity->max_participants); } else {echo(explode(',',old('participants'))[1]);} ?></span>
+                                        -->
+                                        <span class="min_participants"><?php if(old('participants') == null){echo($activity->min_participants); } else {echo(explode(',',old('participants'))[0]);} ?></span>
+                                        
+                                        <input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="31" data-slider-step="1" data-slider-value="[{{(old('participants') == null ? $activity->min_participants : explode(',', old('participants'))[0])}},{{(old('participants') == null ? $activity->max_participants : explode(',', old('participants'))[1])}}]" tooltip="hide"/>
+                                        <span class="max_participants">{{(old('participants') == null ? ($activity->max_participants > 30 ? "&infin;" : $activity->max_participants) : (explode(',',old('participants'))[1] > 30 ? "&infin;" : explode(',',old('participants'))[1]))}}</span>
                                     </div>
                                     <!--
                                     <div class="helpers slider_block">
