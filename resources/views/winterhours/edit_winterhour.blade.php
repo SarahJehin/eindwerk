@@ -403,7 +403,7 @@
                                         
 
                                     @elseif($winterhour->status < 2)
-                                    <div>Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.</div>
+                                    <div class="descriptive_info">Je kan het schema pas genereren wanneer alle deelnemers hun beschikbaarheid hebben doorgegeven.</div>
                                     @endif
                                     <div class="previous_next clearfix">
                                         <div class="previous link float" step="3">

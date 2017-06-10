@@ -141,6 +141,10 @@
             .value {
                 width: 215px;
                 
+                input {
+                    font-family: inherit;
+                }
+                
                 @include smartphone {
                     width: 200px;
                 }
@@ -159,13 +163,17 @@
                 }
             }
             .badge {
-                width: 40px;
+                width: 35px;
+                margin-right: 10px;
                 position: relative;
                 span {
                     position: absolute;
+                    display: block;
                     color: #fff;
                     top: 16%;
-                    left: 30%;
+                    //left: 30%;
+                    width: 100%;
+                    text-align: center;
                 }
                 i.fa {
                     font-size: 2.5em;

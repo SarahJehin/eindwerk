@@ -22,12 +22,12 @@ class UserController extends Controller
         }
     }
 
+    //return members_overview view
     public function get_members_overview(Request $request) {
         $rankings = $this->rankings_array();
         if($request->has('searching')) {
             $search_results = $this->search_members($request);
             return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings])->with(['input' => Input::all()]);
-            //return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings]);
         }
         else {
             $members = User::orderBy('last_name')->orderBy('first_name')->paginate(50);
@@ -35,21 +35,20 @@ class UserController extends Controller
         }
     }
 
-    //search
+
     /**
      *
-     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     * Return first 5 members that match the searchstring
      *
-     * @param       [array]     users where the top 3 will be generated from
-     * @param       [string]    youth or adult
-     * @return      [array]     top 3 users for certain category (adult or youth)
+     * @param       [request->string]       first and/or last name of the member you're searching for
+     * @param       [request->array]        ids of members who should be ignored while searching
+     * @return      [Collection]            members
      *
      */
     public function get_matching_users(Request $request) {
         $searchstring   = $request->searchstring;
         $not_ids        = $request->not_ids;
 
-        //select birth_date as well, for when you have two users with the same name
         $matching_users = User::select('id', 'first_name', 'last_name', 'birth_date')
                                 ->whereNotIn('id', $not_ids)
                                 ->where(function($query) use ($searchstring) {
@@ -66,6 +65,7 @@ class UserController extends Controller
         return $matching_users;
     }
 
+    //return an Excel file with a list of all members and their info
     public function download_members_as_excel() {
     	$members = User::select('last_name as Naam', 'first_name as Voornaam', 'vtv_nr as VTV', 'birth_date as Geboortedatum', 'gender as M/V', 'member_since as Lid sinds', 'gsm as GSMnr', 'tel as Telefoonnr', 'ranking_singles as E ' . date('Y'), 'ranking_singles as E', 'ranking_doubles as D')->orderBy('last_name')->orderBy('first_name')->get()->toArray();
 
@@ -91,12 +91,15 @@ class UserController extends Controller
         })->download('xlsx');
     }
 
+    /**
+     *
+     * Return all members who match the searchdata
+     *
+     * @param       [request->string]   containing all searchdata (name, ranking, birth_year)
+     * @return      [Collection]        members
+     *
+     */
     public function search_members(Request $request) {
-        $is_admin = false;
-        $user_roles = Auth::user()->roles->pluck('level')->toArray();
-        if (Auth::user() && $user_roles && min($user_roles) < 30) {
-            $is_admin = true;
-        }
 
     	$name = $request->name;
     	$from_ranking = ($request->from_ranking != 'from') ? $request->from_ranking : null;
@@ -105,6 +108,7 @@ class UserController extends Controller
     	$to_birth_date = ($request->to_birth_year != 'to') ? $request->to_birth_year . '-12-31 23:59:59' : null;
     	$search_results = User::orderBy('last_name')->orderBy('first_name');
 
+        //search by name: first name, last name, first name + last name, last name + first name
     	if($name) {
     		$search_results = $search_results->where(function($query) use ($name) {
                                     $query->where('first_name', 'like', '%'.$name.'%')
@@ -180,17 +184,20 @@ class UserController extends Controller
                                                                   'to_birth_year'       => $request->to_birth_year,
                                                                   'searching'           => $request->searching]);
 
-    	//dd($search_results);
-        //dd($search_results);
         return $search_results;
-    	//return view('members/members_overview', ['members' => $search_results, 'rankings' => $rankings, 'is_admin' => $is_admin])->with(['input' => Input::all()]);
     }
 
-    public function get_allowed_update_roles(Request $request) {
+    /**
+     *
+     * Return all the roles the authenticated user is allowed to update
+     *
+     * @return      [Collection]    roles
+     *
+     */
+    public function get_allowed_update_roles() {
         $is_admin = Auth::user()->roles->whereIn('level', 11)->first();
         $is_youth_chairman = Auth::user()->roles->whereIn('level', [21])->first();
         $is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
-        //dd($is_admin);
         $allowed_update_roles = null;
 
         //if authenticated user is admin (main chairman), show all user roles
@@ -207,22 +214,33 @@ class UserController extends Controller
             }
             $allowed_update_roles = $allowed_update_roles->get();
         }
-        //dd($allowed_update_roles);
         return $allowed_update_roles;
         
     }
 
+    /**
+     *
+     * Return all role id's for certain member
+     *
+     * @param       [request->integer]  member id
+     * @return      [array]             roles ids
+     *
+     */
     public function get_user_roles(Request $request) {
-        //return $request->member_id;
         $member_roles = User::find($request->member_id)->roles->pluck('id');
-        //dd($member_roles);
         return $member_roles;
     }
 
+    /**
+     *
+     * Return all role id's for certain member
+     *
+     * @param       [request->integer]  member id
+     * @return      [string]            message
+     *
+     */
     public function update_user_role(Request $request) {
-        //return (string)$request->new_value;
         $user = User::find($request->member_id);
-        //return $user;
         if((string)$request->new_value == '1') {
             $user->roles()->attach($request->role_id);
             return $user->first_name . ' ' . $user->last_name . ' now has new role (' . $request->role_id . ')';
@@ -235,7 +253,6 @@ class UserController extends Controller
 
     //update profile contactinfo (like mobile, phone and email)
     public function update_profile(Request $request) {
-        //return $request->new_value;
         //type can be: mobile/phone/email
         $type = $request->type;
         //this new value is already validated in javascript
@@ -258,10 +275,9 @@ class UserController extends Controller
         return 'success';
     }
 
+    //update the user profile picture
     public function update_profile_pic(Request $request) {
     	$base64_encoded_image = $request->imagebase64;
-    	//$base64_encoded_image = $request->testbase64;
-    	//$base64_encoded_image = $request->last_test_base64;
     	//get the base64 code
     	$data = explode(';', $base64_encoded_image)[1];
         $data = explode(',', $data)[1];
@@ -279,11 +295,9 @@ class UserController extends Controller
         Auth::user()->save();
 
         return redirect()->back();
-
-        dd($profile_pictures_path . $image_name);
-        dd($data);
     }
 
+    //update the user password
     public function update_pwd(Request $request) {
         
         $return_with_errors = false;
@@ -293,6 +307,7 @@ class UserController extends Controller
             $return_with_errors = true;
             $errors['old_pwd'] = "Oude wachtwoord is incorrect.";
         }
+        //check if new password is valid
         if(strlen($request->new_pwd) < 6) {
             $return_with_errors = true;
             $errors['new_pwd_length'] = "Het nieuwe wachtwoord moet minstens uit 6 karakters bestaan";
@@ -312,9 +327,8 @@ class UserController extends Controller
         }
     }
 
-    //admin
+    //return an Excel file with header and example row for member import Excel
     public function download_members_example() {
-        //
         return Excel::create('Ledenlijst_voorbeeld', function($excel) {
             $excel->sheet('Voorbeeld', function($sheet) {
                 $sheet->row(1, array(
@@ -331,27 +345,23 @@ class UserController extends Controller
         })->download('xlsx');
     }
 
+    /**
+     *
+     * Import all members from Excel and create or update their info
+     *
+     * @param       [request->file]     Excel file containing all members
+     * @return      [view]              members overview with message
+     *
+     */
     public function import_members(Request $request) {
-        //ini_set('max_execution_time', 60);
-
-        //init an empty array which will hold all of the import errors
-        /*
-        $errors = array('first_name'    => [],
-                        'last_name'     => [],
-                        'gsm_nr'        => [],
-                        'tel_nr'        => [],
-                        'birth_date'    => [],
-                        'gender'        => [],
-                        'ranking_singles'   => [],
-                        'ranking_doubles'   => []);
-        */
         $error_messages = array();
+        //problem users = users who could not be imported and crashed the script
         $problem_users  = array();
+        //warning users = users from whom some non-required data is missing
         $warning_users  = array();
 
     	//check if post request contains file, if yes, read out the excel file, with all the members
     	if ($request->hasFile('members_excel')) {
-		    //
 		    $path = $request->file('members_excel')->getRealPath();
 			$data = Excel::load($path, function($reader) {
 			})->get();
@@ -362,18 +372,17 @@ class UserController extends Controller
                 } catch (\Exception $e) {
                     return redirect()->back()->with('error_msg', 'Dit is geen geldige ledenlijst. Download het voorbeeld voor het goede formaat.');
                 }
-                //some default fields that are not coming from the Excel
+                //some default fields that won't be imported from the Excel
                 $email      = null;
 				$image      = 'male_avatar.png';
                 $male_avatar = 'male_avatar.png';
                 $female_avatar = 'female_avatar.png';
-				//$password	= Hash::make('sportiva');
+                //create a password array with some random passwords for new users
                 $password_array = [];
                 for($i = 0; $i < 20; $i++) {
                     $random_pwd = $this->get_random_password();
                     array_push($password_array, [$random_pwd, Hash::make($random_pwd)]);
                 }
-                //dd($password_array);
 
 				foreach ($sheet1 as $key => $member) {
                     //array to hold only errors for this user
@@ -412,17 +421,13 @@ class UserController extends Controller
 						$tel_nr = null;
 					}
                     if(strtotime($member->geboortedatum)) {
-                        //echo('valid date <br>');
                         $birth_date = date('Y-m-d', strtotime($member->geboortedatum));
                     }
                     elseif(!$member->geboortedatum) {
-                        //echo('no date: ' . $last_name);
                         $birth_date = null;
                         array_push($warning_users, $last_name . ' ' .$first_name);
                     }
                     else {
-
-                        //echo('invalid birth date <br>');
                         $birth_date = $this->format_date($member->geboortedatum);
                         //if the date still is not valid, add to errors
                         if(!$this->validate_date($birth_date)) {
@@ -434,21 +439,12 @@ class UserController extends Controller
                             }
                         }
                     }
-                    //echo($last_name);
 					$gender		= strtoupper($member->mv);
                     if($gender != 'M' && $gender != 'V') {
                         $gender = null;
                         if(!in_array($last_name . ' ' .$first_name, $warning_users)) {
                             array_push($warning_users, $last_name . ' ' .$first_name);
                         }
-                        /*
-                        $err_msg = 'Geslacht moet ofwel M of V zijn.';
-                        array_push($errs, $err_msg);
-                        $user_errors = true;
-                        if((!in_array($err_msg, $error_messages))) {
-                            array_push($error_messages, $err_msg);
-                        }
-                        */
                     }
                     elseif($gender == 'M') {
                         $image = $male_avatar;
@@ -476,14 +472,11 @@ class UserController extends Controller
                     }
 					$level		= $this->get_level_by_birth_date($birth_date);
 
+                    //get a random password from the passwords array
                     $random_pwd_nr = rand(0, 19);
                     $temp_password = $password_array[$random_pwd_nr][0];
                     $password = $password_array[$random_pwd_nr][1];
 
-                    //echo($last_name . ' ' . $first_name);
-					//echo($member->naam . ' ' . $member->voornaam . ' (' .$vtv_nr . '):  ' . $ranking_singles . $ranking_doubles . '<br>');
-					//check if a user with this vtv nr already exists, if not instantiate a new one
-					//actually better updateOrCreate //but maybe not because level should not be overrided, nor should password
 					$user = User::firstOrNew(
 					    ['vtv_nr' => $vtv_nr], 
 					    ['email' 		=> $email,
@@ -503,7 +496,6 @@ class UserController extends Controller
 
 					if($user->exists) {
 						//update the current user
-						//echo('user, already exists, only some attributes will be updated <br>');
                         $user->first_name       = $first_name;
                         $user->last_name        = $last_name;
                         if($ranking_singles != null) {
@@ -526,9 +518,6 @@ class UserController extends Controller
                         }
                         $user->updated_at       = date('Y-m-d H:i:s');
 					}
-                    else {
-                        //echo('user does not exist, create from scratch <br>');
-                    }
                     //before the user is saved, check if there are no errors for this user
                     if(!$user_errors) {
                         $user->save();
@@ -536,41 +525,31 @@ class UserController extends Controller
                     else {
                         array_push($problem_users, $user->last_name . ' ' . $user->first_name);
                     }
-                    //dump($user);
 				}
-                //all where updated at is more than a minute ago
-
+                //all users where updated at is more than a minute ago -> they should be deleted because they are no longer in the Excel
                 $users_to_delete = User::select('id', 'updated_at', 'last_name')->where('updated_at', '<', (date('Y-m-d H:') . (date('i')-1) . ':00'))->get();
-                //dd($users_to_delete);
-                //dump($users_to_delete);
                 foreach ($users_to_delete as $user) {
-                    //dump($user);
-                    //echo('stap 1: ' . $user->first_name . ' ' . $user->last_name . ' (' . $user->id . ')');
-                    //beneath is temporary :)
-                    if($user->id != 2 && $user->id != 6 && $user->id != 7) {
-                        //echo('stap2 : ');
-                        //echo($user->first_name . ' ' . $user->last_name);
-                        //this users may be hard deleted, cause most of them just will be doubles
-                        //$user->delete();
-                        $user->forceDelete();
-                    }
+                    $user->forceDelete();
                 }
 			}
 		}
         if (!empty($error_messages)) {
-            //dd('redirect back with errors', $error_messages);
             //return back with errors
             return redirect()->back()->with('error_messages', $error_messages)->with('problem_users', $problem_users);
         }
         else {
-            //dd("nope!");
             //return back with success message
             return redirect()->back()->with('success_msg', 'Alle leden werden succesvol geïmporteerd!')->with('warning_users', $warning_users);
         }
-
-    	//dd($request);
     }
 
+    /**
+     *
+     * Return an unique VTV nr for members who don't have one
+     *
+     * @return      [integer]   vtv_nr
+     *
+     */
     public function get_unique_vtv_nr() {
         $unique_nr = mt_rand(100000, 999999);
         $user_exists = User::where('vtv_nr', $unique_nr)->first();
@@ -582,6 +561,14 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *
+     * Clean up a first name: first letter to uppercase, when containing spaces or dashes, second name starts with uppercase
+     *
+     * @param       [string]    first name 
+     * @return      [string]    clean first name
+     *
+     */
     public function get_clean_first_name($member_first_name) {
         $first_name = mb_strtolower($member_first_name);
         $first_name_pieces = explode(' ', $first_name);
@@ -599,17 +586,23 @@ class UserController extends Controller
         return $first_name;
     }
 
+    /**
+     *
+     * Clean up a last name: first letter to uppercase, when containing spaces or dashes, second name starts with uppercase
+     *
+     * @param       [string]    last name 
+     * @return      [string]    clean last name
+     *
+     */
     public function get_clean_last_name($member_last_name) {
         $last_name = mb_strtolower($member_last_name);
         $last_name_pieces = explode(' ', $last_name);
-        //$last_name_pieces = preg_split("/[\s,-]+/", $last_name);
         $last_name = array();
         foreach($last_name_pieces as $piece) {
             array_push($last_name, ucfirst($piece));
         }
         $last_name = implode(' ', $last_name);
         $last_name_pieces = explode('-', $last_name);
-        //$last_name_pieces = preg_split("/[\s,-]+/", $last_name);
         $last_name = array();
         foreach($last_name_pieces as $piece) {
             array_push($last_name, ucfirst($piece));
@@ -618,14 +611,27 @@ class UserController extends Controller
         return $last_name;
     }
 
-    //check if the date passed is a valid date
+    /**
+     *
+     * Check if a string entered is a valid date
+     *
+     * @param       [string]    date
+     * @return      [boolean]   valid_date
+     *
+     */
     function validate_date($date) {
         $d = \DateTime::createFromFormat('Y-m-d', $date);
         return $d && $d->format('Y-m-d') === $date;
     }
 
-    //function to convert an invalid date to a valid one
-    //only works for the folowwing invalid format: dd/mm/yy
+    /**
+     *
+     * Convert dd/mm/yyyy date to yyyy-mm-dd, so convert invalid date to valid one
+     *
+     * @param       [string]    invalid date
+     * @return      [string]    valid date
+     *
+     */
     public function format_date($date) {
         //split date by delimter
         $new_date   = explode('/', $date);
@@ -636,6 +642,14 @@ class UserController extends Controller
         return $new_date;
     }
 
+    /**
+     *
+     * Singles ranking property is different every year, check if a valid property exists for this year, the previous one, or the next
+     *
+     * @param       [string]    member row to test on
+     * @return      [string]    property name
+     *
+     */
     public function get_singles_property($member) {
         //check for previous, current and coming year
         $previous_year  = 'e_' . (date('Y')-1);
@@ -650,10 +664,17 @@ class UserController extends Controller
         elseif($member->{$next_year}) {
             $e_year = $next_year;
         }
-        //echo($e_year);
         return $e_year;
     }
 
+    /**
+     *
+     * Convert number ranking to full ranking
+     *
+     * @param       [integer]   ranking as number
+     * @return      [string]    ranking in full format
+     *
+     */
     public function number_to_ranking($number) {
     	//array with all rankings as number and offcial name (//if 5 points two possibilities: N.G. / C+30/5)
     	$rankings = ['5'	=> 'C+30/5',
@@ -685,17 +706,39 @@ class UserController extends Controller
     	else {
     		$ranking = null;
     	}
-    	
     	return $ranking;
     }
 
+    /**
+     *
+     * Determine level based on birthdate (age)
+     *
+     * @param       [date]      birthdate 
+     * @return      [integer]   level
+     *
+     */
     public function get_level_by_birth_date($birth_date) {
     	if($birth_date) {
     		//get age
 	    	$age = intval(date('Y')-date('Y', strtotime($birth_date)));
-	    	if($age >= 14) {
+	    	if($age >= 13) {
 	    		$level = 6;
 	    	}
+            elseif($age >= 11) {
+                $level = 5;
+            }
+            elseif($age >= 9) {
+                $level = 4;
+            }
+            elseif($age >= 7) {
+                $level = 3;
+            }
+            elseif($age >= 5) {
+                $level = 2;
+            }
+            elseif($age >= 2) {
+                $level = 1;
+            }
 	    	else {
 	    		$level = null;
 	    	}
@@ -703,21 +746,34 @@ class UserController extends Controller
     	else {
     		$level = null;
     	}
-    	
     	return $level;
     }
 
+    /**
+     *
+     * Generate random password
+     *
+     * @return      [string]   random password
+     *
+     */
     public function get_random_password() {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         $password = array();
-        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        $alphaLength = strlen($alphabet) - 1;
         for ($i = 0; $i < 8; $i++) {
             $n = rand(0, $alphaLength);
             $password[] = $alphabet[$n];
         }
-        return implode($password); //turn the array into a string
+        return implode($password);
     }
 
+    /**
+     *
+     * Return an array with all rankings
+     *
+     * @return      [array]   rankings
+     *
+     */
     public function rankings_array() {
     	return ['C+30/5 (5)',
     			'C+30/4 (10)',

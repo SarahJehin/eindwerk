@@ -101,7 +101,7 @@
                                 @endif
                                 <div class="amount_participants">
                                     <span class="current_amount @if(count($activity->participants) >= $activity->min_participants){{'okay'}}@endif">{{count($activity->participants)}}</span>
-                                     / <span>{{$activity->max_participants}}</span>
+                                     / <span>{{($activity->max_participants > 30 ? "&infin;" : $activity->max_participants)}}</span>
                                 </div>
                                 @foreach($activity->participants as $participant)
                                 <div class="person float" user_id="{{$participant->id}}">

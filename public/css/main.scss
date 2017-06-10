@@ -13,9 +13,10 @@ body {
     //background-image: url("../images/site_images/total_img01.jpg");
   -webkit-background-size: cover;
   background-size: cover;
-  background-position: 0px -150px;
+  //background-position: 0px -150px;
   //overflow: hidden;
   background-attachment: fixed;
+    //background-position: 100%;
     
     @include smartphone {
         background-size: 350%;

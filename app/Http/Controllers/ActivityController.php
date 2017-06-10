@@ -206,11 +206,11 @@ class ActivityController extends Controller
 
     /**
      *
-     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     * Return the top 3 of members for certain category
      *
      * @param       [array]     users where the top 3 will be generated from
      * @param       [string]    youth or adult
-     * @return      [array]     top 3 users for certain category (adult or youth)
+     * @return      [array]     top 3 members
      *
      */
     public function get_top_3_from_collection($users_collection, $youth_adult) {
@@ -605,7 +605,7 @@ class ActivityController extends Controller
 
     /**
      *
-     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     * Return an Excel file with all participants for certain activity
      *
      * @param       [integer]   id of the activity of which you want to download the participants
      * @return      [Excel]     an Excel file with all the participants

@@ -16,20 +16,7 @@ class HomeController extends Controller
         //check if authenticated
         if (Auth::check()) {
             $user = User::find(Auth::user()->id);
-            //get current ranking on scoreboard
-            $current_ranking = User::where('id', Auth::user()->id)
-                                    ->has('activities_as_participant_past')
-                                    ->with('activities_as_participant_past')
-                                    ->first();
             
-            $total_adult_score = Auth::user()->total_score();
-            
-            $total_youth_score = null;
-            //check if this is a youth member (younger than or equal to 18)
-            if(date('Y')-date('Y', strtotime(Auth::user()->birth_date)) <= 18) {
-                $total_youth_score = Auth::user()->total_youth_score();
-            }
-
             $badges = array();
             //adult
             $total_adult_activities = count($user->adult_activities_past);
@@ -37,7 +24,19 @@ class HomeController extends Controller
                 //first badge is earned
                 array_push($badges, ['amount_activities' => 5,
                                      'title' => 'Deelgenomen aan 5 activiteiten!',
-                                     'bg_color' => '#d07821']);
+                                     'bg_color' => '#e8780a']);
+            }
+            if($total_adult_activities >= 10) {
+                //first badge is earned
+                array_push($badges, ['amount_activities' => 10,
+                                     'title' => 'Deelgenomen aan 10 activiteiten!',
+                                     'bg_color' => '#5abfcc']);
+            }
+            if($total_adult_activities >= 15) {
+                //first badge is earned
+                array_push($badges, ['amount_activities' => 15,
+                                     'title' => 'Deelgenomen aan 15 activiteiten!',
+                                     'bg_color' => '#751a8b']);
             }
             //youth
             $total_youth_activities = count($user->youth_activities_past);
@@ -46,19 +45,23 @@ class HomeController extends Controller
                 array_push($badges, ['amount_activities' => 3,
                                      'title' => 'Deelgenomen aan 3 jeugdactiviteiten!',
                                      'bg_color' => '#395696']);
-                if($total_youth_activities >= 5) {
-                    //second badge earned
-                }
+            }
+            if($total_youth_activities >= 6) {
+                //second badge earned
+                array_push($badges, ['amount_activities' => 6,
+                                     'title' => 'Deelgenomen aan 6 jeugdactiviteiten!',
+                                     'bg_color' => '#e51853']);
+            }
+            if($total_youth_activities >= 9) {
+                //third badge earned
+                array_push($badges, ['amount_activities' => 9,
+                                     'title' => 'Deelgenomen aan 9 jeugdactiviteiten!',
+                                     'bg_color' => '#307924']);
             }
 
             $winterhours = array();
-            //foreach winterhour get the first three playdates for me
+            //foreach winterhour get the first three playdates for authenticated user
             foreach ($user->winterhours->where('status', 4) as $winterhour) {
-                //get the first 3 dates where the authenticated user plays
-                //$winterhours['title'] = $winterhour->title;
-                //$winterhours['dates'] = array();
-                
-
                 $amount_of_dates = 0;
                 $dates = array();
                 foreach ($winterhour->dates as $date) {
@@ -73,14 +76,11 @@ class HomeController extends Controller
                     }
                 }
             }
-            //dd($winterhours);
-            //dd($user->winterhours);
 
-            return view('home', ['user' => $user, 'total_adult_score' => $total_adult_score, 'total_youth_score' => $total_youth_score, 'badges' => $badges, 'winterhours' => $winterhours]);
+            return view('home', ['user' => $user, 'badges' => $badges, 'winterhours' => $winterhours]);
         }
         else {
             session_start();
-            //session_unset();
             unset($_SESSION['client_viewed_exercises']);
             return view('welcome');
         }

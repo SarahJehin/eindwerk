@@ -65,10 +65,10 @@ class ExerciseController extends Controller
 
     /**
      *
-     * Return all the activities to display on Fullcalendar (along with backgroundcolor and url)
+     * Return exercises that are tagged with the checked tags
      *
      * @param       [request]   contains the checked tags
-     * @return      [array]     exercises that are tagged with the checked tags, pagination html
+     * @return      [array]     exercises, pagination html
      *
      */
     public function get_filtered_exercises(Request $request) {

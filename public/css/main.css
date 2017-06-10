@@ -8,7 +8,6 @@ body {
   background-image: url("../images/site_images/background_img.jpg");
   -webkit-background-size: cover;
   background-size: cover;
-  background-position: 0px -150px;
   background-attachment: fixed; }
   @media (max-width: 768px) {
     body {
@@ -679,6 +678,8 @@ button.submit {
         width: 10px; }
       .personal_info .data .contact_info .value {
         width: 215px; }
+        .personal_info .data .contact_info .value input {
+          font-family: inherit; }
         @media (max-width: 768px) {
           .personal_info .data .contact_info .value {
             width: 200px; } }
@@ -692,13 +693,16 @@ button.submit {
           .personal_info .data .badges h3 {
             margin-top: 25px; } }
       .personal_info .data .badges .badge {
-        width: 40px;
+        width: 35px;
+        margin-right: 10px;
         position: relative; }
         .personal_info .data .badges .badge span {
           position: absolute;
+          display: block;
           color: #fff;
           top: 16%;
-          left: 30%; }
+          width: 100%;
+          text-align: center; }
         .personal_info .data .badges .badge i.fa {
           font-size: 2.5em; }
 
@@ -1865,6 +1869,9 @@ button.submit {
       display: none; }
   .activity_details .activity_info h4 {
     margin-top: 0; }
+    @media (max-width: 768px) {
+      .activity_details .activity_info h4:first-child {
+        margin-top: 20px; } }
     .activity_details .activity_info h4.battle_bunny {
       color: #395696; }
     .activity_details .activity_info h4.party_penguin {
@@ -2897,7 +2904,7 @@ button.submit {
   .availabilities .dates_overview .monthly_dates h4 {
     margin-top: 0; }
   .availabilities .dates_overview .monthly_dates .dates .date .date_date {
-    width: 55%; }
+    width: 70%; }
     @media (max-width: 768px) {
       .availabilities .dates_overview .monthly_dates .dates .date .date_date .year {
         display: none; } }

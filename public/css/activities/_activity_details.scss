@@ -364,6 +364,11 @@
         
         h4 {
             margin-top: 0;
+            &:first-child {
+                @include smartphone {
+                    margin-top: 20px;
+                }
+            }
             &.battle_bunny {
                 color: $battle_bunny;
             }
