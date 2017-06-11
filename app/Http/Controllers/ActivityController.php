@@ -9,6 +9,8 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Excel;
 use DB;
+use Validator;
+use Illuminate\Support\Facades\Input;
 
 class ActivityController extends Controller
 {
@@ -321,8 +323,25 @@ class ActivityController extends Controller
             $rules['longitude'] = 'required';
             $rules['latitude']  = 'required';
         }
+
+        //check if there are no scripts in the wysiwyg editor
+        $safe_description = true;
+        if (strpos($request->description, '<script') !== false || strpos($request->description, '<?php') !== false) {
+            $safe_description = false;
+            Input::replace(['description' => '']);
+        }
         
-        $this->validate($request, $rules);
+        $validator = Validator::make($request->all(), $rules);
+        $validator->after(function ($validator) use ($safe_description) {
+            if (!$safe_description) {
+                $validator->errors()->add('description', 'Je mag geen scripts invoeren in de beschrijving!');
+            }
+        });
+        if ($validator->fails()) {
+            return redirect('add_activity')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         //poster
         //get the data from the base64 encoded string

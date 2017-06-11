@@ -21,7 +21,7 @@
         
         .add_exercise_link {
             margin-bottom: 25px;
-            div, a {
+            .filter_btn, a {
                 padding: 8px 14px;
                 background-color: rgba($theme_color01, 0.6);
                 border-radius: 50%;
@@ -32,7 +32,7 @@
                     background-color: $theme_color01;
                 }
             }
-            div {
+            .filter_btn {
                 display: none;
                 @include smartphone {
                     display: block;

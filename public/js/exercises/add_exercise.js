@@ -1,5 +1,4 @@
 (function ( window, document, $, undefined ) {
-
     //initiate editor with custom toolbar
     $('#summernote').summernote({
         placeholder: 'Type hier je beschrijving...',
@@ -21,15 +20,12 @@
     });
     //for the dropdown menu's to work:
     $('.dropdown-toggle').dropdown()
-
     //make this editor use bootstrap
     $('.apply_bootstrap + div').addClass('apply_bootstrap');
-
     //Focus when description label is clicked
     $('h3 label[for="summernote"]').click(function() {
         $('.note-editable').focus();
     });
-
     $('.note-editable').focus(function() {
         $(this).parent().parent().addClass('focus');
     });
@@ -49,7 +45,6 @@
         $('#description').html($description_html);
     }, false);
 
-
     //images
     //make image box height equal to 4:3 ratio according to width
     var image_label_width = parseInt($('.images_block .images label').css('width'));
@@ -58,35 +53,9 @@
     console.log(image_label_height);
     $('.images_block .images label').css('height', image_label_height + 'px');
 
-    //if images were uploaded show them before the label
-    /*
-    $('#images').on('change', function(e){
-        console.log('images changed');
-        if (this.files && this.files[0]) {
-            console.log(this.files);
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                console.log("testtststst");
-                //create element.
-                $('.uploaded_poster').attr('src', e.target.result);
-                $('.uploaded_poster').show();
-                $(".poster label").addClass("with_poster");
-            }
-
-            reader.readAsDataURL(this.files[0]);
-            $.each(this.files, function(key, value) {
-                console.log('helibeli');
-                console.log(value);
-                reader.readAsDataURL(value);
-            })
-        }
-    });
-    */
     var ids_amount = 0;
     var uploaded_images = 0;
     var handle_images = function(e){
-
         uploaded_images = $('.images .image').length-1 + this.files.length;
         var file_input = this;
 
@@ -101,9 +70,6 @@
                     $('.images_block .error_msg').slideUp();
                 }, 3500);
             });
-            //$('.images input').val('');
-            //$('.images .image').remove();
-            //console.log($('.images input').val());
         }
         else {
             if (this.files) {
@@ -112,9 +78,6 @@
 
                 for (i = 0; i < filesAmount; i++) {
                     (function(file) {
-                        //var file = this.files[i];
-                        console.log('out reader');
-                        console.log(file.size);
                         //if file size greater than 500kB, don't fullfill the upload
                         if(file.size > 500000) {
                             var error_msg = 'Afbeeldingen werden niet toegevoegd omdat er afbeeeldingen zijn die groter zijn dan 500kB.';
@@ -127,33 +90,19 @@
                             });
                             return;
                         }
-                        //console.log(this.files[i]);
                         var reader = new FileReader();
 
                         reader.onload = function(event) {
-                            console.log('in reader');
-                            console.log(file);
-                            //console.log('base64: ' + reader.result);
-                            //var new_image_block = '<div class="image float" identifier=' + file.name + file.lastModified + '><img src=' + event.target.result + ' alt=' + file.name + '></div>';
                             var new_image_block = $('.images .template').clone();
                             new_image_block.removeClass('template');
                             new_image_block.attr('identifier', file.name + file.size);
                             new_image_block.find('img').attr('src', event.target.result).attr('alt', file.name);
                             new_image_block.find('input').val(file.name + file.size);
-                            //console.log($(new_image_block))
-                            //$(new_image_block).prependTo($('.images'));
                             $(new_image_block).insertBefore($('.images .template'));
-                            //console.log($($.parseHTML('<img>')).attr('src', event.target.result));
-                            //$($.parseHTML('<img>')).attr('src', event.target.result).appendTo($('.images'));
                             var image_width = parseInt($('.images .image').css('width'));
-                            //console.log(image_width)
                             var image_height = image_width/4*3;
                             $('.images .image').css('height', image_height + 'px');
                         }
-                        //console.log('name: ' + this.files[i].name);
-                        //console.log('size: ' + this.files[i].size);
-                        //console.log(reader.readAsDataURL(this.files[i]));
-                        //reader.readAsDataURL(this.files[i]);
                         reader.readAsDataURL(file);
                     })(files[i])
                 }
@@ -175,8 +124,6 @@
                 $('.images .labelholder:last-child').show();
             }
         }
-        
-        
     }
 
     $('#images').on('change', handle_images);
@@ -189,9 +136,7 @@
     $('.images').on('click', '.image .delete', function() {
         console.log('delete this image');
         var image_block = $(this).parent();
-
         image_block.remove();
-
         uploaded_images = $('.images .image').length-1;
         if(uploaded_images < 6) {
             //check if an empty label already exists
@@ -206,7 +151,5 @@
             }
         }
     });
-    
-
 
 })(window, window.document, window.jQuery);

@@ -130,7 +130,8 @@
                                     @endif
 
                                     <div class="descriptive_info">
-                                        Hieronder kan je alle groepsleden toevoegen.  Enkel personen die lid (winter- of zomerlid) zijn bij Sportiva kunnen toegevoegd worden.
+                                        Hieronder kan je alle groepsleden toevoegen.  Enkel personen die lid (winter- of zomerlid) zijn bij Sportiva kunnen toegevoegd worden.<br>
+                                        Er moeten minstens 6 deelnemers toegevoegd worden.
                                     </div>
 
                                     <div class="add_participants">
@@ -145,13 +146,6 @@
                                                         <li></li>
                                                     </ul>
                                                 </div>
-                                                <!--
-                                                <div class="search_select apply_bootstrap">
-                                                    <select class="selectpicker" data-live-search="true" title="default">
-                                                    
-                                                    </select>
-                                                </div>
-                                                -->
                                             </div>
                                             <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>

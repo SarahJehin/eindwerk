@@ -191,7 +191,8 @@
 
                             li {
                                 padding: 6px 10px;
-                                &:hover {
+                                //&:hover
+                                &.hover {
                                     cursor: pointer;
                                     background-color: $theme_color01;
                                     color: #fff;

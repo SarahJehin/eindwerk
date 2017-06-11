@@ -299,42 +299,108 @@
 
 
     var not_ids = [0];
+    var search_results = $('.search_results ul');
+    console.log(search_results);
+    var current_child = null;
     //search participants for winterhour
-    $('.add_participants').on('keyup', '.search_participants', function() {
-        var search_results = $(this).parent().find('.search_results ul');
-        search_results.show();
-        var searchstring    = $(this).val();
-        not_ids = [0];
-        
-        $.each($('.add_participants .add_participant input.id'), function(key, person) {
-            var value = $(person).val();
-            if(value) {
-                not_ids.push(parseInt(value));
-            }
-        });
-        
-        console.log(not_ids);
-        if(searchstring.length > 1) {
-            //get 5 first search results //add , not_ids: not_ids beneath
-            $.get( location.origin + "/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
-                //console.log(data[0]['first_name']);
-                $('.search_results ul').empty();
-                $.each(data, function( key, result ) {
-                    var id = result["id"];
-                    var first_name = result["first_name"];
-                    var last_name = result["last_name"];
-                    $new_list_item = '<li user_id=' + id + '>' + first_name + ' ' + last_name + '</li>';
-                    $('.search_results ul').append($new_list_item);
-                });
-                if(data.length < 1) {
-                    $new_list_item = '<li>Geen leden gevonden</li>';
-                    $('.search_results ul').append($new_list_item);
+    $('.add_participants').on('keyup', '.search_participants', function(e) {
+
+        if(e.which != 38 && e.which != 40 && e.which != 13) {
+            current_child = null;
+            search_results = $(this).parent().find('.search_results ul');
+            search_results.show();
+            var searchstring    = $(this).val();
+            not_ids = [0];
+            
+            $.each($('.add_participants .add_participant input.id'), function(key, person) {
+                var value = $(person).val();
+                if(value) {
+                    not_ids.push(parseInt(value));
                 }
-            }, "json" );
+            });
+            
+            console.log(not_ids);
+            if(searchstring.length > 1) {
+                //get 5 first search results //add , not_ids: not_ids beneath
+                $.get( location.origin + "/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
+                    //console.log(data[0]['first_name']);
+                    $('.search_results ul').empty();
+                    $.each(data, function( key, result ) {
+                        var id = result["id"];
+                        var first_name = result["first_name"];
+                        var last_name = result["last_name"];
+                        $new_list_item = '<li user_id=' + id + '>' + first_name + ' ' + last_name + '</li>';
+                        $('.search_results ul').append($new_list_item);
+                    });
+                    if(data.length < 1) {
+                        $new_list_item = '<li>Geen leden gevonden</li>';
+                        $('.search_results ul').append($new_list_item);
+                    }
+                }, "json" );
+            }
+            else {
+                $('.search_results ul').empty();
+            }
         }
-        else {
-            $('.search_results ul').empty();
+        if(e.which == 40) {
+            console.log('test');
+            search_results.children().removeClass('hover');
+            if (search_results.children('li').length > 0) {
+                console.log(current_child);
+                if(!current_child) {
+                current_child = 1;
+                }
+                else if(current_child == search_results.children('li').length) {
+                current_child = current_child;
+                }
+                else {
+                current_child++;
+                }
+
+                search_results.children(":nth-child(" + current_child + ")").addClass('hover');
+            }
         }
+        if (e.keyCode == 38) {
+            search_results.children().removeClass('hover');
+            if (search_results.children('li').length > 0) {
+                if(!current_child) {
+                current_child = 1;
+                }
+                else {
+                current_child--;
+                }
+
+                search_results.children(":nth-child(" + current_child + ")").addClass('hover');
+            }
+        }
+        if (e.keyCode == 13) {
+            var selected_li = search_results.children('.hover');
+            $(selected_li).trigger('click');
+        }
+    });
+
+    //to prevent form from submitting
+    $(window).keydown(function(event){
+        console.log($(this));
+        console.log(event.target);
+        console.log($(event.target));
+        console.log($(event.target).hasClass('search_participants'));
+        if(event.which == 13) {
+            if($(event.target).hasClass('search_participants')) {
+                console.log('prev');
+                event.preventDefault();
+                return false;
+            }
+            else {
+                $('#add_winterhour').submit();
+            }
+        }
+      });
+
+    search_results.on('mouseover', 'li', function() {
+        $('.search_results ul li').removeClass('hover');
+        current_child = $(this).index() + 1;
+        search_results.children(":nth-child(" + current_child + ")").addClass('hover');
     });
 
     $('.add_participants').on('click', '.search_results ul li', function() {
@@ -360,6 +426,7 @@
         $('.add_participants').append($new_input);
         console.log(name_input);
         console.log($('.add_participants input.participant_name'));
+        current_child = null;
     });
 
     //remove already added participant

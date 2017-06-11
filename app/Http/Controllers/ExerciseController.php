@@ -9,6 +9,7 @@ use App\Image;
 use Auth;
 use Session;
 use Validator;
+use Illuminate\Support\Facades\Input;
 
 class ExerciseController extends Controller
 {
@@ -110,10 +111,19 @@ class ExerciseController extends Controller
                 $valid_url = true;
             }
         }
+        //check if there are no scripts in the wysiwyg editor
+        $safe_description = true;
+        if (strpos($request->description, '<script') !== false || strpos($request->description, '<?php') !== false) {
+            $safe_description = false;
+            Input::replace(['description' => '']);
+        }
 
-        $validator->after(function ($validator) use ($valid_url) {
+        $validator->after(function ($validator) use ($valid_url, $safe_description) {
             if (!$valid_url) {
                 $validator->errors()->add('video_url', 'Je kan alleen een YouTube of Vimeo url ingeven.');
+            }
+            if (!$safe_description) {
+                $validator->errors()->add('description', 'Je mag geen scripts invoeren in de beschrijving!');
             }
         });
         if ($validator->fails()) {

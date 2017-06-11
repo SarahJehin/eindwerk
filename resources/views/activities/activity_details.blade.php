@@ -153,7 +153,7 @@
                                         <div class="me">
                                             <input type="checkbox" name="sign_up_me" id="sign_up_me" hidden>
                                             <label for="sign_up_me">
-                                                <span class="checkbox {{str_replace(' ', '_', strtolower($activity->category->name))}}">
+                                                <span class="checkbox float {{str_replace(' ', '_', strtolower($activity->category->name))}}">
                                                     <i class="fa fa-check" aria-hidden="true"></i>
                                                 </span>
                                                 <span>Mezelf inschrijven</span>
@@ -163,7 +163,7 @@
                                         <div class="others">
                                             <input type="checkbox" name="sign_up_others" id="sign_up_others" hidden>
                                             <label for="sign_up_others">
-                                                <span class="checkbox {{str_replace(' ', '_', strtolower($activity->category->name))}}">
+                                                <span class="checkbox float {{str_replace(' ', '_', strtolower($activity->category->name))}}">
                                                     <i class="fa fa-check" aria-hidden="true"></i>
                                                 </span>
                                                 <span>Anderen inschrijven</span>

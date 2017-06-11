@@ -1797,7 +1797,7 @@ button.submit {
           .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .me a:hover {
             color: #1abc9c; }
       .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox {
-        display: inline-block;
+        display: block;
         width: 15px;
         height: 15px;
         background-color: rgba(156, 175, 185, 0.25);
@@ -1805,7 +1805,8 @@ button.submit {
         padding-bottom: 4px;
         border-radius: 5px;
         color: transparent;
-        margin-right: 15px; }
+        margin-right: 15px;
+        margin-top: 3px; }
         .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox:hover {
           color: #6b7d87; }
         .activity_details .activity_info .sign_up .sign_up_info .sign_up_for .checkbox + span {
@@ -1850,7 +1851,7 @@ button.submit {
           border-bottom-right-radius: 5px; }
           .activity_details .activity_info .sign_up .sign_up_info .sign_up_others .search_participants .search_results ul li {
             padding: 6px 10px; }
-            .activity_details .activity_info .sign_up .sign_up_info .sign_up_others .search_participants .search_results ul li:hover {
+            .activity_details .activity_info .sign_up .sign_up_info .sign_up_others .search_participants .search_results ul li.hover {
               cursor: pointer;
               background-color: #1abc9c;
               color: #fff; }
@@ -1887,6 +1888,8 @@ button.submit {
   .activity_details #poster_modal .modal_footer {
     text-align: center;
     font-style: italic; }
+  .activity_details #sign_out_modal {
+    height: 100%; }
 
 .activities_list .add_activity_link a {
   float: right;
@@ -2627,7 +2630,7 @@ button.submit {
         border-bottom-right-radius: 5px; }
         .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li, .edit_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li {
           padding: 6px 10px; }
-          .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li:hover, .edit_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li:hover {
+          .add_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li.hover, .edit_winterhour .form_part .add_participants .add_participant .search_functionality .search_results ul li.hover {
             cursor: pointer;
             background-color: #1abc9c;
             color: #fff; }
@@ -3045,7 +3048,7 @@ button.submit {
       margin-bottom: 50px; } }
   .exercises_overview .block .add_exercise_link {
     margin-bottom: 25px; }
-    .exercises_overview .block .add_exercise_link div, .exercises_overview .block .add_exercise_link a {
+    .exercises_overview .block .add_exercise_link .filter_btn, .exercises_overview .block .add_exercise_link a {
       padding: 8px 14px;
       background-color: rgba(26, 188, 156, 0.6);
       border-radius: 50%;
@@ -3055,12 +3058,12 @@ button.submit {
       -moz-transition: background-color 0.2s ease;
       -ms-transition: background-color 0.2s ease;
       transition: background-color 0.2s ease; }
-      .exercises_overview .block .add_exercise_link div:hover, .exercises_overview .block .add_exercise_link a:hover {
+      .exercises_overview .block .add_exercise_link .filter_btn:hover, .exercises_overview .block .add_exercise_link a:hover {
         background-color: #1abc9c; }
-    .exercises_overview .block .add_exercise_link div {
+    .exercises_overview .block .add_exercise_link .filter_btn {
       display: none; }
       @media (max-width: 768px) {
-        .exercises_overview .block .add_exercise_link div {
+        .exercises_overview .block .add_exercise_link .filter_btn {
           display: block; } }
     .exercises_overview .block .add_exercise_link a {
       float: right; }
