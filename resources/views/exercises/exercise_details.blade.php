@@ -49,6 +49,7 @@
                     <div class="images_block float small_no_float">
                         <div class="main_image">
                             <img src="{{url('images/exercise_images/' . $exercise->images[0]->path)}}" alt="{{$exercise->images[0]->title}}">
+                            <iframe width="420" height="345" src="{{$exercise->video_url}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
                         </div>
                         <div class="other_images clearfix">
                             @foreach($exercise->images as $image)
@@ -56,6 +57,12 @@
                                 <img src="{{url('images/exercise_images/' . $image->path)}}" alt="{{$image->title}}">
                             </div>
                             @endforeach
+                            @if($exercise->video_url)
+                            <div class="image float video">
+                                <img src="{{$video_thumbnail}}" alt="{{$exercise->name}}">
+                                <span><i class="fa fa-play" aria-hidden="true"></i></span>
+                            </div>
+                            @endif
                         </div>
                     </div>
                     <div class="description_block float small_no_float">
@@ -64,9 +71,11 @@
                 </div>
 
                 @if($exercise->video_url)
+                <!--
                 <div class="video_block">
-                    <iframe width="420" height="345" src="{{$exercise->video_url}}"></iframe>
+                    <iframe width="420" height="345" src="{{$exercise->video_url}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
                 </div>
+                -->
                 @endif
 
                 @if($exercise->approved == 0)

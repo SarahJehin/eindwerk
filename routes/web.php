@@ -30,8 +30,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('sign_out_for_activity', 'ActivityController@sign_out_for_activity');
 
     Route::get('scoreboard', 'ActivityController@get_scoreboard');
+    Route::get('export_scoreboard/{adult_youth}', 'ActivityController@export_scoreboard');
     //members
     Route::get('members_overview', 'UserController@get_members_overview');
+    Route::get('get_member_details/{id}', 'UserController@get_member_details');
     Route::get('get_matching_users', 'UserController@get_matching_users');
     Route::get('download_members_as_excel', 'UserController@download_members_as_excel');
     Route::get('download_members_example', 'UserController@download_members_example');

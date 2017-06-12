@@ -387,54 +387,6 @@
     h3 {
         margin-bottom: 5px;
     }
-
-    /*
-    .timepicker {
-      border: 1px solid $form_font_color;
-
-      .arrow_up,
-      .arrow_down {
-        background-color: $form_font_color;
-        color: #fff;
-      }
-
-      .visible_container {
-        //height: 210px;
-          height: 60px;
-        overflow: hidden;
-
-          .scroll_controller {
-              //overflow: auto;
-              height: 100%;
-              padding-right: 16px;
-              width: 100%;
-              ul {
-                  position: relative;
-                  //top: -50px;
-                  transition: top 0.2s;
-                  list-style: none;
-                  padding: 0;
-                  margin: 0;
-
-                  li {
-                      input {
-                          display: none;
-                          &:checked + label {
-                            background: $theme_gradient01;
-                            color: #fff;
-                          }
-                      }
-                      label {
-                          display: block;
-                          width: 100%;
-                          border-radius: 15px;
-                      }
-                  }
-              }
-          }
-      }
-    }
-    */
 }
 
 .starttime {
@@ -516,17 +468,7 @@
       }
     }
 
-
   }
-    /*
-    .google_maps_sportiva {
-        width: 100%;
-        height: 360px;
-        #sportiva_map {
-            width: 100%;
-            height: 100%;
-        }
-    }*/
     
     .google_maps {
         //opacity: 0;
@@ -612,8 +554,6 @@
 
 }
 
-
-
 .participants .slider.slider-horizontal .slider-track,
 .price .slider.slider-horizontal .slider-track,
 .helpers .slider.slider-horizontal .slider-track {
@@ -642,68 +582,18 @@
 
 
 .owner {
-    /*
-  position: relative;
-  margin: 0 auto;
-  margin-bottom: 25px;
-
-  div {
-    font-size: 1.2em; //22px;
-    font-family: inherit;
-    display: block;
-    height: 100%;
-    padding: 10px 5%;
-    color: $form_color;
-    border-radius: 0;
-    //transition: border-color .25s ease, box-shadow .25s ease;
-    border: 1px solid $form_color;
-    background-color: transparent;
-    cursor: pointer;
-    width: 90%;
-      
-      @include smartphone {
-          font-size: 0.9em;
-      }
-    
-    i {
-      float: right;
-    }
-  }
-  ul {
-    position: absolute;
-    width: 100%;
-    background-color: $form_color_radio;
-    margin: 0;
-    padding: 0;
-    border: 1px solid $form_color;
-    list-style: none;
-    display: none;
-    z-index: 2;
-
-    li {
-        padding: 5px 5%;
-        cursor: initial;
-        border-bottom: 1px solid $form_font_color;
-        font-size: 1.2em;
-        &:hover {
-          background-color: $theme_color01;
-          //-webkit-border-radius: 10px;
-          color: #fff;
-        }
-    }
-  }
-    */
     .bootstrap-select {
         width: 100% !important;
         font-size: inherit !important;
         .dropdown-toggle {
             border: 1px solid $form_color;
             border-radius: 0px;
+            padding: 10px 5%;
             &:hover, &:focus {
                 background-color: transparent;
             }
             &.btn {
-                font-size: 1.2em;
+                font-size: inherit;
                 color: $form_color;
                 &.bs-placeholder {
                     color: rgba($form_font_color, 0.60);

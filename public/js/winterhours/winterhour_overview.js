@@ -29,7 +29,6 @@
         $winterhour_id_to_delete = $(this).attr('winterhour_id');
         $title = $($(this).parent().parent().parent().find('h3')[0]).text();
         $title = $title.trim();
-        console.log($winterhour_id_to_delete, $title);
         $('#delete_winterhour_modal input[name="winterhour_id"]').val($winterhour_id_to_delete);
         $('#delete_winterhour_modal .winterhour_name').text($title);
         $('#delete_winterhour_modal').fadeIn(350, function() {
@@ -37,34 +36,9 @@
         });
     });
 
-
-    $('.lightbox_modal .modal').click(function(event) {
-        event.stopPropagation();
-    });
-    $(window).click(function() {
-        close_lightbox_modal();
-    });
-    $('.lightbox_modal .modal .fa-times').click(function() {
-        close_lightbox_modal();
-    });
-    $( window ).on( "keydown", function( event ) {
-        //if esc key is pressed, close modal
-        if(event.which == 27) {
-            close_lightbox_modal();
-        }
-    });
-    function close_lightbox_modal() {
-        if(lightbox) {
-            $('.lightbox_modal').fadeOut(350, function() {
-                lightbox = false;
-            });
-        }
-    }
-
-
     //drag 'n drop for switches
     jQuery.fn.swap = function(b){ 
-        // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
+        // https://stackoverflow.com/questions/7625401/swap-elements-when-you-drag-one-onto-another-using-jquery-ui
         b = jQuery(b)[0]; 
         var a = this[0]; 
         var t = a.parentNode.insertBefore(document.createTextNode(''), a); 
@@ -74,7 +48,6 @@
         return this; 
     };
 
-
     $( ".dragdrop.active" ).draggable({ revert: true, helper: "clone", cursor: "move" });
 
     $( ".dragdrop" ).droppable({
@@ -82,23 +55,17 @@
         activeClass: "ui-state-hover",
         hoverClass: "ui-state-active",
         drop: function( event, ui ) {
-            console.log('test');
             var draggable = ui.draggable;
             var droppable = $(this);
             var dragPos = draggable.position(), dropPos = droppable.position();
-            console.log(draggable[0]);
-            console.log(droppable[0]);
             var user_id1 = $(draggable[0]).attr('user_id');
             var date_id1 = $(draggable[0]).attr('date_id');
             var user_id2 = $(droppable[0]).attr('user_id');
             var date_id2 = $(droppable[0]).attr('date_id');
             var swapdata = { swap1 : {user_id : user_id1, date_id : date_id1}, swap2 : {user_id : user_id2, date_id : date_id2} };
-            console.log(swapdata);
 
             //check if participants can be swapped
-            console.log(location.origin +  "/swap_places");
             $.post(location.origin +  "/swap_places", swapdata, function( data ) {
-                console.log( data );
                 $('.swap_message').removeClass('success failed');
                 $('.swap_message').addClass(data.status);
                 $('.swap_message').text(data.message);
@@ -115,8 +82,6 @@
                     $(droppable[0]).attr('date_id', date_id1);
                 }
             }, "json");
-            
-            
         }
     });
 

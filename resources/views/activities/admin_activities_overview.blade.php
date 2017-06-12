@@ -34,11 +34,14 @@
                         </div>
                         <div class="date float">{{date('d/m', strtotime($activity->start))}}<span class="year">{{date('/Y', strtotime($activity->start))}}</span></div>
                         <div class="title float"><a href="{{url('activity_details/' . $activity->id)}}">{{$activity->title}}</a></div>
-                        <div class="participants float"><a href="{{url('activity_participants/' . $activity->id)}}">{{count($activity->participants)}}/{{$activity->max_participants}}</a></div>
+                        <div class="participants float"><a href="{{url('activity_participants/' . $activity->id)}}">{{count($activity->participants)}}/{{($activity->max_participants > 30 ? "&infin;" : $activity->max_participants)}}</a></div>
                         <div class="edit float"><a href="{{url('edit_activity/' . $activity->id)}}"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
                         <div class="delete link float" activity_id="{{$activity->id}}""><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
                     @endforeach
+                    <div class="pagination_container apply_bootstrap">
+                        {{$activities->links()}} 
+                    </div>
                     @else
                     <div>
                         Er zijn geen komende activiteiten. <a class="link" href="{{url('add_activity')}}">Maak er nu één aan</a>.
@@ -70,6 +73,10 @@
                         <div class="delete link float" activity_id="{{$activity->id}}""><i class="fa fa-times" aria-hidden="true"></i></div>
                     </div>
                     @endforeach
+
+                    <div class="pagination_container apply_bootstrap">
+                        {{$past_activities->links()}} 
+                    </div>
                 </div>
 
             </div>

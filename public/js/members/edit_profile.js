@@ -40,8 +40,6 @@
 
     $('.gsm .save_button').click(function() {
         var gsm_input = $(this).parent().find('input');
-        //var gsm_new_value = $(this).parent().find('input').val();
-
         //replace all spaces
         gsm_new_value = gsm_new_value.replace(/\s/g,'');
         console.log(gsm_new_value);
@@ -62,8 +60,6 @@
         }
         
         $(this).parent().find('.save_button').hide();
-        //console.log('save');
-
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
     });
@@ -99,7 +95,6 @@
         }
         tel_new_value = tel_new_value.replace(/\s/g,'');
         var valid_format = /^\d{9}$/.test(tel_new_value);
-        //console.log(valid_format);
         if(valid_format) {
             $(this).removeClass('not_valid');
             $(this).addClass('valid');
@@ -115,7 +110,6 @@
 
     $('.tel .save_button').click(function() {
         var tel_input = $(this).parent().find('input');
-        //var tel_new_value = $(this).parent().find('input').val();
         //replace all spaces
         tel_new_value = tel_new_value.replace(/\s/g,'');
         //check whether it is a correct mobile number format
@@ -123,7 +117,6 @@
         if(valid_format) {
             //send post request to server to update tel number
             $.post( location.origin + "/update_profile", { type: 'phone', user_id: user_id, new_value: tel_new_value }, function( data ) {
-                //console.log(data);
                 tel_new_value = tel_new_value.replace(/(\d{3})(\d{2})(\d{2})(\d{2})/, "$1 $2 $3 $4");
                 tel_old_value = tel_new_value;
                 tel_input.val(tel_old_value);
@@ -133,8 +126,6 @@
             $(this).parent().find('input').val(tel_old_value);
         }
         $(this).parent().find('.save_button').hide();
-        //console.log('save');
-
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
     });
@@ -164,7 +155,6 @@
         var email_new_value = $(this).val();
         var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var valid_format = email_regex.test(email_new_value);   // true
-        //console.log(valid_format);
         if(valid_format) {
             $(this).removeClass('not_valid');
             $(this).addClass('valid');
@@ -181,76 +171,35 @@
     $('.email .save_button').click(function() {
         var email_input = $(this).parent().find('input');
         var email_new_value = $(this).parent().find('input').val();
-        //console.log(email_new_value);
         //replace all spaces
         email_new_value = email_new_value.replace(/\s/g,'');
         //check whether it is a correct email format
         var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        var valid_format = email_regex.test(email_new_value);   // true
-        //console.log(valid_format);
+        var valid_format = email_regex.test(email_new_value);
         if(valid_format) {
             //send post request to server to update email
             $.post( location.origin + "/update_profile", { type: 'email', user_id: user_id, new_value: email_new_value }, function( data ) {
-                //console.log(data);
                 email_old_value = email_new_value;
                 email_input.val(email_old_value);
             });
-            //email_old_value = $(this).parent().find('input').val();
-            //$(this).parent().find('.save_button').hide();
-            //console.log('save');
         }
         else {
             $(this).parent().find('input').val(email_old_value);
         }
-
         $(this).parent().find('.save_button').hide();
         $(this).parent().find('input').removeClass('not_valid');
         $(this).parent().find('input').removeClass('valid');
-        
     });
 
     $('.email input').focusout(function() {
-        //email_new_value = 
         $('.email .save_button').trigger('click');
     });
 
-
     //modal
-    var lightbox = false;
-
     $('.update_pwd').click(function() {
         $('#update_pwd_modal').fadeIn(350, function() {
-            lightbox = true;
         });
     });
-
-    $('.lightbox_modal .modal').click(function(event) {
-        event.stopPropagation();
-    });
-
-    $(window).click(function() {
-        //console.log(lightbox);
-        close_lightbox_modal();
-    });
-
-    $('.lightbox_modal .modal .fa-times').click(function() {
-        close_lightbox_modal();
-    });
-
-    $( window ).on( "keydown", function( event ) {
-        //if esc key is pressed, close modal
-        if(event.which == 27) {
-            close_lightbox_modal();
-        }
-    });
-
-    function close_lightbox_modal() {
-        if(lightbox) {
-            $('.lightbox_modal').fadeOut(350, function() {
-                lightbox = false;
-            });
-        }
-    }
 
 //croppie
 var $uploadCrop;
@@ -264,11 +213,9 @@ function readFile(input) {
             $uploadCrop.croppie('bind', {
                 url: e.target.result
             }).then(function(){
-                console.log('jQuery bind complete');
+                //console.log('jQuery bind complete');
             });
-            
         }
-        
         reader.readAsDataURL(input.files[0]);
     }
     else {
@@ -294,22 +241,17 @@ $('.upload-result').on('click', function (ev) {
     }).then(function (resp) {
         //get the result (base64 encoded image) and put it in the hidden input
         $('#imagebase64').val(resp);
-        console.log($('#imagebase64').val());
         $('#upload_profile_pic_form').submit();
     });
 });
 
-
 var profile_pic_modal_active = false;
 $('.profile_pic').click(function() {
-    //$('.lightbox_modal').show();
     $('.edit_profile_pic_modal').show();
     profile_pic_modal_active = true;
 });
 
-
 $(window).click(function(event) {
-    //console.log(event.target);
     if($(event.target).hasClass('edit_profile_pic_modal')) {
         close_profile_pic_modal();
     }
@@ -333,6 +275,5 @@ function close_profile_pic_modal() {
         });
     }
 }
-
 
 })(window, window.document, window.jQuery);

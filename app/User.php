@@ -107,16 +107,17 @@ class User extends Authenticatable
     }
 
     public function activities_as_participant_coming() {
-        return $this->belongsToMany('App\Activity')->orderBy('start')->where('start', '>', date('Y-m-d').' 00:00:00')->withPivot('status')->wherePivotIn('status', [1, 2]);
+        return $this->belongsToMany('App\Activity')->where('is_visible', 1)->orderBy('start')->where('start', '>', date('Y-m-d').' 00:00:00')->withPivot('status')->wherePivotIn('status', [1, 2]);
     }
 
     public function activities_as_participant_past() {
-        return $this->belongsToMany('App\Activity')->orderBy('start')->where('start', '<', date('Y-m-d').' 00:00:00')->withPivot('status')->wherePivot('status', 2);
+        return $this->belongsToMany('App\Activity')->where('activities.status', 1)->where('is_visible', 1)->orderBy('start')->where('start', '<', date('Y-m-d').' 00:00:00')->withPivot('status')->wherePivot('status', 2);
     }
 
     public function adult_activities_past() {
         return $this->belongsToMany('App\Activity')
                     ->where('activities.status', 1)
+                    ->where('is_visible', 1)
                     ->orderBy('start')
                     ->where('start', '<', date('Y-m-d').' 00:00:00')
                     ->whereHas('category', function ($query) {
@@ -134,6 +135,7 @@ class User extends Authenticatable
     public function youth_activities_past() {
         return $this->belongsToMany('App\Activity')
                     ->where('activities.status', 1)
+                    ->where('is_visible', 1)
                     ->orderBy('start')
                     ->where('start', '<', date('Y-m-d').' 00:00:00')
                     ->whereHas('category', function ($query) {

@@ -2,9 +2,7 @@
 @section('title', $activity->title)
 @section('content')
 
-
     <div class="activity_details">
-
         <div class="block">
             <div class="heading">
                 {{$activity->title}}
@@ -203,10 +201,7 @@
                             @endif
                         </div>
                     </div>
-                    
-
                 </div>
-
             </div>
         </div>
 
@@ -235,6 +230,27 @@
                         <input type="number" name="activity_id" value="{{$activity->id}}" hidden="">
                         <input type="submit" name="submit" value="Ja, nu uitschrijven">
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="member_modal" class="lightbox_modal light">
+            <div class="modal">
+                <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
+                <div class="modal_body">
+                    <div class="clearfix">
+                        <div class="image float">
+                            <img src="{{url('images/profile_pictures/' . 'sarah_jehin.jpg')}}" alt="Sarah">
+                        </div>
+                        <div class="info float">
+                            <div class="name"><h2>Sarah Jehin</h2></div>
+                            <div class="birth_date clearfix"><span class="float"><i class="fa fa-birthday-cake" aria-hidden="true"></span></i><span class="float">24/04/2017</span></div>
+                            <div class="ranking_singles clearfix"><span class="float">E:</span><span class="float">C+30/3</span></div>
+                            <div class="ranking_doubles clearfix"><span class="float">D:</span><span class="float">C+30/3</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal_footer">
                 </div>
             </div>
         </div>

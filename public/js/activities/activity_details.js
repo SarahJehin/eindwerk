@@ -14,39 +14,32 @@
         $('.activity_info .sign_up').addClass('active');
     });
 
-    var lightbox = false;
     $('.poster').click(function() {
         $('#poster_modal').fadeIn(350, function() {
-            lightbox = true;
         });
     });
     $('.me #sign_out').click(function() {
         $('#sign_out_modal').fadeIn(350, function() {
-            lightbox = true;
         });
     });
-    $('.lightbox_modal .modal').click(function(event) {
-        event.stopPropagation();
+
+    $('.sign_up_list .person').click(function() {
+        var member_id = $(this).attr('user_id');
+        fill_member_modal(member_id);
     });
-    $(window).click(function() {
-        //console.log(lightbox);
-        close_lightbox_modal();
-    });
-    $('.lightbox_modal .modal .fa-times').click(function() {
-        close_lightbox_modal();
-    });
-    $( window ).on( "keydown", function( event ) {
-        //if esc key is pressed, close modal
-        if(event.which == 27) {
-            close_lightbox_modal();
-        }
-    });
-    function close_lightbox_modal() {
-        if(lightbox) {
-            $('.lightbox_modal').fadeOut(350, function() {
-                lightbox = false;
-            });
-        }
+
+    function fill_member_modal(id) {
+        $.get(location.origin + '/get_member_details/' + id, function( data ) {
+            $('#member_modal .image img').attr('src', location.origin + '/images/profile_pictures/' + data.image).attr('alt', data.first_name + ' ' + data.last_name);
+            $('#member_modal .name h2').text(data.first_name + ' ' + data.last_name);
+            var birth_date = new Date(data.birth_date);
+            birth_date = ('0' + birth_date.getDate()).slice(-2) + '/' + ('0' + (birth_date.getMonth()+1)).slice(-2) + '/' + birth_date.getFullYear();
+            $('#member_modal .birth_date span:nth-child(2)').text(birth_date);
+            $('#member_modal .ranking_singles span:nth-child(2)').text(data.ranking_singles);
+            $('#member_modal .ranking_doubles span:nth-child(2)').text(data.ranking_doubles);
+            $('#member_modal').fadeIn(350)
+            lightbox = true;
+        });
     }
 
     //sign up others

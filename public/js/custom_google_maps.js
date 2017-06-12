@@ -111,8 +111,7 @@ function initAutocomplete() {
                 draggable: true
             }));
 
-            //console.log(place.geometry.location.lat());
-            //ook hier gaan we de latitude en longitude toevoegen aan de hidden inputs
+            //keep latitude and longitude in hidden inputs
             $("#latitude").val(place.geometry.location.lat().toFixed(5));
             $("#longitude").val(place.geometry.location.lng().toFixed(5));
 
@@ -131,23 +130,18 @@ function initAutocomplete() {
         map.fitBounds(bounds);
 
         google.maps.event.addListener(markers[0], 'dragend', function (evt) {
-            //de coördinaten moeten in hidden inputs gestoken worden
+            //put the coordinates in hidden inputs
             $("#latitude").val(evt.latLng.lat().toFixed(5));
             $("#longitude").val(evt.latLng.lng().toFixed(5));
-            //document.getElementById('current').innerHTML = '<p>Marker dropped: Current Lat: ' + evt.latLng.lat().toFixed(3) + ' Current Lng: ' + evt.latLng.lng().toFixed(3) + '</p>';
 
-            //het nieuwe adres moet in de search input worden weergegeven
+            //show address in input field
             $.getJSON( "https://maps.googleapis.com/maps/api/geocode/json?latlng="+evt.latLng.lat().toFixed(3) + ","+evt.latLng.lng().toFixed(3), function( data ) {
-                //console.log(data.results[0].formatted_address);
                 $("#place-input").val(data.results[0].formatted_address);
             });
         });
 
         google.maps.event.addListener(markers[0], 'dragstart', function (evt) {
-            //document.getElementById('current').innerHTML = '<p>Currently dragging marker...</p>';
         });
-
-
     });
 }
 

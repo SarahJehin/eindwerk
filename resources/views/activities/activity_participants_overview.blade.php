@@ -25,9 +25,6 @@ Deelnemers {{$activity->title}}
                 @else
                 <div class="clearfix">
                     <div class="float link download"><a href="{{url('download_participants_as_excel/' . $activity->id)}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Downloaden</a></div>
-                    <!--
-                    <div class="float print"><i class="fa fa-print" aria-hidden="true"></i> Afdrukken</div>
-                    -->
                     <div class="amount_participants">({{count($activity->participants)}}/{{$activity->max_participants}})</div>
                 </div>
                 

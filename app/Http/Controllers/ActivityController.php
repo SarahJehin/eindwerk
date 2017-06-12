@@ -255,6 +255,80 @@ class ActivityController extends Controller
         return $top3;
     }
 
+    //return Excel with the scoreboard ordered based on score
+    public function export_scoreboard($adult_youth) {
+        if($adult_youth == 'youth') {
+            $activities = Activity::where('is_visible', 1)
+                                    ->where('status', 1)
+                                    ->where('start', '<', date('Y-m-d'))
+                                    ->whereHas('category', function ($query) {
+                                        $query->where('root', 'youth');
+                                    })
+                                    ->orderBy('start')
+                                    ->get();
+
+            //all users who have participated in youth activities
+            $participants = User::has('youth_activities_past')
+                                        ->with('youth_activities_past')
+                                        ->orderBy('last_name')
+                                        ->orderBy('first_name')
+                                        ->get()->sortByDesc('youth_activities_past');
+        }
+        else {
+            $activities = Activity::where('is_visible', 1)
+                                    ->where('status', 1)
+                                    ->where('start', '<', date('Y-m-d'))
+                                    ->whereHas('category', function ($query) {
+                                        $query->where('root', 'adult');
+                                    })
+                                    ->orderBy('start')
+                                    ->get();
+
+            //all users who have participated in adult activities
+            $participants = User::has('adult_activities_past')
+                                        ->with('adult_activities_past')
+                                        ->orderBy('last_name')
+                                        ->orderBy('first_name')
+                                        ->get()->sortByDesc('adult_activities_past');
+        }
+        
+        return Excel::create('scorebord', function($excel) use ($activities, $participants, $adult_youth) {
+            $excel->sheet('deelnemers', function($sheet) use ($activities, $participants, $adult_youth) {
+                $header_row = $activities->pluck('title')->toArray();
+                array_unshift($header_row, 'Naam');
+                array_push($header_row, 'Totaal');
+                $sheet->row(1, $header_row);
+                $sheet->row(1, function($row) {
+                    $row->setBackground('#dddddd');
+                });
+                foreach ($participants as $p) {
+                    $p_row_values = array();
+                    array_push($p_row_values, $p->last_name . ' ' . $p->first_name);
+                    $i = 0;
+                    foreach ($activities as $act) {
+                        if($p->activities()->where('activities.id', $act->id)->exists()) {
+                            array_push($p_row_values, '1');
+                        }
+                        else {
+                            array_push($p_row_values, '0');
+                        }
+                        if($i == count($activities)-1) {
+                            if($adult_youth == 'youth') {
+                                array_push($p_row_values, $p->total_youth_score());
+                            }
+                            else {
+                                array_push($p_row_values, $p->total_score());
+                            }
+                        }
+                        $i++;
+                    }
+                    $sheet->appendRow($p_row_values);
+                }
+            });
+        })->download('xlsx');
+
+    }
+
     /* ************************ ADMIN FUNCTIONS ********************** */
 
     //return the add_activity view
@@ -597,13 +671,13 @@ class ActivityController extends Controller
                                 ->with('participants')
                                 ->where('start', '>', date('Y-m-d').' 00:00:00')
                                 ->orderBy('start')
-                                ->get();
+                                ->paginate(16,['*'], 'coming_activities_page')->appends(\Request::all());
 
         $past_activities = Activity::select('id', 'title', 'start', 'max_participants', 'is_visible')
                                 ->with('participants')
                                 ->where('start', '<', date('Y-m-d').' 00:00:00')
                                 ->orderBy('start', 'desc')
-                                ->get();
+                                ->paginate(16,['*'], 'past_activities_page')->appends(\Request::all());
         
         return view('activities/admin_activities_overview', ['activities' => $activities, 'past_activities' => $past_activities]);
     }

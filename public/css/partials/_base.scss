@@ -1,4 +1,4 @@
-//all variables + all mixin declarations
+//variables + mixin declarations
 //colors
 $theme_color01 : #1abc9c;
 $theme_color01_shade01 : #16a085;
@@ -30,7 +30,6 @@ $delete_color: #b73928;
 
 $valid_color: #5dcb9a;
 
-
 //category colors:
 $battle_bunny: #395696;
 $party_penguin: #e51853;
@@ -39,16 +38,13 @@ $tennis_activity: #e8780a;
 $tournament: #5abfcc;
 $other: #751a8b;
 
-
 //fonts
 $main_font : 'Titillium Web', sans-serif;
 $h3_font : 'Quicksand', sans-serif;
 
 
 
-
-
-//mixin
+//mixins
 
 //properties
 @mixin transition($values...) {

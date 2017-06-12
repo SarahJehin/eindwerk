@@ -2,7 +2,7 @@
 
     angular.module("dashboard_sportiva").controller("WinterhourController", function ($scope, $http) {
 
-        $scope.scheme_exists = false;
+    $scope.scheme_exists = false;
 
     //add method on Date object
     //return the date that is 'days' from the date on which the method is called
@@ -38,7 +38,6 @@
                 label.addClass('highlight');
             }
         }
-
     });
 
     //if old values in inputs move title up
@@ -49,7 +48,6 @@
             label.addClass('active highlight');
         }
     });
-
 
     //autocomplete title in heading
     $( "#groupname" ).keyup(function() {
@@ -68,7 +66,6 @@
             $(".add_winterhour .heading").text('Nieuwe winteruur groep');
         }
     }
-
 
     //day select
     $('.selectpicker').selectpicker();
@@ -107,13 +104,10 @@
                     disabled_dates.push(days[day]);
                 }
             }
-            //console.log('disabled dates are: ' + disabled_dates);
-            //console.log(active_dates);
             //disable all the other days
             $('.container_date').datepicker('setDaysOfWeekDisabled', disabled_dates);
             //auto select all the dates that fall on this day of the week
             $('.container_date').datepicker('setDates', active_dates);
-
             //get all selected dates and pass them to the input
             $('.inputs').empty();
             var dates = $('.container_date').datepicker('getDates');
@@ -137,11 +131,9 @@
         startDate: '01/09/' + new Date().getFullYear()
     }).on('changeDate', function (e) {
             var startdate = e.format();
-            //console.log(startdate);
             //get all selected dates and pass them to the input
             $('.inputs').empty();
             var dates = $('.container_date').datepicker('getDates');
-            //console.log(dates);
             for(var i = 0; i < dates.length; i++) {
                 var formatted_date = dates[i].getFullYear() + '-' + ('0' + (dates[i].getMonth()+1)).slice(-2) + '-' + ('0' + dates[i].getDate()).slice(-2);
                 $('.inputs').append('<input type="text" name="date[]" value="' + formatted_date + '" hidden>');
@@ -150,8 +142,6 @@
     );
 
     if($('.day_select select').val()) {
-        //this underneath won't do, since it'll activate all the dates, also the ones who were checked off
-        //$( ".day_select select" ).trigger( "change" );
         var dates = $('.inputs input');
         var new_dates = [];
         for(var i = 0; i < dates.length; i++) {
@@ -162,7 +152,6 @@
         //get weekday of first day
         var active_weekday = new Date($($('.inputs input')[0]).val()).getDay();
         var days = [0, 1, 2, 3, 4, 5, 6];
-        console.log(active_weekday);
         //set the weekdays disabled
         var disabled_dates = [];
         for(var day in days) {
@@ -184,17 +173,10 @@
         //month is September, but because it is zero based, the number will be 8 instead of 9
         var month = 8;
         var startdate = new Date(new Date().getFullYear(), month, 1);
-        console.log('startdate: ' + startdate);
-
         //while the weekday of the date is not the requested weekday, get the next date
         while (startdate.getDay() !== day) {
             startdate.setDate(startdate.getDate() + 1);
-            //console.log('new date: ' + startdate);
         }
-        //console.log('real startdate: ' + startdate);
-        //console.log(startdate);
-        //for a weird reason if you only log the date, you get one day before the real date, but not if it's parsed to a string
-        //has something to do with GMT with a difference of 2 hours
         return startdate;
     }
 
@@ -204,18 +186,14 @@
         while (currentDate <= stopDate) {
             var string_date = currentDate.getDate() + '/' + (currentDate.getMonth()+1) + '/' + currentDate.getFullYear();
             dateArray.push(string_date);
-            //dateArray.push( new Date (currentDate) )
             currentDate = currentDate.addDays(7);
         }
         return dateArray;
     }
 
-
-
     //participants
     var not_ids = [0];
     $('.add_participants').on('keyup', '.search_select .bs-searchbox input', function(e) {
-        console.log("blieblabloe !!!!!!!");
         if(e.which != 38 && e.which != 40 && e.which != 13) {
             $.each($('.add_participants .add_participant input.id'), function(key, person) {
                 var value = $(person).val();
@@ -224,8 +202,6 @@
                 }
             });
 
-            //$('.search_select select').empty();
-            //$('search_select select option').not('option:first').remove();
             var searchstring    = $(this).val();
             if(searchstring.length > 0) {
                 //get 5 first search results //add , not_ids: not_ids beneath
@@ -240,67 +216,19 @@
                     });
                     $('.selectpicker').selectpicker('refresh');
                     if(data.length < 1) {
-                        //$new_list_item = '<li>Geen leden gevonden</li>';
-                        //$('.search_results ul').append($new_list_item);
                     }
                 }, "json" );
             }
             else {
                 $('.search_results ul').empty();
             }
-            //console.log($('.search_select select option:selected').text());
         }
         
 
     });
-    
-    $('.add_participants').on('DOMSubtreeModified', '.search_select .bootstrap-select .dropdown-toggle span.filter-option', function() {
-        console.log('do you reach this?');
-        //console.log($(this));
-        console.log($('.search_select .dropdown-toggle span.filter-option').text());
-        
-        var add_participant_block = $(this).parent().parent().parent().parent().parent();
-        var value = add_participant_block.find('.search_select .dropdown-toggle span.filter-option').text();
-        //$('.bootstrap-select .bs-searchbox input').val($('.bootstrap-select .dropdown-toggle span.filter-option').text());
-        if(value != 'default') {
-            console.log('now you are allowed to enter')
-            //get the select value
-            var participant_name = value;
-            var participant_id = add_participant_block.find('.search_select select').val();
-            console.log('participant name is ' +participant_name);
-            console.log('partivipant id is ' + participant_id);
-            console.log(participant_name + ' ' + participant_id);
-            //console.log($(this).parent().parent().parent().parent().parent());
-
-            
-            var input = add_participant_block.find('input.name');
-            var id_input = add_participant_block.find('input.id');
-            var name_input = add_participant_block.find('input.participant_name');
-            var delete_btn = add_participant_block.find('.delete');
-            //console.log(delete_btn);
-            input.val($(this).text());
-            input.attr('readonly', 'true');
-            input.attr('disabled', 'true');
-            input.show();
-            id_input.val($(this).attr('user_id'));
-            name_input.val($(this).text());
-            delete_btn.removeClass('not_working');
-
-            var new_input = $('.add_participants .template').clone();
-            new_input.removeClass('template');
-            new_input.find('input.id').removeAttr('disabled');
-            new_input.find('input.participant_name').removeAttr('disabled');
-            $('.add_participants').append(new_input);
-            $('.selectpicker').selectpicker();
-            
-        }
-        
-    });
-
 
     var not_ids = [0];
     var search_results = $('.search_results ul');
-    console.log(search_results);
     var current_child = null;
     //search participants for winterhour
     $('.add_participants').on('keyup', '.search_participants', function(e) {
@@ -319,11 +247,9 @@
                 }
             });
             
-            console.log(not_ids);
             if(searchstring.length > 1) {
                 //get 5 first search results //add , not_ids: not_ids beneath
                 $.get( location.origin + "/get_matching_users", {searchstring: searchstring, not_ids: not_ids}, function( data ) {
-                    //console.log(data[0]['first_name']);
                     $('.search_results ul').empty();
                     $.each(data, function( key, result ) {
                         var id = result["id"];
@@ -343,10 +269,8 @@
             }
         }
         if(e.which == 40) {
-            console.log('test');
             search_results.children().removeClass('hover');
             if (search_results.children('li').length > 0) {
-                console.log(current_child);
                 if(!current_child) {
                 current_child = 1;
                 }
@@ -356,7 +280,6 @@
                 else {
                 current_child++;
                 }
-
                 search_results.children(":nth-child(" + current_child + ")").addClass('hover');
             }
         }
@@ -369,7 +292,6 @@
                 else {
                 current_child--;
                 }
-
                 search_results.children(":nth-child(" + current_child + ")").addClass('hover');
             }
         }
@@ -381,13 +303,8 @@
 
     //to prevent form from submitting
     $(window).keydown(function(event){
-        console.log($(this));
-        console.log(event.target);
-        console.log($(event.target));
-        console.log($(event.target).hasClass('search_participants'));
         if(event.which == 13) {
             if($(event.target).hasClass('search_participants')) {
-                console.log('prev');
                 event.preventDefault();
                 return false;
             }
@@ -395,7 +312,7 @@
                 $('#add_winterhour').submit();
             }
         }
-      });
+    });
 
     search_results.on('mouseover', 'li', function() {
         $('.search_results ul li').removeClass('hover');
@@ -404,12 +321,10 @@
     });
 
     $('.add_participants').on('click', '.search_results ul li', function() {
-        //console.log($(this).parent().parent().parent().find('input'));
         var input = $(this).parent().parent().parent().find('input.name');
         var id_input = $(this).parent().parent().parent().find('input.id');
         var name_input = $(this).parent().parent().parent().find('input.participant_name');
         var delete_btn = $(this).parent().parent().parent().parent().find('.delete');
-        //console.log(delete_btn);
         input.val($(this).text());
         input.attr('readonly', 'true');
         input.attr('disabled', 'true');
@@ -424,8 +339,6 @@
         $new_input.find('input.id').removeAttr('disabled');
         $new_input.find('input.participant_name').removeAttr('disabled');
         $('.add_participants').append($new_input);
-        console.log(name_input);
-        console.log($('.add_participants input.participant_name'));
         current_child = null;
     });
 
@@ -445,17 +358,14 @@
     if($('.block').parent().hasClass('add_winterhour')) {
         $(".timeline div[class^='step']").click(function () {
             if($(this).hasClass('step3') || $(this).hasClass('step4')) {
-                //nothing must happen
-                console.log('not allowed');
+                //not allowed to switch to step
                 var left = $(".total").css("left");
-                //console.log(left);
                 $(".total").css("left", left);
                 var filled_line = $('.filled_line').css('width');
                 $('.filled_line').css('width', filled_line);
 
                 $('.timeline .step3').removeClass('reached');
                 $('.timeline .step4').removeClass('reached');
-                //console.log(previous_clicked_step);
                 if(previous_clicked_step == 1) {
                     $('.timeline .step2').removeClass('reached');
                 }
@@ -470,23 +380,17 @@
         });
     }
     
-
-    //edit winterhour extra's //only if winterhour id is defined // alles hieronder zou eigenlijk in apart script moeten staan
-
+    //extra functionality for edit_winterhour
     $scope.error_msg_exists = false;
     //generate scheme with api request instead of direct link, to show anim
-    //$('.generate_scheme').click(function() {
     $('.scheme_generation').on('click', '.generate_scheme', function() {
         //show loading icon
         $('.loader').show();
         //hide the previous scheme
         $('.scheme').hide();
         $('.play_times').hide();
-        //console.log('what happens??');
         //api generate scheme
-        
         $.get(location.origin +  "/generate_scheme/" + winterhour_id, function( data ) {
-            console.log(data);
             if(data == "success") {
                 $.get(location.origin +  "/get_scheme/" + winterhour_id, function( data ) {
                     $('.loader').hide();
@@ -504,25 +408,19 @@
                 });
             }
             else {
-                console.log(data);
                 $('.loader').hide();
                 var date = new Date(data[1]);
                 date = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth()+1)).slice(-2) + '/' + date.getFullYear();
                 $scope.error_msg = 'Het schema kon niet gegenereerd worden omdat er één of meerdere data zijn waarop er niet voldoende deelnemers beschikbaar zijn.  Probeer opnieuw nadat je de beschikbaarheden geüpdatet hebt. Probleemdatum: ' + date;
                 $scope.error_msg_exists = true;
-                console.log($scope.error_msg);
                 $scope.$apply();
             }
-            
         });
-        
     });
-
 
     if(typeof winterhour_id !== 'undefined') {
         //get winterhour status
         $.get(location.origin +  "/get_winterhour_status", { winterhour_id: winterhour_id }, function( data ) {
-            console.log(data);
             var status = data;
             $scope.winterhour_status = status;
             $scope.$apply();
@@ -554,31 +452,10 @@
                 make_drag_and_droppable();
             }
         });
-        /*
-        //set days of weeks disabled according to selected weekday by triggering a change in the weekday (since all dates will be set to active, get real active dates afterwards)
-        $('.day_select select').trigger( "change" );
-        //get the dates from the current winterhour to set them as active for the datepicker
-        $.get(location.origin +  "/get_winterhour_dates", { winterhour_id: winterhour_id }, function( data ) {
-            //console.log(data);
-            console.log('is this what is causing the trouble??');
-            var dates = [];
-            $.each( data, function( key, value ) {
-                var date = value.date;
-                date = date.split('-');
-                date.reverse();
-                date = date.join('/');
-                //console.log( date );
-                dates.push(date);
-            });
-            dates.reverse();
-            //console.log(dates);
-            $('.container_date').datepicker('setDates', dates);
-        });
-        */
 
+        //drag and drop code based on https://stackoverflow.com/questions/7625401/swap-elements-when-you-drag-one-onto-another-using-jquery-ui
         function make_drag_and_droppable() {
             jQuery.fn.swap = function(b){ 
-                // method from: http://blog.pengoworks.com/index.cfm/2008/9/24/A-quick-and-dirty-swap-method-for-jQuery
                 b = jQuery(b)[0]; 
                 var a = this[0]; 
                 var t = a.parentNode.insertBefore(document.createTextNode(''), a); 
@@ -595,23 +472,17 @@
                 activeClass: "ui-state-hover",
                 hoverClass: "ui-state-active",
                 drop: function( event, ui ) {
-                    console.log('test');
                     var draggable = ui.draggable;
                     var droppable = $(this);
                     var dragPos = draggable.position(), dropPos = droppable.position();
-                    console.log(draggable[0]);
-                    console.log(droppable[0]);
                     var user_id1 = $(draggable[0]).attr('user_id');
                     var date_id1 = $(draggable[0]).attr('date_id');
                     var user_id2 = $(droppable[0]).attr('user_id');
                     var date_id2 = $(droppable[0]).attr('date_id');
                     var swapdata = { swap1 : {user_id : user_id1, date_id : date_id1}, swap2 : {user_id : user_id2, date_id : date_id2} };
-                    console.log(swapdata);
 
                     //check if participants can be swapped
-                    
                     $.post(location.origin +  "/swap_places", swapdata, function( data ) {
-                        console.log( data );
                         $('.swap_message').removeClass('success failed');
                         $('.swap_message').addClass(data.status);
                         $('.swap_message').text(data.message);
@@ -621,26 +492,21 @@
                                 $('.swap_message').slideUp();
                             }, 5000);
                         });
-                        //only if the swap ws succesful, the swap may take place on the front-end as well
+                        //only if the swap was succesful, the swap may take place on the front-end as well
                         if(data.status == 'success') {
                             draggable.swap(droppable);
                             $(draggable[0]).attr('date_id', date_id2);
                             $(droppable[0]).attr('date_id', date_id1);
                         }
                     }, "json");
-                    
-                    
                 }
             });
         }
-        
-        
     }
 
     //check if a certain step is given
     var step = findGetParameter('step');
     if(typeof step !== 'undefined') {
-        //console.log('step is: ' + step);
         //trigger click on this step
         $('.timeline .step' + step).trigger('click');
     }
@@ -658,6 +524,6 @@
         return result;
     }
 
-    });
+});
 
 })(window, window.document, window.jQuery);

@@ -15,7 +15,7 @@ class ExerciseController extends Controller
 {
     //return exercises_overview view (with newest, most viewed and all)
     public function exercises_overview() {
-    	$exercises = Exercise::where('approved', 1)->paginate(4);
+    	$exercises = Exercise::where('approved', 1)->paginate(16);
     	$tag_types = Tag::all()->groupBy('type');
     	$newest_exercise = null;
     	$most_viewed_exercises = null;
@@ -33,6 +33,15 @@ class ExerciseController extends Controller
     //return the exercise_details view
     public function exercise_details($id) {
     	$exercise = Exercise::find($id);
+        $video_id = substr($exercise->video_url, strrpos($exercise->video_url, '/') + 1);
+        $video_thumbnail = '';
+        if(strpos($exercise->video_url, 'youtu')) {
+            $video_thumbnail = 'https://img.youtube.com/vi/' . $video_id . '/mqdefault.jpg';
+        }
+        elseif(strpos($exercise->video_url, 'vimeo')) {
+            $vimeo = unserialize(file_get_contents("http://vimeo.com/api/v2/video/" . $video_id . ".php"));
+            $video_thumbnail = $vimeo[0]['thumbnail_medium'];
+        }  
     	$is_headtrainer = Auth::user()->roles->whereIn('level', [31])->first();
     	session_start();
     	$client_viewed_exercises = array();
@@ -57,7 +66,7 @@ class ExerciseController extends Controller
     		$_SESSION['client_viewed_exercises'] = $client_viewed_exercises;
     	}
     	if($exercise->approved || $is_headtrainer) {
-    		return view('exercises/exercise_details', ['exercise' => $exercise]);
+    		return view('exercises/exercise_details', ['exercise' => $exercise, 'video_thumbnail' => $video_thumbnail]);
     	}
     	else {
     		abort(404);
@@ -81,7 +90,7 @@ class ExerciseController extends Controller
 				$query->where('tags.id', $tag_id);
 			});
 		}
-		$filtered_exercises = $filtered_exercises->paginate(2);
+		$filtered_exercises = $filtered_exercises->paginate(12);
 		$pagination_html = (string)$filtered_exercises->links();
 		return ['filtered_exercises' => $filtered_exercises, 'pagination_html' => $pagination_html];
     }

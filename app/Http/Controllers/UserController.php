@@ -35,6 +35,18 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *
+     * Return all the info from a certain member
+     *
+     * @param       [integer]   id of the member you're looking for
+     * @return      [User]      the User object
+     *
+     */
+    public function get_member_details($id) {
+        $member = User::find($id);
+        return $member;
+    }
 
     /**
      *

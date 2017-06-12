@@ -11,33 +11,17 @@ html, body {
 body {
     background-image: url("../images/site_images/background_img.jpg");
     //background-image: url("../images/site_images/total_img01.jpg");
-  -webkit-background-size: cover;
-  background-size: cover;
-  //background-position: 0px -150px;
-  //overflow: hidden;
-  background-attachment: fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+    //background-position: 0px -150px;
+    //overflow: hidden;
+    background-attachment: fixed;
     //background-position: 100%;
     
     @include smartphone {
         background-size: 350%;
         background-position-y: 100%;
     }
-}
-
-/*
-.page_container {
-  width: 100%;
-  //height: 100vh;
-  background-image: url("../images/site_images/background_img.jpg");
-  -webkit-background-size: cover;
-  background-size: cover;
-  background-position: 0px -150px;
-  //overflow: hidden;
-  background-attachment: fixed;
-}*/
-
-.page_container, .page_content {
-    //height: 100%;
 }
 
 nav {
@@ -51,7 +35,8 @@ nav {
         top: -100%;
         height: calc(100% - 50px);
         width: 100%;
-        transition: top 1s;
+        //transition: top 1s;
+        @include transition(top 1s ease);
         padding-top: 50px;
         overflow: hidden;
         
@@ -73,7 +58,8 @@ nav {
         //height: 100%;
         width: 100%;
         z-index: 6;
-        transition: top 1s;
+        //transition: top 1s;
+        @include transition(top 1s ease);
         &.open {
             top: 0;
         }
@@ -117,7 +103,7 @@ nav {
                         width: 0;
                         height: 1px;
                         background: #fff;
-                        transition: width .25s;
+                        @include transition(width .25s ease);
                     }
                     &:hover {
                         &::after {
@@ -157,7 +143,7 @@ nav {
             padding-left: 15px;
             display: block;
             text-decoration: none;
-            transition: padding-left 0.25s;
+            @include transition(padding-left 0.25s ease);
             i.fa {
                 font-size: 1.5em;
                 margin-right: 15px;
@@ -249,13 +235,10 @@ nav {
 }
 
 .block {
-    //width: 800px;
     width: 55%;
     margin: 0px auto;
-    //background-color: $theme_color02_alpha;
     background-color: #fff;
     color: $form_font_color;
-    //display: inline-block;
     position: relative;
     top: 50px;
     margin-bottom: 150px;
@@ -379,11 +362,7 @@ nav {
         background-color: rgba($form_font_color, 0.25);
         z-index: 5;
         
-        transition: background-color .5s;
-        
-        &:first-child {
-            //margin-right: 1%;
-        }
+        @include transition(background-color .5s ease);
         
         .bg_helper {
             position: absolute;
@@ -394,7 +373,7 @@ nav {
             height: 100%;
             background: linear-gradient(-216deg, #00ffa7 0%, #009688 100%);
             opacity: 0;
-            transition: opacity .5s;
+            @include transition(opacity 0.5s ease);
         }
         
         &:hover, &.active {
@@ -481,11 +460,12 @@ nav {
     top: 45%;
   }
   .filled_line {
-    border: 2px solid $theme_color01;
-    position: absolute;
-    width: 0%;
-    top: 45%;
-    transition: width 0.75s;
+      border: 2px solid $theme_color01;
+      position: absolute;
+      width: 0%;
+      top: 45%;
+      //transition: width 0.75s;
+      @include transition(width 0.75s ease);
   }
 
   div[class^="step"] {
@@ -520,6 +500,73 @@ nav {
     margin-top: 20px;
     .next {
         float: right;
+    }
+}
+
+.pagination_container, .pagination_container_filter {
+    text-align: center;
+    .pagination {
+        li {
+            a, div {
+                color: $theme_color01;
+                &:hover {
+                    background-color: $theme_color01;
+                    color: #fff;
+                    border-color: $theme_color01;
+                }
+            }
+            &.active {
+                span {
+                    background-color: $theme_color01;
+                    border-color: $theme_color01;
+                    &:hover {
+                        background-color: $theme_color01;
+                        border-color: $theme_color01;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#member_modal {
+    height: 100%;
+    position: fixed;
+    .modal_body {
+        & > .clearfix {
+            padding: 25px;
+            width: 60%;
+            margin: 0 auto;
+            .image {
+                width: 50%;
+                margin-right: 5%;
+                img {
+                    width: 100%;
+                    border-radius: 50%;
+                }
+            }
+            .info {
+                width: 45%;
+                div {
+                    span {
+                        &:first-child {
+                            width: 40px;
+                        }
+                    }
+                }
+                .name {
+                    h2 {
+                        color: $theme_color01;
+                        border-bottom: 1px solid;
+                    }
+                }
+                i {
+                    &:hover {
+                        color: $form_font_color;
+                    }
+                }
+            }
+        }
     }
 }
 

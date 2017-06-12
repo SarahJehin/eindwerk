@@ -1,8 +1,6 @@
 (function ( window, document, $, undefined ) {
 
-
 angular.module("dashboard_sportiva").controller("RolesController", function ($scope, $http) {
-
     //delete project
     $scope.open_roles_modal = function ($event, member_id, member_name) {
         console.log('test');
@@ -13,16 +11,11 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
         console.log(member_name);
         //get all roles that the authenticated user may update
         $http.get(location.origin + '/get_allowed_update_roles',
-            {
-                
-            })
+            {})
             .success(function(response) {
-                console.log(response);
                 $scope.allowed_update_roles = response;
-                console.log($scope.allowed_update_roles[0].name);
             })
             .error(function(response) {
-                console.log(response);
             });
 
         //get all already assigned roles for this member
@@ -31,10 +24,8 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
             url: location.origin + '/get_user_roles',
             params: {member_id: member_id}
         }).then(function successCallback(response) {
-            console.log(response);
             $scope.assigned_roles = response.data;
         }, function errorCallback(response) {
-            console.log(response);
         });
         
     }
@@ -48,10 +39,8 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
                 new_value: new_value
             })
             .success(function(response) {
-                console.log(response);
             })
             .error(function(response) {
-                console.log(response);
             });
 
     }
@@ -65,7 +54,6 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
             return false;
         }
     }
-    
 });
 
     $('.member_block .vtv_nr').click(open_member_details);
@@ -102,15 +90,12 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
         $('.bootstrap-select .dropdown-menu.open').hide();
     });
 
-    var lightbox = false;
     $('.import_members').click(function(){
         $('#import_members_modal').fadeIn(350, function() {
-            lightbox = true;
         });
     });
     if(errors) {
         $('#import_members_modal').fadeIn(350, function() {
-            lightbox = true;
         });
     }
 
@@ -125,36 +110,7 @@ angular.module("dashboard_sportiva").controller("RolesController", function ($sc
 
     $('.details .roles').click(function(){
         $('#roles_modal').fadeIn(350, function() {
-            lightbox = true;
         });
     });
-
-    $('.lightbox_modal .modal').click(function(event) {
-        event.stopPropagation();
-    });
-
-    $(window).click(function() {
-        close_lightbox_modal();
-    });
-
-    $('.lightbox_modal .modal .fa-times').click(function() {
-        close_lightbox_modal();
-    });
-
-    $( window ).on( "keydown", function( event ) {
-        //if esc key is pressed, close modal
-        if(event.which == 27) {
-            close_lightbox_modal();
-        }
-    });
-
-    function close_lightbox_modal() {
-        if(lightbox) {
-            $('.lightbox_modal').fadeOut(350, function() {
-                lightbox = false;
-            });
-        }
-    }
-
 
 })(window, window.document, window.jQuery);

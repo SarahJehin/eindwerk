@@ -2,7 +2,6 @@
 @section('title', 'Nieuwe activiteit')
 
 @section('custom_css')
-<!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">-->
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
@@ -12,10 +11,7 @@
 @endsection
 
 @section('content')
-
-
     <div class="add_activity">
-
         <div class="block">
             <div class="heading">
                 Nieuwe activiteit
@@ -74,19 +70,6 @@
                                                 <input type="hidden" id="imagebase64" name="imagebase64">
                                                 <input class="poster_input" type="text" name="poster" hidden="">
                                             </div>
-                                            <!--
-                                            <div class="upload_poster">
-                                                <label for="upload">Upload poster (min 600x850)</label>
-                                                <input id="upload" value="Choose a file" accept="image/*" type="file" hidden="">
-
-                                                <div class="upload-wrap">
-                                                    <div id="upload-container" class="croppie-container"></div>
-                                                </div>
-                                                <div class="save_poster">Poster bewaren</div>
-                                                <input type="hidden" id="imagebase64" name="imagebase64">
-                                                <img class="poster_img" src="">
-                                            </div>
-                                            -->
                                         </div>
                                     </div>
 
@@ -126,7 +109,6 @@
                                             <textarea name="description" id="description" hidden="hidden">{{ old('description') }}</textarea>
                                             <div id="summernote" class="apply_bootstrap"></div>
                                         </div>
-
                                     </div>
 
                                     <div class="previous_next clearfix">
@@ -170,7 +152,6 @@
 
                                         <div class="date_time_info float clearfix">
                                             
-
                                             <div class="date_info">
                                                 <h3>Datum</h3>
                                                 <div class="date_type clearfix">
@@ -293,26 +274,8 @@
                                         <div>Aantal deelnemers</div>
                                         <span class="min_participants"><?php if(old('participants') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?></span><input id="participants_slider" name="participants" type="text" class="span2" value="" data-slider-min="0" data-slider-max="31" data-slider-step="1" data-slider-value="[<?php if(old('participants') == null){echo('0'); } else {echo(explode(',',old('participants'))[0]);} ?>,<?php if(old('participants') == null){echo('31'); } else {echo(explode(',',old('participants'))[1]);} ?>]" tooltip="hide"/><span class="max_participants"><?php if(old('participants') == null){echo('&infin;'); } else {echo(explode(',',old('participants'))[1]);} ?></span>
                                     </div>
-                                    <!--
-                                    <div class="helpers slider_block">
-                                        <div>Aantal helpers</div>
-                                        <span class="min">0</span><input id="helpers_slider" name="helpers" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="<?php if(old('helpers') == null){echo('0'); } else {echo(old('helpers'));} ?>"/><span class="helpers_amount"><?php if(old('helpers') == null){echo('0'); } else {echo(old('helpers'));} ?></span>
-                                    </div>
-                                    -->
 
-                                    <div class="owner">
-<!--
-                                        <div class="select_toggler">
-                                            <span class="select_title"><?php if(old('owner') == null){echo('Selecteer een verantwoordelijke'); } else {echo(old('owner_name'));} ?></span> <i class="fa fa-sort-desc" aria-hidden="true"></i>
-                                        </div>
-                                        <ul>
-                                            @foreach($owners as $owner)
-                                                <li owner-id="{{$owner->id}}">{{$owner->first_name}} {{$owner->last_name}}</li>
-                                            @endforeach
-                                        </ul>
-                                        <input name="owner_name" type="text" id="owner_name" value="{{old('owner_name')}}" hidden>
-                                        <input name="owner" type="number" id="owner" value="{{old('owner')}}" hidden>
--->                                     
+                                    <div class="owner">                                    
                                         <label for="owner">Verantwoordelijke</label>
                                         <div class="apply_bootstrap">
                                             <select name="owner" class="selectpicker" title="Selecteer een verantwoordelijke">
@@ -321,8 +284,6 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        
-
                                     </div>
 
                                     <div class="extra_url">
