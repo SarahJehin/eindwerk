@@ -1,17 +1,13 @@
 @extends('layouts.app')
-@section('title', 'Nieuwe oefening')
+@section('title', 'Oefening bewerken')
 
 @section('custom_css')
-
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.css" rel="stylesheet">
 @endsection
 
 @section('content')
-
-
     <div class="edit_exercise">
-
         <div class="block">
             <div class="heading">
                 Oefening bewerken: {{$exercise->name}}
@@ -73,7 +69,7 @@
                             </div>
                             @foreach($exercise->images as $image)
                             <div class="image float" identifier="">
-                                <img src="{{url('images/exercise_images/' . $image->path)}}">
+                                <img src="{{url('images/exercise_images/' . $image->path)}}" alt="{{$exercise->name}}">
                                 <div class="delete"><i class="fa fa-times"></i></div>
                                 <input type="hidden" name="existing_images[]" value="{{$image->id}}" hidden="">
                             </div>

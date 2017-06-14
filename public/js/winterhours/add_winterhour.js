@@ -401,6 +401,9 @@
                     $.get(location.origin +  "/get_winterhour_status", { winterhour_id: winterhour_id }, function( data ) {
                         $scope.winterhour_status = data;
                         $scope.$apply();
+                        setTimeout(function() {
+                            make_drag_and_droppable();
+                        }, 100);
                     });
                     make_drag_and_droppable();
                     $('.scheme').show();
@@ -464,7 +467,6 @@
                 t.parentNode.removeChild(t); 
                 return this; 
             };
-
             $( ".dragdrop" ).draggable({ revert: true, helper: "clone", cursor: "move" });
 
             $( ".dragdrop" ).droppable({

@@ -2,10 +2,7 @@
 @section('title', 'Activiteitenoverzicht')
 
 @section('content')
-
-
     <div class="activities_list">
-
         <div class="block">
             <div class="heading">
                 Activiteitenoverzicht
@@ -15,7 +12,6 @@
                 <div class="add_activity_link clearfix"><a href="{{url('add_activity')}}" data-toggle="tooltip" data-placement="left" title="Activiteit toevoegen"><i class="fa fa-plus" aria-hidden="true"></i></a></div>
 
                 <h3 class="first">Komende activiteiten</h3>
-
                 <div class="list">
                     <div class="activity header clearfix">
                         <div class="is_visible float"><i class="fa fa-eye" aria-hidden="true"></i></div>
@@ -50,7 +46,6 @@
                 </div>
 
                 <h3>Voorbije activiteiten</h3>
-
                 <div class="list">
                     <div class="activity header clearfix">
                         <div class="is_visible float"><i class="fa fa-eye" aria-hidden="true"></i></div>
@@ -78,7 +73,6 @@
                         {{$past_activities->links()}} 
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -101,9 +95,6 @@
     </div>
 @endsection
 @section('custom_js')
-<script type="text/javascript">
-    var lightbox;
-</script>
 <script src="{{ asset('js/activities/activities_extra.js') }}"></script>
 
 @endsection

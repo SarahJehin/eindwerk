@@ -20,7 +20,6 @@
                     </div>
                 </div>
 
-
                 <div class="scoreboard adults">
                     @if($adult_top_3)
                     <div class="podium">
@@ -30,7 +29,7 @@
                                     <div class='slice-contents'>
                                         <div class="real_content" member_id="{{$adult_top_3[0]->id}}">
                                             <span class="ranking">1</span>
-                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[0]->image)}}">
+                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[0]->image)}}" alt="{{$adult_top_3[0]->first_name}}">
                                             <span class="name">{{$adult_top_3[0]->first_name}}</span>
                                         </div>
                                     </div>
@@ -39,7 +38,7 @@
                                     <div class='slice-contents'>
                                         <div class="real_content" member_id="{{$adult_top_3[1]->id}}">
                                             <span class="ranking">2</span>
-                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[1]->image)}}">
+                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[1]->image)}}" alt="{{$adult_top_3[1]->first_name}}">
                                             <span class="name">{{$adult_top_3[1]->first_name}}</span>
                                         </div>
                                     </div>
@@ -48,7 +47,7 @@
                                     <div class='slice-contents'>
                                         <div class="real_content" member_id="{{$adult_top_3[2]->id}}">
                                             <span class="ranking">3</span>
-                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[2]->image)}}">
+                                            <img src="{{url('images/profile_pictures/' . $adult_top_3[2]->image)}}" alt="{{$adult_top_3[2]->first_name}}">
                                             <span class="name">{{$adult_top_3[2]->first_name}}</span>
                                         </div>
                                     </div>
@@ -112,7 +111,7 @@
                                     <div class='slice-contents'>
                                         <div class="real_content" member_id="{{$youth_top_3[0]->id}}">
                                             <span class="ranking">1</span>
-                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[0]->image)}}">
+                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[0]->image)}}" alt="{{$youth_top_3[0]->first_name}}">
                                             <span class="name">{{$youth_top_3[0]->first_name}}</span>
                                         </div>
                                     </div>
@@ -121,7 +120,7 @@
                                     <div class='slice-contents'>
                                         <div class="real_content" member_id="{{$youth_top_3[1]->id}}">
                                             <span class="ranking">2</span>
-                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[1]->image)}}">
+                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[1]->image)}}" alt="{{$youth_top_3[1]->first_name}}">
                                             <span class="name">{{$youth_top_3[1]->first_name}}</span>
                                         </div>
                                     </div>
@@ -130,7 +129,7 @@
                                     <div class='slice-contents'>
                                         <div class="real_content" member_id="{{$youth_top_3[2]->id}}">
                                             <span class="ranking">3</span>
-                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[2]->image)}}">
+                                            <img src="{{url('images/profile_pictures/' . $youth_top_3[2]->image)}}" alt="{{$youth_top_3[2]->first_name}}">
                                             <span class="name">{{$youth_top_3[2]->first_name}}</span>
                                         </div>
                                     </div>

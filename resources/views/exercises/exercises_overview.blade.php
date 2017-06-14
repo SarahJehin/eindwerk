@@ -62,7 +62,7 @@
                                     <a class="link" href="{{url('exercise_details/' . $exercise->id)}}">{{$exercise->name}}</a>
                                 </div>
                                 <div class="author float">
-                                    door: {{$exercise->user->first_name}} {{$exercise->user->last_name}}
+                                    <span>door: </span>{{$exercise->user->first_name}} {{$exercise->user->last_name}}
                                 </div>
                                 <div class="created_at float">
                                     op: {{date('d/m/Y', strtotime($exercise->created_at))}}
@@ -170,8 +170,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 @endsection
 @section('custom_js')

@@ -82,7 +82,7 @@ class HomeController extends Controller
         else {
             session_start();
             unset($_SESSION['client_viewed_exercises']);
-            return view('welcome');
+            return view('auth/login');
         }
         
     }

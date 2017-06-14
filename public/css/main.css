@@ -550,10 +550,20 @@ button.submit {
     .login_block .error_msg .error {
       width: 95%; }
   .login_block .login-heading {
-    text-align: center;
+    width: 80%;
+    margin: 0 auto;
     color: #fff;
-    padding: 10px;
-    font-size: 3em; }
+    padding: 10px; }
+    .login_block .login-heading .logo {
+      width: 16%;
+      margin-right: 4%; }
+      .login_block .login-heading .logo img {
+        width: 100%;
+        display: block; }
+    .login_block .login-heading .text {
+      width: 80%;
+      line-height: 45px;
+      font-size: 2.4em; }
   .login_block .content {
     margin-top: 35px; }
     .login_block .content .field_wrap {
@@ -1912,6 +1922,9 @@ button.submit {
       .activities_list .list .activity .delete {
         display: none; } }
 
+#delete_activity_modal {
+  height: 100%; }
+
 .activity_participants .amount_participants {
   float: right; }
 .activity_participants .list .participant_block {
@@ -3105,6 +3118,9 @@ button.submit {
         color: #b73928; }
     .exercises_content .exercises_to_approve .overview {
       width: 95%; }
+      @media (max-width: 768px) {
+        .exercises_content .exercises_to_approve .overview > div:first-child {
+          font-size: 0.9em; } }
       .exercises_content .exercises_to_approve .overview .exercise {
         width: 96%;
         padding: 3px 0; }
@@ -3113,13 +3129,29 @@ button.submit {
           color: #fff; }
         .exercises_content .exercises_to_approve .overview .exercise .title {
           width: 35%; }
+          @media (max-width: 768px) {
+            .exercises_content .exercises_to_approve .overview .exercise .title {
+              width: 60%;
+              margin-right: 2%; } }
         .exercises_content .exercises_to_approve .overview .exercise .author {
           width: 30%; }
+          @media (max-width: 768px) {
+            .exercises_content .exercises_to_approve .overview .exercise .author {
+              width: 38%; } }
+          @media (max-width: 768px) {
+            .exercises_content .exercises_to_approve .overview .exercise .author span {
+              display: none; } }
         .exercises_content .exercises_to_approve .overview .exercise .created_at {
           width: 20%; }
+          @media (max-width: 768px) {
+            .exercises_content .exercises_to_approve .overview .exercise .created_at {
+              display: none; } }
         .exercises_content .exercises_to_approve .overview .exercise .view_details {
           width: 15%;
           text-align: right; }
+          @media (max-width: 768px) {
+            .exercises_content .exercises_to_approve .overview .exercise .view_details {
+              display: none; } }
   .exercises_content .no_exercises {
     text-align: center;
     margin-top: 120px; }

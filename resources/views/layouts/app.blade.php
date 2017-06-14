@@ -20,7 +20,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
     <!--<link href="{{ asset('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{url('/css/main.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url('/css/main.min.css')}}" rel="stylesheet" type="text/css">
     @yield('custom_css')
 
     <!-- favicon -->
@@ -37,11 +37,6 @@
 </head>
 <body>
     <div class="page_container"  ng-app="dashboard_sportiva">
-
-        <!--
-        <label class="hamburger" for="hamburger"><i class="fa fa-bars" aria-hidden="true"></i></label>
-        <input type="checkbox" name="hamburger" id="hamburger">
-        -->
 
         <div class="hamburger">
             <div class="logo">
@@ -113,13 +108,9 @@
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <!--<script src="{{ asset('js/app.js') }}"></script>-->
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('custom_js')
 
-    <!--
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="{{url('/js/app.js')}}"></script>
-    -->
 </body>
 </html>

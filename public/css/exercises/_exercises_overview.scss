@@ -183,6 +183,14 @@
         .overview {
             width: 95%;
             
+            & > div {
+                &:first-child {
+                    @include smartphone {
+                        font-size: 0.9em;
+                    }
+                }
+            }
+            
             .exercise {
                 width: 96%;
                 //padding: 3px 2%;
@@ -193,16 +201,34 @@
                 }
                 .title {
                     width: 35%;
+                    @include smartphone {
+                        width: 60%;
+                        margin-right: 2%;
+                    }
                 }
                 .author {
                     width: 30%;
+                    @include smartphone {
+                        width: 38%;
+                    }
+                    span {
+                        @include smartphone {
+                            display: none;
+                        }
+                    }
                 }
                 .created_at {
                     width: 20%;
+                    @include smartphone {
+                        display: none;
+                    }
                 }
                 .view_details {
                     width: 15%;
                     text-align: right;
+                    @include smartphone {
+                        display: none;
+                    }
                 }
             }
         }

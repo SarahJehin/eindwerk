@@ -361,11 +361,6 @@
 	var errors = false;
 
 	errors = <?php if(session('error_messages')) {echo("true");} else {echo("false"); } ?>;
-	/*
-	var authenticated_user = '';
-	authenticated_user_id = {{Auth::user()->id}};
-	console.log(authenticated_user_id);
-	*/
 
 </script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 

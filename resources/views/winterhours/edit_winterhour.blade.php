@@ -4,16 +4,13 @@
 @endsection
 
 @section('custom_css')
-<!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">-->
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 @endsection
 
 @section('content')
-
     <div class="edit_winterhour" ng-controller="WinterhourController">
-
         <div class="block">
             <div class="heading">
                 {{$winterhour->title}}
@@ -284,27 +281,6 @@
                                         </div>
                                     @endif
                                     @if($winterhour->status >= 2)
-                                    <!--
-                                        @if($winterhour->status < 4)
-                                        <div class="descriptive_info">
-                                            Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
-                                            Het winteruur kan nu willekeurig aangemaakt worden.  Als je niet tevreden bent met het schema klik dan nogmaals op onderstaande knop om het opnieuw te genereren. Of versleep de deelnemers van datum.<br>
-                                            @if($winterhour->status >= 3)
-                                            Wanneer je tevreden bent over het schema, <a class="link" href="{{url('save_scheme/' . $winterhour->id)}}">accepteer</a> het dan.
-                                            @endif
-                                        </div>
-                                        <div class="submit">
-                                            @if($winterhour->status == 2)
-                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema genereren</a>--><!--
-                                            <div class="generate_scheme">Schema genereren</div>
-                                            @elseif($winterhour->status == 3)
-                                            <!--<a href="{{url('generate_scheme/' . $winterhour->id)}}">Schema opnieuw genereren</a>--><!--
-                                            <div class="generate_scheme">Schema opnieuw genereren</div>
-                                            @endif
-                                            
-                                        </div>
-                                        @endif
-                                        -->
                                         <div ng-if="(winterhour_status < 4)">
                                             <div class="descriptive_info">
                                                 Iedereen heeft zijn beschikbaarheid doorgegeven.<br>
@@ -324,48 +300,6 @@
                                         <div class="loader">
                                             <img src="{{url('images/site_images/loader01.gif')}}">
                                         </div>
-                                        <!--
-                                        @if($scheme)
-                                        <div class="swap_message">
-                                            Wissel bericht.
-                                        </div>
-                                        <div class="scheme clearfix">
-                                            @foreach($scheme as $date => $info)
-                                            <div class="date float">
-                                                <h3>{{date('d/m', strtotime($date))}}<span class="year">{{date('/Y', strtotime($date))}}</span></h3>
-                                                @foreach($info['participants'] as $participant)
-                                                <div class="participant dragdrop" user_id="{{$participant->id}}" date_id="{{$info['date_id']}}">
-                                                    {{$participant->first_name}} <span class="long_last_name">{{$participant->last_name}}</span><span class="short_last_name">{{substr($participant->last_name, 0, 1)}}.</span>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="play_times">
-                                            @foreach($play_times as $times => $participants)
-                                            <div>
-                                                <span class="title">Spelen <span class="times">{{$times}}</span> keer: </span>
-                                                @foreach($participants as $participant)
-                                                <span>{{$participant->first_name}} {{$participant->last_name}}</span>
-                                                @if($participant != end($participants))
-                                                ,
-                                                @endif
-                                                @endforeach
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                            @if($winterhour->status < 4)
-                                            <div class="accept_scheme">
-                                                <div class="descriptive_info">
-                                                    Als je tevreden bent met het schema, klik dan op onderstaande knop om het zichtbaar te zetten voor anderen.
-                                                </div>
-                                                <div class="submit">
-                                                    <a href="{{url('save_scheme/' . $winterhour->id)}}">Schema accepteren</a>
-                                                </div>
-                                            </div>
-                                            @endif
-                                        @endif
-                                        -->
                                         <div ng-if="scheme_exists">
                                             <div class="swap_message">
                                                 Wissel bericht.
@@ -427,13 +361,11 @@
 @section('custom_js')
     <script type="text/javascript">
         var winterhour_id = {{$winterhour->id}};
-        //console.log(winterhour_id);
     </script>
     <script
               src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
               integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
               crossorigin="anonymous"></script>
-    <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>

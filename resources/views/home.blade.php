@@ -92,7 +92,6 @@
                             @endif
                         </div>
                     </div>
-                    
                 </div>
             </div>
 
@@ -190,7 +189,6 @@
         </div>
     </div>
 
-
     <div class="edit_profile_pic_modal">
         <div class="content">
             <div class="header"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -210,7 +208,6 @@
             </div>
         </div>
     </div>
-
 
     <div id="update_pwd_modal" class="lightbox_modal light">
         <div class="modal">
@@ -238,8 +235,7 @@
                 
             </div>
         </div>
-    </div>
-    
+    </div> 
 </div>
 @endsection
 @section('custom_js')

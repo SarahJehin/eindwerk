@@ -2,15 +2,12 @@
 @section('title', 'Nieuwe winteruur groep')
 
 @section('custom_css')
-<!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">-->
 <link href="{{url('css/bootstrap.css')}}" type="text/css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 @endsection
 
 @section('content')
-
-
     <div class="add_winterhour" ng-controller="WinterhourController">
 
         <div class="block">
@@ -188,17 +185,10 @@
                                                 <input type="number" name="" class="id" hidden="">
                                                 <div class="search_results">
                                                     <ul>
-                                                        <li>Sarah Jehin</li>
-                                                        <li>Glass Sorenson</li>
+                                                        <li></li>
+                                                        <li></li>
                                                     </ul>
                                                 </div>
-                                                <!--
-                                                <div class="search_select apply_bootstrap">
-                                                    <select class="selectpicker" data-live-search="true" title="default">
-                                                    
-                                                    </select>
-                                                </div>
-                                                -->
                                             </div>
                                             <span class="float delete not_working" title="Verwijderen"><i class="fa fa-times"></i></span>
                                         </div>
@@ -248,7 +238,6 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
-    <!--<script src="{{ asset('js/custom_datepicker.js') }}"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
     <script src="{{ asset('js/winterhours/add_winterhour.js') }}"></script>

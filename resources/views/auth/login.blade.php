@@ -24,9 +24,15 @@
             <div class="background_holder1"></div>
             <div class="background_holder2"></div>
 
+
             <div class="login_block">
-                <div class="login-heading">
-                    Welkom op TCS
+                <div class="login-heading clearfix">
+                    <div class="logo float">
+                        <img src="{{url('images/site_images/logo_colored_light_bg01.png')}}" alt="Logo">
+                    </div>
+                    <div class="text float">
+                        Welkom op TCS
+                    </div>
                 </div>
                 @if (count($errors) > 0)
                     <div class="error_msg clearfix">

@@ -8,8 +8,6 @@
                 Winteruren
             </div>
             <div class="content">
-
-                
                 <div class="add_winterhour_link clearfix">
                     <a href="{{url('add_winterhour')}}" data-toggle="tooltip" data-placement="left" title="Nieuwe groep">
                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -58,11 +56,11 @@
                                 </div>
                             </div>
                             
-                            @if(count(Auth::user()->dates) > 0 && $winterhour->status < 3)
+                            @if(count(Auth::user()->dates->where('winterhour_id', $winterhour->id)) > 0 && $winterhour->status < 3)
                             <div class="descriptive_info">
                                 Jij of de verantwoordelijke hebben je beschikbaarheid reeds doorgegeven. <a class="link" href="{{url('availabilities/' . $winterhour->id)}}">Beschikbaarheid aanpassen</a>.
                             </div>
-                            @elseif(count(Auth::user()->dates) <= 0 && $winterhour->status != 3)
+                            @elseif(count(Auth::user()->dates->where('winterhour_id', $winterhour->id)) <= 0 && $winterhour->status != 3)
                             <div class="descriptive_info">
                                 Je hebt nog geen beschikbaarheid doorgegeven.  De verantwoordelijke kan het schema pas aanmaken wanneer jij je beschikbaarheid hebt doorgegeven. <a class="link" href="{{url('availabilities/' . $winterhour->id)}}">Beschikbaarheid doorgeven</a>.
                             </div>

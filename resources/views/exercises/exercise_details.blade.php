@@ -7,8 +7,6 @@
 @endsection
 
 @section('content')
-
-
     <div class="exercise_details">
 
         <div class="block">
@@ -44,7 +42,6 @@
                     </div>
                 </div>
                 
-
                 <div class="exercise clearfix">
                     <div class="images_block float small_no_float">
                         <div class="main_image">
@@ -70,14 +67,6 @@
                     </div>
                 </div>
 
-                @if($exercise->video_url)
-                <!--
-                <div class="video_block">
-                    <iframe width="420" height="345" src="{{$exercise->video_url}}" allowfullscreen="allowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" webkitallowfullscreen="webkitallowfullscreen"></iframe>
-                </div>
-                -->
-                @endif
-
                 @if($exercise->approved == 0)
                 <div class="approve_deny clearfix">
                     <div class="deny float">
@@ -91,7 +80,6 @@
             </div>
         </div>
 
-
         <div id="exercise_image_modal" class="lightbox_modal">
             <div class="modal">
                 <div class="modal_header"><i class="fa fa-times" aria-hidden="true"></i></div>
@@ -103,8 +91,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 @endsection
 @section('custom_js')

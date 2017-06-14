@@ -200,17 +200,20 @@ class WinterhourController extends Controller
 			}
     	}
 
-        //if availabilities were updated, clear scheme again
-        foreach ($winterhour->dates as $date) {
-            //when scheme is regenerated, first set all assigned back to 0
-            foreach ($date->users as $participant) {
-                $participant->dates()->updateExistingPivot($date->id, ['assigned' => 0]);
-            }
-        }
+      if($winterhour->status > 2) {
+          //if availabilities were updated, clear scheme again
+          foreach ($winterhour->dates as $date) {
+              //when scheme is regenerated, first set all assigned back to 0
+              foreach ($date->users as $participant) {
+                  $participant->dates()->updateExistingPivot($date->id, ['assigned' => 0]);
+              }
+          }
+      }
+        
         $all_availabilities_ok = true;
         //check whether all the participants have updated their availability
         foreach ($winterhour->participants as $participant) {
-            if(count($participant->dates) <= 0 || !count($participant->dates)) {
+            if(count($participant->where('winterhour_id', $winterhour->id)) <= 0 || !count($participant->dates)) {
                 $all_availabilities_ok = false;
                 break;
             }

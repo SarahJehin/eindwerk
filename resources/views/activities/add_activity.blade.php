@@ -151,7 +151,6 @@
                                         @endif
 
                                         <div class="date_time_info float clearfix">
-                                            
                                             <div class="date_info">
                                                 <h3>Datum</h3>
                                                 <div class="date_type clearfix">
@@ -178,10 +177,8 @@
                                                     </div>
                                                 </div>
                                                 
-
                                                 <input type="date" id="startdate" name="startdate" hidden value="{{old('startdate')}}">
                                                 <input type="date" id="deadline" name="deadline" hidden value="{{old('deadline')}}">
-
                                             </div>
 
                                             <div class="starttime">
@@ -189,7 +186,6 @@
                                                 <div class="field_wrap">
                                                     <input type="text" name="starttime" id="starttime" value="{{old('starttime', '14:00')}}">
                                                 </div>
-                                                
                                             </div>
 
                                             <div class="endtime">
@@ -199,7 +195,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
 
                                         <div class="location_info float">
                                             <h3>Locatie</h3>
@@ -230,7 +225,6 @@
                                             </div>
                                             <input id="latitude" name="latitude" type="text" value="{{old('latitude')}}" required hidden>
                                             <input id="longitude" name="longitude" type="text" value="{{old('longitude')}}" required hidden>
-
                                         </div>
                                     </div>
                                     <div class="previous_next clearfix">
@@ -346,13 +340,11 @@
     </div>
 @endsection
 @section('custom_js')
-    <!--<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdn.jsdelivr.net/bootstrap.datepicker-fork/1.3.0/js/locales/bootstrap-datepicker.nl-BE.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js"></script>
     <script src="{{ asset('js/custom_datepicker.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
-    <!--<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>--> 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.3/summernote.js"></script>
     <script src="{{ asset('js/custom_google_maps.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initAutocomplete&key=AIzaSyA69WeWJnH4qyNdwyjEjAc9YAOXA1Ooi-c"

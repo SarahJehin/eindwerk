@@ -1,15 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Beschikbaarheid')
 
-@section('custom_css')
-
-@endsection
-
 @section('content')
-
-
     <div class="availabilities">
-
         <div class="block">
             <div class="heading">
                 {{$winterhour->title}}
@@ -105,7 +98,6 @@
                 </form>
             </div>
         </div>
-
 
     </div>
 @endsection
